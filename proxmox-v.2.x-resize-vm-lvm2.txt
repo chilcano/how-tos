@@ -1,0 +1,160 @@
+RESIZING VM DISK IN PROXMOX 2.x
+===============================
+
+References:
+-----------
+http://linuxhackbox.blogspot.co.uk/2012/05/extending-your-virtual-machines-disk.html
+http://pve.proxmox.com/wiki/Resizing_disks
+
+
+This process will be in two steps.
+First, you will need to resize your VM. Then, you will need to commit the disk size’s changes.
+
+I. Resize VM
+------------
+
+1. Stop VM
+
+2. Identify the VM's disk that you want enlarge, in my case is VM Id 109
+
+roger1@kns:/root$ su root
+
+root@kns ~ # cd /var/lib/vz/images/109
+
+root@kns /var/lib/vz/images/109 # ls -la
+total 31G
+drwxr-xr-x  2 root root 4.0K Jun  8  2012 .
+drwxr-xr-x 19 root root 4.0K Nov  2 19:20 ..
+-rw-r--r--  1 root root  32G Feb 11 19:23 vm-109-disk-1.raw
+
+3. Backup VM disk.
+
+4. Resize image.
+
+root@kns /var/lib/vz/images/109 # qemu-img resize vm-109-disk-1.raw +32G
+Image resized.
+
+5. Start VM again.
+
+
+II. Apply changes on VM
+-------------------------
+
+6. root@kns-svn0 ~]# fdisk /dev/sda
+
+WARNING: DOS-compatible mode is deprecated. It's strongly recommended to
+         switch off the mode (command 'c') and change display units to
+         sectors (command 'u').
+
+Command (m for help): n
+Command action
+   e   extended
+   p   primary partition (1-4)
+p
+Partition number (1-4): 3
+First cylinder (4178-8354, default 4178): 
+Using default value 4178
+Last cylinder, +cylinders or +size{K,M,G} (4178-8354, default 8354): 
+Using default value 8354
+
+Command (m for help): t
+Partition number (1-4): 3
+Hex code (type L to list codes): 8e
+Changed system type of partition 3 to 8e (Linux LVM)
+
+Command (m for help): p
+
+Disk /dev/sda: 68.7 GB, 68719476736 bytes
+255 heads, 63 sectors/track, 8354 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x0007c915
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1   *           1          64      512000   83  Linux
+Partition 1 does not end on cylinder boundary.
+/dev/sda2              64        4178    33041408   8e  Linux LVM
+/dev/sda3            4178        8354    33549073   8e  Linux LVM
+
+Command (m for help): w
+The partition table has been altered!
+
+Calling ioctl() to re-read partition table.
+
+WARNING: Re-reading the partition table failed with error 16: Device or resource busy.
+The kernel still uses the old table. The new table will be used at
+the next reboot or after you run partprobe(8) or kpartx(8)
+Syncing disks.
+[root@kns-svn0 ~]# 
+
+
+7. Reboot or issue partprobe or kpartx
+
+8.
+[root@kns-svn0 ~]# pvcreate /dev/sda3
+  Writing physical volume data to disk "/dev/sda3"
+  Physical volume "/dev/sda3" successfully created
+
+9. 
+root@kns-svn0 ~]# pvdisplay 
+
+10.
+
+[root@kns-svn0 ~]# vgdisplay
+  --- Volume group ---
+  VG Name               vg_lfry2
+  System ID             
+  Format                lvm2
+  [...]
+
+11. 
+
+root@kns-svn0 ~]# vgextend vg_lfry2 /dev/sda3
+  Volume group "vg_lfry2" successfully extended
+
+12.
+
+[root@kns-svn0 ~]# lvextend -L +32G /dev/vg_lfry2/lv_root 
+  Extending logical volume lv_root to 61.54 GiB
+  Insufficient free space: 8192 extents needed, but only 8190 available
+
+
+
+Probar con +31G ==> funciona
+
+[root@kns-svn0 ~]# lvextend -L +31G /dev/vg_lfry2/lv_root 
+  Extending logical volume lv_root to 60.54 GiB
+  Logical volume lv_root successfully resized
+
+
+
+  13.
+
+  [root@kns-svn0 ~]# resize2fs /dev/vg_lfry2/lv_root 
+resize2fs 1.41.12 (17-May-2010)
+The filesystem is already 7743488 blocks long.  Nothing to do!
+
+
+===> con +31G, ahora sí funciona:
+
+root@kns-svn0 ~]# resize2fs /dev/vg_lfry2/lv_root 
+resize2fs 1.41.12 (17-May-2010)
+Filesystem at /dev/vg_lfry2/lv_root is mounted on /; on-line resizing required
+old desc_blocks = 2, new_desc_blocks = 4
+Performing an on-line resize of /dev/vg_lfry2/lv_root to 15869952 (4k) blocks.
+The filesystem on /dev/vg_lfry2/lv_root is now 15869952 blocks long.
+
+14.  probarlo con df -h
+
+
+[root@kns-svn0 ~]# df -h
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/mapper/vg_lfry2-lv_root
+                       60G   29G   29G  51% /
+tmpfs                 1.9G     0  1.9G   0% /dev/shm
+/dev/sda1             485M  117M  343M  26% /boot
+
+
+15. fin
+

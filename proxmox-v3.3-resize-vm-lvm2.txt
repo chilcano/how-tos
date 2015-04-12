@@ -1,0 +1,184 @@
+RESIZING VM DISK IN PROXMOX 3.3
+================================
+
+Hacer resize desde la Console Web de Proxmox v3.3 (botón Resize Disk) no es suficiente. Hay que seguir más pasos, aquí os muestros unos pasos algo diferentes a los pasos que seguí para conseguirlo en la versión de Proxmox 2.x.
+
+Os recuerdo, sólo aplica a Discos RAW o QCOW2, y si tienes VDI/VMDK, convertirlo y luego asociarlo a la VM para que finalmente hacer el resize.
+
+
+Reference:
+----------
+http://hungred.com/how-to/easy-resize-linux-kvm-proxmox-ve-3-3/
+
+
+Pasos:
+------
+
+
+---[step 0] Check current status on disks
+[root@chk-bizlife1 ~]# df -h
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/mapper/VolGroup-lv_root
+                       29G   19G  8.2G  70% /
+tmpfs                 3.9G     0  3.9G   0% /dev/shm
+/dev/sda1             485M   52M  408M  12% /boot
+
+
+
+---[step 1]
+[root@chk-bizlife1 ~]# fdisk -l
+
+Disk /dev/sda: 68.7 GB, 68719476736 bytes
+255 heads, 63 sectors/track, 8354 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x000e8ded
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1   *           1          64      512000   83  Linux
+Partition 1 does not end on cylinder boundary.
+/dev/sda2              64        4178    33041408   8e  Linux LVM
+
+Disk /dev/mapper/VolGroup-lv_root: 30.7 GB, 30660362240 bytes
+255 heads, 63 sectors/track, 3727 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x00000000
+
+
+Disk /dev/mapper/VolGroup-lv_swap: 3170 MB, 3170893824 bytes
+255 heads, 63 sectors/track, 385 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x00000000
+
+---[step 2]
+[root@chk-bizlife1 ~]# fdisk /dev/sda
+
+WARNING: DOS-compatible mode is deprecated. It's strongly recommended to
+         switch off the mode (command 'c') and change display units to
+         sectors (command 'u').
+
+Command (m for help): n
+Command action
+   e   extended
+   p   primary partition (1-4)
+p
+Partition number (1-4): 3
+First cylinder (4178-8354, default 4178): 4178
+Last cylinder, +cylinders or +size{K,M,G} (4178-8354, default 8354): +31500M
+
+Command (m for help): w
+The partition table has been altered!
+
+Calling ioctl() to re-read partition table.
+
+WARNING: Re-reading the partition table failed with error 16: Device or resource busy.
+The kernel still uses the old table. The new table will be used at
+the next reboot or after you run partprobe(8) or kpartx(8)
+Syncing disks.
+
+---[step 3]
+[root@chk-bizlife1 ~]# fdisk -l /dev/sda
+
+Disk /dev/sda: 68.7 GB, 68719476736 bytes
+255 heads, 63 sectors/track, 8354 cylinders
+Units = cylinders of 16065 * 512 = 8225280 bytes
+Sector size (logical/physical): 512 bytes / 512 bytes
+I/O size (minimum/optimal): 512 bytes / 512 bytes
+Disk identifier: 0x000e8ded
+
+   Device Boot      Start         End      Blocks   Id  System
+/dev/sda1   *           1          64      512000   83  Linux
+Partition 1 does not end on cylinder boundary.
+/dev/sda2              64        4178    33041408   8e  Linux LVM
+/dev/sda3            4178        8194    32263873   83  Linux
+
+---[step 4]
+[root@chk-bizlife1 ~]# reboot now
+
+
+---[step 5]
+[root@chk-bizlife1 ~]# pvcreate /dev/sda3
+  Physical volume "/dev/sda3" successfully created
+
+
+---[step 6]
+[root@chk-bizlife1 ~]# vgs
+  VG       #PV #LV #SN Attr   VSize  VFree
+  VolGroup   1   2   0 wz--n- 31.51g    0 
+[root@chk-bizlife1 ~]# lvs
+  LV      VG       Attr      LSize  Pool Origin Data%  Move Log Cpy%Sync Convert
+  lv_root VolGroup -wi-ao--- 28.55g                                             
+  lv_swap VolGroup -wi-ao---  2.95g  
+
+---[step 7] Extending logical volumne
+[root@chk-bizlife1 ~]# vgextend VolGroup /dev/sda3
+  Volume group "VolGroup" successfully extended
+
+  [root@chk-bizlife1 ~]# vgdisplay
+  --- Volume group ---
+  VG Name               VolGroup
+  System ID             
+  Format                lvm2
+  Metadata Areas        2
+  Metadata Sequence No  6
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                2
+  Open LV               2
+  Max PV                0
+  Cur PV                2
+  Act PV                2
+  VG Size               62.27 GiB
+  PE Size               4.00 MiB
+  Total PE              15942
+  Alloc PE / Size       8066 / 31.51 GiB
+  Free  PE / Size       7876 / 30.77 GiB
+  VG UUID               Y1x0Tz-7dbn-GKma-uQEq-L0VU-spBL-eedXVD
+
+
+[root@chk-bizlife1 ~]# df -h
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/mapper/VolGroup-lv_root
+                       29G   19G  8.2G  70% /
+tmpfs                 3.9G     0  3.9G   0% /dev/shm
+/dev/sda1             485M   52M  408M  12% /boot
+
+
+[root@chk-bizlife1 ~]# lvextend -L +31.5G /dev/mapper/VolGroup-lv_root 
+  Extending logical volume lv_root to 60.05 GiB
+  Insufficient free space: 8064 extents needed, but only 7876 available
+
+[root@chk-bizlife1 ~]# lvextend -L +31G /dev/mapper/VolGroup-lv_root 
+  Extending logical volume lv_root to 59.55 GiB
+  Insufficient free space: 7936 extents needed, but only 7876 available
+
+[root@chk-bizlife1 ~]# lvextend -L +30.7G /dev/mapper/VolGroup-lv_root 
+  Rounding size to boundary between physical extents: 30.70 GiB
+  Extending logical volume lv_root to 59.26 GiB
+  Logical volume lv_root successfully resized
+
+
+[root@chk-bizlife1 ~]# resize2fs /dev/mapper/VolGroup-lv_root
+resize2fs 1.41.12 (17-May-2010)
+Filesystem at /dev/mapper/VolGroup-lv_root is mounted on /; on-line resizing required
+old desc_blocks = 2, new_desc_blocks = 4
+Performing an on-line resize of /dev/mapper/VolGroup-lv_root to 15534080 (4k) blocks.
+The filesystem on /dev/mapper/VolGroup-lv_root is now 15534080 blocks long.
+
+---[step 8] Check final
+
+[root@chk-bizlife1 ~]# df -kh
+Filesystem            Size  Used Avail Use% Mounted on
+/dev/mapper/VolGroup-lv_root
+                       59G   19G   37G  34% /
+tmpfs                 3.9G     0  3.9G   0% /dev/shm
+/dev/sda1             485M   52M  408M  12% /boot
+
+
+----.-----

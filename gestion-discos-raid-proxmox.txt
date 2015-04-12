@@ -1,0 +1,560 @@
+GESTIÓN DE DISCOS, PARTICIONES Y RAID EN PROXMOX
+================================================
+
+
+I. Estado actual de los disco y configuración
+----------------------------------------------
+
+1) Situación actual
+
+- Discos por path:
+
+root@chkry1 ~ # ls -la /dev/disk/by-path/
+total 0
+drwxr-xr-x 2 root root 280 nov 17 16:36 .
+drwxr-xr-x 5 root root 100 nov 17 16:36 ..
+lrwxrwxrwx 1 root root   9 nov 18 00:13 pci-0000:00:1f.2-scsi-0:0:0:0 -> ../../sda
+lrwxrwxrwx 1 root root  10 nov 17 16:36 pci-0000:00:1f.2-scsi-0:0:0:0-part1 -> ../../sda1
+lrwxrwxrwx 1 root root  10 nov 17 16:36 pci-0000:00:1f.2-scsi-0:0:0:0-part2 -> ../../sda2
+lrwxrwxrwx 1 root root  10 nov 17 16:36 pci-0000:00:1f.2-scsi-0:0:0:0-part3 -> ../../sda3
+lrwxrwxrwx 1 root root  10 nov 17 16:36 pci-0000:00:1f.2-scsi-0:0:0:0-part4 -> ../../sda4
+lrwxrwxrwx 1 root root  10 nov 17 16:36 pci-0000:00:1f.2-scsi-0:0:0:0-part5 -> ../../sda5
+lrwxrwxrwx 1 root root   9 nov 18 00:13 pci-0000:00:1f.2-scsi-1:0:0:0 -> ../../sdb
+lrwxrwxrwx 1 root root  10 nov 17 16:36 pci-0000:00:1f.2-scsi-1:0:0:0-part1 -> ../../sdb1
+lrwxrwxrwx 1 root root  10 nov 17 16:36 pci-0000:00:1f.2-scsi-1:0:0:0-part2 -> ../../sdb2
+lrwxrwxrwx 1 root root  10 nov 17 16:36 pci-0000:00:1f.2-scsi-1:0:0:0-part3 -> ../../sdb3
+lrwxrwxrwx 1 root root  10 nov 17 16:36 pci-0000:00:1f.2-scsi-1:0:0:0-part4 -> ../../sdb4
+lrwxrwxrwx 1 root root  10 nov 17 16:36 pci-0000:00:1f.2-scsi-1:0:0:0-part5 -> ../../sdb5
+
+- Particiones:
+
+root@chkry1 ~ # cat /proc/partitions
+major minor  #blocks  name
+
+   8       16 2930266584 sdb
+   8       17   16777216 sdb1
+   8       18     524288 sdb2
+   8       19 1073741824 sdb3
+   8       20 1839221191 sdb4
+   8       21       1024 sdb5
+   8        0 2930266584 sda
+   8        1   16777216 sda1
+   8        2     524288 sda2
+   8        3 1073741824 sda3
+   8        4 1839221191 sda4
+   8        5       1024 sda5
+   9        0   16776120 md0
+   9        1     524276 md1
+   9        2 1073740664 md2
+   9        3 1839220031 md3
+
+
+- Mapa de Discos y particiones con fdisk:
+
+root@chkry1 ~ # fdisk -l
+
+WARNING: GPT (GUID Partition Table) detected on '/dev/sdb'! The util fdisk doesn't support GPT. Use GNU Parted.
+
+
+Disk /dev/sdb: 3000.6 GB, 3000592982016 bytes
+256 heads, 63 sectors/track, 363376 cylinders, 5860533168 sectores en total
+Units = sectores of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Identificador del disco: 0x00000000
+
+Disposit. Inicio    Comienzo      Fin      Bloques  Id  Sistema
+/dev/sdb1               1  4294967295  2147483647+  ee  GPT
+Partition 1 does not start on physical sector boundary.
+
+WARNING: GPT (GUID Partition Table) detected on '/dev/sda'! The util fdisk doesn't support GPT. Use GNU Parted.
+
+
+Disk /dev/sda: 3000.6 GB, 3000592982016 bytes
+256 heads, 63 sectors/track, 363376 cylinders, 5860533168 sectores en total
+Units = sectores of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Identificador del disco: 0x00000000
+
+Disposit. Inicio    Comienzo      Fin      Bloques  Id  Sistema
+/dev/sda1   *           1  4294967295  2147483647+  ee  GPT
+Partition 1 does not start on physical sector boundary.
+
+Disk /dev/md0: 17.2 GB, 17178746880 bytes
+2 heads, 4 sectors/track, 4194030 cylinders, 33552240 sectores en total
+Units = sectores of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Identificador del disco: 0x00000000
+
+El disco /dev/md0 no contiene una tabla de particiones válida
+
+Disco /dev/md1: 536 MB, 536858624 bytes
+2 heads, 4 sectors/track, 131069 cylinders, 1048552 sectores en total
+Units = sectores of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Identificador del disco: 0x00000000
+
+El disco /dev/md1 no contiene una tabla de particiones válida
+
+Disk /dev/md2: 1099.5 GB, 1099510439936 bytes
+2 heads, 4 sectors/track, 268435166 cylinders, 2147481328 sectores en total
+Units = sectores of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Identificador del disco: 0x00000000
+
+El disco /dev/md2 no contiene una tabla de particiones válida
+
+Disk /dev/md3: 1883.4 GB, 1883361311744 bytes
+2 heads, 4 sectors/track, 459805007 cylinders, 3678440062 sectores en total
+Units = sectores of 1 * 512 = 512 bytes
+Sector size (logical/physical): 512 bytes / 4096 bytes
+I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+Identificador del disco: 0x00000000
+
+El disco /dev/md3 no contiene una tabla de particiones válida
+
+
+- Mapa de particiones para discos > 2 TiB con 'gdisk' (GPT: GUID partition table)
+
+root@chkry1 ~ # gdisk -l /dev/sda
+GPT fdisk (gdisk) version 0.8.5
+
+Partition table scan:
+  MBR: protective
+  BSD: not present
+  APM: not present
+  GPT: present
+
+Found valid GPT with protective MBR; using GPT.
+Disk /dev/sda: 5860533168 sectors, 2.7 TiB
+Logical sector size: 512 bytes
+Disk identifier (GUID): B2B420AE-59BE-44E7-ADCE-EA6EB3EB3C63
+Partition table holds up to 128 entries
+First usable sector is 34, last usable sector is 5860533134
+Partitions will be aligned on 2048-sector boundaries
+Total free space is 2014 sectors (1007.0 KiB)
+
+Number  Start (sector)    End (sector)  Size       Code  Name
+   1            4096        33558527   16.0 GiB    8200  
+   2        33558528        34607103   512.0 MiB   8300  
+   3        34607104      2182090751   1024.0 GiB  8300  
+   4      2182090752      5860533134   1.7 TiB     8300  
+   5            2048            4095   1024.0 KiB  EF02  
+
+
+root@chkry1 ~ # gdisk -l /dev/sdb
+GPT fdisk (gdisk) version 0.8.5
+
+Partition table scan:
+  MBR: protective
+  BSD: not present
+  APM: not present
+  GPT: present
+
+Found valid GPT with protective MBR; using GPT.
+Disk /dev/sdb: 5860533168 sectors, 2.7 TiB
+Logical sector size: 512 bytes
+Disk identifier (GUID): 4B205997-E657-433A-8DC7-28B356D3656C
+Partition table holds up to 128 entries
+First usable sector is 34, last usable sector is 5860533134
+Partitions will be aligned on 2048-sector boundaries
+Total free space is 2014 sectors (1007.0 KiB)
+
+Number  Start (sector)    End (sector)  Size       Code  Name
+   1            4096        33558527   16.0 GiB    FD00  
+   2        33558528        34607103   512.0 MiB   FD00  
+   3        34607104      2182090751   1024.0 GiB  FD00  
+   4      2182090752      5860533134   1.7 TiB     FD00  
+   5            2048            4095   1024.0 KiB  EF02  
+
+
+
+2) Estatus del RAID:
+
+root@chkry1 ~ # cat /proc/mdstat
+Personalities : [raid1] 
+md3 : active (auto-read-only) raid1 sdb4[1]
+      1839220031 blocks super 1.2 [2/1] [_U]
+      
+md2 : active (auto-read-only) raid1 sdb3[1]
+      1073740664 blocks super 1.2 [2/1] [_U]
+      
+md1 : active (auto-read-only) raid1 sdb2[1]
+      524276 blocks super 1.2 [2/1] [_U]
+      
+md0 : active (auto-read-only) raid1 sdb1[1]
+      16776120 blocks super 1.2 [2/1] [_U]
+      
+unused devices: <none>
+
+3) Conclusión final sobre los discos:
+
+- Existen 2 discos: /dev/sda y /dev/sdb de 2.7 TiB cada uno.
+- RAID está activo entre ambos discos.
+- Está funcionando raid1 (imagen), pero /dev/sda está en 'fail'.
+
+II. Desactivando RAID
+----------------------
+
+1) Inspeccionar cada partición del RAID (md0, md1, md2 y md3)
+
+root@chkry1 ~ # mdadm -D /dev/md0
+/dev/md0:
+        Version : 1.2
+  Creation Time : Wed Jul  3 12:43:30 2013
+     Raid Level : raid1
+     Array Size : 16776120 (16.00 GiB 17.18 GB)
+  Used Dev Size : 16776120 (16.00 GiB 17.18 GB)
+   Raid Devices : 2
+  Total Devices : 1
+    Persistence : Superblock is persistent
+
+    Update Time : Fri Jul 19 13:46:26 2013
+          State : clean, degraded 
+ Active Devices : 1
+Working Devices : 1
+ Failed Devices : 0
+  Spare Devices : 0
+
+           Name : rescue:0
+           UUID : 9db5c4e2:e84bde8d:bce746fa:e35c1272
+         Events : 20
+
+    Number   Major   Minor   RaidDevice State
+       0       0        0        0      removed
+       1       8       17        1      active sync   /dev/sdb1
+
+root@chkry1 ~ # mdadm -D /dev/md1
+/dev/md1:
+        Version : 1.2
+  Creation Time : Wed Jul  3 12:43:31 2013
+     Raid Level : raid1
+     Array Size : 524276 (512.07 MiB 536.86 MB)
+  Used Dev Size : 524276 (512.07 MiB 536.86 MB)
+   Raid Devices : 2
+  Total Devices : 1
+    Persistence : Superblock is persistent
+
+    Update Time : Fri Jul 19 14:05:52 2013
+          State : clean, degraded 
+ Active Devices : 1
+Working Devices : 1
+ Failed Devices : 0
+  Spare Devices : 0
+
+           Name : rescue:1
+           UUID : 253f6b05:d69f512c:a6e232ca:bc09d3be
+         Events : 36
+
+    Number   Major   Minor   RaidDevice State
+       0       0        0        0      removed
+       1       8       18        1      active sync   /dev/sdb2
+root@chkry1 ~ # mdadm -D /dev/md2
+/dev/md2:
+        Version : 1.2
+  Creation Time : Wed Jul  3 12:43:31 2013
+     Raid Level : raid1
+     Array Size : 1073740664 (1024.00 GiB 1099.51 GB)
+  Used Dev Size : 1073740664 (1024.00 GiB 1099.51 GB)
+   Raid Devices : 2
+  Total Devices : 1
+    Persistence : Superblock is persistent
+
+    Update Time : Fri Jul 19 14:10:22 2013
+          State : clean, degraded 
+ Active Devices : 1
+Working Devices : 1
+ Failed Devices : 0
+  Spare Devices : 0
+
+           Name : rescue:2
+           UUID : cae7a241:44e921b1:0296f12e:1d09a087
+         Events : 40
+
+    Number   Major   Minor   RaidDevice State
+       0       0        0        0      removed
+       1       8       19        1      active sync   /dev/sdb3
+root@chkry1 ~ # mdadm -D /dev/md3
+/dev/md3:
+        Version : 1.2
+  Creation Time : Wed Jul  3 12:43:31 2013
+     Raid Level : raid1
+     Array Size : 1839220031 (1754.02 GiB 1883.36 GB)
+  Used Dev Size : 1839220031 (1754.02 GiB 1883.36 GB)
+   Raid Devices : 2
+  Total Devices : 1
+    Persistence : Superblock is persistent
+
+    Update Time : Fri Jul 19 14:05:53 2013
+          State : clean, degraded 
+ Active Devices : 1
+Working Devices : 1
+ Failed Devices : 0
+  Spare Devices : 0
+
+           Name : rescue:3
+           UUID : 893de8ee:41be7af9:4b43a634:2f113485
+         Events : 49
+
+    Number   Major   Minor   RaidDevice State
+       0       0        0        0      removed
+       1       8       20        1      active sync   /dev/sdb4
+
+
+******** desactivas 
+
+
+III) Creando PV, VG y L
+-----------------------
+
+
+1) Vamos a aprovechar que /dev/sda4 montado en /home tiene 1.7 TiB y lo usaremos como disco lógico virtual para propósitos de backup.
+
+
+- Creamos physical volumes that will be used to create the LVM 
+
+root@chkry1 ~ # pvcreate /dev/sda4
+  Can't open /dev/sda4 exclusively.  Mounted filesystem?
+
+**** esto se debe a que ya está montado en /home  ? ...... ?????
+
+
+- Intentamos con /dev/sdb4 (recientemente eliminado de RAID ** punto IV)
+
+root@chkry1 ~ # pvcreate /dev/sdb4
+  Physical volume "/dev/sdb4" successfully created
+
+root@chkry1 ~ # pvdisplay
+  "/dev/sdb4" is a new physical volume of "1,71 TiB"
+  --- NEW Physical volume ---
+  PV Name               /dev/sdb4
+  VG Name               
+  PV Size               1,71 TiB
+  Allocatable           NO
+  PE Size               0   
+  Total PE              0
+  Free PE               0
+  Allocated PE          0
+  PV UUID               oaFxQG-yeRD-o6vA-eZDs-CNVm-JNBA-euvXyI
+
+ - Create the Volume Group – Use vgcreate, vgdisplay Commands:
+
+ root@chkry1 ~ # vgcreate chk_disk_b_volgroup_4 /dev/sdb4
+  Volume group "chk_disk_b_volgroup_4" successfully created
+
+root@chkry1 ~ # vgdisplay
+  --- Volume group ---
+  VG Name               chk_disk_b_volgroup_4
+  System ID             
+  Format                lvm2
+  Metadata Areas        1
+  Metadata Sequence No  1
+  VG Access             read/write
+  VG Status             resizable
+  MAX LV                0
+  Cur LV                0
+  Open LV               0
+  Max PV                0
+  Cur PV                1
+  Act PV                1
+  VG Size               1,71 TiB
+  PE Size               4,00 MiB
+  Total PE              449028
+  Alloc PE / Size       0 / 0   
+  Free  PE / Size       449028 / 1,71 TiB
+  VG UUID               PT0IQV-1o9E-09Zd-3LeT-bJ4g-Vg66-i1R9wi
+
+ - Create Logical Volumes – Use lvcreate, lvdisplay commands. Añadir todo el espacio disponible al log_vol
+
+ root@chkry1 ~ # lvcreate -n chk_disk_b_lv_4 -l 100%FREE chk_disk_b_volgroup_4
+  Logical volume "chk_disk_b_lv_4" created
+
+  También puedes asignar un tamaño específico (200 GB) al log_vol:
+  lvcreate -n chk_disk_b_lv_4 -L 200G chk_disk_b_volgroup_4
+
+root@chkry1 ~ # lvdisplay
+  --- Logical volume ---
+  LV Path                /dev/chk_disk_b_volgroup_4/chk_disk_b_lv_4
+  LV Name                chk_disk_b_lv_4
+  VG Name                chk_disk_b_volgroup_4
+  LV UUID                9d9qmd-Cbml-iNah-7ZYw-YhDg-RZnO-C6ZXbl
+  LV Write Access        read/write
+  LV Creation host, time chkry1, 2013-11-18 02:28:31 +0100
+  LV Status              available
+  # open                 0
+  LV Size                1,71 TiB
+  Current LE             449028
+  Segments               1
+  Allocation             inherit
+  Read ahead sectors     auto
+  - currently set to     256
+  Block device           253:0
+
+- Formatear el log_vol
+
+root@chkry1 ~ # mkfs.ext4 /dev/chk_disk_b_volgroup_4/chk_disk_b_lv_4
+mke2fs 1.42.5 (29-Jul-2012)
+Etiqueta del sistema de ficheros=
+OS type: Linux
+Tamaño del bloque=4096 (bitácora=2)
+Tamaño del fragmento=4096 (bitácora=2)
+Stride=0 blocks, Stripe width=0 blocks
+114958336 inodes, 459804672 blocks
+22990233 blocks (5.00%) reserved for the super user
+Primer bloque de datos=0
+Número máximo de bloques del sistema de ficheros=4294967296
+14033 bloque de grupos
+32768 bloques por grupo, 32768 fragmentos por grupo
+8192 nodos-i por grupo
+Respaldo del superbloque guardado en los bloques: 
+	32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632, 2654208, 
+	4096000, 7962624, 11239424, 20480000, 23887872, 71663616, 78675968, 
+	102400000, 214990848
+
+Allocating group tables: hecho                           
+Escribiendo las tablas de nodos-i: hecho                           
+Creating journal (32768 blocks): hecho
+Escribiendo superbloques y la información contable del sistema de ficheros: hecho   
+
+
+- Luego montarlo:
+
+
+mkdir /root/chk_disk_b_data
+mount -t ext4 /dev/chk_disk_b_volgroup_4/chk_disk_b_lv_4 /root/chk_disk_b_data
+
+- Añadir la sgte línea a /etc/fstab para que sea montado automáticamente si el server reinicia:
+/dev/chk_disk_b_volgroup_4/chk_disk_b_lv_4    /root/chk_disk_b_data         ext4   defaults        0 0
+
+root@chkry1 ~ # mount -a
+
+root@chkry1 ~ # df -h
+S.ficheros                                             Tamaño Usados  Disp Uso% Montado en
+rootfs                                                  1016G   260G  705G  27% /
+udev                                                      10M      0   10M   0% /dev
+tmpfs                                                    3,2G   300K  3,2G   1% /run
+/dev/disk/by-uuid/d85c9428-b39f-434c-8140-3e46f0ffe770  1016G   260G  705G  27% /
+tmpfs                                                    5,0M      0  5,0M   0% /run/lock
+tmpfs                                                    9,5G    16M  9,5G   1% /run/shm
+/dev/sda2                                                508M    87M  396M  18% /boot
+/dev/sda4                                                1,7T    25G  1,6T   2% /home
+/dev/fuse                                                 30M    16K   30M   1% /etc/pve
+/dev/mapper/chk_disk_b_volgroup_4-chk_disk_b_lv_4        1,7T   196M  1,7T   1% /root/chk_disk_b_data
+
+
+- Crear carpetas extras:
+
+root@chkry1 ~ # mkdir -p /root/chk_disk_b_data/template/iso
+root@chkry1 ~ # mkdir -p /root/chk_disk_b_data/iso/template/iso
+root@chkry1 ~ # mkdir -p /root/chk_disk_b_data/backup
+
+
+- Finalemente, desde Proxmox Web, crear el storage y hacer backup.
+
+
+IV) Eliminando RAID
+--------------------
+
+1) Vamos a eliminar m0, m1, m2 y m3
+
+- Listar estado de md0, md1, md2 y md3:
+
+root@chkry1 ~ # mdadm --detail /dev/md0 | tail -n 4
+
+    Number   Major   Minor   RaidDevice State
+       0       0        0        0      removed
+       1       8       17        1      active sync   /dev/sdb1
+
+root@chkry1 ~ # mdadm --detail /dev/md1 | tail -n 4
+
+    Number   Major   Minor   RaidDevice State
+       0       0        0        0      removed
+       1       8       18        1      active sync   /dev/sdb2
+
+root@chkry1 ~ # mdadm --detail /dev/md2 | tail -n 4
+
+    Number   Major   Minor   RaidDevice State
+       0       0        0        0      removed
+       1       8       19        1      active sync   /dev/sdb3
+
+root@chkry1 ~ # mdadm --detail /dev/md3 | tail -n 4
+
+    Number   Major   Minor   RaidDevice State
+       0       0        0        0      removed
+       1       8       20        1      active sync   /dev/sdb4
+
+- Detenemos md1
+
+# mdadm --stop /dev/md1
+mdadm: stopped /dev/md1
+
+- Verificamos:
+
+root@chkry1 ~ # mdadm --detail /dev/md1
+mdadm: md device /dev/md1 does not appear to be active.
+
+- Removemos el device /dev/md1
+
+# mdadm --remove /dev/md1
+
+- Remove the superblocks from all associated devices. md1  está asociado a /dev/sdb2, entonces:
+
+# mdadm --zero-superblock /dev/sdb2
+
+
+2) Verificar que no tenga ningún RAID
+
+root@chkry1 ~ # cat /proc/partitions
+major minor  #blocks  name
+
+   8       16 2930266584 sdb
+   8       17   16777216 sdb1
+   8       18     524288 sdb2
+   8       19 1073741824 sdb3
+   8       20 1839221191 sdb4
+   8       21       1024 sdb5
+   8        0 2930266584 sda
+   8        1   16777216 sda1
+   8        2     524288 sda2
+   8        3 1073741824 sda3
+   8        4 1839221191 sda4
+   8        5       1024 sda5
+   9        0   16776120 md0
+   9        2 1073740664 md2
+   9        3 1839220031 md3
+
+root@chkry1 ~ # cat /proc/mdstat 
+Personalities : [raid1] 
+md3 : active (auto-read-only) raid1 sdb4[1]
+      1839220031 blocks super 1.2 [2/1] [_U]
+      
+md2 : active (auto-read-only) raid1 sdb3[1]
+      1073740664 blocks super 1.2 [2/1] [_U]
+      
+md0 : active (auto-read-only) raid1 sdb1[1]
+      16776120 blocks super 1.2 [2/1] [_U]
+      
+unused devices: <none>
+
+
+Esto significa que ya no existe md1
+
+
+3) Ahora repetimos para md0, md2 y md3
+
+# mdadm --stop /dev/md0
+# mdadm --stop /dev/md2
+# mdadm --stop /dev/md3
+
+# mdadm --remove /dev/md0
+# mdadm --remove /dev/md2
+# mdadm --remove /dev/md3
+
+# mdadm --zero-superblock /dev/sdb1 /dev/sdb3 /dev/sdb4 
+
+
+

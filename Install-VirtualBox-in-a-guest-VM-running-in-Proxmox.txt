@@ -1,0 +1,148 @@
+Install VirtualBox in a guest VM running in Proxmox
+===================================================
+
+
+1)
+
+# cd /etc/yum.repos.d/
+# wget http://download.virtualbox.org/virtualbox/rpm/rhel/virtualbox.repo
+
+Take a look at the contents of the downloaded repo file to confirm that gpgcheck is enabled (gpgcheck=1) and to verify the location of the gpg key:
+
+# nano virtualbox.repo
+
+Optional: 
+
+- Verify fingerprint of VirtualBox repository Key.
+# wget -q http://download.virtualbox.org/virtualbox/debian/oracle_vbox.asc -O- | gpg --quiet --with-fingerprint
+
+- Go to http://pgp.mit.edu/ and in the search string enter virtualbox.org, and checkmark "Show PGP fingerprints for keys".
+
+- Or check VirtualBox installer with:
+
+# yum info VirtualBox-4.3
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.mirror.linuxwerk.com
+ * extras: centos.mirror.linuxwerk.com
+ * updates: mirror.netcologne.de
+Available Packages
+Name        : VirtualBox-4.3
+Arch        : x86_64
+Version     : 4.3.2_90405_el6
+Release     : 1
+Size        : 72 M
+Repo        : virtualbox
+Summary     : Oracle VM VirtualBox
+URL         : http://www.virtualbox.org/
+License     : GPLv2
+Description : VirtualBox is a powerful PC virtualization solution allowing
+            : you to run a wide range of PC operating systems on your Linux
+            : system. This includes Windows, Linux, FreeBSD, DOS, OpenBSD
+            : and others. VirtualBox comes with a broad feature set and
+            : excellent performance, making it the premier virtualization
+            : software solution on the market.
+
+2) Install latest version of VirtualBox
+
+
+# yum search virtualbox
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: centos.mirror.linuxwerk.com
+ * extras: centos.mirror.linuxwerk.com
+ * updates: mirror.netcologne.de
+=================== N/S Matched: virtualbox =====================
+VirtualBox-3.2.x86_64 : Oracle VM VirtualBox
+VirtualBox-4.0.x86_64 : Oracle VM VirtualBox
+VirtualBox-4.1.x86_64 : Oracle VM VirtualBox
+VirtualBox-4.2.x86_64 : Oracle VM VirtualBox
+VirtualBox-4.3.x86_64 : Oracle VM VirtualBox
+
+# yum install VirtualBox-4.3
+
+3) Add linux user to vboxusers group
+
+# /usr/sbin/usermod -a -G vboxusers your-username
+
+4) Solve errors related when installing 
+
+[...]
+No precompiled module for this kernel found -- trying to build one. Messages
+emitted during module compilation will be logged to /var/log/vbox-install.log.
+
+Stopping VirtualBox kernel modules [  OK  ]
+Recompiling VirtualBox kernel modules [FAILED]
+  (Look at /var/log/vbox-install.log to find out what went wrong)
+  Cleanup    : libudev-147-2.46.el6.x86_64                           
+[...]
+
+
+- Check the error reviewing  /var/log/vbox-install.log
+# more /var/log/vbox-install.log
+/usr/share/virtualbox/src/vboxhost/build_in_tmp: line 62: make: command not found
+
+- Install make and automake
+
+# yum install make automake
+
+- Finally re-run vboxdrv setup. This step may take a while to complete:
+
+# /etc/init.d/vboxdrv setup
+Stopping VirtualBox kernel modules                         [  OK  ]
+Recompiling VirtualBox kernel modules                      [FAILED]
+  (Look at /var/log/vbox-install.log to find out what went wrong)
+
+ - Solve this new error:
+
+ # more /var/log/vbox-install.log
+/usr/share/virtualbox/src/vboxhost/build_in_tmp: line 62: make: command not found
+Makefile:183: *** Error: unable to find the sources of your current Linux kernel. Specify KERN_DIR=<directory> and run Make again.  Stop.
+
+# yum install kernel-headers kernel-devel gcc
+
+- Check the kernel
+
+# uname -r
+2.6.32-358.14.1.el6.x86_64
+
+# ll /usr/src/kernels/
+total 4
+drwxr-xr-x. 22 root root 4096 Nov 29 18:07 2.6.32-358.23.2.el6.x86_64
+
+
+- Add KERN_DIR variable
+
+# nano .bash_profile 
+
+[...]
+KERN_DIR=/usr/src/kernels/2.6.32-358.23.2.el6.x86_64
+export KERN_DIR
+
+# source .bash_profile
+
+# echo $KERN_DIR
+/usr/src/kernels/2.6.32-358.23.2.el6.x86_64
+
+- Again, re-run vboxdrv setup:
+
+# /etc/init.d/vboxdrv setup
+Stopping VirtualBox kernel modules                         [  OK  ]
+Recompiling VirtualBox kernel modules                      [  OK  ]
+Starting VirtualBox kernel modules                         [  OK  ]
+
+5) Ready for creating VMs 
+
+You have several guides to create VMs from command line, i.e.:
+
+- How to create and start VirtualBox VM without GUI: 
+http://xmodulo.com/2013/05/how-to-create-and-start-virtualbox-vm-without-gui.html
+
+- Setting up virtualbox vm without the GUI: 
+http://stephen-tu.blogspot.com.es/2012/11/setting-up-virtualbox-vm-without-gui.html
+
+
+6) Referencias:
+
+- Installing Virtualbox 4.1 on CentOS 6.2
+http://rationallyparanoid.com/articles/virtualbox-centos-6.2.html
