@@ -1,25 +1,27 @@
-Installation of the most used foss Message Brokers (WSO2 MB, Qpid, RabbitMQ, ActiveMQ) on CentosOS
-==================================================================================================
+<H1>INSTALL OF WSO2 MB, QPID, RABBITMQ AND ACTIVEMQ ON CENTOS</H1>
 
-** Note: this guide is just for testing and development activities
+This document explains the installation of the most used foss Message Brokers (WSO2 MB, Qpid, RabbitMQ, ActiveMQ) on CentosOS
 
+<h2>Updating CentOS and Java</h2>
 
-Updating CentOS and Java
-========================
-
+<pre>
 # yum -y update
+</pre>
 
 The current version of Java is:
-
+<pre>
 [root@chk-bigdata1 ~]# java -version
 java version "1.6.0_34"
 OpenJDK Runtime Environment (IcedTea6 1.13.6) (rhel-1.13.6.1.el6_6-x86_64)
 OpenJDK 64-Bit Server VM (build 23.25-b01, mixed mode)
+</pre>
 
 Updating to Java 7:
-
+<pre>
 # yum install java-1.7.0-openjdk.x86_64 java-1.7.0-openjdk-devel.x86_64
+</pre>
 
+<pre>
 # alternatives --config java
 
 There are 2 programs which provide 'java'.
@@ -30,39 +32,48 @@ There are 2 programs which provide 'java'.
 *+ 2           /usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java
 
 Enter to keep the current selection[+], or type selection number: 2
+</pre>
 
 Remove older Java version:
+<pre>
 # yum remove java-1.6.0-openjdk.x86_64
+</pre>
 
-Check Java updated:
+Check Java:
+<pre>
 # java -version
 java version "1.7.0_75"
 OpenJDK Runtime Environment (rhel-2.5.4.0.el6_6-x86_64 u75-b13)
 OpenJDK 64-Bit Server VM (build 24.75-b04, mixed mode)
+</pre>
 
-
-Install WSO2 MB 2.2.0
-=======================
+<h2>Install WSO2 MB 2.2.0</h2>
 
 1. Download WSO2 MB
 
+<pre>
 # wget --user-agent="testuser" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://dist.wso2.org/products/message-broker/2.2.0/wso2mb-2.2.0.zip
+</pre>
 
 2. Change offset (+3)
 
+<pre>
 # nano /opt/wso2mb-2.2.0/repository/conf/carbon.xml
-
+</pre>
 
 3. Check JAVA_HOME in /root/.bash_profile
 
+<pre>
 export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk.x86_64
+</pre>
 
 After of updating, execute the shell script:
-
+<pre>
 # bash /root/.bash_profile
 or
 # cd /root
 # . .bash_profile
+</pre>
 
 4. Start WSO2 MB
 
@@ -153,7 +164,7 @@ Status of node 'rabbit@chk-bigdata1' ...
 Error: unable to connect to node 'rabbit@chk-bigdata1': nodedown
 
 DIAGNOSTICS
-===========
+-----------
 
 attempted to contact: ['rabbit@chk-bigdata1']
 
@@ -302,10 +313,10 @@ Status of node 'rabbit@chk-bigdata1' ...
 
 
 Install Apache Qpid
-=======================
+====================
 
 1) Qpid C++ 
-------------
+===========
 (ref: http://lanswer.blogspot.co.uk/2012/09/install-qpid-in-centos-6.html)
 
 # yum install qpid-cpp-server
@@ -332,7 +343,7 @@ Uninstall:
 
 
 2) Qpid Java Broker 0.30 
--------------------------
+=========================
 (ref: http://qpid.apache.org/releases/qpid-0.30/java-broker/book/Java-Broker-Installation-InstallationUnix.html)
 
 
@@ -359,6 +370,7 @@ PATH=$PATH:$HOME/bin
 export PATH
 
 ### Qpid
+export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk.x86_64
 export QPID_WORK=/opt/qpid-work
 -.-
 
@@ -509,7 +521,7 @@ All ports will be changed using an offset of +1
 
 
 Install Apache ActiveMQ 5.11.1
-------------------------------
+===============================
 
 http://activemq.apache.org/activemq-5111-release.html
 
