@@ -1,27 +1,27 @@
-<H1>INSTALL OF WSO2 MB, QPID, RABBITMQ AND ACTIVEMQ ON CENTOS</H1>
+# Installation of WSO2 MB, Apache Qpid, RabbitMQ and Apache ActiveMQ on CentOS
 
 This document explains the installation of the most used foss Message Brokers (WSO2 MB, Qpid, RabbitMQ, ActiveMQ) on CentosOS
 
-<h2>Updating CentOS and Java</h2>
+## Updating CentOS and Java
 
-<pre>
+```
 # yum -y update
-</pre>
+``
 
 The current version of Java is:
-<pre>
+```
 [root@chk-bigdata1 ~]# java -version
 java version "1.6.0_34"
 OpenJDK Runtime Environment (IcedTea6 1.13.6) (rhel-1.13.6.1.el6_6-x86_64)
 OpenJDK 64-Bit Server VM (build 23.25-b01, mixed mode)
-</pre>
+```
 
 Updating to Java 7:
-<pre>
+```
 # yum install java-1.7.0-openjdk.x86_64 java-1.7.0-openjdk-devel.x86_64
-</pre>
+```
 
-<pre>
+```
 # alternatives --config java
 
 There are 2 programs which provide 'java'.
@@ -32,20 +32,20 @@ There are 2 programs which provide 'java'.
 *+ 2           /usr/lib/jvm/jre-1.7.0-openjdk.x86_64/bin/java
 
 Enter to keep the current selection[+], or type selection number: 2
-</pre>
+```
 
 Remove older Java version:
-<pre>
+```
 # yum remove java-1.6.0-openjdk.x86_64
-</pre>
+```
 
 Check Java:
-<pre>
+```
 # java -version
 java version "1.7.0_75"
 OpenJDK Runtime Environment (rhel-2.5.4.0.el6_6-x86_64 u75-b13)
 OpenJDK 64-Bit Server VM (build 24.75-b04, mixed mode)
-</pre>
+```
 
 <h2>Install WSO2 MB 2.2.0</h2>
 
@@ -533,6 +533,11 @@ http://tecadmin.net/install-apache-activemq-on-centos-redhat-and-fedora/
 # wget http://mirror.catn.com/pub/apache/activemq/5.11.1/apache-activemq-5.11.1-bin.tar.gz 
 # tar -zxvf apache-activemq-5.11.1-bin.tar.gz 
 
+or
+
+# mkdir -p /opt/activemq
+# tar -zxvf apache-activemq-5.11.1-bin.tar.gz  -C /opt/activemq
+
 2. Change ports to avoid conflicts with Qpid or RabbitMQ (just for AMQP port)
 
 # nano /opt/apache-activemq-5.11.1/conf/activemq.xml 
@@ -546,7 +551,7 @@ and change the default port for the amqp transportConnector (5672)
 
             http://activemq.apache.org/configuring-transports.html
         -->
-  <transportConnectors>
+        <transportConnectors>
             <!-- DOS protection, limit concurrent connections to 1000 and frame size to 100MB -->
             <transportConnector name="openwire" uri="tcp://0.0.0.0:61616?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
             <!-- transportConnector name="amqp" uri="amqp://0.0.0.0:5672?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/-->
