@@ -6,7 +6,7 @@ This document explains the installation of the most used foss Message Brokers (W
 
 ```
 # yum -y update
-``
+```
 
 The current version of Java is:
 ```
