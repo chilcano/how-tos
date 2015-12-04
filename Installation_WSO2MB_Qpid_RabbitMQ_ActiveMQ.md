@@ -98,7 +98,7 @@ If you change the default admin password, then you should also change it in `/op
 <password>admin</password>
 ```
 
-___7) Restart WSO2MB___
+__7) Restart WSO2MB__
 
 
 ## Install RabbitMQ 3.4.4-1
@@ -561,27 +561,33 @@ All ports will be changed using an offset of +1
 
 ## Install Apache ActiveMQ 5.11.1
 
-http://activemq.apache.org/activemq-5111-release.html
+Refs:
+* http://activemq.apache.org/activemq-5111-release.html
+* http://tecadmin.net/install-apache-activemq-on-centos-redhat-and-fedora/
 
-http://tecadmin.net/install-apache-activemq-on-centos-redhat-and-fedora/
+__1. Download and install it__
 
-1. Download and install it
-
+```
 # cd /opt
 # wget http://mirror.catn.com/pub/apache/activemq/5.11.1/apache-activemq-5.11.1-bin.tar.gz 
 # tar -zxvf apache-activemq-5.11.1-bin.tar.gz 
+```
 
 or
-
+```
 # mkdir -p /opt/activemq
 # tar -zxvf apache-activemq-5.11.1-bin.tar.gz  -C /opt/activemq
+```
 
-2. Change ports to avoid conflicts with Qpid or RabbitMQ (just for AMQP port)
+__2. Change ports to avoid conflicts with Qpid or RabbitMQ (just for AMQP port)__
 
+```
 # nano /opt/apache-activemq-5.11.1/conf/activemq.xml 
+```
 
 and change the default port for the amqp transportConnector (5672)
 
+```
 [...]
         <!--
             The transport connectors expose ActiveMQ over a given protocol to
@@ -599,16 +605,18 @@ and change the default port for the amqp transportConnector (5672)
             <transportConnector name="ws" uri="ws://0.0.0.0:61614?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600"/>
         </transportConnectors>
 [...]
+```
 
+__3. Start ActiveMQ__
 
-3. Start ActiveMQ
-
+```
 # cd /opt/apache-activemq-5.11.1/bin
 # ./activemq start
+```
 
-4. Verify if ActiveMQ is running
+__4. Verify if ActiveMQ is running__
 
-
+```
 # netstat -tulpn 
 Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address               Foreign Address             State       PID/Program name   
@@ -642,7 +650,7 @@ tcp        0      0 :::55341                    :::*                        LIST
 tcp        0      0 :::61614                    :::*                        LISTEN      9107/java           
 tcp        0      0 :::61616                    :::*                        LISTEN      9107/java           
 udp        0      0 :::37246                    :::*                                    29822/java 
-
+```
 
 Where the ports are:
 - 5674 is the new amqp port
@@ -652,20 +660,23 @@ Where the ports are:
 - 8161 is the ActiveMQ Web Admin Panel (http://localhost:8161/admin, with admin/admin as usr/pwd by default)
 
 
-5. Open the port to get remotely access to ActiveMQ Web Admin Panel (port 8161)
+__5. Open the port to get remotely access to ActiveMQ Web Admin Panel (port 8161)__
 
+```
 # nano /etc/sysconfig/iptables
 
-######### activemq
+# activemq
 -A INPUT -m state --state NEW -m tcp -p tcp --dport 8161 -j ACCEPT
 -A INPUT -m state --state NEW -m tcp -p tcp --dport 61616 -j ACCEPT
+```
 
+```
 # /etc/init.d/iptables restart
+```
 
-6. If you have in the front of ActiveMQ Web Admin Panel a Web Proxy such as Apache HTTP, then you should have a configuration similar to following:
+__6. If you have in the front of ActiveMQ Web Admin Panel a Web Proxy such as Apache HTTP, then you should have a configuration similar to following:__
 
-
-------.------
+```
 ### activemq.bizlife.org
 <VirtualHost *:80>
         ServerName      activemq.bizlife.org
@@ -689,31 +700,32 @@ Where the ports are:
         ProxyPass        / http://chk-bigdata1:8161/  retry=0 
         ProxyPassReverse / http://chk-bigdata1:8161/
 </VirtualHost>
-------.------
+```
 
 
-7. Access remotely to ActiveMQ Web Admin Console, you should see the following:
+__7. Access remotely to ActiveMQ Web Admin Console__
 
 
------ imagen ----
+__8. If ypu want change the default user/password, just update the jetty-realm.properties file:__
 
 
-8. If ypu want change the default user/password, just update the jetty-realm.properties file:
-
+```
 # nano /opt/apache-activemq-5.11.1/conf/jetty-realm.properties 
 
------.-----
 # Defines users that can access the web (console, demo, etc.)
 # username: password [,rolename ...]
 admin: YOUR-NEW-PASSWORD, admin
 user: user, user
------.-----
+```
 
-9. Check the log file if you want check the activity on ActiveMQ:
+__9. Check the log file if you want check the activity on ActiveMQ:__
 
+```
 # tail -1000f /opt/apache-activemq-5.11.1/data/activemq.log 
+```
 
--== FIN ==-
+
+__= FIN =__
 
 
 
