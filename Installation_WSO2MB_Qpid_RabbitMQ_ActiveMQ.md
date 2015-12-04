@@ -47,21 +47,21 @@ OpenJDK Runtime Environment (rhel-2.5.4.0.el6_6-x86_64 u75-b13)
 OpenJDK 64-Bit Server VM (build 24.75-b04, mixed mode)
 ```
 
-<h2>Install WSO2 MB 2.2.0</h2>
+## Install WSO2 MB 2.2.0
 
-1. Download WSO2 MB
+__1) Download WSO2 MB__
 
 <pre>
 # wget --user-agent="testuser" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://dist.wso2.org/products/message-broker/2.2.0/wso2mb-2.2.0.zip
 </pre>
 
-2. Change offset (+3)
+__2) Change offset (+3)__
 
 <pre>
 # nano /opt/wso2mb-2.2.0/repository/conf/carbon.xml
 </pre>
 
-3. Check JAVA_HOME in /root/.bash_profile
+__3) Check `JAVA_HOME` in `/root/.bash_profile`__
 
 <pre>
 export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk.x86_64
@@ -75,67 +75,80 @@ or
 # . .bash_profile
 </pre>
 
-4. Start WSO2 MB
+__4) Start WSO2 MB__
 
+```
 # nohup /opt/wso2mb-2.2.0/bin/wso2server.sh > /opt/wso2mb-220.log &
 # tail -f /opt/wso2mb-220.log
+```
 
-5. Check WSO2 MB with this URL https://localhost:9446, by default the user/pwd is admin/admin
+__5) Check WSO2 MB with this URL `https://localhost:9446`, by default the user/pwd is `admin/admin`__
 
-
+```
 https://wso2mb.bizlife.org
+```
 
-6. Change the default password.
+__6) Change the default password__
 
-If you change the default admin password, then you should also change it in /opt/wso2mb-2.2.0/repository/conf/advanced/andes-virtualhosts.xml
+If you change the default admin password, then you should also change it in `/opt/wso2mb-2.2.0/repository/conf/advanced/andes-virtualhosts.xml`
 
-
+```
 <class>org.wso2.andes.server.store.CassandraMessageStore</class>
 <username>admin</username>
 <password>admin</password>
+```
+
+___7) Restart WSO2MB___
 
 
-7. Restart WSO2MB.
+## Install RabbitMQ 3.4.4-1
 
-
-Install RabbitMQ 3.4.4-1
-==========================
 
 Refs:
-http://www.rabbitmq.com/install-rpm.html
-https://www.digitalocean.com/community/tutorials/how-to-install-and-manage-rabbitmq
+* http://www.rabbitmq.com/install-rpm.html
+* https://www.digitalocean.com/community/tutorials/how-to-install-and-manage-rabbitmq
 
 
-1. For CentOS 6 only, it is my case, install the EPEL-6 yum repo which contains Erlang R14B:
+__1) For CentOS 6 only, it is my case, install the EPEL-6 yum repo which contains Erlang R14B:__
 
+
+```
 # rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 Retrieving http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 warning: /var/tmp/rpm-tmp.UGFkeO: Header V3 RSA/SHA256 Signature, key ID 0608b895: NOKEY
 Preparing...                ########################################### [100%]
    1:epel-release           ########################################### [100%]
+```
 
-2. We are also enabling third party remi package repositories:
+__2) We are also enabling third party remi package repositories__
 
+```
 # rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
 Retrieving http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
 warning: remi-release-6.rpm: Header V3 DSA/SHA1 Signature, key ID 00f97f56: NOKEY
 Preparing...                ########################################### [100%]
    1:remi-release           ########################################### [100%]
+```
 
+__3) Download and install Erlang:__
 
-3. Download and install Erlang:
-
+```
 # yum install -y erlang
+```
 
-4. Download and install the latest RPM version of RabbitMQ available here http://www.rabbitmq.com/install-rpm.html
 
+__4) Download and install the latest RPM version of RabbitMQ available here `http://www.rabbitmq.com/install-rpm.html`__
+
+```
 # cd /root/tempo-files
 # wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.4/rabbitmq-server-3.4.4-1.noarch.rpm
 # rpm --import http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
 # yum install rabbitmq-server-3.4.4-1.noarch.rpm 
+```
 
-5. Enabling the RabbitMQ plugin Management Console.
+__5) Enabling the RabbitMQ plugin Management Console.__
 
+```
 # rabbitmq-plugins enable rabbitmq_management
 The following plugins have been enabled:
   mochiweb
@@ -150,15 +163,19 @@ Applying plugin configuration to rabbit@chk-bigdata1... failed.
    Changes will take effect at broker restart.
  * Options: --online  - fail if broker cannot be contacted.
             --offline - do not try to contact broker.
+```
 
-6. Set RabbitMQ to start on boot, after this, restart the server.
+__6) Set RabbitMQ to start on boot, after this, restart the server.__
 
-
+```
 # chkconfig rabbitmq-server on
 # reboot
+```
 
-7. Check if RabbitMQ is running.
 
+__7) Check if RabbitMQ is running.__
+
+```
 # service rabbitmq-server status
 Status of node 'rabbit@chk-bigdata1' ...
 Error: unable to connect to node 'rabbit@chk-bigdata1': nodedown
@@ -178,10 +195,11 @@ current node details:
 - node name: 'rabbitmqctl-1258@chk-bigdata1'
 - home dir: /var/lib/rabbitmq
 - cookie hash: 8u9IMKuHJe/4xUaw3FiTAw==
+```
 
+__8) Start RabbitMQ and check the open ports.__
 
-8. Start RabbitMQ and check the open ports.
-
+```
 # service rabbitmq-server start
 
 # netstat -tulp
@@ -195,6 +213,7 @@ tcp        0      0 *:25672                     *:*                         LIST
 tcp        0      0 *:ssh                       *:*                         LISTEN      1099/sshd           
 tcp        0      0 localhost:smtp              *:*                         LISTEN      1176/master         
 tcp        0      0 *:amqp                      *:*                         LISTEN      1389/beam.smp     
+```
 
 Where the open ports are:
 - epmd
@@ -202,35 +221,42 @@ Where the open ports are:
 - 25672
 - amqp
 
-9. Add a new Administrator user to get access remotely.
+__9) Add a new Administrator user to get access remotely.__
 
+```
 # rabbitmqctl add_user admin admin
 Creating user "admin" ...
 # rabbitmqctl set_user_tags admin administrator
 Setting tags for user "admin" to [administrator] ...
 # rabbitmqctl set_permissions -p / admin ".*" ".*" ".*"
 Setting permissions for user "admin" in vhost "/" ...
+```
 
-10. Do not forget to open the port to get remotely access to RabbitMQ Management Console (port 15672)
+__10) Do not forget to open the port to get remotely access to RabbitMQ Management Console (port 15672)__
 
+```
 # nano /etc/sysconfig/iptables
----.---
--A INPUT -m state --state NEW -m tcp -p tcp --dport 15672 -j ACCEPT
----.---
 
+...
+-A INPUT -m state --state NEW -m tcp -p tcp --dport 15672 -j ACCEPT
+...
+```
+
+```
 # /etc/init.d/iptables restart
 iptables: Setting chains to policy ACCEPT: filter          [  OK  ]
 iptables: Flushing firewall rules:                         [  OK  ]
 iptables: Unloading modules:                               [  OK  ]
 iptables: Applying firewall rules:                         [  OK  ]
+```
+
+__11) Now open the RabbitMQ Management Console using this URL http://localhost:15672, where the administrator user and password are admin/admin.__
 
 
-11. Now open the RabbitMQ Management Console using this URL http://localhost:15672, where the administrator user and password are admin/admin.
-
-12. Check again the RabbitMQ status
+__12) Check again the RabbitMQ status__
 
 
-----.----
+```
 # service rabbitmq-server status
 Status of node 'rabbit@chk-bigdata1' ...
 [{pid,1281},
@@ -281,12 +307,12 @@ Status of node 'rabbit@chk-bigdata1' ...
  {processes,[{limit,1048576},{used,196}]},
  {run_queue,0},
  {uptime,72172}]
-----.----
+```
 
-13. If you are running RabbitMQ behind of Apache HTTP Proxy, I recommend to use this configuration:
+__13) If you are running RabbitMQ behind of Apache HTTP Proxy, I recommend to use this configuration:__
 
 
-----.----
+```
 <VirtualHost *:80>
         ServerName      rabbitmq.yourserver.org
         ServerAdmin     bigdata1-rabbitmq-adm@yourserver.org
@@ -309,53 +335,65 @@ Status of node 'rabbit@chk-bigdata1' ...
         ProxyPass        /       http://chk-bigdata1:15672/  
         ProxyPassReverse /       http://chk-bigdata1:15672/
 </VirtualHost>
-----.----
+```
 
 
-Install Apache Qpid
-====================
+## Install Apache Qpid
 
-1) Qpid C++ 
-===========
-(ref: http://lanswer.blogspot.co.uk/2012/09/install-qpid-in-centos-6.html)
 
+### 1) Qpid C++ 
+
+
+Ref:
+* http://lanswer.blogspot.co.uk/2012/09/install-qpid-in-centos-6.html)
+
+```
 # yum install qpid-cpp-server
 # nano /etc/qpidd.conf 
+```
 
-----.-----
+```
 # "qpidd --help" or "man qpidd" for more details.
 cluster-mechanism=DIGEST-MD5 ANONYMOUS
 auth=yes
 
 port=5673
-----.-----
+```
 
+```
 # yum install qpid-tools
 # yum install ruby-qpid
 # chkconfig qpidd on
 # service qpidd start
+```
 
-Check ports
+Check ports:
+```
 # netstat -tulpn
-
+```
 Uninstall:
+```
 # yum erase qpid-cpp-server qpid-tools ruby-qpid
+```
 
+### 2) Qpid Java Broker 0.30 
 
-2) Qpid Java Broker 0.30 
-=========================
-(ref: http://qpid.apache.org/releases/qpid-0.30/java-broker/book/Java-Broker-Installation-InstallationUnix.html)
+Ref: 
+* http://qpid.apache.org/releases/qpid-0.30/java-broker/book/Java-Broker-Installation-InstallationUnix.html)
 
 
 1. Download Qpid Java Broker 0.30 and unzip it under /opt/qpid-broker-0.30/
 
+```
 # wget http://apache.mirror.anlx.net/qpid/0.30/binaries/qpid-broker-0.30-bin.tar.gz
 # tar -zxvf qpid-broker-0.30-bin.tar.gz
+```
 
 2. Set the working directory
 
+```
 # nano /root/.bash_profile 
--.-
+
 # .bash_profile
 
 # Get the aliases and functions
@@ -372,15 +410,14 @@ export PATH
 ### Qpid
 export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk.x86_64
 export QPID_WORK=/opt/qpid-work
--.-
+```
 
 3. Define an initial configuration for Qpid by editing  ${qpid.work_dir}/config.json
 
 All ports will be changed using an offset of +1
 
+```
 # nano /opt/qpid-work/config.json
-
-----.----
 
 {
   "name" : "${broker.name}",
@@ -433,23 +470,25 @@ All ports will be changed using an offset of +1
     "createdTime" : 0
   } ]
 }
-
-----.----
+```
 
 
 4. Create a a plain password file as authentication provider for Qpid
 
+```
 # nano /opt/qpid-work/etc/passwd
-
+```
 
 5. Start and stop Qpid
 
+```
 # nohup /opt/qpid-broker-0.30/bin/qpid-server &
 # /opt/qpid-broker-0.30/bin/qpid.stop
-
+```
 
 6. Check the logs:
 
+```
 # tail -1000f /opt/qpid-work/log/qpid.log 
 2015-02-25 03:06:27,430 WARN  [main] (model.ConfiguredObjectTypeRegistry) - A class definition could not be found while processing the model for 'org.apache.qpid.server.virtualhostnode.berkeleydb.BDBHAVirtualHostNodeImpl': com/sleepycat/je/rep/StateChangeListener
 2015-02-25 03:06:27,457 WARN  [main] (model.ConfiguredObjectTypeRegistry) - A class definition could not be found while processing the model for 'org.apache.qpid.server.virtualhost.berkeleydb.BDBHAVirtualHostImpl': com/sleepycat/je/rep/StateChangeListener
@@ -483,12 +522,13 @@ All ports will be changed using an offset of +1
 2015-02-25 03:06:28,889 INFO  [main] (managementconsole.listening) - [Broker] MNG-1002 : Starting : HTTP : Listening on port 8081
 2015-02-25 03:06:28,890 INFO  [main] (managementconsole.ready) - [Broker] MNG-1004 : Web Management Ready
 2015-02-25 03:06:28,890 INFO  [main] (broker.ready) - [Broker] BRK-1004 : Qpid Broker Ready
+```
 
 7. Now you can get access to Qpid Web Console using this URL http://localhost:8081
 
 8. If you want to get access via Apache HTTP Proxy, then you Apache HTTP Proxy should has this virtualhost configuration:
 
----.---
+```
 ### qpid.bizlife.org
 <VirtualHost *:80>
         ServerName  qpid.bizlife.org
@@ -515,13 +555,11 @@ All ports will be changed using an offset of +1
         ProxyPass        / http://chk-bigdata1:8081/  nocanon
         ProxyPassReverse / http://chk-bigdata1:8081/
 </VirtualHost>
----.---
+```
 
 
 
-
-Install Apache ActiveMQ 5.11.1
-===============================
+## Install Apache ActiveMQ 5.11.1
 
 http://activemq.apache.org/activemq-5111-release.html
 
