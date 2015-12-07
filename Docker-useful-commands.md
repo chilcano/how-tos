@@ -99,7 +99,7 @@ java                openjdk-7           a93511e8921b        11 days ago         
 ```
 
 * Run a tagged container
-```
+```bash
 $ docker run --rm --name wso2-esb-481 -p 19443:9443 chilcano/wso2-esb:4.8.1
 JAVA_HOME environment variable is set to /usr
 CARBON_HOME environment variable is set to /opt/wso2esb-4.8.1
@@ -109,8 +109,8 @@ CARBON_HOME environment variable is set to /opt/wso2esb-4.8.1
 ```
 
 Where:
-- `chilcano/wso2-esb:4.8.1`: is the `chilcano/wso2-esb` image with tag `4.8.1`
-- `--name wso2-esb-481`: name of current container running
+- `chilcano/wso2-esb:4.8.1`: is the `chilcano/wso2-esb` image with tag `4.8.1`.
+- `--name wso2-esb-481`: name of current container running.
 
 * Check the process running
 ```
@@ -159,7 +159,7 @@ $ curl https://192.168.99.102:19443
 ```
 
 * Getting SSH access
-```
+```bash
 $ docker-machine ssh default
                         ##         .
                   ## ## ##        ==
