@@ -159,7 +159,7 @@ $ curl https://192.168.99.102:19443
 ```
 
 * Getting SSH access
-```bash
+```{r, engine='bash'}
 $ docker-machine ssh default
                         ##         .
                   ## ## ##        ==
