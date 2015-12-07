@@ -79,7 +79,6 @@ __3) Run a container__
 
 ```
 $ docker run --rm --name wso2-esb -p 19443:9443 chilcano/wso2-esb
-
 ```
 
 Where:
@@ -91,7 +90,7 @@ Where:
 __4) Run a specific tagged container__ 
 
 * Check current images
-``
+```
 $ docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
 chilcano/wso2-esb   latest              47f39b8e2d61        2 days ago          867.6 MB
