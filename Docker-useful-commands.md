@@ -5,12 +5,12 @@
 ### Docker Machine
 
 __1) Create Docker Machine__
-```
+```{r, engine='bash'}
 $ docker-machine create --driver virtualbox machine-dev
 ```
 
 __2) List current docker machines__
-```
+```{r, engine='sh'}
 $ docker-machine ls
 NAME           ACTIVE   DRIVER       STATE     URL                         SWARM   ERRORS
 machine-dev    *        virtualbox   Running   tcp://192.168.99.100:2376
@@ -18,7 +18,7 @@ machine-test   -        virtualbox   Running   tcp://192.168.99.101:2376
 ```
 
 __3) Print current environment variables for docker machine__
-```
+```bash
 $ docker-machine env machine-dev
 export DOCKER_TLS_VERIFY="1"
 export DOCKER_HOST="tcp://192.168.99.100:2376"
@@ -40,7 +40,7 @@ $ docker-machine rm machine-test
 
 __6) Get SSH access to docker machine and print tmpfs partition__
 
-```
+```sh
 $ docker-machine ssh machine-dev 
 
 docker@machine-dev:~$ df -h /
