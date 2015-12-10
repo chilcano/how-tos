@@ -53,13 +53,13 @@ tmpfs                   896.6M    735.4M    161.2M  82% /
 __1) Create Docker Image from an existing Dockerfile__
 
 ```{r, engine='bash'}
-$ docker build --rm -t chilcano/wso2-esb 1github-repo/docker-wso2-esb-jgpelaez/4.8.1/
+$ docker build --rm -t chilcano/wso2-esb 1github-repo/docker-wso2-esb-ini/4.8.1/
 ```
 
 Where:
 * `--rm`: remove intermediate containers after a successful build (true by default)
 * `-t chilcano/wso2-esb`: tag for the repository of the new local docker image
-* `1github-repo/docker-wso2-esb-jgpelaez/4.8.1/`: path to the Dockerfile
+* `1github-repo/docker-wso2-esb-ini/4.8.1/`: path to the Dockerfile
 
 __2) Check new created image__
 
@@ -89,7 +89,7 @@ Where:
 
 __4) Run a specific tagged container__ 
 
-* Check current images
+* Check current images:
 ```{r, engine='bash'}
 $ docker images
 REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
@@ -98,7 +98,7 @@ chilcano/wso2-esb   4.8.1               47f39b8e2d61        2 days ago          
 java                openjdk-7           a93511e8921b        11 days ago         589.7 MB
 ```
 
-* Run a tagged container
+* Create and run a tagged container:
 ```{r, engine='bash'}
 $ docker run --rm --name wso2-esb-481 -p 19443:9443 chilcano/wso2-esb:4.8.1
 JAVA_HOME environment variable is set to /usr
@@ -187,7 +187,7 @@ root      6633  1.7 20.0 2206676 410264 ?      Sl   11:56   0:42 /usr/bin/java -
 docker    7369  0.0  0.0   9768   968 pts/0    S+   12:37   0:00 grep wso2esb-4.8.1/bin
 ```
 
-__7) Stopping a container___
+__7) Stopping a container__
 
 ```{r, engine='bash'}
 $ docker ps
@@ -201,7 +201,7 @@ wso2-esb
 __8) Creating a new imagen with new tag from an existing one__
 
 ```{r, engine='bash'}
-$ docker build --rm -t chilcano/wso2-esb:4.8.1 1github-repo/docker-wso2-esb-jgpelaez/4.8.1
+$ docker build --rm -t chilcano/wso2-esb:4.8.1 1github-repo/docker-wso2-esb-ini/4.8.1
 Sending build context to Docker daemon  2.56 kB
 Step 1 : FROM java:openjdk-7
  ---> a93511e8921b
@@ -248,13 +248,65 @@ chilcano/wso2-esb   4.8.1               47f39b8e2d61        About an hour ago   
 java                openjdk-7           a93511e8921b        9 days ago          589.7 MB
 ```
 
+__9) Remove docker images and containers__
 
 
+List docker images:
+```bash
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             VIRTUAL SIZE
+<none>              <none>              ba7f44c07183        3 hours ago         836.9 MB
+chilcano/wso2-esb   4.8.1               47f39b8e2d61        3 days ago          867.6 MB
+chilcano/wso2-esb   latest              47f39b8e2d61        3 days ago          867.6 MB
+java                openjdk-7           a93511e8921b        12 days ago         589.7 MB
+```
 
+Remove a list of container images:
+```bash
+$ docker rmi -f 47f39b8e2d61 ba7f44c07183
+Untagged: chilcano/wso2-esb:4.8.1
+Untagged: chilcano/wso2-esb:latest
+Deleted: 47f39b8e2d6133dc5ece4c1666a6ebd57f0c930fa3a34482a6505a0970154058
+...
+Deleted: 77a5a5e5870818d6947d5c4b5c9989aa909644e78b914ef46b6ff992325a88a7
+```
 
+Check containers running:
+```
+$ docker ps
+CONTAINER ID        IMAGE                     COMMAND                  CREATED              STATUS              PORTS                               NAMES
+9cb70862f9d5        chilcano/wso2-bam         "/bin/sh -c 'sh ./wso"   About a minute ago   Up About a minute   8280/tcp, 0.0.0.0:29443->9443/tcp   wso2bam02a-latest
+b3d2d6403955        chilcano/wso2-bam:2.5.0   "/bin/sh -c 'sh ./wso"   9 minutes ago        Up 9 minutes        8280/tcp, 0.0.0.0:19443->9443/tcp   wso2bam02a-250
+```
 
+Stop all containers:
+```
+$ docker stop $(docker ps -a -q)
 
+```
 
+Firstly stop and after removing all containers:
+```bash
+$ docker rm $(docker stop $(docker ps -q))
+``` 
+
+Remove all stopped containers:
+```bash
+$ docker rm $(docker ps -a -q)
+9cb70862f9d5
+b3d2d6403955
+
+```
+
+Remove all untagged containers using image ID:
+```bash
+$ docker rmi $(docker images -a | grep "^<none>" | awk '{print $3}')
+```
+
+Remove all images with name `chilcano/wso2`:
+```bash
+$ docker rmi $(docker images -a | grep "^chilcano/wso2" | awk '{print $3}')
+```
 
 
 ## Troubleshooting
@@ -262,7 +314,7 @@ java                openjdk-7           a93511e8921b        9 days ago          
 ### 1) I can not create a new image
 
 ```{r, engine='bash'}
-$ docker build --rm -t chilcano/wso2-esb 1github-repo/docker-wso2-esb-jgpelaez/4.8.1/
+$ docker build --rm -t chilcano/wso2-esb 1github-repo/docker-wso2-esb-ini/4.8.1/
 Sending build context to Docker daemon  2.56 kB
 Step 1 : FROM java:openjdk-7
 openjdk-7: Pulling from library/java
