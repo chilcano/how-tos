@@ -388,4 +388,3 @@ __References__
 - http://stackoverflow.com/questions/31909979/docker-machine-no-space-left-on-device
 
 
-### 2) Can not get access to
