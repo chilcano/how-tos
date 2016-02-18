@@ -151,3 +151,46 @@ $ source ~/.bash_profile
 $ git --version
 git version 2.7.1
 ```
+
+__5) Creating a sample Python development environment___
+
+Just select your work directory and the Python version to be used.
+```bash
+$ mkdir -p my-python-sample
+$ cd my-python-sample
+
+$ pip -V
+pip 8.0.2 from /usr/local/lib/python2.7/site-packages (python 2.7)
+```
+Now, let's create the Python Dev Env with `VirtualEnv`.
+```bash
+$ virtualenv -p python2.7 venv-my-sample
+Running virtualenv with interpreter /usr/local/bin/python2.7
+New python executable in /Users/Chilcano/PycharmProjects/venv/bin/python2.7
+Not overwriting existing python script /Users/Chilcano/PycharmProjects/venv/bin/python (you must use /Users/Chilcano/PycharmProjects/venv/bin/python2.7)
+Installing setuptools, pip, wheel...done.
+(venv)
+```
+We need to activate the recently created `VirtualEnv`:
+```bash
+$ source venv-my-sample/bin/activate
+(venv-my-sample)
+
+```
+
+
+If your Python project requires a new Python module, you can add it to your current development environment, for example, if your need `request` module, then add it as shown below:
+
+```bash
+$ sudo pip install request
+
+Collecting request
+  Downloading request-0.0.2.tar.gz
+Building wheels for collected packages: request
+  Running setup.py bdist_wheel for request ... done
+  Stored in directory: /Users/Chilcano/Library/Caches/pip/wheels/68/e9/10/2fee22f14dafa6ed966700e9178e8f6e81b1b499891a44298d
+Successfully built request
+Installing collected packages: request
+Successfully installed request-0.0.2
+(venv-my-sample)
+```
