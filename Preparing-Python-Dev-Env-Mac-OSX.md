@@ -25,7 +25,7 @@ $ python -V
 Python 2.7.10
 ```
 
-__2) Install Pyhton2 and Python3__
+__2) Install Python2 and Python3__
 
 ```bash
 $ sudo brew install python
@@ -48,6 +48,12 @@ Run `brew linkapps python` to symlink these to /Applications.
 ==> Summary
 🍺  /usr/local/Cellar/python/2.7.11: 6,221 files, 84M, built in 1 minute 57 seconds
 ```
+Now, update Pip and create symlinks.
+```bash
+$ pip install --upgrade pip setuptools
+$ brew linkapps python
+````
+
 
 And Python3.
 ```bash
