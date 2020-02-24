@@ -8,5 +8,6 @@ Servers/
 target/
 .idea
 .vagrant
+.vscode
 
 
