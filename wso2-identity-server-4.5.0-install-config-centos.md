@@ -1,38 +1,48 @@
-INSTALLATION AND CONFIGURATION OF WSO2 IDENTITY SERVER 4.5.0 ON CENTOS 6
-========================================================================
+## INSTALLATION AND CONFIGURATION OF WSO2 IDENTITY SERVER 4.5.0 ON CENTOS 6
 
 
-1. Disable IPv6
+__1. Disable IPv6__
 
 - Add a new file /etc/modprobe.d/ipv6-off.conf containing:
 
+```sh
 alias net-pf-10 off
 alias ipv6 off
+```
 
 - Edit /etc/sysconfig/network and add a line:
 
+```sh
 NETWORKING_IPV6=no
+```
 
 - Disable ip6tables
 
+```sh
 # chkconfig ip6tables off
 # echo 1 > /proc/sys/net/ipv6/conf/all/disable_ipv6
 # /etc/init.d/network restart
+```
 
 - Check if IPv6 has been disabled. Use 'ifconfig' to check it ('inet6 addr: fe80::40bc:f4ff:fea7:5fe/64 Scope:Link' message should not appear)
 
-2. Download WSO2 Identity Server
+__2. Download WSO2 Identity Server__
 
+```sh
 wget -bqc --user-agent="testuser" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://dist.wso2.org/products/identity-server/4.5.0/wso2is-4.5.0.zip
+```
 
-3. Unzip WSO2IS to '/opt/'
+__3. Unzip WSO2IS to '/opt/'__
 
+```sh
 # unzip wso2is-4.5.0.zip -d /opt/
+```
 
-4. Install or update Java
+__4. Install or update Java__
 
 - OpenJDK
 
+```sh
 # yum list \*java-1\* | grep open
 Failed to set locale, defaulting to C
 java-1.6.0-openjdk.x86_64            1:1.6.0.0-1.62.1.11.11.90.el6_4    @updates
@@ -64,9 +74,11 @@ Enter to keep the current selection[+], or type selection number: 2
 java version "1.7.0_45"
 OpenJDK Runtime Environment (rhel-2.4.3.2.el6_4-x86_64 u45-b15)
 OpenJDK 64-Bit Server VM (build 24.45-b08, mixed mode)
+```
 
 - Oracle JDK
 
+```sh
 # wget --no-check-certificate --no-cookies --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com" http://download.oracle.com/otn-pub/java/jdk/7u45-b18/jdk-7u45-linux-x64.rpm -O jdk-7u45-linux-x64.rpm
 # rpm -Uvh jdk-7u45-linux-x64.rpm
 
@@ -79,13 +91,16 @@ OpenJDK 64-Bit Server VM (build 24.45-b08, mixed mode)
 # alternatives --set javaws /usr/java/jdk1.7.0_45/jre/bin/javaws
 # alternatives --set javac /usr/java/jdk1.7.0_45/bin/javac
 # alternatives --set jar /usr/java/jdk1.7.0_45/bin/jar
+```
 
 check if Java was configured successfully:
-
+```sh
 # ls -lA /etc/alternatives/
+```
 
 or
 
+```sh
 # alternatives --config java
 There are 2 programs which provide 'java'.
 
@@ -95,18 +110,21 @@ There are 2 programs which provide 'java'.
 *+ 2           /usr/java/jdk1.7.0_45/jre/bin/java
 
 Enter to keep the current selection[+], or type selection number: 2
+```
 
 or
 
+```sh
 # java -version
 java version "1.7.0_45"
 Java(TM) SE Runtime Environment (build 1.7.0_45-b18)
 Java HotSpot(TM) 64-Bit Server VM (build 24.45-b08, mixed mode)
 [root@chk-appfactory1 tempo-files]# 
+```
 
+__5. Update JAVA_HOME__
 
-5. Update JAVA_HOME
-
+```sh
 # nano /root/.bashrc 
 
 # .bashrc
@@ -125,12 +143,15 @@ fi
 #### My user specific aliases and functions
 export JAVA_HOME=/usr/lib/jvm/jre-1.7.0-openjdk.x86_64
 export PATH=${JAVA_HOME}/bin:${PATH}
+```
 
-6. Run WSO2 Identity Server
+__6. Run WSO2 Identity Server__
 
 - Follow WSO2's observations:
+
 "We do not recommend starting WSO2 products as a daemon, because there is a known issue that causes automatic restarts in the wrapper mode. Instead, you can configure the heap memory allocations in the wso2server.sh script and run it using the nohup command."
 
+```sh
 # nohup ./wso2server.sh &
 
 # netstat -tulap
@@ -155,28 +176,36 @@ tcp        0      0 chk-ldap1:ssh               10.10.10.1:40255            ESTA
 tcp        0      0 localhost:39011             localhost:10389             TIME_WAIT   -                   
 tcp        0      0 chk-ldap1:52321             hans-moleman.w3.org:http    TIME_WAIT   -                   
 udp        0      0 *:55983                     *:*                                     1411/java           
+```
 
 - Opened ports:
 
+```sh
 * 10389 -> ldap
 * 9443  -> HTTPS
 * 9763  -> HTTP
 * 10500 -> Thrift entitlement service
 * 11111 -> JNDI RMI
 * 9999  -> JMX RMI
+```
 
 - For stop the service, to run this:
 
+```sh
 # ./wso2server.sh --stop
+```
 
 - Check WSO2 IS logs:
 
+```sh
 # tail -f nohup.out 
+```
 
-7. Open ports if you are interested in connect to the services:
+__7. Open ports if you are interested in connect to the services:__
 
 - Add unfiltered port to iptables:
 
+```sh
 # nano /etc/sysconfig/iptables
 
 # Firewall configuration written by system-config-firewall
@@ -195,54 +224,65 @@ udp        0      0 *:55983                     *:*                             
 -A INPUT -j REJECT --reject-with icmp-host-prohibited
 -A FORWARD -j REJECT --reject-with icmp-host-prohibited
 COMMIT
+```
 
 - restart iptables
 
+```sh
 # /etc/init.d/iptables restart
+```
+
+__7. Now, open the management console by a browser using this URL: `https://<ServerHost>:9443/carbon`__
 
 
-7. Now, open the management console by a browser using this URL: https://<ServerHost>:9443/carbon
+__8. Configure WSO2 IS:__
 
-8. Configure WSO2 IS:
----------------------
 
 8.1) General aspects
 ----------------------
 
 - Solve UTF-8 encoding in SSH
 
+```sh
 # nano /etc/ssh/sshd_config
+```
 
 and disable this line 'AcceptEnv LANG LC_.....'
 
 - Change the default port
 
+```sh
 # nano <PRODUCT_HOME>/repository/conf/carbon.xml
 
-   <Ports>
+  <Ports>
 	<Offset>0</Offset>
 	...
-   </Port>
-
+  </Port>
+```
 
 - Change the timeout of management console
 
+```sh
 # nano <PRODUCT_HOME>/repository/conf/tomcat/carbon/WEB-INF/web.xml
 
 <session-config>
    <session-timeout>15</session-timeout>
 </session-config>
+```
 
 8.2) Change WSO2 IS & LDAP creadentials
 ---------------------------------------
 
+```sh
 # nano /opt/wso2is-4.5.0/repository/conf/user-mgt.xml
+```
 
 by default the LDAP's admin credentials are "uid=admin,ou=system" with password "admin".
 You have update or encrypt these values and other related to WSO2 Carbon. You should follow these PCI-DSS security best practices, also they are valid to enforce our platform:
 
 http://blog.facilelogin.com/2013/11/achieving-pci-dss-compliancy-with-wso2.html
 
+```
 [...]
 * Use Secure Vault to encrypt all the passwords in the following configuration files - and make sure all default passwords are being changed.
  CARBON_HOME/repository/conf/user-mgt.xml
@@ -255,7 +295,7 @@ http://blog.facilelogin.com/2013/11/achieving-pci-dss-compliancy-with-wso2.html
 
 * All connections to the user stores (LDAP / AD) should be over TLS.
 [...]
-
+```
 
 8.3) Enable recovery password email-based notifications
 --------------------------------------------------------
@@ -264,6 +304,7 @@ http://blog.facilelogin.com/2013/11/achieving-pci-dss-compliancy-with-wso2.html
 
 - Edit /opt/wso2is-4.5.0/repository/conf/security/identity-mgt.properties as follow:
 
+```sh
 # nano /opt/wso2is-4.5.0/repository/conf/security/identity-mgt.properties
 
 [...]
@@ -274,9 +315,11 @@ Notification.Sending.Internally.Managed=true
 UserAccount.Recovery.Enable=true
 Captcha.Verification.Internally.Managed=false  # set this to true if you do not have existing captcha validation module
 [...]
+```
 
 - Edit /opt/wso2is-4.5.0/repository/conf/email/email-admin-config.xml and define a email format with the type “passwordReset”, for example:
 
+```sh
 # nano  nano /opt/wso2is-4.5.0/repository/conf/email/email-admin-config.xml
 
 [...]
@@ -310,10 +353,11 @@ http://www.chakray.com
   <redirectPath>../admin-mgt/update_verifier_redirector_ajaxprocessor.jsp</redirectPath>
 </configuration>
 [...]
+```
 
 - Edit /opt/wso2is-4.5.0/repository/conf/axis2/axis2.xml and uncomment the following in the file and provide the necessary email settings:
 
-
+```sh
 # nano /opt/wso2is-4.5.0/repository/conf/axis2/axis2.xml
 
 [...]
@@ -327,22 +371,27 @@ http://www.chakray.com
     <parameter name="mail.smtp.auth">true</parameter>
 </transportSender>
 [...]
+```
 
 - Check access to "smtp.gmail.com" port 587
 
+```sh
 # telnet smtp.gmail.com 587
 Trying 74.125.136.108...
 Connected to smtp.gmail.com.
 Escape character is '^]'.
 220 mx.google.com ESMTP g7sm49842982eet.12 - gsmtp
 ^C
+```
 
 - Make visible Services & WSDL by changing to false:
 
+```sh
 # nano /opt/wso2is-4.5.0/repository/conf/carbon.xml 
 [...]
 <HideAdminServiceWSDLs>false</HideAdminServiceWSDLs>
 [...]
+```
 
 This configuration will make visible all Webservices of WSO2 IS, as for example:
 https://wso2is.chakray.com/services/AuthenticationAdmin?wsdl
@@ -359,8 +408,6 @@ Hence the sequence of calls which the Calling Application must do is as follows 
 * getCaptcha() ­- Generates a captcha when the user clicks on the URL.
 * verifyConfirmationCode() -­ Validates the captcha answer and confirmation code. This returns a key.
 * updatePassword() -­ Updates the password in the system. Need to provide the key from previous call, new password and returns the status of the update, true or false.
-
-
 
 
 8.4) Credential recover with secret questions
@@ -385,6 +432,7 @@ You can register a user and get the confirmation by the user through the email w
 
 - Edit /opt/wso2is-4.5.0/repository/conf/security/identity-mgt.properties as follow:
 
+```sh
 # nano /opt/wso2is-4.5.0/repository/conf/security/identity-mgt.properties
 
 [...]
@@ -393,7 +441,7 @@ Notification.Sending.Internally.Managed=true		# was updated in point 8.2
 Authentication.Policy.Account.Lock.On.Creation=true
 Notification.Expire.Time=3                          # was updated in point 8.2 (three minutes)
 [...]
-
+```
 
 - Edit /opt/wso2is-4.5.0/repository/conf/email/email-admin-config.xml and configure the email template of type “accountConfirmation”.
 - The following service API can be used for the sign up and confirmation: https://localhost:9443/services/UserInformationRecoveryService?wsdl.
@@ -417,13 +465,15 @@ For Confirm Account:
 
 9.1.- Change default domain "dc=WSO2,dc=ORG", for example to "dc=CHAKRAY,dc=COM".
 
-** http://stackoverflow.com/questions/19990594/how-to-change-primary-ldap-domain-of-wso2-is-4-5-0
+* http://stackoverflow.com/questions/19990594/how-to-change-primary-ldap-domain-of-wso2-is-4-5-0
 
 - Replace "dc=wso2,dc=org" for "dc=foobar,dc=com" and "defaultRealmName=WSO2.ORG" for "defaultRealmName=FOOBAR.COM" in the following files:
 
+```sh
 IS_HOME/repository/conf/user-mgt.xml
 IS_HOME/repository/conf/tenant-mgt.xml
 IS_HOME/repository/conf/embedded-ldap.xml
+```
 
 - Delete the directory named "root" located in the IS_HOME/repository/data/org.wso2.carbon.directory .. so a fresh default partition will be created again at the restart.
 
@@ -432,11 +482,12 @@ IS_HOME/repository/conf/embedded-ldap.xml
 
 9.2.- Create a secondary LDAP domain with Read/Write mode with external Virtual LDAP (af.chakray.com)
 
-** http://www.ldaptools.com/ldap-proxy.htm
-** http://stackoverflow.com/questions/11687511/using-wso2-identity-server-for-two-ldap-servers?rq=1
-** http://www.soasecurity.org/2012/11/multiple-user-store-manager-feature.html
-** http://malalanayake.wordpress.com/2013/01/11/multiple-user-stores-configuration-in-wso2-identity-server/
+* http://www.ldaptools.com/ldap-proxy.htm
+* http://stackoverflow.com/questions/11687511/using-wso2-identity-server-for-two-ldap-servers?rq=1
+* http://www.soasecurity.org/2012/11/multiple-user-store-manager-feature.html
+* http://malalanayake.wordpress.com/2013/01/11/multiple-user-stores-configuration-in-wso2-identity-server/
 
+```sh
 Domain name: 			af.chakray.com
 ConnectionName:			uid=admin,ou=system
 ConnectionURL:			ldap://localhost:${Ports.EmbeddedLDAP.LDAPServerPort}
@@ -454,9 +505,11 @@ GroupNameAttribute:		cn
 GroupNameListFilter:	(objectClass=groupOfNames)
 MembershipAttribute:	member
 GroupNameSearchFilter:	(&(objectClass=groupOfNames)(cn=?))
+```
 
 Optional:
 
+```sh
 MaxUserNameListLength:		100
 MaxRoleNameListLength:		100
 UserRolesCacheEnabled:		Checked
@@ -470,7 +523,7 @@ RoleNameJavaScriptRegEx:	^[\S]{3,30}$
 RoleNameJavaRegEx:			[a-zA-Z0-9._-|//]{3,30}$
 WriteGroups:				Cheked
 EmptyRolesAllowed:			Checked
-
+```
 
 The config file of new user-store management will be created here: 
 /opt/wso2is-4.5.0/repository/deployment/server/userstores/af_chakray_com.xml
@@ -480,8 +533,6 @@ The config file of new user-store management will be created here:
 
 * Do not forget copy mysql jdbc library  to '$IS_HOME/repository/components/lib' and run mysql.sql script to create all schema:
 mysql -u username -p MY_DB < $IS_HOME/dbscripts/mysql.sql
-
-
 
 - Add a new user and role with permissions=login to new secondary domain db.intix.info.
 
