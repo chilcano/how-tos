@@ -1,6 +1,6 @@
 # How-To's
-Repository with technical indications to install, configure any interesting stuff. 
 
+Repository with technical indications to install, configure any interesting stuff. 
 
 ## Resources
 
@@ -11,4 +11,4 @@ Repository with technical indications to install, configure any interesting stuf
 5. [Config-JackRabbit-con-MySQL-para-Liferay-DocLib](resources/Config-JackRabbit-con-MySQL-para-Liferay-DocLib.md)
 6. [Setup a DevOps Desktop](resources/set_devops_desktop.sh)
 7. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu)
-
+8. [Customizing VS Code](resources/customizing-vs-code.md)
