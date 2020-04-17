@@ -12,4 +12,4 @@ Repository with technical indications to install, configure any interesting stuf
 6. [Setup a DevOps Desktop](resources/setting_devops_desktop.sh)
 7. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu)
 8. [Customizing VS Code](resources/customizing_vs_code.md)
-9. [Installing Jekyll in Ubuntu](resources/setting_jekyll_in_ubuntu)
+9. [Installing Jekyll in Ubuntu](resources/setting_jekyll_in_ubuntu.sh)
