@@ -1,0 +1,34 @@
+{
+    "window.zoomLevel": -1,
+    "explorer.confirmDelete": false,
+    "workbench.colorTheme": "Visual Studio Dark",
+
+    "workbench.colorCustomizations": {
+
+        "terminal.background":"#EFECF4",
+        "terminal.foreground":"#585260",
+        "terminalCursor.background":"#585260",
+        "terminalCursor.foreground":"#585260",
+        "terminal.ansiBlack":"#EFECF4",
+        "terminal.ansiBlue":"#576DDB",
+        "terminal.ansiBrightBlack":"#7E7887",
+        "terminal.ansiBrightBlue":"#576DDB",
+        "terminal.ansiBrightCyan":"#398BC6",
+        "terminal.ansiBrightGreen":"#2A9292",
+        "terminal.ansiBrightMagenta":"#955AE7",
+        "terminal.ansiBrightRed":"#BE4678",
+        "terminal.ansiBrightWhite":"#19171C",
+        "terminal.ansiBrightYellow":"#A06E3B",
+        "terminal.ansiCyan":"#398BC6",
+        "terminal.ansiGreen":"#2A9292",
+        "terminal.ansiMagenta":"#955AE7",
+        "terminal.ansiRed":"#BE4678",
+        "terminal.ansiWhite":"#585260",
+        "terminal.ansiYellow":"#A06E3B"
+    },
+    "editor.suggestSelection": "first",
+    "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
+    "java.configuration.checkProjectSettingsExclusions": false,
+    "git.autofetch": true,
+    "git.enableSmartCommit": true
+}
