@@ -1,16 +1,16 @@
 # MB168b in Ubuntu
 
-1. Download the MB168b DisplayLink drivers and unzip it:
+1. Download (https://www.displaylink.com/downloads/ubuntu)[https://www.displaylink.com/downloads/ubuntu] the MB168b DisplayLink drivers and unzip it:
 
 ```sh
 $ unzip "DisplayLink USB Graphics Software for Ubuntu 5.2.zip"
-
 ```
 
 2. Install it:
 
 ```sh
 chilcano@tayta:~/Downloads/$ sudo ./displaylink-driver-5.2.14.run 
+
 [sudo] password for chilcano: 
 Verifying archive integrity...  100%   All good.
 Uncompressing DisplayLink Linux Driver 5.2.14  100%  
@@ -31,6 +31,7 @@ chilcano@tayta:~/Downloads/$ sudo apt-get install -y dkms
 
 ```sh
 chilcano@tayta:~/Downloads/$ sudo ./displaylink-driver-5.2.14.run 
+
 Verifying archive integrity...  100%   All good.
 Uncompressing DisplayLink Linux Driver 5.2.14  100%  
 DisplayLink Linux Software 5.2.14 install script called: install
@@ -54,7 +55,7 @@ Installation complete!
 
 5. Reboot the system;
     
-6. In the Setting menu, I can set my display now, and it works well.
+6. In the Setting menu, You can set your new display now, and it works well.
 
 
 ## References:
