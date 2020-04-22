@@ -10,6 +10,12 @@ Repository with technical indications to install, configure any interesting stuf
 4. [Preparing-Python-Dev-Env-Mac-OSX](resources/Preparing-Python-Dev-Env-Mac-OSX.md)
 5. [Config-JackRabbit-con-MySQL-para-Liferay-DocLib](resources/config_jackrabbit_con_mysql_para_liferay_doclib.md)
 6. [Setup a DevOps Desktop](resources/setting_devops_desktop.sh)
+   ```sh
+   $ sudo . $HOME/gitrepos/how-tos/resources/setting_devops_desktop.sh
+   ```
 7. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu.md)
 8. [Customizing VS Code](resources/customizing_vs_code.md)
 9. [Installing Jekyll in Ubuntu](resources/setting_jekyll_in_ubuntu.sh)
+   ```sh
+   $ . $HOME/gitrepos/how-tos/resources/setting_jekyll_in_ubuntu.sh
+   ```
