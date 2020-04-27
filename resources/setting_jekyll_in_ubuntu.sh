@@ -26,13 +26,13 @@ CURRENT_DIR=$PWD
 GIT_USER="chilcano"
 GIT_REPO="ghpages-holosec"
 GIT_PARENT_DIR="${HOME}/gitrepos"
-mkdir -p ${GIT_PARENT_DIR}; cd ${GIT_PARENT_DIR} 
-if [ $? -ne 0 ]; then
-    printf "\t Cloning the 'ghpages-holosec' GitHub repo.\n"
+if [ -f "${GIT_PARENT_DIR}/${GIT_REPO}/README.md" ]; then
+    printf "\t The '${GIT_PARENT_DIR}/${GIT_REPO}' GitHub repo exists and contains files. Nothing to do.\n"
+else 
+    printf "\t Cloning the '${GIT_REPO}' GitHub repo.\n"
+    mkdir -p ${GIT_PARENT_DIR}; cd ${GIT_PARENT_DIR} 
     git clone https://github.com/${GIT_USER}/${GIT_REPO} 
-else
-    printf "\t The 'ghpages-holosec' GitHub repo already exists.\n"
-fi
+fi 
 cd ${GIT_PARENT_DIR}/${GIT_REPO}
 
 echo "==> Setting Gems local repository"

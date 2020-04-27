@@ -11,11 +11,20 @@ Repository with technical indications to install, configure any interesting stuf
 5. [Config-JackRabbit-con-MySQL-para-Liferay-DocLib](resources/config_jackrabbit_con_mysql_para_liferay_doclib.md)
 6. [Setup a DevOps Desktop](resources/setting_devops_desktop.sh)
    ```sh
-   $ sudo . $HOME/gitrepos/how-tos/resources/setting_devops_desktop.sh
+   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_devops_desktop.sh
+   $ chmod +x setting_devops_desktop.sh  
+   $ sudo . setting_devops_desktop.sh
    ```
 7. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu.md)
-8. [Customizing VS Code](resources/customizing_vs_code.md)
+8. [Customizing VS Code](resources/setup_vscode.sh)
+   ```sh
+   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setup_vscode.sh
+   $ chmod +x setup_vscode.sh
+   $ . setup_vscode.sh
+   ```
 9. [Installing Jekyll in Ubuntu](resources/setting_jekyll_in_ubuntu.sh)
    ```sh
-   $ . $HOME/gitrepos/how-tos/resources/setting_jekyll_in_ubuntu.sh
+   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_jekyll_in_ubuntu.sh
+   $ chmod +x setting_jekyll_in_ubuntu.sh
+   $ . setting_jekyll_in_ubuntu.sh
    ```
