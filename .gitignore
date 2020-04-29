@@ -9,5 +9,6 @@ target/
 .idea
 .vagrant
 .vscode
+.sh.1
 
 

@@ -13,7 +13,7 @@ Repository with technical indications to install, configure any interesting stuf
    ```sh
    $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_devops_desktop.sh
    $ chmod +x setting_devops_desktop.sh  
-   $ sudo . setting_devops_desktop.sh
+   $ . setting_devops_desktop.sh
    ```
 7. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu.md)
 8. [Customizing VS Code](resources/setup_vscode.sh)
