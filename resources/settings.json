@@ -1,5 +1,5 @@
 {
-    "window.zoomLevel": -1.2,
+    "window.zoomLevel": -1,
     "explorer.confirmDelete": false,
     "workbench.colorTheme": "Visual Studio Dark",
 
@@ -30,16 +30,5 @@
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
     "java.configuration.checkProjectSettingsExclusions": false,
     "git.autofetch": true,
-    "git.enableSmartCommit": true,
-    "workbench.startupEditor": "newUntitledFile",
-
-    "editor.fontSize": 13,
-    "debug.console.fontSize": 12,
-    "markdown.preview.fontSize": 13,
-    "terminal.integrated.fontSize": 13,
-
-    "telemetry.enableCrashReporter": false,
-    "telemetry.enableTelemetry": false,
-
-    "terraform.telemetry.enabled": false
+    "git.enableSmartCommit": true
 }
