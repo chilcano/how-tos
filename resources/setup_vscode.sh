@@ -6,7 +6,7 @@ echo "##########################################################"
 
 NOW=$(date +"%y%m%d.%H%M%S")
 
-echo "==> Look&Feel and config"
+printf "\n==> Look&Feel and config \n"
 
 echo "> Getting 'settings.json' and copying to '$HOME/.config/Code/User/settings.json'"
 wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/vscode/dot_config/Code/User/settings.json
@@ -18,7 +18,7 @@ printf "\t Copying 'settings.json' to '${HOME}/.config/Code/User/'\n"
 cp settings.json $HOME/.config/Code/User/.
 rm -f settings.json
 
-echo "==> Extensions"
+printf "\n==> Extensions\n"
 
 ## https://marketplace.visualstudio.com/items?itemName=usernamehw.indent-one-space
 code --install-extension usernamehw.indent-one-space

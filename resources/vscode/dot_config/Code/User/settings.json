@@ -41,5 +41,8 @@
     "telemetry.enableCrashReporter": false,
     "telemetry.enableTelemetry": false,
 
-    "terraform.telemetry.enabled": false
+    "terraform.telemetry.enabled": false,
+
+    "terminal.integrated.cursorBlinking": true,
+    "terminal.integrated.fontFamily": "Menlo for Powerline"    
 }

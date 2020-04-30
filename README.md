@@ -16,19 +16,25 @@ Repository with technical indications to install, configure any interesting stuf
    $ . setting_devops_desktop.sh
    ```
 7. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu.md)
-8. [Customizing VS Code](resources/setup_vscode.sh)
-   ```sh
-   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setup_vscode.sh
-   $ chmod +x setup_vscode.sh
-   $ . setup_vscode.sh
-   ```
-9. [Installing Jekyll in Ubuntu](resources/setting_jekyll_in_ubuntu.sh)
+8. [Installing Jekyll in Ubuntu](resources/setting_jekyll_in_ubuntu.sh)
    ```sh
    $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_jekyll_in_ubuntu.sh
    $ chmod +x setting_jekyll_in_ubuntu.sh
    $ . setting_jekyll_in_ubuntu.sh
    ```
-10. [Fancy Prompt in Ubuntu 19.10](resources/fancy_prompt.md)
-    ![](resources/fancy_prompt_ubuntu_19.10.png)
-11. [Github - Persisting credentials](resources/git_saving_credentials.md)
-12. [Github - Pull Request](resources/git_pull_request_guide.md)****
+9. [Customizing VS Code](resources/setup_vscode.sh)
+   ```sh
+   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setup_vscode.sh
+   $ chmod +x setup_vscode.sh
+   $ . setup_vscode.sh
+   ```
+10. [Adding Powerline Fonts to VS Code](resources/setup_vscode_powerline_fonts.sh)
+   ```sh
+   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setup_vscode_powerline_fonts.sh
+   $ chmod +x setup_vscode_powerline_fonts.sh
+   $ . setup_vscode_powerline_fonts.sh
+   ```
+11. [Fancy Prompt in Ubuntu 19.10](resources/fancy_prompt.md)
+   ![](resources/fancy_prompt_ubuntu_19.10.png)
+12. [Github - Persisting credentials](resources/git_saving_credentials.md)
+13. [Github - Pull Request](resources/git_pull_request_guide.md)****
