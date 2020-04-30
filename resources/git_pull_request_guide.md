@@ -1,6 +1,4 @@
-# Working with GIT 
-
-## Pull Request
+## Github Pull Request Guide
 
 1. Fork from Github.com an existing repo
 2. Clone your forked repo

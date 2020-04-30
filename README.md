@@ -28,15 +28,7 @@ Repository with technical indications to install, configure any interesting stuf
    $ chmod +x setting_jekyll_in_ubuntu.sh
    $ . setting_jekyll_in_ubuntu.sh
    ```
-10. Fancy Linux Prompt
-   ```sh
-   // Reference:
-   // https://yalneb.blogspot.com/2018/01/fancy-bash-promt.html
-
-   $ sudo apt install fonts-powerline
-   $ git clone --recursive https://github.com/andresgongora/synth-shell.git
-   $ chmod +x synth-shell/setup.sh
-   $ synth-shell/setup.sh
-   ```
+10. [Fancy Prompt in Ubuntu 19.10](resources/fancy_prompt.md)
+    ![](resources/fancy_prompt_ubuntu_19.10.png)
 11. [Github - Persisting credentials](resources/git_saving_credentials.md)
 12. [Github - Pull Request](resources/git_pull_request_guide.md)****
