@@ -1,5 +1,7 @@
 #!/bin/bash
 
+## Ref: https://dev.to/mattstratton/making-powerline-work-in-visual-studio-code-terminal-1m7
+
 NOW2=$(date +"%y%m%d.%H%M%S")
 
 printf "==> Installing 'Menlo for Powerline' fonts for VS Code Terminal \n"
