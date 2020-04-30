@@ -28,3 +28,27 @@ Repository with technical indications to install, configure any interesting stuf
    $ chmod +x setting_jekyll_in_ubuntu.sh
    $ . setting_jekyll_in_ubuntu.sh
    ```
+10. Fancy Linux Prompt
+   ```sh
+   // Reference:
+   // https://yalneb.blogspot.com/2018/01/fancy-bash-promt.html
+
+   $ sudo apt install fonts-powerline
+   $ git clone --recursive https://github.com/andresgongora/synth-shell.git
+   $ chmod +x synth-shell/setup.sh
+   $ synth-shell/setup.sh
+   ```
+11. Persisting GIT credentials
+   ```sh
+   $ git config --global user.email "chilcano@intix.info"
+   $ git config --global user.name "Chilcano"
+   
+   // Save the credentials permanently
+   $ git config --global credential.helper store
+   
+   // Save the credentials for a session
+   $ git config --global credential.helper cache
+   
+   // Also set a timeout for the above setting
+   $ git config --global credential.helper 'cache --timeout=600'
+   ```
