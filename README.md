@@ -38,17 +38,5 @@ Repository with technical indications to install, configure any interesting stuf
    $ chmod +x synth-shell/setup.sh
    $ synth-shell/setup.sh
    ```
-11. Persisting GIT credentials
-   ```sh
-   $ git config --global user.email "chilcano@intix.info"
-   $ git config --global user.name "Chilcano"
-   
-   // Save the credentials permanently
-   $ git config --global credential.helper store
-   
-   // Save the credentials for a session
-   $ git config --global credential.helper cache
-   
-   // Also set a timeout for the above setting
-   $ git config --global credential.helper 'cache --timeout=600'
-   ```
+11. [Github - Persisting credentials](resources/git_saving_credentials.md)
+12. [Github - Pull Request](resources/git_pull_request_guide.md)****
