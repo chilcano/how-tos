@@ -27,6 +27,7 @@
         "terminal.ansiYellow":"#A06E3B"
     },
     "editor.suggestSelection": "first",
+    
     "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
     "java.configuration.checkProjectSettingsExclusions": false,
     "git.autofetch": true,

@@ -37,4 +37,6 @@ Repository with technical indications to install, configure any interesting stuf
 11. [Fancy Prompt in Ubuntu 19.10](resources/fancy_prompt.md)
    ![](resources/fancy_prompt_ubuntu_19.10.png)
 12. [Github - Persisting credentials](resources/git_saving_credentials.md)
-13. [Github - Pull Request](resources/git_pull_request_guide.md)****
+13. [Github - Pull Request](resources/git_pull_request_guide.md)
+14. [Getting CPU and GPU temperature in Ubuntu 19.04](resources/getting_temperature_cpu_gpu_hd_in_ubuntu.md)
+15. [Installing Logitech Unifying (Keyboard adn mice) in Ubuntu 19.04](resources/installing_logitech_unifying_in_ubuntu_19_04.md)
