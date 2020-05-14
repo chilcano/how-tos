@@ -3,7 +3,7 @@
 TIME_RUN_DEVOPS=$(date +%s)
 
 echo "##########################################################"
-echo "####              Setting DevOps Desktop              ####"
+echo "####          Install and setup DevOps tools          ####"
 echo "##########################################################"
 
 export DEBIAN_FRONTEND=noninteractive
@@ -64,15 +64,15 @@ rm -f setup_vscode.sh
 printf ">> VS Code config and extensions installed OK.\n\n"
 
 echo "==> Installing Terraform"
-#TF_VERSION=0.12.24
-#TF_VERSION="0.11.15-oci"
+TF_VERSION="0.11.15-oci"
 TF_VERSION_LATEST=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')
-TF_BUNDLE="terraform_${TF_VERSION_LATEST}_linux_amd64.zip"
-wget --quiet "https://releases.hashicorp.com/terraform/${TF_VERSION_LATEST}/${TF_BUNDLE}"
+TF_VERSION="${TF_VERSION:-$TF_VERSION_LATEST}"
+TF_BUNDLE="terraform_${TF_VERSION}_linux_amd64.zip"
+wget --quiet "https://releases.hashicorp.com/terraform/${TF_VERSION}/${TF_BUNDLE}"
 unzip "${TF_BUNDLE}"
 sudo mv terraform /usr/local/bin/
 rm -rf terraf*
-printf ">> Terraform installed OK.\n\n"
+printf ">> Terraform ${TF_VERSION} installed OK.\n\n"
 
 echo "==> Installing Packer"
 PACKER_VERSION_LATEST=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
@@ -84,4 +84,3 @@ rm -rf packer*
 printf ">> Packer installed OK.\n\n"
 
 printf ">> Duration: $((($(date +%s)-${TIME_RUN_DEVOPS}))) seconds.\n\n"
-
