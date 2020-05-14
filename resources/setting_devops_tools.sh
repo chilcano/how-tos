@@ -75,9 +75,11 @@ rm -rf terraf*
 printf ">> Terraform ${TF_VERSION} installed OK.\n\n"
 
 echo "==> Installing Packer"
+PACKER_VERSION="1.5.5"
 PACKER_VERSION_LATEST=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
-PACKER_BUNDLE="packer_${PACKER_VERSION_LATEST}_linux_amd64.zip"
-wget --quiet "https://releases.hashicorp.com/packer/${PACKER_VERSION_LATEST}/${PACKER_BUNDLE}"
+PACKER_VERSION="${PACKER_VERSION:-$PACKER_VERSION_LATEST}"
+PACKER_BUNDLE="packer_${PACKER_VERSION}_linux_amd64.zip"
+wget --quiet "https://releases.hashicorp.com/packer/${PACKER_VERSION}/${PACKER_BUNDLE}"
 unzip "${PACKER_BUNDLE}"
 sudo mv packer /usr/local/bin/
 rm -rf packer*
