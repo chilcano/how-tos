@@ -85,4 +85,8 @@ sudo mv packer /usr/local/bin/
 rm -rf packer*
 printf ">> Packer installed OK.\n\n"
 
+printf "==> Installing Chromium \n"
+sudo apt install -yq chromium-browser
+printf ">> Chromium installed OK.\n\n"
+
 printf ">> Duration: $((($(date +%s)-${TIME_RUN_DEVOPS}))) seconds.\n\n"
