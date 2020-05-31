@@ -38,6 +38,12 @@ Repository with technical indications to install, configure any interesting stuf
    $ chmod +x setting_jekyll_in_ubuntu.sh
    $ . setting_jekyll_in_ubuntu.sh
    ```
+   Running Jekyll:   
+   ```sh
+   $ JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch
+   $ JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch --host=0.0.0.0
+   $ JEKYLL_ENV=production bundle exec jekyll serve --watch --drafts
+   ```
 8. GIT guides:
    - [Github - Persisting credentials](resources/git_saving_credentials.md)
    - [Github - Pull Request](resources/git_pull_request_guide.md)
