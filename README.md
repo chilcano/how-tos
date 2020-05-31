@@ -8,7 +8,7 @@ Repository with technical indications to install, configure any interesting stuf
 2. [NewPassword Generator Java test](resources/NewPasswordGenerator.java)
 3. [wso2-identity-server-4.5.0-install-config-centos](resources/wso2-identity-server-4.5.0-install-config-centos.md)
 4. [Preparing-Python-Dev-Env-Mac-OSX](resources/Preparing-Python-Dev-Env-Mac-OSX.md)
-5. [Config-JackRabbit-con-MySQL-para-Liferay-DocLib](resources/config_jackrabbit_con_mysql_para_liferay_doclib.md)
+5. [Disabling sleeping when close laptop lid](resources/disable_sleeping_when_close_ldaptop_lid.md)
 6. Install and setup DevOps tools in Ubuntu  
    6.1. [Install and setup DevOps tools](resources/setting_devops_tools.sh)
       ```sh
