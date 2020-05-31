@@ -1,8 +1,9 @@
-# Configure remote SSH access to Ubuntu Desktop
+## Configure remote SSH access to Ubuntu Desktop
 
-Reference:
+__Reference:__
 - https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-18-04/
 
+Install OpenSSH server:
 ```sh
 $ sudo apt update
 $ sudo apt install openssh-server -y
