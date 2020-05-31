@@ -21,12 +21,13 @@ $ Ctrl+b ?
 #### 4) Sessions
 
 ```sh
-$ tmux new -s <session-name>
-$ Ctrl+b d
+$ tmux new						// Create session
+$ tmux new -s <session-name>				// Create session with a name
+$ Ctrl+b d						// Detach from current session
 $ tmux ls
-$ tmux attach-session -t <session-no|session-name>
-$ tmux rename-session -t <session-no|session-name>
-$ tmux kill-session -t <session-no|session-name>
+$ tmux attach-session -t <session-no|session-name>	// Attach to session
+$ tmux rename-session -t <session-no|session-name>	// Rename session
+$ tmux kill-session -t <session-no|session-name>	// Kill session
 ``` 
 
 #### 5) Windows and Panes
