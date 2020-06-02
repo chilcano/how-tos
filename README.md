@@ -1,8 +1,8 @@
-# How-To's
+## How-To's
 
 Repository with technical indications to install, configure any interesting stuff. 
 
-## Resources
+### Resources
 
 1. [FizzBuzz Python test](resources/fizzbuzz1.py)
 2. [NewPassword Generator Java test](resources/NewPasswordGenerator.java)
@@ -22,11 +22,12 @@ Repository with technical indications to install, configure any interesting stuf
       $ chmod +x setup_vscode.sh
       $ . setup_vscode.sh
       ```
-   6.3. [Fancy Prompt in Ubuntu with Synth Shell](resources/fancy_prompt_with_synth_shell.md)  
-      ![](resources/fancy_prompt_ubuntu_with_synth_shell.png)  
-   6.4. [Fancy Prompt in Ubuntu with Fancy GIT](resources/fancy_prompt_with_fancy_git.md)  
-      ![](resources/fancy_prompt_ubuntu_with_fancy_git.png)   
-   6.5. [Adding Powerline Fonts to VS Code](resources/setup_vscode_powerline_fonts.sh)
+   6.3. Customizing the Ubuntu Prompt
+      1. [With Synth Shell](resources/fancy_prompt_with_synth_shell.md)  
+         ![](resources/fancy_prompt_ubuntu_with_synth_shell.png)  
+      2. [Fancy Prompt in Ubuntu with Fancy GIT](resources/fancy_prompt_with_fancy_git.md)  
+         ![](resources/fancy_prompt_ubuntu_with_fancy_git.png)   
+   6.4. [Adding Powerline Fonts to VS Code](resources/setup_vscode_powerline_fonts.sh)
       ```sh
       $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setup_vscode_powerline_fonts.sh
       $ chmod +x setup_vscode_powerline_fonts.sh
@@ -51,3 +52,4 @@ Repository with technical indications to install, configure any interesting stuf
 10. [Installing Logitech Unifying (Keyboard adn mice) in Ubuntu 19.04](resources/installing_logitech_unifying_in_ubuntu_19_04.md)
 11. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu.md)
 12. [Working with Tmux](resources/working_with_tmux.md)
+
