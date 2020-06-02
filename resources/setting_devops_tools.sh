@@ -13,10 +13,11 @@ sudo apt update
 sudo apt install -y git awscli curl jq unzip software-properties-common sudo apt-transport-https gnome-tweaks
 printf ">> Git, awscli, curl, jq, unzip and gnome-tweaks installed OK.\n\n"
 
-echo "==> Installing Ansible"
-sudo apt-add-repository --yes --update ppa:ansible/ansible
-sudo apt install -y ansible
-printf ">> Ansible installed OK.\n\n"
+# Disabled installation of Ansible (Ubuntu 20.04 has issues)
+#echo "==> Installing Ansible"
+#sudo apt-add-repository --yes --update ppa:ansible/ansible
+#sudo apt install -y ansible
+#printf ">> Ansible installed OK.\n\n"
 
 echo "==> Installing Java 8, 11 (default) and Oracle Java 11"
 sudo apt install -y default-jdk openjdk-8-jdk
