@@ -22,11 +22,11 @@ Repository with technical indications to install, configure any interesting stuf
       $ chmod +x setup_vscode.sh
       $ . setup_vscode.sh
       ```
-   6.3. Customizing the Ubuntu Prompt
-      1. [With Synth Shell](resources/fancy_prompt_with_synth_shell.md)  
-         ![](resources/fancy_prompt_ubuntu_with_synth_shell.png)  
-      2. [Fancy Prompt in Ubuntu with Fancy GIT](resources/fancy_prompt_with_fancy_git.md)  
-         ![](resources/fancy_prompt_ubuntu_with_fancy_git.png)   
+   6.3. Customizing the Ubuntu Prompt   
+      - [With Synth Shell](resources/fancy_prompt_with_synth_shell.md)  
+        ![](resources/fancy_prompt_ubuntu_with_synth_shell.png)  
+      - [Fancy Prompt in Ubuntu with Fancy GIT](resources/fancy_prompt_with_fancy_git.md)  
+        ![](resources/fancy_prompt_ubuntu_with_fancy_git.png)   
    6.4. [Adding Powerline Fonts to VS Code](resources/setup_vscode_powerline_fonts.sh)
       ```sh
       $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setup_vscode_powerline_fonts.sh
