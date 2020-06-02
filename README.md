@@ -53,4 +53,5 @@ Repository with technical indications to install, configure any interesting stuf
 10. [Installing Logitech Unifying (Keyboard adn mice) in Ubuntu 19.04](resources/installing_logitech_unifying_in_ubuntu_19_04.md)
 11. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu.md)
 12. [Working with Tmux](resources/working_with_tmux.md)
+13. [File sharing through Samba(SMB)](resources/install_and_config_samba.md)
 
