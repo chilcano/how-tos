@@ -2,19 +2,40 @@
 
 ![](fancy_prompt_ubuntu_with_fancy_git.png)
 
+1) Install fonts
 ```sh
 $ sudo apt install -y fonts-powerline fonts-hack-ttf
+```
 
-// install
+2) Install
+```sh
 $ curl -sS https://raw.githubusercontent.com/diogocavilha/fancy-git/master/install.sh | sh
+```
 
-// uninstall:
+3) Uninstall
+```sh
 $ curl -sS https://raw.githubusercontent.com/diogocavilha/fancy-git/master/uninstall.sh | sh
+```
 
-// load colored style and pattern:
+4) Load colored style and pattern
+```sh
+$ fancygit double-line
+
 $ fancygit dark-col-double-line
+```
+In both styles, the Terminal used must load the `SourceCodePro+Powerline+Awesome+Regular.ttf` fonts, if so, the Terminal will not able to render the fonts/icons properly.
+In this case, you could replace the fonts/icons for fonts supported for your Terminal.
+```sh
+$ nano $HOME/.fancy-git/config-override.sh
 
-// apply colored style and pattern:
+
+
+```
+
+![](fancy_prompt_ubuntu_with_fancy_git_updated.png)
+
+5) Apply colored style and pattern
+```sh 
 $ source $HOME/.bashrc
 ```
 
