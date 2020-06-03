@@ -36,15 +36,17 @@ sudo dpkg -i $VSCS_BUNDLE
 
 echo ">> Starting systemd service."
 systemctl --user enable --now code-server
-echo ">> Now visit http://127.0.0.1:8080. Your password is in ~/.config/code-server/config.yaml"
+#echo ">> Now visit http://127.0.0.1:8080. Your password is in ~/.config/code-server/config.yaml"
 
 #echo ">> Deleting DEB file."
 #rm -rf code-server*
 
-# Replaces "auth: password" with "auth: none" in the code-server config.
-#sed -i.bak 's/auth: password/auth: none/' ~/.config/code-server/config.yaml
-echo ">> Replaces 'bind-addr: 127.0.0.1' in the code-server config."
-sed -i.bak 's/bind-addr: 127.0.0.1:8080/bind-addr: 0.0.0.0:8080/' ~/.config/code-server/config.yaml
+echo ">> Replacing 'auth: password' with 'auth: none' in the code-server config."
+sed -i.bak 's/auth: password/auth: none/' ~/.config/code-server/config.yaml
+
+echo ">> Replacing 'bind-addr: 127.0.0.1;8080' with 'bind-addr: 0.0.0.0:8001' in the code-server config."
+sed -i.bak 's/^bind-addr: .*$/bind-addr: 0.0.0.0:8001/' ~/.config/code-server/config.yaml
+
 echo ">> Applying changes."
 systemctl --user restart code-server
 
