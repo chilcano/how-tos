@@ -41,7 +41,6 @@ echo ">> Now visit http://127.0.0.1:8080. Your password is in ~/.config/code-ser
 #echo ">> Deleting DEB file."
 #rm -rf code-server*
 
-
 # Replaces "auth: password" with "auth: none" in the code-server config.
 #sed -i.bak 's/auth: password/auth: none/' ~/.config/code-server/config.yaml
 echo ">> Replaces 'bind-addr: 127.0.0.1' in the code-server config."
