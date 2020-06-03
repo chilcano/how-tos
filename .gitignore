@@ -10,5 +10,4 @@ target/
 .vagrant
 .vscode
 .sh.1
-
-
+.deb
