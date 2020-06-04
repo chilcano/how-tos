@@ -44,10 +44,6 @@ $ fancygit human
 $ fancygit human-dark
 $ fancygit simple-double-line
 ``` 
-And finally reload the `.bashrc`.
-```sh
-$ source $HOME/.bashrc 
-``` 
 
 5) Apply colored style and pattern
 ```sh 
