@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "##########################################################"
-echo "####              Setting VS Code Server              ####"
+echo "#### Setting VS Code Server and installing extensions ####"
 echo "##########################################################"
 
 NOW=$(date +"%y%m%d.%H%M%S")
@@ -55,8 +55,6 @@ code-server --install-extension ms-kubernetes-tools.vscode-kubernetes-tools
 
 ## https://marketplace.visualstudio.com/items?itemName=ballerina.ballerina
 code-server --install-extension ballerina.ballerina
-
+ 
 echo ">> Restarting VSCode Server."
 systemctl --user restart code-server
-
-

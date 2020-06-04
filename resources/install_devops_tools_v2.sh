@@ -57,12 +57,12 @@ chmod +x vscode_server_install.sh
 rm -f vscode_server_install.sh
 printf ">> VS Code Server installed.\n\n"
 
-echo "==> Configuring VS Code Server and installing Extensions"
+echo "==> Setting VS Code Server and installing extensions"
 wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/vscode_server_setup.sh
 chmod +x vscode_server_setup.sh
 . vscode_server_setup.sh
 rm -f vscode_server_setup.sh
-printf ">> VS Code Server config and extensions installed.\n\n"
+printf ">> VS Code Server configured and extensions installed.\n\n"
 
 echo "==> Installing Terraform"
 TF_VERSION="0.11.15-oci"

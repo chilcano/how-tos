@@ -3,7 +3,7 @@
 TIME_RUN_DEVOPS=$(date +%s)
 
 echo "##########################################################"
-echo "####             Install VS Code Server               ####"
+echo "####            Installing VS Code Server             ####"
 echo "##########################################################"
 
 export DEBIAN_FRONTEND=noninteractive
@@ -48,5 +48,4 @@ sed -i.bak 's/^bind-addr: .*$/bind-addr: 0.0.0.0:8001/' ~/.config/code-server/co
 echo ">> Restarting VSCode Server."
 systemctl --user restart code-server
 
-printf ">> VSCode Server $VSCS_VER was installed successfully.\n\n"
-printf ">> Duration: $((( $(date +%s)-${TIME_RUN_DEVOPS} ))) seconds.\n\n"
+printf ">> VSCode Server $VSCS_VER was installed successfully. \n"
