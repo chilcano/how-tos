@@ -38,8 +38,8 @@ echo ">> Starting systemd service."
 systemctl --user enable --now code-server
 #echo ">> Now visit http://127.0.0.1:8080. Your password is in ~/.config/code-server/config.yaml"
 
-#echo ">> Deleting DEB file."
-#rm -rf code-server*
+echo ">> Deleting DEB file."
+rm -rf code-server*
 
 echo ">> Tweaking '~/.config/code-server/config.yaml'"
 sed -i.bak 's/auth: password/auth: none/' ~/.config/code-server/config.yaml

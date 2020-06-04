@@ -20,7 +20,6 @@ $ curl -sS https://raw.githubusercontent.com/diogocavilha/fancy-git/master/unins
 4) Load colored style and pattern
 ```sh
 $ fancygit double-line
-
 $ fancygit dark-col-double-line
 ```
 In both styles, the Terminal used must load the `SourceCodePro+Powerline+Awesome+Regular.ttf` fonts, if so, the Terminal will not able to render the fonts/icons properly.
@@ -28,11 +27,27 @@ In this case, you could replace the fonts/icons for fonts supported for your Ter
 ```sh
 $ nano $HOME/.fancy-git/config-override.sh
 
-
-
+is_git_repo="§"
+has_git_stash=" ∞"
+has_untracked_files=" ≠"
+is_only_local_branch=" ·"
+has_changed_files=" !"
+has_added_files=" +"
+has_unpushed_commits=" ?"
+working_on_venv=" ≤"
 ```
-
 ![](fancy_prompt_ubuntu_with_fancy_git_updated.png)
+
+If it still doesn't work, then load a text-based fancy prompt:
+```sh
+$ fancygit human
+$ fancygit human-dark
+$ fancygit simple-double-line
+``` 
+And finally reload the `.bashrc`.
+```sh
+$ source $HOME/.bashrc 
+``` 
 
 5) Apply colored style and pattern
 ```sh 

@@ -18,3 +18,5 @@ git clone --depth=1 https://github.com/abertsch/Menlo-for-Powerline
 rm -rf ./Menlo-for-Powerline/.git
 mv "Menlo-for-Powerline" "${HOME}/.fonts/"
 printf " >> Fonts updated/installed!!\n"
+
+https://github.com/diogocavilha/fancy-git/blob/master/fonts/SourceCodePro%2BPowerline%2BAwesome%2BRegular.ttf

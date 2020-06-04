@@ -6,3 +6,4 @@
 
 To edit your settings in `settings.json`, start by opening the Command Palette with `CMD/CTRL + SHIFT + P`.
 After, write `Open Settings (JSON)` to edit `settings.json`.
+- ssSourceCodePro+Powerline+Awesome+Regular
