@@ -55,3 +55,8 @@ code-server --install-extension ms-kubernetes-tools.vscode-kubernetes-tools
 
 ## https://marketplace.visualstudio.com/items?itemName=ballerina.ballerina
 code-server --install-extension ballerina.ballerina
+
+echo ">> Restarting VSCode Server."
+systemctl --user restart code-server
+
+

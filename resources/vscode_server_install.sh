@@ -41,17 +41,9 @@ systemctl --user enable --now code-server
 #echo ">> Deleting DEB file."
 #rm -rf code-server*
 
-echo ">> Replacing 'auth: password' with 'auth: none' in the code-server config."
+echo ">> Tweaking '~/.config/code-server/config.yaml'"
 sed -i.bak 's/auth: password/auth: none/' ~/.config/code-server/config.yaml
-echo ">> Replacing 'bind-addr: 127.0.0.1;8080' with 'bind-addr: 0.0.0.0:8001' in the code-server config."
 sed -i.bak 's/^bind-addr: .*$/bind-addr: 0.0.0.0:8001/' ~/.config/code-server/config.yaml
-
-echo ">> Loading custom settings.json and installing extensions"
-wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setup_vscode_server.sh
-chmod +x setup_vscode_server.sh
-. setup_vscode_server.sh
-rm -f setup_vscode_server.sh
-printf ">> VSCode Server custom settings.json and extensions installed. \n\n"
 
 echo ">> Restarting VSCode Server."
 systemctl --user restart code-server
