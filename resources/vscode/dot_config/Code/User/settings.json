@@ -50,5 +50,15 @@
     "terminal.integrated.cursorBlinking": true,
     //"terminal.integrated.fontFamily": "Menlo for Powerline" 
     //"terminal.integrated.fontFamily": "SourceCodePro+Powerline+Awesome"
-    "terminal.integrated.fontFamily": "monospace"
+    "terminal.integrated.fontFamily": "monospace",
+
+    // @tag:usesOnlineServices
+    "workbench.enableExperiments": false,
+    "update.mode": "manual",
+    "typescript.disableAutomaticTypeAcquisition": true,
+    "extensions.autoCheckUpdates": false,
+    "extensions.autoUpdate": false,
+    "extensions.showRecommendationsOnlyOnDemand": true,
+    "workbench.settings.enableNaturalLanguageSearch": false,
+    "npm.fetchOnlinePackageInfo": false
 }
