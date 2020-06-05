@@ -8,7 +8,7 @@ Repository with technical indications to install, configure any interesting stuf
 2. [NewPassword Generator Java test](resources/NewPasswordGenerator.java)
 3. [Preparing-Python-Dev-Env-Mac-OSX](resources/preparing_python_dev_env_mac_osx.md)
 4. [Disabling sleeping when close laptop lid](resources/disable_sleeping_when_close_laptop_lid.md)
-5. Install and setup DevOps tools in Ubuntu   
+5. Install and setup DevOps tools (includes MS VSCode) in Ubuntu
    * [Install and setup DevOps tools](resources/setting_devops_tools.sh)
       ```sh
       $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_devops_tools.sh
@@ -21,19 +21,25 @@ Repository with technical indications to install, configure any interesting stuf
       $ chmod +x setup_vscode.sh
       $ . setup_vscode.sh
       ```
-   * Customizing the Ubuntu Prompt   
-     - [With Synth Shell](resources/fancy_prompt_with_synth_shell.md)   
-       ![](resources/fancy_prompt_ubuntu_with_synth_shell.png)  
-     - [With Fancy GIT](resources/fancy_prompt_with_fancy_git.md)  
-       ![](resources/fancy_prompt_ubuntu_with_fancy_git.png) 
+6. [Install and setup DevOps tools (includes Code-Server) in Ubuntu](resources/install_devops_tools_v2.sh)  
+   ```sh
+   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/install_devops_tools_v2.sh
+   $ chmod +x install_devops_tools_v2.sh
+   $ . install_devops_tools_v2.sh
+   ```
+7. Customizing the Ubuntu Prompt   
+   - [With Synth Shell](resources/fancy_prompt_with_synth_shell.md)   
+      ![](resources/fancy_prompt_ubuntu_with_synth_shell.png)  
+   - [With Fancy GIT](resources/fancy_prompt_with_fancy_git.md)  
+      ![](resources/fancy_prompt_ubuntu_with_fancy_git.png) 
 
-   * [Install custom Fonts in Ubuntu](resources/install_fonts_in_ubuntu.sh)  
-      ```sh
-      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/install_fonts_in_ubuntu.sh
-      $ chmod +x install_fonts_in_ubuntu.sh
-      $ . install_fonts_in_ubuntu.sh
-      ```  
-6. [Installing Jekyll in Ubuntu](resources/setting_jekyll_in_ubuntu.sh)
+8. [Install custom Fonts in Ubuntu](resources/install_fonts_in_ubuntu.sh)  
+   ```sh
+   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/install_fonts_in_ubuntu.sh
+   $ chmod +x install_fonts_in_ubuntu.sh
+   $ . install_fonts_in_ubuntu.sh
+   ```  
+9. [Installing Jekyll in Ubuntu](resources/setting_jekyll_in_ubuntu.sh)
    ```sh
    $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_jekyll_in_ubuntu.sh
    $ chmod +x setting_jekyll_in_ubuntu.sh
@@ -45,12 +51,12 @@ Repository with technical indications to install, configure any interesting stuf
    $ JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch --host=0.0.0.0
    $ JEKYLL_ENV=production bundle exec jekyll serve --watch --drafts
    ```
-7. GIT guides:
+10. GIT guides:
    - [Github - Persisting credentials](resources/git_saving_credentials.md)
    - [Github - Pull Request](resources/git_pull_request_guide.md)
-8. [Getting CPU and GPU temperature in Ubuntu 19.04](resources/getting_temperature_cpu_gpu_hd_in_ubuntu.md)
-9. [Installing Logitech Unifying (Keyboard adn mice) in Ubuntu 19.04](resources/installing_logitech_unifying_in_ubuntu_19_04.md)
-10. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu.md)
-11. [Working with Tmux](resources/working_with_tmux.md)
-12. [File sharing through Samba(SMB)](resources/install_and_config_samba.md)
+11. [Getting CPU and GPU temperature in Ubuntu 19.04](resources/getting_temperature_cpu_gpu_hd_in_ubuntu.md)
+12. [Installing Logitech Unifying (Keyboard adn mice) in Ubuntu 19.04](resources/installing_logitech_unifying_in_ubuntu_19_04.md)
+13. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu.md)
+14. [Working with Tmux](resources/working_with_tmux.md)
+15. [File sharing through Samba(SMB)](resources/install_and_config_samba.md)
 
