@@ -55,3 +55,7 @@ code --install-extension ms-vscode-remote.remote-ssh
 
 ## https://marketplace.visualstudio.com/items?itemName=ballerina.ballerina
 code --install-extension ballerina.ballerina
+
+## https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync
+code --install-extension Shan.code-settings-sync
+

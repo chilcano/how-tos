@@ -1,0 +1,12 @@
+// "https://github.com/headmelted/codebuilds/blob/508a782f589c3bf95fc3885e90e52f2dbc2acaa2/overlays/product.json"
+// "https://github.com/cdr/code-server/blob/master/doc/FAQ.md#how-do-i-configure-the-marketplace-url"
+// "https://github.com/VSCodium/vscodium/blob/master/DOCS.md#extensions-marketplace"
+// https://open-vsx.org
+// https://github.com/cdr/code-server/issues/1762
+
+{
+    "extensionsGallery": {
+	  "serviceUrl": "https://marketplace.visualstudio.com/_apis/public/gallery",
+	  "itemUrl": "https://marketplace.visualstudio.com/items"
+   }
+}
