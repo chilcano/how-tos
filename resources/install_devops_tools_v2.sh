@@ -59,8 +59,13 @@ sudo apt install -y default-jdk openjdk-8-jdk
 printf ">> Java installed.\n\n"
 
 echo "==> Selecting Java/Javac 8 as default version and auto-mode"
-sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java 1200
-sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac 1200
+if [[ "$_ARCH" = "arm" ]]; then
+  sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-openjdk-armhf/jre/bin/java 1200
+  sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-8-openjdk-armhf/bin/javac 1200
+else 
+  sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java 1200
+  sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac 1200
+fi
 printf "\n\n"
 
 echo "==> Installing Maven"
