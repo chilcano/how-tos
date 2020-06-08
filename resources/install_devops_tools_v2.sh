@@ -41,10 +41,10 @@ echo "##########################################################"
 
 export DEBIAN_FRONTEND=noninteractive
 
-echo "==> Installing Git, awscli, curl, jq, unzip, software-properties-common (apt-add-repository) and gnome-tweaks"
+echo "==> Installing Git, awscli, curl, jq, unzip and software-properties-common (apt-add-repository)"
 sudo apt update
-sudo apt install -y git awscli curl jq unzip software-properties-common sudo apt-transport-https gnome-tweaks
-printf ">> Git, awscli, curl, jq, unzip and gnome-tweaks installed.\n\n"
+sudo apt install -y git awscli curl jq unzip software-properties-common sudo apt-transport-https
+printf ">> Git, awscli, curl, jq and unzip installed.\n\n"
 
 # Disabled installation of Ansible (Ubuntu 20.04 has issues)
 #echo "==> Installing Ansible"
