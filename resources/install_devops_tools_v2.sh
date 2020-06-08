@@ -85,9 +85,9 @@ printf "\n\n"
 
 echo "==> Installing VS Code Server"
 wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/vscode_server_install.sh
-chmod +x vscode_server_install.sh --arch=$_ARCH --vscs-ver=$_VSCS_VER
-. vscode_server_install.sh
-rm -f vscode_server_install.sh
+chmod +x vscode_server_install.sh 
+. vscode_server_install.sh --arch=$_ARCH --vscs-ver=$_VSCS_VER
+rm -f vscode_server_install.sh 
 printf ">> VS Code Server installed.\n\n"
 
 echo "==> Loading VS Code Server' settings and installing extensions"
