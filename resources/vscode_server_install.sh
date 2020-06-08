@@ -1,6 +1,26 @@
 #!/bin/bash
 
-TIME_RUN_DEVOPS=$(date +%s)
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --arch*|-a*)
+      if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no `=`
+      _ARCH="${1#*=}"
+      ;;
+    --vscs-ver*|-v*)
+      if [[ "$1" != *=* ]]; then shift; fi
+      _VSCS_VER="${1#*=}"
+      ;;
+    --help|-h)
+      printf "Install VSCode Server." 
+      exit 0
+      ;;
+    *)
+      >&2 printf "Error: Invalid argument. \n"
+      exit 1
+      ;;
+  esac
+  shift
+done
 
 echo "##########################################################"
 echo "####            Installing VS Code Server             ####"
@@ -9,9 +29,9 @@ echo "##########################################################"
 export DEBIAN_FRONTEND=noninteractive
 
 #VSCS_VER="3.3.1"
-VSCS_PKG="amd64.deb"
+VSCS_PKG="${_ARCH}64.deb"
 VSCS_VER_LATEST=$(curl -s https://api.github.com/repos/cdr/code-server/releases/latest | jq -r -M '.tag_name')
-VSCS_VER="${VSCS_VER:-$VSCS_VER_LATEST}"
+VSCS_VER="${_VSCS_VER:-$VSCS_VER_LATEST}"
 
 #printf ">> Uninstalling previous version of 'code-server'. \n"
 #sudo dpkg -r code-server

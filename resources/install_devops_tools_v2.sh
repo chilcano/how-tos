@@ -2,6 +2,39 @@
 
 TIME_RUN_DEVOPS=$(date +%s)
 
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --arch*|-a*)                           # amd | arm 
+      if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no `=`
+      _ARCH="${1#*=}"
+      ;;
+    --vscs-ver*|-v*)
+      if [[ "$1" != *=* ]]; then shift; fi
+      _VSCS_VER="${1#*=}"
+      ;;
+    --tf-ver*|-t*)
+      if [[ "$1" != *=* ]]; then shift; fi
+      _TF_VER="${1#*=}"
+      ;;
+    --packer-ver*|-p*)
+      if [[ "$1" != *=* ]]; then shift; fi
+      _PACKER_VER="${1#*=}"
+      ;; 
+    --help|-h)
+      printf "Install VSCode Server and other DevOps tools. \n"
+      printf "Examples: \n"
+      printf "\t . install_devops_tools_v2.sh --arch=amd --vscs-ver=3.4.0 \n"
+      printf "\t . install_devops_tools_v2.sh --arch=arm --vscs-ver=3.4.1 --tf-ver=0.11.15-oci \n"
+      exit 0
+      ;;
+    *)
+      >&2 printf "Error: Invalid argument. \n"
+      exit 1
+      ;;
+  esac
+  shift
+done
+
 echo "##########################################################"
 echo "####         Install and setup DevOps tools v2        ####"
 echo "##########################################################"
@@ -52,35 +85,44 @@ printf "\n\n"
 
 echo "==> Installing VS Code Server"
 wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/vscode_server_install.sh
-chmod +x vscode_server_install.sh
+chmod +x vscode_server_install.sh --arch=$_ARCH --vscs-ver=$_VSCS_VER
 . vscode_server_install.sh
 rm -f vscode_server_install.sh
 printf ">> VS Code Server installed.\n\n"
 
-echo "==> Setting VS Code Server and installing extensions"
-wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/vscode_server_setup.sh
-chmod +x vscode_server_setup.sh
-. vscode_server_setup.sh
-rm -f vscode_server_setup.sh
-printf ">> VS Code Server configured and extensions installed.\n\n"
+echo "==> Loading VS Code Server' settings and installing extensions"
+#wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/vscode_server_setup.sh
+#chmod +x vscode_server_setup.sh
+#. vscode_server_setup.sh
+#rm -f vscode_server_setup.sh
+#printf ">> VS Code Server configured and extensions installed.\n\n"
+printf ">> The settings.json and extensions will be loaded from GIST through SettingsSync Extensions"
 
 echo "==> Installing Terraform"
-TF_VERSION="0.11.15-oci"
-TF_VERSION_LATEST=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')
-TF_VERSION="${TF_VERSION:-$TF_VERSION_LATEST}"
-TF_BUNDLE="terraform_${TF_VERSION}_linux_amd64.zip"
-wget --quiet "https://releases.hashicorp.com/terraform/${TF_VERSION}/${TF_BUNDLE}"
+#_TF_VER="0.11.15-oci"
+TF_VER_LATEST=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')
+TF_VER="${_TF_VER:-$TF_VER_LATEST}"
+if [[ "$_ARCH" =  "arm" ]]; then
+  TF_BUNDLE="terraform_${TF_VER}_linux_${_ARCH}.zip"
+else
+  TF_BUNDLE="terraform_${TF_VER}_linux_${_ARCH}64.zip"
+fi
+wget --quiet "https://releases.hashicorp.com/terraform/${TF_VER}/${TF_BUNDLE}"
 unzip "${TF_BUNDLE}"
 sudo mv terraform /usr/local/bin/
 rm -rf terraf*
-printf ">> Terraform ${TF_VERSION} installed.\n\n"
+printf ">> Terraform ${TF_VER} installed.\n\n"
 
 echo "==> Installing Packer"
-PACKER_VERSION="1.5.5"
-PACKER_VERSION_LATEST=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
-PACKER_VERSION="${PACKER_VERSION:-$PACKER_VERSION_LATEST}"
-PACKER_BUNDLE="packer_${PACKER_VERSION}_linux_amd64.zip"
-wget --quiet "https://releases.hashicorp.com/packer/${PACKER_VERSION}/${PACKER_BUNDLE}"
+#PACKER_VER="1.5.5"
+PACKER_VER_LATEST=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
+PACKER_VER="${_PACKER_VER:-$PACKER_VER_LATEST}"
+if [[ "$_ARCH" = "arm" ]]; then
+  PACKER_BUNDLE="packer_${PACKER_VER}_linux_${_ARCH}.zip"
+else
+  PACKER_BUNDLE="packer_${PACKER_VER}_linux_${_ARCH}64.zip"
+fi
+wget --quiet "https://releases.hashicorp.com/packer/${PACKER_VER}/${PACKER_BUNDLE}"
 unzip "${PACKER_BUNDLE}"
 sudo mv packer /usr/local/bin/
 rm -rf packer*
