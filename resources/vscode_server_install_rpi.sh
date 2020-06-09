@@ -19,7 +19,7 @@ while [ $# -gt 0 ]; do
 done
 
 echo   "##########################################################"
-printf "##  Installing VSCode Server on Raspberry Pi ($(uname -m))  ##\n"
+printf "##   Installing VSCode Server on Raspberry Pi ($(uname -m))  ##\n"
 echo   "##########################################################"
 
 export DEBIAN_FRONTEND=noninteractive
@@ -104,6 +104,9 @@ systemctl --user daemon-reload
 systemctl --user enable --now code-server
 #systemctl --user status code-server
 printf ">> code-server.service enabled and started. \n\n"
+
+printf ">> Waiting code-server starts. \n\n"
+sleep 5s 
 
 printf ">> Tweaking '~/.config/code-server/config.yaml'. \n"
 sed -i.bak 's/auth: password/auth: none/' ~/.config/code-server/config.yaml
