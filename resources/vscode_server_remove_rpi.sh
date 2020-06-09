@@ -10,14 +10,15 @@ systemctl --user stop code-server
 systemctl --user disable --now code-server
 sudo rm -rf /usr/lib/systemd/user/code-server.service
 
-printf ">> Uninstalling installed version of 'code-server'. \n"
+printf ">> Uninstalling 'code-server' ($(code-server -v)). \n"
 sudo dpkg -r code-server
 sudo apt clean -y && sudo apt autoremove -y
 sudo apt -f install
 sudo dpkg --configure -a
 sudo npm uninstall -g code-server protobufjs @google-cloud/logging
+printf ">> VSCode Server uninstalled. \n\n"
 
-printf ">> Removing code-server config files"
+printf ">> Removing code-server config files. \n"
 rm -rf ~/.config/code-server/
 
 printf ">> VSCode Server was removed successfully. \n"

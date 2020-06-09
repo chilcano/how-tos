@@ -43,24 +43,25 @@ sudo apt-get install -y build-essential pkg-config libx11-dev libxkbfile-dev lib
 printf  ">> Requsites such as libs were installed. \n\n"
 
 #### ref: https://linuxize.com/post/how-to-install-node-js-on-raspberry-pi/
-printf ">> Installing NodeJS and NPM"
+printf ">> Installing NodeJS and NPM. \n"
 sudo apt install nodejs
-printf "NodeJS $(node -v) and NPM $(npm -v) installed. \n\n"
+printf ">> NodeJS $(node -v) and NPM $(npm -v) installed. \n\n"
 
-printf ">> Installing VSCode Server"
+printf ">> Installing VSCode Server. \n"
 if [ -z ${_VSCS_VER+x} ]; then
   VSCS_VER=""
 else
   VSCS_VER="@${_VSCS_VER}"
 fi
-
 # check all versions: npm view code-server versions --json
 #sudo npm install -g code-server --unsafe-perm
 sudo npm install -g code-server$VSCS_VER --unsafe-perm 
+printf ">> VSCode Server ($(code-server -v)) installed. \n\n"
 
-printf ">> VSCode Server postinstalling"
+printf ">> VSCode Server post-installing. \n"
 sudo npm install -g @google-cloud/logging
 sudo npm install -g protobufjs
+printf ">> Post-installation completed. \n\n"
 
 #pi@raspberrypi:~ $ code-server
 #info  Wrote default config file to ~/.config/code-server/config.yaml
@@ -96,17 +97,19 @@ WantedBy=default.target
 EOF
 sudo chown -R root:root code-server.service
 sudo mv code-server.service /usr/lib/systemd/user/code-server.service
+printf ">> code-server.service created. \n\n"
 
 printf ">> Starting '/usr/lib/systemd/user/code-server.service'. \n"
 systemctl --user daemon-reload
 systemctl --user enable --now code-server
 #systemctl --user status code-server
+printf ">> code-server.service enabled and started. \n\n"
 
-printf ">> Tweaking '~/.config/code-server/config.yaml' \n"
+printf ">> Tweaking '~/.config/code-server/config.yaml'. \n"
 sed -i.bak 's/auth: password/auth: none/' ~/.config/code-server/config.yaml
 sed -i.bak 's/^bind-addr: .*$/bind-addr: 0.0.0.0:8001/' ~/.config/code-server/config.yaml
 
 printf ">> Restarting VSCode Server. \n"
 systemctl --user restart code-server
 
-printf ">> VSCode Server $VSCS_VER was installed successfully. \n"
+printf ">> VSCode Server ($(code-server -v)) was installed successfully. \n"
