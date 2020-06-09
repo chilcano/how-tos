@@ -11,7 +11,7 @@ while [ $# -gt 0 ]; do
       exit 0
       ;;
     *)
-      >&2 printf "Error: Invalid argument. \n"
+      >&2 printf "Error: Invalid argument: '$1' \n"
       exit 1
       ;;
   esac
@@ -56,7 +56,7 @@ fi
 # check all versions: npm view code-server versions --json
 #sudo npm install -g code-server --unsafe-perm
 sudo npm install -g code-server$VSCS_VER --unsafe-perm 
-printf ">> VSCode Server ($(code-server -v)) installed. \n\n"
+printf ">> VSCode Server installed. \n\n"
 
 printf ">> VSCode Server post-installing. \n"
 sudo npm install -g @google-cloud/logging
@@ -112,4 +112,4 @@ sed -i.bak 's/^bind-addr: .*$/bind-addr: 0.0.0.0:8001/' ~/.config/code-server/co
 printf ">> Restarting VSCode Server. \n"
 systemctl --user restart code-server
 
-printf ">> VSCode Server ($(code-server -v)) was installed successfully. \n"
+printf ">> VSCode Server was installed successfully. \n"
