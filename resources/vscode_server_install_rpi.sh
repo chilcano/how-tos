@@ -2,16 +2,12 @@
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --arch*|-a*)
-      if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no `=`
-      _ARCH="${1#*=}"
-      ;;
     --vscs-ver*|-v*)
-      if [[ "$1" != *=* ]]; then shift; fi
+      if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no '=' (3.4.1, 3.4.0)
       _VSCS_VER="${1#*=}"
       ;;
     --help|-h)
-      printf "Install VSCode Server." 
+      printf "Install VSCode Server on Raspberry Pi." 
       exit 0
       ;;
     *)
@@ -22,11 +18,13 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-echo "##########################################################"
-echo "####    Installing VS Code Server on Raspberry Pi     ####"
-echo "##########################################################"
+echo   "##########################################################"
+printf "##  Installing VSCode Server on Raspberry Pi ($(uname -m))  ##\n"
+echo   "##########################################################"
 
 export DEBIAN_FRONTEND=noninteractive
+
+# NodeJS ver > 12 is mandatory
 NODEJS_VER="14"
 
 curl -sL https://deb.nodesource.com/setup_$NODEJS_VER.x | sudo bash -
@@ -39,12 +37,10 @@ curl -sL https://deb.nodesource.com/setup_$NODEJS_VER.x | sudo bash -
 #     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 #     sudo apt-get update && sudo apt-get install yarn
 
-
-
 ##### ref: https://github.com/cdr/code-server/blob/master/doc/npm.md
 printf ">> Installing requisites. \n"
 sudo apt-get install -y build-essential pkg-config libx11-dev libxkbfile-dev libsecret-1-dev
-
+printf  ">> Requsites such as libs were installed. \n\n"
 
 #### ref: https://linuxize.com/post/how-to-install-node-js-on-raspberry-pi/
 printf ">> Installing NodeJS and NPM"
@@ -52,7 +48,15 @@ sudo apt install nodejs
 printf "NodeJS $(node -v) and NPM $(npm -v) installed. \n\n"
 
 printf ">> Installing VSCode Server"
-sudo npm install -g code-server --unsafe-perm
+if [ -z ${_VSCS_VER+x} ]; then
+  VSCS_VER=""
+else
+  VSCS_VER="@${_VSCS_VER}"
+fi
+
+# check all versions: npm view code-server versions --json
+#sudo npm install -g code-server --unsafe-perm
+sudo npm install -g code-server$VSCS_VER --unsafe-perm 
 
 printf ">> VSCode Server postinstalling"
 sudo npm install -g @google-cloud/logging
@@ -68,24 +72,41 @@ sudo npm install -g protobufjs
 #info      - To disable use `--auth none`
 #info    - Not serving HTTPS
 
-
+### systemd system
 ### Ref:  https://upcloud.com/community/tutorials/install-code-server-ubuntu-18-04/
 
-# create systemctl
-# config
-# run
+#sudo cp /usr/lib/systemd/user/code-server.service /etc/systemd/system
+#sudo sed -i 's/\(Restart=always\)/\1\nUser=$USER/' /etc/systemd/system/code-server.service
+#sudo systemctl daemon-reload
+#sudo systemctl enable --now code-server
 
+printf ">> Creating '/usr/lib/systemd/user/code-server.service'. \n"
+cat <<EOF > code-server.service
+[Unit]
+Description=code-server
+After=network.target
 
-echo ">> Starting systemd service."
+[Service]
+Type=exec
+ExecStart=/usr/bin/code-server
+Restart=always
+
+[Install]
+WantedBy=default.target
+EOF
+sudo chown -R root:root code-server.service
+sudo mv code-server.service /usr/lib/systemd/user/code-server.service
+
+printf ">> Starting '/usr/lib/systemd/user/code-server.service'. \n"
+systemctl --user daemon-reload
 systemctl --user enable --now code-server
-#echo ">> Now visit http://127.0.0.1:8080. Your password is in ~/.config/code-server/config.yaml"
+#systemctl --user status code-server
 
-
-echo ">> Tweaking '~/.config/code-server/config.yaml'"
+printf ">> Tweaking '~/.config/code-server/config.yaml' \n"
 sed -i.bak 's/auth: password/auth: none/' ~/.config/code-server/config.yaml
 sed -i.bak 's/^bind-addr: .*$/bind-addr: 0.0.0.0:8001/' ~/.config/code-server/config.yaml
 
-echo ">> Restarting VSCode Server."
+printf ">> Restarting VSCode Server. \n"
 systemctl --user restart code-server
 
 printf ">> VSCode Server $VSCS_VER was installed successfully. \n"

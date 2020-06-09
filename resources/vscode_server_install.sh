@@ -2,12 +2,8 @@
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --arch*|-a*)
-      if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no `=`
-      _ARCH="${1#*=}"
-      ;;
     --vscs-ver*|-v*)
-      if [[ "$1" != *=* ]]; then shift; fi
+      if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no '='
       _VSCS_VER="${1#*=}"
       ;;
     --help|-h)
@@ -28,17 +24,9 @@ echo "##########################################################"
 
 export DEBIAN_FRONTEND=noninteractive
 
-#VSCS_VER="3.3.1"
-VSCS_PKG="${_ARCH}64.deb"
+VSCS_PKG="amd64.deb"
 VSCS_VER_LATEST=$(curl -s https://api.github.com/repos/cdr/code-server/releases/latest | jq -r -M '.tag_name')
 VSCS_VER="${_VSCS_VER:-$VSCS_VER_LATEST}"
-
-#printf ">> Uninstalling previous version of 'code-server'. \n"
-#sudo dpkg -r code-server
-##sudo apt clean -y && sudo apt autoremove -y
-##sudo apt -f install
-#sudo dpkg --configure -a
-
 VSCS_BUNDLE=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r "[.[].assets[].name | select(. | contains(\"${VSCS_VER}\") and contains(\"${VSCS_PKG}\"))][0]")
 #VSCS_BUNDLE=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].name" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)
 
@@ -54,9 +42,8 @@ fi
 echo ">> Installing DEB file."
 sudo dpkg -i $VSCS_BUNDLE
 
-echo ">> Starting systemd service."
+echo ">> Starting user systemd service."
 systemctl --user enable --now code-server
-#echo ">> Now visit http://127.0.0.1:8080. Your password is in ~/.config/code-server/config.yaml"
 
 echo ">> Deleting DEB file."
 rm -rf code-server*
