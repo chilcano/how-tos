@@ -8,26 +8,26 @@ Repository with technical indications to install, configure any interesting stuf
 2. [NewPassword Generator Java test](resources/NewPasswordGenerator.java)
 3. [Preparing-Python-Dev-Env-Mac-OSX](resources/preparing_python_dev_env_mac_osx.md)
 4. [Disabling sleeping when close laptop lid](resources/disable_sleeping_when_close_laptop_lid.md)
-5. Install and setup DevOps tools (includes MS VSCode) in Ubuntu
-   * [Install and setup DevOps tools](resources/setting_devops_tools.sh)
-      ```sh
-      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_devops_tools.sh
-      $ chmod +x setting_devops_tools.sh  
-      $ . setting_devops_tools.sh
-      ```
-   * [Customizing VS Code](resources/setup_vscode.sh)
-      ```sh
-      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setup_vscode.sh
-      $ chmod +x setup_vscode.sh
-      $ . setup_vscode.sh
-      ```
-6. [Install and setup DevOps tools (includes Code-Server) in Ubuntu](resources/install_devops_tools_v2.sh)  
+5. [Install and setup DevOps tools (includes MS VSCode, config and extensions) in Ubuntu](resources/devops_tools_install_v1.sh)
    ```sh
-   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/install_devops_tools_v2.sh
-   $ chmod +x install_devops_tools_v2.sh
-   $ . install_devops_tools_v2.sh
-   ```
-7. Customizing the Ubuntu Prompt   
+   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v1.sh
+   $ chmod +x devops_tools_install_v1.sh  
+   $ . devops_tools_install_v1.sh
+   ```  
+6. Install and setup DevOps tools  
+   * [DevOps tools in Ubuntu (amd64) or Raspberry Pi (arm)](resources/install_devops_tools_v2.sh)  
+      ```sh
+      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/install_devops_tools_v2.sh
+      $ chmod +x install_devops_tools_v2.sh 
+      $ . install_devops_tools_v2.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
+      ```
+   * Code-Server in Ubuntu (amd64)
+      - [code_server_install.sh](resources/code_server_install.sh)  
+      - [code_server_remove.sh](resources/code_server_remove.sh)
+   * Code-Server Raspberry Pi (arm)
+      - [code_server_install_rpi.sh](resources/code_server_install_rpi.sh)
+      - [code_server_remove_rpi.sh](resources/code_server_remove_rpi.sh)
+7. Customizing the Ubuntu Prompt  
    - [With Synth Shell](resources/fancy_prompt_with_synth_shell.md)   
       ![](resources/fancy_prompt_ubuntu_with_synth_shell.png)  
    - [With Fancy GIT](resources/fancy_prompt_with_fancy_git.md)  
