@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "##########################################################"
-echo "####              Setting VS Code                     ####"
+echo "####            Setting MS VS Code                    ####"
 echo "##########################################################"
 
 NOW=$(date +"%y%m%d.%H%M%S")
@@ -58,4 +58,3 @@ code --install-extension ballerina.ballerina
 
 ## https://marketplace.visualstudio.com/items?itemName=Shan.code-settings-sync
 code --install-extension Shan.code-settings-sync
-

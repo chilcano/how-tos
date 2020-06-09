@@ -8,10 +8,6 @@ while [ $# -gt 0 ]; do
       if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no `=`
       _ARCH="${1#*=}"
       ;;
-    --vscs-ver*|-v*)
-      if [[ "$1" != *=* ]]; then shift; fi
-      _VSCS_VER="${1#*=}"
-      ;;
     --tf-ver*|-t*)
       if [[ "$1" != *=* ]]; then shift; fi
       _TF_VER="${1#*=}"
@@ -21,14 +17,14 @@ while [ $# -gt 0 ]; do
       _PACKER_VER="${1#*=}"
       ;; 
     --help|-h)
-      printf "Install VSCode Server and other DevOps tools. \n"
-      printf "Examples: \n"
-      printf "\t . install_devops_tools_v2.sh --arch=amd --vscs-ver=3.4.0 \n"
-      printf "\t . install_devops_tools_v2.sh --arch=arm --vscs-ver=3.4.1 --tf-ver=0.11.15-oci \n"
+      printf "\t Install VSCode Server and other DevOps tools. \n"
+      printf "\t Examples: \n"
+      printf "\t . devops_tools_install_v2.sh --arch=amd --tf-ver=0.11.15-oci \n"
+      printf "\t . devops_tools_install_v2.sh --arch=arm --packer-ver=1.5.5 \n"
       exit 0
       ;;
     *)
-      >&2 printf "Error: Invalid argument. \n"
+      >&2 printf "\t Error: Invalid argument. \n"
       exit 1
       ;;
   esac
@@ -87,27 +83,6 @@ sudo mv maven.sh /etc/profile.d/maven.sh
 printf ">> Java and Maven configured."
 mvn -version
 printf "\n\n"
-
-echo "==> Installing VS Code Server"
-
-if [[ "$_ARCH" = "arm" ]]; then
-  
-  curl -fsSL https://code-server.dev/install.sh | sh
-else
-  wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/vscode_server_install.sh
-  chmod +x vscode_server_install.sh 
-  . vscode_server_install.sh --arch=$_ARCH --vscs-ver=$_VSCS_VER
-  rm -f vscode_server_install.sh 
-  printf ">> VS Code Server installed.\n\n"
-fi
-
-echo "==> Loading VS Code Server' settings and installing extensions"
-#wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/vscode_server_setup.sh
-#chmod +x vscode_server_setup.sh
-#. vscode_server_setup.sh
-#rm -f vscode_server_setup.sh
-#printf ">> VS Code Server configured and extensions installed.\n\n"
-printf ">> The settings.json and extensions will be loaded from GIST through SettingsSync Extensions"
 
 echo "==> Installing Terraform"
 #_TF_VER="0.11.15-oci"

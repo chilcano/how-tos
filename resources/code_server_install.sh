@@ -48,9 +48,15 @@ systemctl --user enable --now code-server
 echo ">> Deleting DEB file."
 rm -rf code-server*
 
+echo ">> Waiting VSCoder server starts"
+sleep 5s
+
 echo ">> Tweaking '~/.config/code-server/config.yaml'"
 sed -i.bak 's/auth: password/auth: none/' ~/.config/code-server/config.yaml
 sed -i.bak 's/^bind-addr: .*$/bind-addr: 0.0.0.0:8001/' ~/.config/code-server/config.yaml
+
+echo ">> Intalling Extension: Shan.code-settings-sync."
+code-server --install-extension Shan.code-settings-sync
 
 echo ">> Restarting VSCode Server."
 systemctl --user restart code-server

@@ -3,27 +3,27 @@
 TIME_RUN_DEVOPS=$(date +%s)
 
 echo "##########################################################"
-echo "####          Install and setup DevOps tools          ####"
+echo "####          Install and setup DevOps tools v1       ####"
 echo "##########################################################"
 
 export DEBIAN_FRONTEND=noninteractive
 
-echo "==> Installing Git, awscli, curl, jq, unzip, software-properties-common (apt-add-repository) and gnome-tweaks"
+echo "==> Installing Git, awscli, curl, jq, unzip and software-properties-common (apt-add-repository)"
 sudo apt update
-sudo apt install -y git awscli curl jq unzip software-properties-common sudo apt-transport-https gnome-tweaks
-printf ">> Git, awscli, curl, jq, unzip and gnome-tweaks installed OK.\n\n"
+sudo apt install -y git awscli curl jq unzip software-properties-common sudo apt-transport-https
+printf ">> Git, awscli, curl, jq and unzip installed. \n\n"
 
 # Disabled installation of Ansible (Ubuntu 20.04 has issues)
 #echo "==> Installing Ansible"
 #sudo apt-add-repository --yes --update ppa:ansible/ansible
 #sudo apt install -y ansible
-#printf ">> Ansible installed OK.\n\n"
+#printf ">> Ansible installed.\n\n"
 
 echo "==> Installing Java 8, 11 (default) and Oracle Java 11"
 sudo apt install -y default-jdk openjdk-8-jdk
 ##sudo add-apt-repository --yes --update ppa:linuxuprising/java
 ##sudo apt install -y oracle-java11-installer-local
-printf ">> Java installed OK.\n\n"
+printf ">> Java installed.\n\n"
 
 echo "==> Selecting Java/Javac 8 as default version and auto-mode"
 sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java 1200
@@ -32,7 +32,7 @@ printf "\n\n"
 
 echo "==> Installing Maven"
 sudo apt install -y maven
-printf ">> Maven installed OK.\n\n"
+printf ">> Maven installed.\n\n"
 
 echo "==> Creating '/etc/profile.d/maven.sh'"
 cat <<EOF > maven.sh
@@ -46,23 +46,23 @@ sudo chown -R root:root maven.sh
 sudo chmod +x maven.sh
 sudo mv maven.sh /etc/profile.d/maven.sh
 . /etc/profile.d/maven.sh
-printf ">> Java and Maven configured OK."
+printf ">> Java and Maven configured."
 mvn -version
 printf "\n\n"
 
 echo "==> Installing VS Code"
-wget -q https://packages.microsoft.com/keys/microsoft.asc -O- | sudo sudo apt-key add -
-sudo apt-add-repository --yes --update "deb [arch=amd64] https://packages.microsoft.com/repos/vscode stable main"
-##sudo apt update
-sudo apt install -y code
-printf ">> VS Code installed OK.\n\n"
+wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/vscode_install.sh
+chmod +x vscode_install.sh
+. vscode_install.sh
+rm -f vscode_install.sh
+printf ">> VS Code installed.\n\n"
 
 echo "==> Configuring VS Code and installing Extensions"
-wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setup_vscode.sh
-chmod +x setup_vscode.sh
-. setup_vscode.sh
-rm -f setup_vscode.sh
-printf ">> VS Code config and extensions installed OK.\n\n"
+wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/vscode_setup.sh
+chmod +x vscode_setup.sh
+. vscode_setup.sh
+rm -f vscode_setup.sh
+printf ">> VS Code config and extensions installed.\n\n"
 
 echo "==> Installing Terraform"
 TF_VERSION="0.11.15-oci"
@@ -73,7 +73,7 @@ wget --quiet "https://releases.hashicorp.com/terraform/${TF_VERSION}/${TF_BUNDLE
 unzip "${TF_BUNDLE}"
 sudo mv terraform /usr/local/bin/
 rm -rf terraf*
-printf ">> Terraform ${TF_VERSION} installed OK.\n\n"
+printf ">> Terraform ${TF_VERSION} installed.\n\n"
 
 echo "==> Installing Packer"
 PACKER_VERSION="1.5.5"
@@ -84,10 +84,10 @@ wget --quiet "https://releases.hashicorp.com/packer/${PACKER_VERSION}/${PACKER_B
 unzip "${PACKER_BUNDLE}"
 sudo mv packer /usr/local/bin/
 rm -rf packer*
-printf ">> Packer installed OK.\n\n"
+printf ">> Packer installed.\n\n"
 
 printf "==> Installing Chromium \n"
 sudo apt install -yq chromium-browser
-printf ">> Chromium installed OK.\n\n"
+printf ">> Chromium installed.\n\n"
 
 printf ">> Duration: $((($(date +%s)-${TIME_RUN_DEVOPS}))) seconds.\n\n"

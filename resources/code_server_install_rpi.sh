@@ -27,15 +27,8 @@ export DEBIAN_FRONTEND=noninteractive
 # NodeJS ver > 12 is mandatory
 NODEJS_VER="14"
 
+printf ">> Adding APT NodeJS repo. \n"
 curl -sL https://deb.nodesource.com/setup_$NODEJS_VER.x | sudo bash -
-
-## Run `sudo apt-get install -y nodejs` to install Node.js 14.x and npm
-## You may also need development tools to build native addons:
-#     sudo apt-get install gcc g++ make
-## To install the Yarn package manager, run:
-#     curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-#     echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-#     sudo apt-get update && sudo apt-get install yarn
 
 ##### ref: https://github.com/cdr/code-server/blob/master/doc/npm.md
 printf ">> Installing requisites. \n"
@@ -44,7 +37,7 @@ printf  ">> Requsites such as libs were installed. \n\n"
 
 #### ref: https://linuxize.com/post/how-to-install-node-js-on-raspberry-pi/
 printf ">> Installing NodeJS and NPM. \n"
-sudo apt install nodejs
+sudo apt install -y nodejs
 printf ">> NodeJS $(node -v) and NPM $(npm -v) installed. \n\n"
 
 printf ">> Installing VSCode Server. \n"
@@ -53,8 +46,7 @@ if [ -z ${_VSCS_VER+x} ]; then
 else
   VSCS_VER="@${_VSCS_VER}"
 fi
-# check all versions: npm view code-server versions --json
-#sudo npm install -g code-server --unsafe-perm
+#### To query all versions available: $ npm view code-server versions --json
 sudo npm install -g code-server$VSCS_VER --unsafe-perm 
 printf ">> VSCode Server installed. \n\n"
 
@@ -63,23 +55,12 @@ sudo npm install -g @google-cloud/logging
 sudo npm install -g protobufjs
 printf ">> Post-installation completed. \n\n"
 
-#pi@raspberrypi:~ $ code-server
-#info  Wrote default config file to ~/.config/code-server/config.yaml
-#info  Using config file ~/.config/code-server/config.yaml
-#info  Using user-data-dir ~/.local/share/code-server
-#info  code-server 3.4.1 48f7c2724827e526eeaa6c2c151c520f48a61259
-#info  HTTP server listening on http://127.0.0.1:8080
-#info      - Using password from ~/.config/code-server/config.yaml
-#info      - To disable use `--auth none`
-#info    - Not serving HTTPS
-
-### systemd system
+### VSCode server as a systemd system
 ### Ref:  https://upcloud.com/community/tutorials/install-code-server-ubuntu-18-04/
 
+#### VSCode server if systemd user doesn't work
 #sudo cp /usr/lib/systemd/user/code-server.service /etc/systemd/system
 #sudo sed -i 's/\(Restart=always\)/\1\nUser=$USER/' /etc/systemd/system/code-server.service
-#sudo systemctl daemon-reload
-#sudo systemctl enable --now code-server
 
 printf ">> Creating '/usr/lib/systemd/user/code-server.service'. \n"
 cat <<EOF > code-server.service
@@ -111,6 +92,10 @@ sleep 5s
 printf ">> Tweaking '~/.config/code-server/config.yaml'. \n"
 sed -i.bak 's/auth: password/auth: none/' ~/.config/code-server/config.yaml
 sed -i.bak 's/^bind-addr: .*$/bind-addr: 0.0.0.0:8001/' ~/.config/code-server/config.yaml
+
+printf ">> Installing Extension: Shan.code-settings-sync. \n"
+code-server --install-extension Shan.code-settings-sync
+printf ">> Extension installed. \n\n"
 
 printf ">> Restarting VSCode Server. \n"
 systemctl --user restart code-server
