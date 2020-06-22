@@ -31,7 +31,7 @@ Repository with technical indications to install, configure any interesting stuf
    - [With Synth Shell](resources/fancy_prompt_with_synth_shell.md)   
       ![](resources/fancy_prompt_ubuntu_with_synth_shell.png)  
    - [With Fancy GIT](resources/fancy_prompt_with_fancy_git.md)  
-      ![](resources/fancy_prompt_ubuntu_with_fancy_git_updated2.png) 
+      ![](resources/fancy_prompt_ubuntu_with_fancy_git_updated3.png) 
 
 8. [Install custom Fonts in Ubuntu](resources/install_fonts_in_ubuntu.sh)  
    ```sh

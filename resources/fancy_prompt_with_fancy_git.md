@@ -1,7 +1,6 @@
 ## Fancy Prompt in Ubuntu with Fancy GIT
 
-![](fancy_prompt_ubuntu_with_fancy_git_updated2.png)
-
+![](fancy_prompt_ubuntu_with_fancy_git_updated3.png)
 
 ### 1) Install fonts
 ```sh
@@ -27,8 +26,8 @@ $ . ~/.bashrc
 
 #### Apply a style.  
 ```sh
-$ fancygit double-line
-$ fancygit dark-col-double-line
+$ fancygit double-line; . ~/.bashrc
+$ fancygit dark-col-double-line; . ~/.bashrc
 ```  
   
 #### Loading Fonts.   
@@ -63,9 +62,9 @@ working_on_venv=" ≤"
 
 If it still doesn't work, then load a text-based fancy prompt:
 ```sh
-$ fancygit human
-$ fancygit human-dark
-$ fancygit simple-double-line
+$ fancygit human; . ~/.bashrc
+$ fancygit human-dark; . ~/.bashrc
+$ fancygit simple-double-line; . ~/.bashrc
 ``` 
   
 ### 5) Apply colored style and pattern
