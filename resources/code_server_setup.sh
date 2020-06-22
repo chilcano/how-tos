@@ -26,8 +26,14 @@ code-server --install-extension usernamehw.indent-one-space
 ## https://marketplace.visualstudio.com/items?itemName=yzhang.markdown-all-in-one
 code-server --install-extension yzhang.markdown-all-in-one
 
-## https://marketplace.visualstudio.com/items?itemName=mauve.terraform
-code-server --install-extension mauve.terraform
+## https://marketplace.visualstudio.com/items?itemName=mauve.terraform (deprecated)
+#code-server --install-extension mauve.terraform
+#code-server --uninstall-extension mauve.terraform
+## https://marketplace.visualstudio.com/items?itemName=HashiCorp.terraform (start on version 2.0)
+#code-server --install-extension HashiCorp.terraform
+wget -q https://github.com/hashicorp/vscode-terraform/releases/download/v2.0.1/terraform-2.0.1.vsix
+code-server --install-extension terraform-2.0.1.vsix 
+rm -rf terraform-2.0.1.vsix
 
 ## https://marketplace.visualstudio.com/items?itemName=VisualStudioExptTeam.vscodeintellicode
 ######code-server --install-extension VisualStudioExptTeam.vscodeintellicode
