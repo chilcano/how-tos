@@ -24,6 +24,7 @@ while [ $# -gt 0 ]; do
       printf "\t Install VSCode Server and other DevOps tools. \n"
       printf "\t Examples: \n"
       printf "\t . devops_tools_install_v2.sh --arch=amd --tf-ver=0.11.15-oci \n"
+      printf "\t . devops_tools_install_v2.sh --arch=amd --tf-ver=0.12.26 \n"
       printf "\t . devops_tools_install_v2.sh --arch=arm --packer-ver=1.5.5 \n"
       exit 0
       ;;
