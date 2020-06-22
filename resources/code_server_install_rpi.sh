@@ -19,7 +19,7 @@ while [ $# -gt 0 ]; do
 done
 
 echo   "##########################################################"
-printf "##   Installing VSCode Server on Raspberry Pi ($(uname -m))  ##\n"
+printf "##      Installing VSCode Server on Raspberry Pi        ##\n"
 echo   "##########################################################"
 
 export DEBIAN_FRONTEND=noninteractive

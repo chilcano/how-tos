@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "##########################################################"
-echo "#### Setting VS Code Server and installing extensions ####"
+echo "#    Setting VSCode Server and installing extensions     #"
 echo "##########################################################"
 
 NOW=$(date +"%y%m%d.%H%M%S")

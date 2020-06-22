@@ -2,6 +2,10 @@
 
 TIME_RUN_DEVOPS=$(date +%s)
 
+echo "##########################################################"
+echo "####         Install and setup DevOps tools v2        ####"
+echo "##########################################################"
+
 while [ $# -gt 0 ]; do
   case "$1" in
     --arch*|-a*)                           # amd | arm 
@@ -30,10 +34,6 @@ while [ $# -gt 0 ]; do
   esac
   shift
 done
-
-echo "##########################################################"
-echo "####         Install and setup DevOps tools v2        ####"
-echo "##########################################################"
 
 export DEBIAN_FRONTEND=noninteractive
 

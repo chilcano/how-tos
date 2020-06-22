@@ -19,7 +19,7 @@ while [ $# -gt 0 ]; do
 done
 
 echo "##########################################################"
-echo "####            Installing VS Code Server             ####"
+echo "#            Installing VSCode Server                    #"
 echo "##########################################################"
 
 export DEBIAN_FRONTEND=noninteractive
