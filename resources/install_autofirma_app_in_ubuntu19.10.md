@@ -1,5 +1,4 @@
-Install AutoFirma Java App in Ubuntu 19.10
-==========================================
+## Install AutoFirma Java App in Ubuntu 19.10
 
 In order to work with it, you need a proper X.509 Certificate provided by Gencat CATCert (IdCAT), FNMT or Spanish e-DNI, and a Browser configured to work with Java App.
 
