@@ -15,11 +15,11 @@ Repository with technical indications to install, configure any interesting stuf
    $ . devops_tools_install_v1.sh
    ```  
 6. Install and setup DevOps tools  
-   * [DevOps tools in Ubuntu (amd64) or Raspberry Pi (arm)](resources/install_devops_tools_v2.sh)  
+   * [DevOps tools in Ubuntu (amd64) or Raspberry Pi (arm)](resources/devops_tools_install_v2.sh)  
       ```sh
-      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/install_devops_tools_v2.sh
-      $ chmod +x install_devops_tools_v2.sh 
-      $ . install_devops_tools_v2.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
+      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v2.sh
+      $ chmod +x devops_tools_install_v2.sh 
+      $ . devops_tools_install_v2.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
       ```
    * Code-Server in Ubuntu (amd64)
       - [code_server_install.sh](resources/code_server_install.sh)  
