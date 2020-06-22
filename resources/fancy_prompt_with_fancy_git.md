@@ -1,6 +1,7 @@
 ## Fancy Prompt in Ubuntu with Fancy GIT
 
-![](fancy_prompt_ubuntu_with_fancy_git.png)
+![](fancy_prompt_ubuntu_with_fancy_git_updated2.png)
+
 
 ### 1) Install fonts
 ```sh
