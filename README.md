@@ -59,4 +59,5 @@ Repository with technical indications to install, configure any interesting stuf
 13. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu.md)
 14. [Working with Tmux](resources/working_with_tmux.md)
 15. [File sharing through Samba(SMB)](resources/install_and_config_samba.md)
-
+16. [Terraforms samples - where is the issue?](aws-terraform-where-is-the-issue/) 
+  

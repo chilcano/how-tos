@@ -9,5 +9,12 @@ $ chmod +x synth-shell/setup.sh
 $ synth-shell/setup.sh
 ```
 
+#### Uninstall
+
+```sh
+$ synth-shell/setup.sh
+```
+
 ### Reference:
 - [https://yalneb.blogspot.com/2018/01/fancy-bash-promt.html](https://yalneb.blogspot.com/2018/01/fancy-bash-promt.html)
+
