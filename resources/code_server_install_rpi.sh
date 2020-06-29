@@ -101,3 +101,5 @@ printf ">> Restarting VSCode Server. \n"
 systemctl --user restart code-server
 
 printf ">> VSCode Server was installed successfully. \n"
+
+

@@ -1,0 +1,56 @@
+{
+  "apps": {
+    "http": {
+      "servers": {
+        "srv0": {
+          "listen": [
+            ":8443"
+          ],
+          "routes": [
+            {
+              "handle": [
+                {
+                  "handler": "subroute",
+                  "routes": [
+                    {
+                      "handle": [
+                        {
+                          "handler": "reverse_proxy",
+                          "headers": {
+                            "request": {
+                              "set": {
+                                "Host": [
+                                  "{http.reverse_proxy.upstream.host}"
+                                ]
+                              }
+                            }
+                          },
+                          "upstreams": [
+                            {
+                              "dial": "127.0.0.1:8001"
+                            }
+                          ]
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ],
+              "match": [
+                {
+                  "host": [
+                    "192.168.1.55"
+                  ]
+                }
+              ],
+              "terminal": true
+            }
+          ],
+          "strict_sni_host": false,
+          "logs": {}
+        }
+      }
+    }
+  }
+}
+  
