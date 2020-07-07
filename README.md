@@ -67,4 +67,8 @@ Repository with technical indications to install, configure any interesting stuf
 14. [Working with Tmux](resources/working_with_tmux.md)
 15. [File sharing through Samba(SMB)](resources/install_and_config_samba.md)
 16. [Terraforms samples - where is the issue?](aws-terraform-where-is-the-issue/) 
+17. AWS CloudFormation samples:  
+   - [Creating an Affordable Remote DevOps Desktop with AWS CloudFormation](https://github.com/chilcano/affordable-remote-desktop/tree/master/resources/cloudformation)
+   - [Deploying AWS ECS Networking and Architecture Patterns](https://github.com/chilcano/cfn-samples/tree/master/ECS/README.md)
+   
   
