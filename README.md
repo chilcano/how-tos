@@ -21,12 +21,19 @@ Repository with technical indications to install, configure any interesting stuf
       $ chmod +x devops_tools_install_v2.sh 
       $ . devops_tools_install_v2.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
       ```
-   * Code-Server in Ubuntu (amd64)
-      - [code_server_install.sh](resources/code_server_install.sh)  
-      - [code_server_remove.sh](resources/code_server_remove.sh)
-   * Code-Server Raspberry Pi (arm)
-      - [code_server_install_rpi.sh](resources/code_server_install_rpi.sh)
-      - [code_server_remove_rpi.sh](resources/code_server_remove_rpi.sh)
+   * Code-Server in Ubuntu (amd64): [code_server_install.sh](resources/code_server_install.sh) and [code_server_remove.sh](resources/code_server_remove.sh)
+      ```sh
+      // Download bash scripts
+      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_install.sh
+      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove.sh
+      // Set execution permissions
+      $ chmod +x code_server_install.sh code_server_remove.sh
+      // Install
+      $ . code_server_install.sh
+      // Remove
+      $ . code_server_remove.sh
+      ```
+   * Code-Server Raspberry Pi (arm): [code_server_install_rpi.sh](resources/code_server_install_rpi.sh) and [code_server_remove_rpi.sh](resources/code_server_remove_rpi.sh)
 7. Customizing the Ubuntu Prompt  
    - [With Synth Shell](resources/fancy_prompt_with_synth_shell.md)   
       ![](resources/fancy_prompt_ubuntu_with_synth_shell.png)  
