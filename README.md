@@ -46,11 +46,11 @@ Repository with technical indications to install, configure any interesting stuf
    $ chmod +x install_fonts_in_ubuntu.sh
    $ . install_fonts_in_ubuntu.sh
    ```  
-9. [Installing Jekyll in Ubuntu](resources/setting_jekyll_in_ubuntu.sh)
+9. [Installing Jekyll in Linux](resources/setting_jekyll_in_linux.sh). Tested in Ubuntu 18.04 or above and Raspbian/Raspberry Pi OS.
    ```sh
-   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_jekyll_in_ubuntu.sh
-   $ chmod +x setting_jekyll_in_ubuntu.sh
-   $ . setting_jekyll_in_ubuntu.sh
+   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_jekyll_in_linux.sh
+   $ chmod +x setting_jekyll_in_linux.sh
+   $ . setting_jekyll_in_linux.sh
    ```
    Running Jekyll:   
    ```sh
@@ -68,6 +68,10 @@ Repository with technical indications to install, configure any interesting stuf
 15. [File sharing through Samba(SMB)](resources/install_and_config_samba.md)
 16. [Terraforms samples - where is the issue?](aws-terraform-where-is-the-issue/) 
 17. AWS CloudFormation samples:  
+   - Convert JSON to YAML.  
+     ```sh
+     $ ruby -ryaml -rjson -e 'puts YAML.dump(JSON.load(ARGF))' < cloudformation_template_example.json > cloudformation_template_example.yaml
+     ```
    - [Creating an Affordable Remote DevOps Desktop with AWS CloudFormation](https://github.com/chilcano/affordable-remote-desktop/tree/master/resources/cloudformation)
    - [Deploying AWS ECS Networking and Architecture Patterns](https://github.com/chilcano/cfn-samples/tree/master/ECS/README.md)
    
