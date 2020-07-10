@@ -41,7 +41,7 @@ Repository with technical indications to install, configure any interesting stuf
       ```
    * [Install only **DevOps tools**](resources/devops_tools_install_v2.sh). It works in Ubuntu (amd64), Raspberry Pi (arm) and WSL2 (Ubuntu/amd64).
       ```sh
-      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v2.sh
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v2.sh
       $ chmod +x devops_tools_install_v2.sh 
       $ . devops_tools_install_v2.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
       ```
@@ -53,14 +53,14 @@ Repository with technical indications to install, configure any interesting stuf
 
 8. [Install custom Fonts in Ubuntu](resources/install_fonts_in_ubuntu.sh)  
    ```sh
-   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/install_fonts_in_ubuntu.sh
+   $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/install_fonts_in_ubuntu.sh
    $ chmod +x install_fonts_in_ubuntu.sh
    $ . install_fonts_in_ubuntu.sh
    ```  
 9. Installing **Jekyll** in Linux. Tested in Ubuntu 18.04 or above and Raspbian/Raspberry Pi OS.
    It will install also Ruby, Ruby-dev, build-essential, zlib1g-dev, Gem, Bundler, etc.  
    ```sh
-   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[setting_jekyll_in_linux.sh](resources/setting_jekyll_in_linux.sh) 
+   $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[setting_jekyll_in_linux.sh](resources/setting_jekyll_in_linux.sh) 
    $ chmod +x setting_jekyll_in_linux.sh
    $ . setting_jekyll_in_linux.sh
    ```
