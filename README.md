@@ -31,7 +31,7 @@ Repository with technical indications to install, configure any interesting stuf
       $ . code_server_install_rpi.sh
       $ . code_server_remove_rpi.sh
       ```
-   * [Install](resources/code_server_install_wsl2.sh)/remove only **Code-Server** in WLS2 (Ubuntu 20.04):
+   * [Install](resources/code_server_install_wsl2.sh)/[remove](resources/code_server_remove_wsl2.sh) only **Code-Server** in WLS2 (Ubuntu 20.04):
       ```sh
       $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_install_wsl2.sh
       $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove_wsl2.sh
