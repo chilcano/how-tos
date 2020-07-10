@@ -37,10 +37,12 @@ printf ">> Maven installed.\n\n"
 echo "==> Creating '/etc/profile.d/maven.sh'"
 cat <<EOF > maven.sh
 #!/bin/bash
-export JAVA_HOME=/usr/lib/jvm/default-java
-export M2_HOME=/opt/maven
-export MAVEN_HOME=/opt/maven
-export PATH=${M2_HOME}/bin:${PATH}
+
+JAVA_HOME=/usr/lib/jvm/default-java
+M2_HOME=/opt/maven
+MAVEN_HOME=/opt/maven
+## removed 'export' and replaced '${xyz}' for '$xyz'
+PATH=$M2_HOME/bin:$PATH
 EOF
 sudo chown -R root:root maven.sh
 sudo chmod +x maven.sh
