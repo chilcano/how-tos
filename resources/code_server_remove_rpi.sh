@@ -9,6 +9,7 @@ export DEBIAN_FRONTEND=noninteractive
 systemctl --user stop code-server
 systemctl --user disable --now code-server
 sudo rm -rf /usr/lib/systemd/user/code-server.service
+sudo rm -rf /etc/systemd/system/code-server.service 
 
 printf ">> Uninstalling 'code-server' ($(code-server -v)). \n"
 sudo dpkg -r code-server
