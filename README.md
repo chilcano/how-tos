@@ -57,10 +57,10 @@ Repository with technical indications to install, configure any interesting stuf
    $ chmod +x install_fonts_in_ubuntu.sh
    $ . install_fonts_in_ubuntu.sh
    ```  
-9. Installing **Jekyll** in Linux. Tested in Ubuntu 18.04 or above and Raspbian/Raspberry Pi OS.
+9. [Install **Jekyll** in Linux](resources/setting_jekyll_in_linux.sh). Tested in Ubuntu 18.04 or above and Raspbian/Raspberry Pi OS.  
    It will install also Ruby, Ruby-dev, build-essential, zlib1g-dev, Gem, Bundler, etc.  
    ```sh
-   $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[setting_jekyll_in_linux.sh](resources/setting_jekyll_in_linux.sh) 
+   $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_jekyll_in_linux.sh
    $ chmod +x setting_jekyll_in_linux.sh
    $ . setting_jekyll_in_linux.sh
    ```
