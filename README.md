@@ -8,32 +8,43 @@ Repository with technical indications to install, configure any interesting stuf
 2. [NewPassword Generator Java test](resources/NewPasswordGenerator.java)
 3. [Preparing-Python-Dev-Env-Mac-OSX](resources/preparing_python_dev_env_mac_osx.md)
 4. [Disabling sleeping when close laptop lid](resources/disable_sleeping_when_close_laptop_lid.md)
-5. [Install and setup DevOps tools (includes MS VSCode, config and extensions) in Ubuntu](resources/devops_tools_install_v1.sh)
+5. Install IDE and DevOps tools (MS VSCode, extensions, Terraform, Packer, Java, AWS Cli, etc.) in **Ubuntu**
    ```sh
-   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v1.sh
+   $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[devops_tools_install_v1.sh](resources/devops_tools_install_v1.sh)
    $ chmod +x devops_tools_install_v1.sh  
    $ . devops_tools_install_v1.sh
    ```  
-6. Install and setup DevOps tools  
-   * [DevOps tools in Ubuntu (amd64) or Raspberry Pi (arm)](resources/devops_tools_install_v2.sh)  
+6. Install IDE and DevOps tools:  
+   * Install/remove only **Code-Server** in Ubuntu (amd64):
       ```sh
-      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v2.sh
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[code_server_install.sh](resources/code_server_install.sh)
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[code_server_remove.sh](resources/code_server_remove.sh)
+      $ chmod +x code_server_install.sh code_server_remove.sh
+      $ . code_server_install.sh
+      $ . code_server_remove.sh
+      ```
+   * Install/remove only **Code-Server** in Raspberry Pi (arm):
+      ```sh
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[code_server_install_rpi.sh](resources/code_server_install_rpi.sh)
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[code_server_remove_rpi.sh](resources/code_server_remove_rpi.sh)
+      $ chmod +x code_server_install_rpi.sh code_server_remove_rpi.sh
+      $ . code_server_install_rpi.sh
+      $ . code_server_remove_rpi.sh
+      ```
+   * Install/remove only **Code-Server** in WLS2 (Ubuntu 20.04):
+      ```sh
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[code_server_install.sh](resources/code_server_install_wsl2.sh)
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[code_server_remove.sh](resources/code_server_remove_wsl2.sh)
+      $ chmod +x code_server_install_wsl2.sh code_server_remove_wsl2.sh
+      $ . code_server_install_wsl2.sh
+      $ . code_server_remove_wsl2.sh
+      ```
+   * Install only **DevOps tools**. It works in Ubuntu (amd64), Raspberry Pi (arm) and WSL2 (Ubuntu/amd64).
+      ```sh
+      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[devops_tools_install_v2.sh](resources/devops_tools_install_v2.sh)  
       $ chmod +x devops_tools_install_v2.sh 
       $ . devops_tools_install_v2.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
       ```
-   * Code-Server in Ubuntu (amd64): [code_server_install.sh](resources/code_server_install.sh) and [code_server_remove.sh](resources/code_server_remove.sh)
-      ```sh
-      // Download bash scripts
-      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_install.sh
-      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove.sh
-      // Set execution permissions
-      $ chmod +x code_server_install.sh code_server_remove.sh
-      // Install
-      $ . code_server_install.sh
-      // Remove
-      $ . code_server_remove.sh
-      ```
-   * Code-Server Raspberry Pi (arm): [code_server_install_rpi.sh](resources/code_server_install_rpi.sh) and [code_server_remove_rpi.sh](resources/code_server_remove_rpi.sh)
 7. Customizing the Ubuntu Prompt  
    - [With Synth Shell](resources/fancy_prompt_with_synth_shell.md)   
       ![](resources/fancy_prompt_ubuntu_with_synth_shell.png)  
@@ -46,9 +57,9 @@ Repository with technical indications to install, configure any interesting stuf
    $ chmod +x install_fonts_in_ubuntu.sh
    $ . install_fonts_in_ubuntu.sh
    ```  
-9. [Installing Jekyll in Linux](resources/setting_jekyll_in_linux.sh). Tested in Ubuntu 18.04 or above and Raspbian/Raspberry Pi OS.
+9. Installing **Jekyll** (Ruby, Ruby-dev, build-essential, zlib1g-dev, Gem, Bundler, etc.) in Linux. Tested in Ubuntu 18.04 or above and Raspbian/Raspberry Pi OS.
    ```sh
-   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_jekyll_in_linux.sh
+   $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[setting_jekyll_in_linux.sh](resources/setting_jekyll_in_linux.sh) 
    $ chmod +x setting_jekyll_in_linux.sh
    $ . setting_jekyll_in_linux.sh
    ```
