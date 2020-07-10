@@ -8,40 +8,40 @@ Repository with technical indications to install, configure any interesting stuf
 2. [NewPassword Generator Java test](resources/NewPasswordGenerator.java)
 3. [Preparing-Python-Dev-Env-Mac-OSX](resources/preparing_python_dev_env_mac_osx.md)
 4. [Disabling sleeping when close laptop lid](resources/disable_sleeping_when_close_laptop_lid.md)
-5. Install IDE and DevOps tools (MS VSCode, extensions, Terraform, Packer, Java, AWS Cli, etc.) in **Ubuntu**
+5. [Install IDE and DevOps tools](resources/devops_tools_install_v1.sh) (MS VSCode, extensions, Terraform, Packer, Java, AWS Cli, etc.) in **Ubuntu**
    ```sh
-   $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[devops_tools_install_v1.sh](resources/devops_tools_install_v1.sh)
+   $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v1.sh
    $ chmod +x devops_tools_install_v1.sh  
    $ . devops_tools_install_v1.sh
    ```  
 6. Install IDE and DevOps tools:  
-   * Install/remove only **Code-Server** in Ubuntu (amd64):
+   * [Install](resources/code_server_install.sh)/[remove](resources/code_server_remove.sh) only **Code-Server** in Ubuntu (amd64):
       ```sh
-      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[code_server_install.sh](resources/code_server_install.sh)
-      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[code_server_remove.sh](resources/code_server_remove.sh)
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_install.sh
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove.sh
       $ chmod +x code_server_install.sh code_server_remove.sh
       $ . code_server_install.sh
       $ . code_server_remove.sh
       ```
-   * Install/remove only **Code-Server** in Raspberry Pi (arm):
+   * [Install](resources/code_server_install_rpi.sh)/[remove](resources/code_server_remove_rpi.sh) only **Code-Server** in Raspberry Pi (arm):
       ```sh
-      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[code_server_install_rpi.sh](resources/code_server_install_rpi.sh)
-      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[code_server_remove_rpi.sh](resources/code_server_remove_rpi.sh)
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_install_rpi.sh
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove_rpi.sh
       $ chmod +x code_server_install_rpi.sh code_server_remove_rpi.sh
       $ . code_server_install_rpi.sh
       $ . code_server_remove_rpi.sh
       ```
-   * Install/remove only **Code-Server** in WLS2 (Ubuntu 20.04):
+   * [Install](resources/code_server_install_wsl2.sh)/remove only **Code-Server** in WLS2 (Ubuntu 20.04):
       ```sh
-      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/<a href="resources/code_server_install_wsl2.sh">code_server_install_wsl2.sh</a> 
-      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[code_server_remove.sh](resources/code_server_remove_wsl2.sh)
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_install_wsl2.sh
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove_wsl2.sh
       $ chmod +x code_server_install_wsl2.sh code_server_remove_wsl2.sh
       $ . code_server_install_wsl2.sh
       $ . code_server_remove_wsl2.sh
       ```
-   * Install only **DevOps tools**. It works in Ubuntu (amd64), Raspberry Pi (arm) and WSL2 (Ubuntu/amd64).
+   * [Install only **DevOps tools**](resources/devops_tools_install_v2.sh). It works in Ubuntu (amd64), Raspberry Pi (arm) and WSL2 (Ubuntu/amd64).
       ```sh
-      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[devops_tools_install_v2.sh](resources/devops_tools_install_v2.sh)  
+      $ wget https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v2.sh
       $ chmod +x devops_tools_install_v2.sh 
       $ . devops_tools_install_v2.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
       ```
