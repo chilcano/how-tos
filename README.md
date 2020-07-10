@@ -33,7 +33,7 @@ Repository with technical indications to install, configure any interesting stuf
       ```
    * Install/remove only **Code-Server** in WLS2 (Ubuntu 20.04):
       ```sh
-      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[code_server_install.sh](resources/code_server_install_wsl2.sh)
+      $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/<a href="resources/code_server_install_wsl2.sh">code_server_install_wsl2.sh</a> 
       $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/[code_server_remove.sh](resources/code_server_remove_wsl2.sh)
       $ chmod +x code_server_install_wsl2.sh code_server_remove_wsl2.sh
       $ . code_server_install_wsl2.sh
