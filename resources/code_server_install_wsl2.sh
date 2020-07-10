@@ -14,7 +14,10 @@ ln -s ~/.local/lib/code-server-3.4.1/bin/code-server ~/.local/bin/code-server
 #nano ~/.bashrc
 #PATH=~/.local/bin:$PATH
 
-printf "Start Code-Server running this command:\n"
+printf ">> Start Code-Server running this command:\n"
 printf "\t code-server --auth none \n"
+
+printf ">> Installing Extension: Shan.code-settings-sync. \n"
+code-server --install-extension Shan.code-settings-sync
 
 ## install settings-sync extension
