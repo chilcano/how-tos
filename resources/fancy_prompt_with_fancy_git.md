@@ -74,3 +74,7 @@ $ source $HOME/.bashrc
 
 ### Reference:
 - [https://github.com/diogocavilha/fancy-git](https://github.com/diogocavilha/fancy-git)
+
+### Reported issues
+
+- [Fluent Terminal on Win 10 doesn't render glyphs](https://github.com/diogocavilha/fancy-git/issues/70)
