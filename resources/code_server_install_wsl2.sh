@@ -1,15 +1,48 @@
 #!/bin/bash
 
-echo   "##########################################################"
-echo   "##   Installing Code-Server on WSL2 (Ubuntu 20.04)    ##"
-echo   "##########################################################"
+unset _VSCS_TAG
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --vscs-tag*|-t*)
+      if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no '=' (3.4.1, 3.4.0, v3.4.0)
+      _VSCS_TAG="${1#*=}"
+      ;;
+    --help|-h)
+      printf "Install Code-Server on Raspberry Pi." 
+      exit 0
+      ;;
+    *)
+      >&2 printf "Error: Invalid argument: '$1' \n"
+      exit 1
+      ;;
+  esac
+  shift
+done
+
+echo "##########################################################"
+echo "#      Installing Code-Server on WSL2 (Ubuntu 20.04)     #"
+echo "##########################################################"
+
+if [ -z ${_VSCS_TAG+x} ]; then
+  # getting the latest tag_name
+  VSCS_TAG="$(curl -s https://api.github.com/repos/cdr/code-server/releases/latest | jq -r -M '.tag_name')"
+else
+  VSCS_TAG="${_VSCS_TAG}"
+fi
+VSCS_VER="${VSCS_TAG//v/}"
+## download URL format
+# https://github.com/cdr/code-server/releases/download/3.4.0/code-server-3.4.0-linux-amd64.tar.gz
+# https://github.com/cdr/code-server/releases/download/v3.4.0/code-server-3.4.0-linux-amd64.tar.gz
+VSCS_BUNDLE_URL="https://github.com/cdr/code-server/releases/download/${VSCS_TAG}/code-server-${VSCS_VER}-linux-amd64.tar.gz"
+VSCS_BUNDLE_NAME="${VSCS_BUNDLE_URL##*/}"
 
 printf ">> Downloading and unzipping Code-Server.\n"
 mkdir -p ~/.local/lib ~/.local/bin
-curl -fL https://github.com/cdr/code-server/releases/download/v3.4.1/code-server-3.4.1-linux-amd64.tar.gz \
-  | tar -C ~/.local/lib -xz
-mv ~/.local/lib/code-server-3.4.1-linux-amd64 ~/.local/lib/code-server-3.4.1
-ln -s ~/.local/lib/code-server-3.4.1/bin/code-server ~/.local/bin/code-server
+
+curl -fL ${VSCS_BUNDLE_URL} | tar -C ~/.local/lib -xz
+mv ~/.local/lib/code-server-${VSCS_VER}-linux-amd64 ~/.local/lib/code-server-${VSCS_VER}
+ln -s ~/.local/lib/code-server-${VSCS_VER}/bin/code-server ~/.local/bin/code-server
 
 printf ">> Installing Extension: Shan.code-settings-sync. \n"
 code-server --install-extension Shan.code-settings-sync

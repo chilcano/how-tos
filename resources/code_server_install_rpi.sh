@@ -1,5 +1,7 @@
 #!/bin/bash
 
+unset _VSCS_VER
+
 while [ $# -gt 0 ]; do
   case "$1" in
     --vscs-ver*|-v*)
@@ -7,7 +9,7 @@ while [ $# -gt 0 ]; do
       _VSCS_VER="${1#*=}"
       ;;
     --help|-h)
-      printf "Install VSCode Server on Raspberry Pi." 
+      printf "Install Code-Server on Raspberry Pi." 
       exit 0
       ;;
     *)
@@ -18,9 +20,9 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-echo   "##########################################################"
-printf "##      Installing VSCode Server on Raspberry Pi        ##\n"
-echo   "##########################################################"
+echo "##########################################################"
+echo "#       Installing Code-Server on Raspberry Pi           #"
+echo "##########################################################"
 
 export DEBIAN_FRONTEND=noninteractive
 
@@ -40,7 +42,7 @@ printf ">> Installing NodeJS and NPM. \n"
 sudo apt install -y nodejs
 printf ">> NodeJS $(node -v) and NPM $(npm -v) installed. \n\n"
 
-printf ">> Installing VSCode Server. \n"
+printf ">> Installing Code-Server. \n"
 if [ -z ${_VSCS_VER+x} ]; then
   VSCS_VER=""
 else
@@ -48,17 +50,17 @@ else
 fi
 #### To query all versions available: $ npm view code-server versions --json
 sudo npm install -g code-server$VSCS_VER --unsafe-perm 
-printf ">> VSCode Server installed. \n\n"
+printf ">> Code-Server installed. \n\n"
 
-printf ">> VSCode Server post-installing. \n"
+printf ">> Code-Server post-installing. \n"
 sudo npm install -g @google-cloud/logging
 sudo npm install -g protobufjs
 printf ">> Post-installation completed. \n\n"
 
-### VSCode server as a systemd system
+### Code-Server as a systemd system service
 ### Ref:  https://upcloud.com/community/tutorials/install-code-server-ubuntu-18-04/
 
-#### VSCode server if systemd user doesn't work
+#### Code-Server if systemd user doesn't work
 #sudo cp /usr/lib/systemd/user/code-server.service /etc/systemd/system
 #sudo sed -i 's/\(Restart=always\)/\1\nUser=$USER/' /etc/systemd/system/code-server.service
 
@@ -97,9 +99,8 @@ printf ">> Installing Extension: Shan.code-settings-sync. \n"
 code-server --install-extension Shan.code-settings-sync
 printf ">> Extension installed. \n\n"
 
-printf ">> Restarting VSCode Server. \n"
+printf ">> Restarting Code-Server. \n"
 systemctl --user restart code-server
 
-printf ">> VSCode Server was installed successfully. \n"
-
+printf ">> Code-Server was installed successfully. \n"
 

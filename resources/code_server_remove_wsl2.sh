@@ -1,8 +1,8 @@
 #!/bin/bash
 
-echo   "################################################################"
-printf "#    Removing Code-Server and tools on WSL2 (Ubuntu 20.04)     #\n"
-echo   "################################################################"
+echo "################################################################"
+echo "#    Removing Code-Server and tools on WSL2 (Ubuntu 20.04)     #"
+echo "################################################################"
 
 ## remove config files
 rm -rf ~/.config/code-server/
