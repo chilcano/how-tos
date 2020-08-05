@@ -3,7 +3,7 @@
 TIME_RUN_DEVOPS=$(date +%s)
 
 echo "##########################################################"
-echo "####              Setting Jekyll                      ####"
+echo "####              Setting Jekyll in Linux             ####"
 echo "##########################################################"
 
 echo "==> Installing Ruby"
@@ -53,5 +53,8 @@ printf "\t $ JEKYLL_ENV=production bundle exec jekyll serve --incremental --watc
 
 printf "\t If you have posts in draft (place your posts in '<site>\_drafts\' folder without 'date' and 'permalink' in the front-matter):\n"
 printf "\t $ JEKYLL_ENV=production bundle exec jekyll serve --watch --drafts \n\n"
+
+printf "\t If you want run Jekyll without warnings:\n"
+printf "\t $ RUBYOPT=-W0 JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch  \n\n"
 
 printf "\n\t** Duration of process: $((($(date +%s)-${TIME_RUN_DEVOPS}))) seconds **\n\n"
