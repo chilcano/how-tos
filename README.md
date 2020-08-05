@@ -69,6 +69,7 @@ Repository with technical indications to install, configure any interesting stuf
    $ JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch
    $ JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch --host=0.0.0.0
    $ JEKYLL_ENV=production bundle exec jekyll serve --watch --drafts
+   $ RUBYOPT=-W0 JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch 
    ```
 10. GIT guides:
    - [Github - Persisting credentials](resources/git_saving_credentials.md)
