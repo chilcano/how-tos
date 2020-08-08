@@ -52,6 +52,10 @@ Repository with technical indications to install, configure any interesting stuf
       ![](resources/fancy_prompt_ubuntu_with_fancy_git_updated3.png) 
 
 8. [Install custom Fonts in Ubuntu](resources/install_fonts_in_ubuntu.sh)  
+   This script will install 3 patched fonts including glyphs to be used in custom Terminal Prompt:  
+   - [Menlo-for-Powerline](https://github.com/abertsch/Menlo-for-Powerline)
+   - [SourceCodePro Powerline Awesome Regular](https://github.com/diogocavilha/fancy-git/blob/master/fonts/SourceCodePro%2BPowerline%2BAwesome%2BRegular.ttf)
+   - [Droid Sans Mono Nerd Font Complete](https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf)
    ```sh
    $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/install_fonts_in_ubuntu.sh
    $ chmod +x install_fonts_in_ubuntu.sh
