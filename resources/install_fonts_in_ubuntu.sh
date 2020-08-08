@@ -28,7 +28,7 @@ printf ">> Fonts updated/installed. \n\n"
 ## Ref: https://github.com/ryanoasis/nerd-fonts#option-6-ad-hoc-curl-download
 printf "==> Installing 'Droid Sans Mono for Powerline Nerd' fonts. \n"
 wget -q https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf
-mv "Droid Sans Mono for Powerline Nerd Font Complete.otf" "${FONTS_DIR}/chilcano/"
+mv "'Droid Sans Mono Nerd Font Complete.otf'" "${FONTS_DIR}/chilcano/"
 printf ">> Fonts updated/installed. \n\n"
 
 sudo apt install -y gnome-tweaks
