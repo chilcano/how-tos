@@ -31,3 +31,5 @@ wget -q https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSa
 mv "Droid Sans Mono for Powerline Nerd Font Complete.otf" "${FONTS_DIR}/chilcano/"
 printf ">> Fonts updated/installed. \n\n"
 
+sudo apt install -y gnome-tweaks
+printf "==> Now with Gnome-Tweaks select the patched font to use. \n\n"
