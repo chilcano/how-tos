@@ -41,5 +41,5 @@ sudo apt install -y gnome-tweaks
 printf "==> Now with Gnome-Tweaks select the patched font to use. \n\n"
 
 printf "==> Cleaning up."
-rm -rf install_fonts_in_ubuntu*  "Menlo-for-Powerline" *.ttf *.otf
+rm -rf  "Menlo-for-Powerline" *.ttf *.otf
 printf "\n"
