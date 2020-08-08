@@ -4,8 +4,6 @@ NOW=$(date +"%y%m%d.%H%M%S")
 FONTS_DIR1="${HOME}/.fonts"                   # terminal
 FONTS_DIR2="${HOME}/.local/share/fonts"       # chrome ?
 
-fc-cache -fv
-
 if [ -d "${FONTS_DIR1}/chilcano" ]; then
   printf "\n==> There are fonts in '${FONTS_DIR1}/chilcano/'. Backing up it.\n\n"
   tar -zcvf "${FONTS_DIR1}/chilcano-fonts.${NOW}" "${FONTS_DIR1}/chilcano"
@@ -15,7 +13,8 @@ else
     mkdir -p ${FONTS_DIR1}/chilcano/
     mkdir -p ${FONTS_DIR2}/chilcano/
 fi
-  printf "\n"
+fc-cache -fv
+printf "\n"
 
 ## Ref: https://dev.to/mattstratton/making-powerline-work-in-visual-studio-code-terminal-1m7
 #printf "==> Installing 'Menlo for Powerline' fonts. \n"
