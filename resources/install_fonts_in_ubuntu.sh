@@ -1,6 +1,6 @@
 #!/bin/bash
 
-NOW2=$(date +"%y%m%d.%H%M%S")
+NOW=$(date +"%y%m%d.%H%M%S")
 FONTS_DIR1="${HOME}/.fonts"                   # terminal
 FONTS_DIR2="${HOME}/.local/share/fonts"       # chrome ?
 
@@ -29,9 +29,9 @@ mv "SourceCodePro+Powerline+Awesome+Regular.ttf" "${FONTS_DIR1}/chilcano/"
 printf "Fonts updated/installed. \n\n"
 
 ## Ref: https://github.com/ryanoasis/nerd-fonts#option-2-release-archive-download
-printf "==> Installing '${FONT_NAME}' fonts. \n"
 FONT_NAME="DroidSansMono"
-FONT_BUNDLE_URL=$(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | jq -r -M '.assets[].browser_download_url | select(contains("${FONT_NAME}"))')
+printf "==> Installing '${FONT_NAME}' fonts. \n"
+FONT_BUNDLE_URL=$(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | jq -r -M '.assets[].browser_download_url' | grep $FONT_NAME)
 FONT_BUNDLE_NAME="${FONT_BUNDLE_URL##*/}"
 if [ -f "${FONT_BUNDLE_NAME}" ]; then
     printf ">> The $FONT_BUNDLE_NAME file exists. Nothing to download. \n"
