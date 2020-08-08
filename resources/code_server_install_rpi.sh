@@ -52,6 +52,10 @@ fi
 sudo npm install -g code-server$VSCS_VER --unsafe-perm 
 printf ">> Code-Server installed. \n\n"
 
+## Info:
+# npm root -g           // show the path where modules are installed (/usr/lib/node_modules/)
+# npm list -g           // see all global libraries in tree
+
 printf ">> Code-Server post-installing. \n"
 sudo npm install -g @google-cloud/logging
 sudo npm install -g protobufjs

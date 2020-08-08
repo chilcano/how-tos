@@ -61,7 +61,15 @@ Repository with technical indications to install, configure any interesting stuf
    $ chmod +x install_fonts_in_ubuntu.sh
    $ . install_fonts_in_ubuntu.sh
    ```  
-9. [Install **Jekyll** in Linux](resources/setting_jekyll_in_linux.sh). Tested in Ubuntu 18.04 or above and Raspbian/Raspberry Pi OS.  
+9. Patching Fonts in Code-Server in Raspberry Pi   
+   This process will patch Code-Server running in Raspberry Pi (installed in `/usr/lib/node_modules/code-server`) to use custom fonts.  
+   Further info: [https://github.com/cdr/code-server/issues/1374](https://github.com/cdr/code-server/issues/1374)  
+   ```sh
+   $ git clone https://github.com/tuanpham-dev/code-server-font-patch
+   $ sudo ./code-server-font-patch/patch.sh /usr/lib/node_modules/code-server
+   $ systemctl --user restart code-server
+   ```  
+10. [Install **Jekyll** in Linux](resources/setting_jekyll_in_linux.sh). Tested in Ubuntu 18.04 or above and Raspbian/Raspberry Pi OS.  
    It will install also Ruby, Ruby-dev, build-essential, zlib1g-dev, Gem, Bundler, etc.  
    ```sh
    $ wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_jekyll_in_linux.sh
@@ -75,16 +83,16 @@ Repository with technical indications to install, configure any interesting stuf
    $ JEKYLL_ENV=production bundle exec jekyll serve --watch --drafts
    $ RUBYOPT=-W0 JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch 
    ```
-10. GIT guides:
+11. GIT guides:
    - [Github - Persisting credentials](resources/git_saving_credentials.md)
    - [Github - Pull Request](resources/git_pull_request_guide.md)
-11. [Getting CPU and GPU temperature in Ubuntu 19.04](resources/getting_temperature_cpu_gpu_hd_in_ubuntu.md)
-12. [Installing Logitech Unifying (Keyboard adn mice) in Ubuntu 19.04](resources/installing_logitech_unifying_in_ubuntu_19_04.md)
-13. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu.md)
-14. [Working with Tmux](resources/working_with_tmux.md)
-15. [File sharing through Samba(SMB)](resources/install_and_config_samba.md)
-16. [Terraforms samples - where is the issue?](aws-terraform-where-is-the-issue/) 
-17. AWS CloudFormation samples:  
+12. [Getting CPU and GPU temperature in Ubuntu 19.04](resources/getting_temperature_cpu_gpu_hd_in_ubuntu.md)
+13. [Installing Logitech Unifying (Keyboard adn mice) in Ubuntu 19.04](resources/installing_logitech_unifying_in_ubuntu_19_04.md)
+14. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu.md)
+15. [Working with Tmux](resources/working_with_tmux.md)
+16. [File sharing through Samba(SMB)](resources/install_and_config_samba.md)
+17. [Terraforms samples - where is the issue?](aws-terraform-where-is-the-issue/) 
+18. AWS CloudFormation samples:  
    - Convert JSON to YAML.  
      ```sh
      $ ruby -ryaml -rjson -e 'puts YAML.dump(JSON.load(ARGF))' < cloudformation_template_example.json > cloudformation_template_example.yaml
