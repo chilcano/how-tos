@@ -1,8 +1,8 @@
 #!/bin/bash
 
 NOW2=$(date +"%y%m%d.%H%M%S")
-FONTS_DIR1="${HOME}/.fonts"                         # terminal
-FONTS_DIR2="${HOME}/.local/share/fonts"       # chrome
+FONTS_DIR1="${HOME}/.fonts"                   # terminal
+FONTS_DIR2="${HOME}/.local/share/fonts"       # chrome ?
 
 if [ -d "${FONTS_DIR1}/chilcano" ]; then
   printf "\n==> There are fonts in '${FONTS_DIR1}/chilcano/'. Backing up it.\n\n"
@@ -20,28 +20,34 @@ printf "==> Installing 'Menlo for Powerline' fonts. \n"
 git clone --depth=1 https://github.com/abertsch/Menlo-for-Powerline
 rm -rf ./Menlo-for-Powerline/.git
 mv "Menlo-for-Powerline" "${FONTS_DIR1}/chilcano/"
-cp -r "${FONTS_DIR1}/chilcano/Menlo-for-Powerline/" "${FONTS_DIR2}/chilcano/"
 printf "Fonts updated/installed. \n\n"
 
 ## Ref: https://github.com/diogocavilha/fancy-git
 printf "==> Installing 'SourceCode+Powerline+Awesome+Regular' fonts. \n"
 wget -q https://github.com/diogocavilha/fancy-git/blob/master/fonts/SourceCodePro%2BPowerline%2BAwesome%2BRegular.ttf
 mv "SourceCodePro+Powerline+Awesome+Regular.ttf" "${FONTS_DIR1}/chilcano/"
-cp -r "${FONTS_DIR1}/chilcano/SourceCodePro+Powerline+Awesome+Regular.ttf" "${FONTS_DIR2}/chilcano/"
 printf "Fonts updated/installed. \n\n"
 
-## Ref: https://github.com/ryanoasis/nerd-fonts#option-6-ad-hoc-curl-download
-printf "==> Installing 'Droid Sans Mono Nerd Font Complete Mono' fonts. \n"
-#wget -q https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf
-wget -q https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete%20Mono.otf
-mv "Droid Sans Mono Nerd Font Complete Mono.otf" "${FONTS_DIR1}/chilcano/"
-cp -r "${FONTS_DIR1}/chilcano/Droid Sans Mono Nerd Font Complete Mono.otf" "${FONTS_DIR2}/chilcano/"
-printf "Fonts updated/installed. \n\n"
+## Ref: https://github.com/ryanoasis/nerd-fonts#option-2-release-archive-download
+printf "==> Installing '${FONT_NAME}' fonts. \n"
+FONT_NAME="DroidSansMono"
+FONT_BUNDLE_URL=$(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | jq -r -M '.assets[].browser_download_url | select(contains("${FONT_NAME}"))')
+FONT_BUNDLE_NAME="${FONT_BUNDLE_URL##*/}"
+if [ -f "${FONT_BUNDLE_NAME}" ]; then
+    printf ">> The $FONT_BUNDLE_NAME file exists. Nothing to download. \n"
+else
+    printf ">> The file doesn't exist. Downloading the $FONT_BUNDLE_NAME file. \n"
+    wget -q $FONT_BUNDLE_URL
+fi
+unzip -q "${FONT_BUNDLE_URL}" -d "${FONTS_DIR1}/chilcano/${FONT_NAME}"
+printf "Fonts ${FONT_NAME} updated/installed. \n\n"
+
+### Copy all fonts to FONTS_DIR2="${HOME}/.local/share/fonts" 
+cp -r "${FONTS_DIR1}/chilcano/" "${FONTS_DIR2}/chilcano/"
 
 sudo apt install -y gnome-tweaks
 printf "==> Now with Gnome-Tweaks select the patched font to use. \n\n"
 
-printf "==> font caching and cleaning up."
+printf "==> Font caching and cleaning up."
 fc-cache -fv
-#rm -rf  "Menlo-for-Powerline" *.ttf *.otf
 printf "\n"
