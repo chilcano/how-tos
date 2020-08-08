@@ -40,6 +40,7 @@ printf "Fonts updated/installed. \n\n"
 sudo apt install -y gnome-tweaks
 printf "==> Now with Gnome-Tweaks select the patched font to use. \n\n"
 
-printf "==> Cleaning up."
+printf "==> font caching and cleaning up."
+fc-cache -fv
 #rm -rf  "Menlo-for-Powerline" *.ttf *.otf
 printf "\n"
