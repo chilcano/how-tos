@@ -33,3 +33,5 @@ printf "Fonts updated/installed. \n\n"
 
 sudo apt install -y gnome-tweaks
 printf "==> Now with Gnome-Tweaks select the patched font to use. \n\n"
+
+rm -rf install_fonts_in_ubuntu*
