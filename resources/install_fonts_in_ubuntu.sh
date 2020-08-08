@@ -1,7 +1,7 @@
 #!/bin/bash
 
 NOW2=$(date +"%y%m%d.%H%M%S")
-FONTS_DIR="~/.local/share/fonts"
+FONTS_DIR="${HOME}/.local/share/fonts"
 
 if [ -d "${FONTS_DIR}/chilcano" ]; then
   printf "==> There are fonts in '${FONTS_DIR}/chilcano/', then backing up it.\n\n"
