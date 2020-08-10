@@ -4,7 +4,7 @@ unset NOW2 FONTS_DIR1 FONTS_DIR2 FONT_NAME FONT_BUNDLE_URL FONT_BUNDLE_NAME
 while [ $# -gt 0 ]; do
   case "$1" in
     --fn*|-f*)
-      if [[ "$1" != *=* ]]; then shift; fi # if no value then 'SourceCodePro'. Other values: DroidSansMono, Noto)
+      if [[ "$1" != *=* ]]; then shift; fi # if no value then 'DroidSansMono'. Other values: SourceCodePro, Noto)
       _FONT_NAME="${1#*=}"
       ;;
     --help|-h)
@@ -37,7 +37,7 @@ mv "SourceCodePro+Powerline+Awesome+Regular.ttf" ${FONTS_DIR1}/chilcano/
 printf "Fonts updated/installed. \n\n"
 
 ## Ref: https://github.com/ryanoasis/nerd-fonts#option-2-release-archive-download
-FONT_NAME="${_FONT_NAME:-SourceCodePro}"
+FONT_NAME="${_FONT_NAME:-DroidSansMono}"
 printf "==> Installing '${FONT_NAME}' fonts. \n"
 FONT_BUNDLE_URL=$(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | jq -r -M '.assets[].browser_download_url' | grep $FONT_NAME)
 FONT_BUNDLE_NAME="${FONT_BUNDLE_URL##*/}"
