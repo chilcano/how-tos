@@ -1,18 +1,16 @@
 #!/bin/bash
 
-NOW=$(date +"%y%m%d.%H%M%S")
+NOW2=$(date +"%y%m%d.%H%M%S")
 FONTS_DIR1="${HOME}/.fonts"                   # terminal
 FONTS_DIR2="${HOME}/.local/share/fonts"       # chrome ?
-
 if [ -d "${FONTS_DIR1}/chilcano" ]; then
   printf "\n==> There are fonts in '${FONTS_DIR1}/chilcano/'. Backing up it.\n\n"
-  tar -zcvf "${FONTS_DIR1}/chilcano-fonts.${NOW}" "${FONTS_DIR1}/chilcano"
-  rm -rf "${FONTS_DIR1}/.uuid" "${FONTS_DIR1}/chilcano/"
-  rm -rf "${FONTS_DIR2}/.uuid" "${FONTS_DIR2}/chilcano/" 
-else
-    mkdir -p ${FONTS_DIR1}/chilcano/
-    mkdir -p ${FONTS_DIR2}/chilcano/
+  tar -zcvf "${FONTS_DIR1}/chilcanofonts.${NOW2}" "${FONTS_DIR1}/chilcano"
+  rm -rf ${FONTS_DIR1}/chilcano/
+  rm -rf ${FONTS_DIR2}/chilcano/ 
 fi
+mkdir -p ${FONTS_DIR1}/chilcano/
+mkdir -p ${FONTS_DIR2}/chilcano/
 fc-cache -fv
 printf "\n"
 
@@ -31,7 +29,7 @@ printf "Fonts updated/installed. \n\n"
 
 ## Ref: https://github.com/ryanoasis/nerd-fonts#option-2-release-archive-download
 FONT_NAME="DroidSansMono"
-FONT_NAME="SourceCodePro"
+#FONT_NAME="SourceCodePro"
 printf "==> Installing '${FONT_NAME}' fonts. \n"
 FONT_BUNDLE_URL=$(curl -s https://api.github.com/repos/ryanoasis/nerd-fonts/releases/latest | jq -r -M '.assets[].browser_download_url' | grep $FONT_NAME)
 FONT_BUNDLE_NAME="${FONT_BUNDLE_URL##*/}"
@@ -44,7 +42,7 @@ fi
 unzip -q "${FONT_BUNDLE_NAME}" -d "${FONTS_DIR1}/chilcano/${FONT_NAME}"
 printf "Fonts ${FONT_NAME} updated/installed. \n\n"
 
-### Copy all fonts to FONTS_DIR2="${HOME}/.local/share/fonts" 
+### Copy all fonts to FONTS_DIR2 
 cp -r "${FONTS_DIR1}/chilcano/" "${FONTS_DIR2}/chilcano/"
 
 sudo apt install -y gnome-tweaks
