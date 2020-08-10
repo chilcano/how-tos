@@ -1,5 +1,7 @@
 #!/bin/bash
 
+unset NOW2 FONTS_DIR1 FONTS_DIR2 FONT_NAME FONT_BUNDLE_URL FONT_BUNDLE_NAME
+
 NOW2=$(date +"%y%m%d.%H%M%S")
 FONTS_DIR1="${HOME}/.fonts"                   # terminal
 FONTS_DIR2="${HOME}/.local/share/fonts"       # chrome ?
@@ -39,11 +41,11 @@ else
     printf ">> The file doesn't exist. Downloading the $FONT_BUNDLE_NAME file. \n"
     wget -q $FONT_BUNDLE_URL
 fi
-unzip -q "${FONT_BUNDLE_NAME}" -d "${FONTS_DIR1}/chilcano/${FONT_NAME}"
+unzip -q ${FONT_BUNDLE_NAME} -d ${FONTS_DIR1}/chilcano/${FONT_NAME}
 printf "Fonts ${FONT_NAME} updated/installed. \n\n"
 
 ### Copy all fonts to FONTS_DIR2 
-cp -r "${FONTS_DIR1}/chilcano/" "${FONTS_DIR2}/chilcano/"
+cp -r ${FONTS_DIR1}/chilcano/ ${FONTS_DIR2}/
 
 sudo apt install -y gnome-tweaks
 printf "==> Now with Gnome-Tweaks select the patched font to use. \n\n"
