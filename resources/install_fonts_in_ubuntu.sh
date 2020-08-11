@@ -57,5 +57,7 @@ sudo apt install -y gnome-tweaks
 printf "==> Now with Gnome-Tweaks select the patched font to use. \n\n"
 
 printf "==> Font caching and cleaning up."
-fc-cache -fv
+fc-cache -fv ${FONTS_DIR1}
+fc-cache -fv ${FONTS_DIR2}
+
 printf "\n"
