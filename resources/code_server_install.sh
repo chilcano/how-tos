@@ -65,6 +65,7 @@ cp $MKCERT_BUNDLE_NAME mkcert
 chmod +x mkcert
 
 printf ">> Generating TLS certs with 'mkcert' for 'Code-Server'.\n"
+sudo apt -y install libnss3-tools
 ./mkcert -install
 ./mkcert vscs.ubuntu localhost 127.0.0.1 ::1
 mv vscs.* ~/
