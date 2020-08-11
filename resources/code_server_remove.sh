@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "##########################################################"
-echo "#        Removing VSCode Server and config files         #"
+echo "#        Removing Code-Server and config files           #"
 echo "##########################################################"
 
 export DEBIAN_FRONTEND=noninteractive
