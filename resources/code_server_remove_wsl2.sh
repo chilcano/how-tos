@@ -10,6 +10,9 @@ rm -rf ~/.config/code-server/
 ## remove binaries
 rm -rf ~/.local/lib/code-server-*
 
+## remove links
+rm -rf ~/.local/bin/code-server
+
 ## remove extensions, logs, User config
 rm -rf ~/.local/share/code-server/
 
