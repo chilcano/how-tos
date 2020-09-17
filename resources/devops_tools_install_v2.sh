@@ -21,7 +21,7 @@ while [ $# -gt 0 ]; do
       _PACKER_VER="${1#*=}"
       ;; 
     --help|-h)
-      printf "\t Install VSCode Server and other DevOps tools. \n"
+      printf "\t Install DevOps tools. \n"
       printf "\t Examples: \n"
       printf "\t . devops_tools_install_v2.sh --arch=amd --tf-ver=0.11.15-oci \n"
       printf "\t . devops_tools_install_v2.sh --arch=amd --tf-ver=0.12.26 \n"
@@ -117,9 +117,12 @@ sudo mv packer /usr/local/bin/
 rm -rf packer*
 printf ">> Packer installed.\n\n"
 
-### Chromium isn't needed and Ubuntu 20.04 it uses other installation way
-#printf "==> Installing Chromium \n"
-#sudo apt install -yq chromium-browser
-#printf ">> Chromium installed.\n\n"
+echo "==> Installing Docker"
+sudo apt install -y docker.io
+sudo systemctl enable --now docker
+sudo apt-mark hold docker.io
+sudo usermod -aG docker $USER
+DOCKER_VER="$(curl -s --unix-socket /var/run/docker.sock http://latest/version | jq -r -M '.Version')"
+printf ">> Docker ${DOCKER_VER} installed.\n\n"
 
 printf ">> Duration: $((($(date +%s)-${TIME_RUN_DEVOPS}))) seconds.\n\n"

@@ -50,7 +50,14 @@ printf "\nGet a trusted Gist ID to restore extensions and configurations through
 printf "\t URL: https://gist.github.com/chilcano/b5f88127bd2d89289dc2cd36032ce856 \n"
 printf "\t Gist ID: b5f88127bd2d89289dc2cd36032ce856 \n\n"
 
-printf ">> Installing 'mkcert' (https://github.com/FiloSottile/mkcert) .\n"
+printf ">> Installing Extension from VSIX: AmazonWebServices.aws-toolkit-vscode. \n"
+AWS_TOOLKIT_VSIX_URL=$(curl -s https://api.github.com/repos/aws/aws-toolkit-vscode/releases/latest | jq -r -M '.assets[].browser_download_url')
+AWS_TOOLKIT_VSIX_NAME="${AWS_TOOLKIT_VSIX_URL##*/}"
+wget -q $AWS_TOOLKIT_VSIX_URL
+code-server --install-extension $AWS_TOOLKIT_VSIX_NAME
+printf "\n\n"
+
+printf ">> Installing MKCert .\n"
 MKCERT_BUNDLE_URL=$(curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest | jq -r -M '.assets[].browser_download_url | select(contains("linux-amd"))')
 MKCERT_BUNDLE_NAME="${MKCERT_BUNDLE_URL##*/}"
 

@@ -5,7 +5,7 @@ unset _VSCS_VER
 while [ $# -gt 0 ]; do
   case "$1" in
     --vscs-ver*|-v*)
-      if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no '=' (3.4.1, 3.4.0)
+      if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no '=' (3.5.0, 3.4.1, 3.4.0)
       _VSCS_VER="${1#*=}"
       ;;
     --help|-h)
@@ -95,7 +95,7 @@ printf ">> code-server.service enabled and started. \n\n"
 printf ">> Waiting code-server starts. \n\n"
 sleep 5s 
 
-printf ">> Installing 'mkcert' (https://github.com/FiloSottile/mkcert) .\n"
+printf ">> Installing MKCert.\n"
 MKCERT_BUNDLE_URL=$(curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest | jq -r -M '.assets[].browser_download_url | select(contains("linux-arm"))')
 MKCERT_BUNDLE_NAME="${MKCERT_BUNDLE_URL##*/}"
 
@@ -137,6 +137,13 @@ code-server --install-extension Shan.code-settings-sync
 printf "\nGet a trusted Gist ID to restore extensions and configurations through Settings-Sync extension:\n"
 printf "\t Gist URL: https://gist.github.com/chilcano/b5f88127bd2d89289dc2cd36032ce856 \n"
 printf "\t Gist ID: b5f88127bd2d89289dc2cd36032ce856 \n\n"
+
+printf ">> Installing Extension from VSIX: AmazonWebServices.aws-toolkit-vscode. \n"
+AWS_TOOLKIT_VSIX_URL=$(curl -s https://api.github.com/repos/aws/aws-toolkit-vscode/releases/latest | jq -r -M '.assets[].browser_download_url')
+AWS_TOOLKIT_VSIX_NAME="${AWS_TOOLKIT_VSIX_URL##*/}"
+wget -q $AWS_TOOLKIT_VSIX_URL
+code-server --install-extension $AWS_TOOLKIT_VSIX_NAME
+printf "\n\n"
 
 printf ">> Restarting Code-Server to apply changes. \n"
 systemctl --user restart code-server
