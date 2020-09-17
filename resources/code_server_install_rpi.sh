@@ -57,7 +57,8 @@ printf ">> Code-Server installed. \n\n"
 # npm list -g           // see all global libraries in tree
 
 printf ">> Code-Server post-installing. \n"
-sudo npm install -g @google-cloud/logging
+#sudo npm install -g @google-cloud/logging
+sudo npm install @google-cloud/logging@^4.5.2
 sudo npm install -g protobufjs
 printf ">> Post-installation completed. \n\n"
 

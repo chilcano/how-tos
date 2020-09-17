@@ -19,6 +19,10 @@ sudo dpkg --configure -a
 sudo npm uninstall -g code-server protobufjs @google-cloud/logging
 printf ">> Code-Server uninstalled. \n\n"
 
+printf ">> Uninstalling NodeJS. \n"
+sudo apt remove nodejs -y
+printf ">> NodeJS uninstalled. \n\n"
+
 printf ">> Removing code-server config files. \n"
 rm -rf ~/.config/code-server/
 
