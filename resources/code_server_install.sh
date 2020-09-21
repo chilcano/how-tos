@@ -28,7 +28,7 @@ while [ $# -gt 0 ]; do
 done
 
 echo "##########################################################"
-echo "#      Installing Code-Server on Ubuntu (${_ARCH:-amd}64)    #"
+echo "#        Installing Code-Server on Ubuntu (${_ARCH:-amd}64)       #"
 echo "##########################################################"
 
 export DEBIAN_FRONTEND=noninteractive
@@ -40,14 +40,20 @@ VSCS_VER="${_VSCS_VER:-$VSCS_VER_LATEST}"
 VSCS_BUNDLE=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r "[.[].assets[].name | select(. | contains(\"${VSCS_VER}\") and contains(\"${VSCS_PKG}\"))][0]")
 #VSCS_BUNDLE=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].name" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)
 
-if [ -f "${VSCS_BUNDLE}" ]; then
-    printf ">> The $VSCS_BUNDLE file exists. Nothing to download. \n"
+if [ -z $VSCS_BUNDLE ]; then
+  printf ">> The file doesn't exist. The pkg '$VSCS_PKG' or ver '$VSCS_VER' don't exist. \n"
+  printf ">> Existing the process. \n"
+  exit 1
 else
-    printf ">> The $VSCS_BUNDLE doesn't exist. Downloading the DEB file. \n"
-    #VSCS_URL=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r "[.[].assets[].browser_download_url | select(. | contains(\"${VSCS_VER}\") and contains(\"${VSCS_PKG}\"))][0]")
-    VSCS_URL=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].browser_download_url" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)
-    wget -q $VSCS_URL
-fi
+  if [ -f "${VSCS_BUNDLE}" ]; then 
+      printf ">> The $VSCS_BUNDLE file exists. Nothing to download. \n"
+  else
+      printf ">> The $VSCS_BUNDLE doesn't exist. Downloading the DEB file. \n"
+      #VSCS_URL=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r "[.[].assets[].browser_download_url | select(. | contains(\"${VSCS_VER}\") and contains(\"${VSCS_PKG}\"))][0]")
+      VSCS_URL=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].browser_download_url" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)
+      wget -q $VSCS_URL
+  fi
+fi 
 
 echo ">> Installing DEB file."
 sudo dpkg -i $VSCS_BUNDLE
