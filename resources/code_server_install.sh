@@ -39,11 +39,15 @@ export DEBIAN_FRONTEND=noninteractive
 VSCS_PKG="${_ARCH:-amd}64.deb"
 VSCS_VER_LATEST=$(curl -s https://api.github.com/repos/cdr/code-server/releases/latest | jq -r -M '.tag_name')
 VSCS_VER="${_VSCS_VER:-$VSCS_VER_LATEST}"
-VSCS_BUNDLE=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r "[.[].assets[].name | select(. | contains(\"${VSCS_VER}\") and contains(\"${VSCS_PKG}\"))][0]")
+#VSCS_BUNDLE=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r "[.[].assets[].name | select(. | contains(\"${VSCS_VER}\") and contains(\"${VSCS_PKG}\"))][0]")
 #VSCS_BUNDLE=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].name" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)
+VSCS_DOWNLOAD_URL=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].browser_download_url" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)
+VSCS_BUNDLE_NAME=""
 
-if [[ -z ${VSCS_BUNDLE} || ${VSCS_BUNDLE} -ne null || ${VSCS_BUNDLE} != null ]]; then
-  printf ">> The Code-Server '$VSCS_BUNDLE' file with pkg '$VSCS_PKG' and ver '$VSCS_VER' doesn't exist. \n"
+if [[ -z ${VSCS_DOWNLOAD_URL} || ${VSCS_DOWNLOAD_URL} -ne null || ${VSCS_DOWNLOAD_URL} != null || ${VSCS_DOWNLOAD_URL} != "" ]]; then
+  VSCS_BUNDLE_NAME="${VSCS_DOWNLOAD_URL##*/}"
+else 
+  printf ">> The Code-Server file with pkg '$VSCS_PKG' and ver '$VSCS_VER' doesn't exist. \n"
   printf "\t Try these examples: \n"
   printf "\t . code_server_install.sh --vscs-ver=3.4.1 \n"
   printf "\t . code_server_install.sh --vscs-ver=3.4.1 --arch=arm \n"
@@ -52,17 +56,15 @@ if [[ -z ${VSCS_BUNDLE} || ${VSCS_BUNDLE} -ne null || ${VSCS_BUNDLE} != null ]];
   exit 1
 fi 
 
-if [ -f "${VSCS_BUNDLE}" ]; then 
-    printf ">> The '$VSCS_BUNDLE' file has been downloaded previously. Nothing to download. \n"
+if [ -f "${VSCS_BUNDLE_NAME}" ]; then 
+    printf ">> The '$VSCS_BUNDLE_NAME' file has been downloaded previously. Nothing to download. \n"
 else
-    printf ">> The '$VSCS_BUNDLE' doesn't exist. Downloading the DEB file. \n"
-    #VSCS_URL=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r "[.[].assets[].browser_download_url | select(. | contains(\"${VSCS_VER}\") and contains(\"${VSCS_PKG}\"))][0]")
-    VSCS_URL=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].browser_download_url" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)
-    wget -q $VSCS_URL
+    printf ">> The '$VSCS_BUNDLE_NAME' doesn't exist. Downloading the DEB file. \n"
+    wget -q $VSCS_DOWNLOAD_URL
 fi
 
 echo ">> Installing DEB file."
-sudo dpkg -i $VSCS_BUNDLE
+sudo dpkg -i $VSCS_BUNDLE_NAME
 
 echo ">> Starting user systemd service."
 #systemctl --user enable --now code-server
