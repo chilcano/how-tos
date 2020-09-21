@@ -44,6 +44,9 @@ VSCS_VER="${_VSCS_VER:-$VSCS_VER_LATEST}"
 VSCS_DOWNLOAD_URL=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].browser_download_url" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)
 VSCS_BUNDLE_NAME="${VSCS_DOWNLOAD_URL##*/}"
 
+echo "----> $VSCS_DOWNLOAD_URL"
+echo "----> $VSCS_BUNDLE_NAME"
+
 if [ -f "${VSCS_BUNDLE_NAME}" ]; then 
     printf ">> The '$VSCS_BUNDLE_NAME' file has been downloaded previously. Nothing to download. \n"
 else
