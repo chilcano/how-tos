@@ -71,14 +71,14 @@ systemctl enable --now code-server@$USER
 echo ">> Deleting DEB file."
 rm -rf code-server*
 
-echo ">> Waiting Code-Server starts \n\n"
+echo ">> Waiting Code-Server starts"
 sleep 5s
 
-printf ">> Installing 'MKCert'.\n"
+printf ">> Installing 'MKCert'. \n"
 #MKCERT_PKG="linux-amd"   # linux-arm 
 MKCERT_PKG="linux-${_ARCH:-amd}"
 #MKCERT_BUNDLE_URL=$(curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest | jq -r -M '.assets[].browser_download_url | select(contains("linux-amd"))')
-MKCERT_BUNDLE_URL=$(curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest | jq -r -M '.assets[].browser_download_url | select(contains("${MKCERT_PKG}"))')
+MKCERT_BUNDLE_URL=$(curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest | jq -r -M '.assets[].browser_download_url | select(contains(\"${MKCERT_PKG}\"))')
 MKCERT_BUNDLE_NAME="${MKCERT_BUNDLE_URL##*/}"
 
 if [ -f "${MKCERT_BUNDLE_NAME}" ]; then
