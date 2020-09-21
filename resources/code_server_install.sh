@@ -1,6 +1,6 @@
 #!/bin/bash
 
-unset _VSCS_VER _ARCH VSCS_VER_LATEST VSCS_VER VSCS_URL_DOWNLOAD VSCS_BUNDLE
+unset _VSCS_VER _ARCH VSCS_VER_LATEST VSCS_VER VSCS_BUNDLE 
 
 while [ $# -gt 0 ]; do
   case "$1" in
