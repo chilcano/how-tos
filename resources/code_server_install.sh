@@ -60,9 +60,7 @@ echo ">> Installing DEB file."
 sudo dpkg -i $VSCS_BUNDLE_NAME
 
 echo ">> Starting user systemd service."
-#systemctl --user enable --now code-server
-#systemctl enable --now code-server@$USER
-sudo systemctl enable --now code-server@$USER
+systemctl --user enable --now code-server
 
 echo ">> Deleting DEB file."
 rm -rf code-server*
@@ -119,7 +117,6 @@ rm -rf $AWS_TOOLKIT_VSIX_NAME
 printf "\n"
 
 printf ">> Restarting Code-Server to apply changes. \n"
-#systemctl --user restart code-server
-sudo systemctl restart code-server@$USER
+systemctl --user restart code-server
 
 printf ">> Code-Server $VSCS_VER was installed successfully. \n"
