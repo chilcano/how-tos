@@ -52,7 +52,7 @@ if [ -z $VSCS_BUNDLE ]; then
   exit 1
 else
   if [ -f "${VSCS_BUNDLE}" ]; then 
-      printf ">> The '$VSCS_BUNDLE' file exists. Nothing to download. \n"
+      printf ">> The '$VSCS_BUNDLE' file has been downloaded previously. Nothing to download. \n"
   else
       printf ">> The '$VSCS_BUNDLE' doesn't exist. Downloading the DEB file. \n"
       #VSCS_URL=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r "[.[].assets[].browser_download_url | select(. | contains(\"${VSCS_VER}\") and contains(\"${VSCS_PKG}\"))][0]")
