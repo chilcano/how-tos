@@ -8,6 +8,10 @@ while [ $# -gt 0 ]; do
       if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no '=' (3.5.0, 3.4.1, 3.4.0)
       _VSCS_VER="${1#*=}"
       ;;
+    --vscs-tag*|-t*)
+      if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no '=' (v3.5.0, v3.4.1, v3.4.0)
+      _VSCS_TAG="${1#*=}"
+      ;;
     --arch*|-a*)                           
       if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no `=` (amd, arm)
       _ARCH="${1#*=}"
@@ -37,15 +41,22 @@ export DEBIAN_FRONTEND=noninteractive
 
 #VSCS_PKG="amd64.deb"   # arm64.deb (Ubuntu 64 bits in Raspberry Pi 3b+)
 VSCS_PKG="${_ARCH:-amd}64.deb"
-VSCS_VER_LATEST=$(curl -s https://api.github.com/repos/cdr/code-server/releases/latest | jq -r -M '.tag_name')
-VSCS_VER="${_VSCS_VER:-$VSCS_VER_LATEST}"
+VSCS_TAG_LATEST=$(curl -s https://api.github.com/repos/cdr/code-server/releases/latest | jq -r -M '.tag_name')
+VSCS_TAG="${_VSCS_TAG:-$VSCS_TAG_LATEST}"
+VSCS_VER=$(echo "v3.5.0" | sed "s/v\(.*\)/\1/")
+
 #VSCS_BUNDLE=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r "[.[].assets[].name | select(. | contains(\"${VSCS_VER}\") and contains(\"${VSCS_PKG}\"))][0]")
 #VSCS_BUNDLE=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].name" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)
-VSCS_DOWNLOAD_URL=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].browser_download_url" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)
+#VSCS_URL=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].browser_download_url" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)
+
+# https://github.com/cdr/code-server/releases/download/3.4.1/code-server_3.4.1_amd64.deb
+# https://github.com/cdr/code-server/releases/download/v3.4.1/code-server_3.4.1_amd64.deb
+VSCS_DOWNLOAD_URL=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].browser_download_url" | grep -m 1 "/$VSCS_TAG/code-server_$VSCS_VER.$VSCS_PKG")
 VSCS_BUNDLE_NAME="${VSCS_DOWNLOAD_URL##*/}"
 
+echo "----> VSCS_VER $VSCS_VER"
+echo "----> VSCS_TAG $VSCS_TAG"
 echo "----> $VSCS_DOWNLOAD_URL"
-echo "----> $VSCS_BUNDLE_NAME"
 
 if [ -f "${VSCS_BUNDLE_NAME}" ]; then 
     printf ">> The '$VSCS_BUNDLE_NAME' file has been downloaded previously. Nothing to download. \n"
