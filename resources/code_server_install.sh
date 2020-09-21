@@ -53,6 +53,7 @@ if [ -z $VSCS_BUNDLE ]; then
   fi
 else
   printf ">> The Code-Server '$VSCS_BUNDLE' file with pkg '$VSCS_PKG' and ver '$VSCS_VER' doesn't exist. \n"
+  printf '>> URL: curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].browser_download_url" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)'
   printf "\t Try these examples: \n"
   printf "\t . code_server_install.sh --vscs-ver=3.4.1 \n"
   printf "\t . code_server_install.sh --vscs-ver=3.4.1 --arch=arm \n"
