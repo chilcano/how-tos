@@ -61,13 +61,15 @@ sudo dpkg -i $VSCS_BUNDLE_NAME
 
 echo ">> Starting user systemd service."
 #systemctl --user enable --now code-server
-systemctl enable --now code-server@$USER
+#systemctl enable --now code-server@$USER
+sudo systemctl enable --now code-server@$USER
 
 echo ">> Deleting DEB file."
 rm -rf code-server*
 
 echo ">> Waiting Code-Server starts"
 sleep 5s
+printf "\n"
 
 printf ">> Installing 'MKCert'. \n"
 #MKCERT_PKG="linux-amd"   # linux-arm 
@@ -117,6 +119,7 @@ rm -rf $AWS_TOOLKIT_VSIX_NAME
 printf "\n"
 
 printf ">> Restarting Code-Server to apply changes. \n"
-systemctl --user restart code-server
+#systemctl --user restart code-server
+sudo systemctl restart code-server@$USER
 
-printf ">> Code-Server  $VSCS_VER was installed successfully. \n"
+printf ">> Code-Server $VSCS_VER was installed successfully. \n"

@@ -14,7 +14,7 @@ sudo apt clean -y && sudo apt autoremove -y
 sudo apt -f install
 sudo dpkg --configure -a
 
-printf ">> Removing code-server config files"
+printf ">> Removing code-server config files. \n"
 rm -rf $HOME/.config/code-server 
 #rm -rf ~/.config/code-server/
 
