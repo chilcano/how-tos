@@ -37,7 +37,8 @@ export DEBIAN_FRONTEND=noninteractive
 VSCS_PKG="${_ARCH:-amd}64.deb"
 VSCS_VER_LATEST=$(curl -s https://api.github.com/repos/cdr/code-server/releases/latest | jq -r -M '.tag_name')
 VSCS_VER="${_VSCS_VER:-$VSCS_VER_LATEST}"
-VSCS_BUNDLE=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r "[.[].assets[].name | select(. | contains(\"${VSCS_VER}\") and contains(\"${VSCS_PKG}\"))][0]")
+VSCS_URL_DOWNLOAD='curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r "[.[].assets[].name | select(. | contains(\"${VSCS_VER}\") and contains(\"${VSCS_PKG}\"))][0]"'
+VSCS_BUNDLE=$(VSCS_URL_DOWNLOAD)
 #VSCS_BUNDLE=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].name" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)
 
 if [ -z $VSCS_BUNDLE ]; then
@@ -51,12 +52,12 @@ if [ -z $VSCS_BUNDLE ]; then
   fi
 else
   printf ">> The Code-Server with pkg '$VSCS_PKG' and ver '$VSCS_VER' doesn't exist. \n"
-
-  printf ">> Exiting the process. \n"
+  printf ">> URL: $VSCS_URL_DOWNLOAD \n"
   printf "\t Examples: \n"
   printf "\t . code_server_install.sh --vscs-ver=3.4.1 \n"
   printf "\t . code_server_install.sh --vscs-ver=3.4.1 --arch=arm \n"
   printf "\t . code_server_install.sh --arch=arm \n"
+  printf ">> Exiting the process. \n"
   exit 1
 fi 
 
