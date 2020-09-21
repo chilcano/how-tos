@@ -61,7 +61,7 @@ echo "----> $VSCS_DOWNLOAD_URL"
 if [ -f "${VSCS_BUNDLE_NAME}" ]; then 
     printf ">> The '$VSCS_BUNDLE_NAME' file has been downloaded previously. Nothing to download. \n"
 else
-    printf ">> The '$VSCS_BUNDLE_NAME' doesn't exist. Downloading the DEB file. \n"
+    printf ">> The '$VSCS_BUNDLE_NAME' doesn't exist. Downloading '$VSCS_DOWNLOAD_URL' \n"
     wget -q $VSCS_DOWNLOAD_URL
 fi
 
@@ -81,8 +81,7 @@ sleep 5s
 printf ">> Installing 'MKCert'. \n"
 #MKCERT_PKG="linux-amd"   # linux-arm 
 MKCERT_PKG="linux-${_ARCH:-amd}"
-#MKCERT_BUNDLE_URL=$(curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest | jq -r -M '.assets[].browser_download_url | select(contains("linux-amd"))')
-MKCERT_BUNDLE_URL=$(curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest | jq -r -M '.assets[].browser_download_url | select(contains(\"${MKCERT_PKG}\"))')
+MKCERT_BUNDLE_URL=$(curl -s https://api.github.com/repos/FiloSottile/mkcert/releases/latest | jq -r ".assets[].browser_download_url | select(contains(\"${MKCERT_PKG}\"))")
 MKCERT_BUNDLE_NAME="${MKCERT_BUNDLE_URL##*/}"
 
 if [ -f "${MKCERT_BUNDLE_NAME}" ]; then
