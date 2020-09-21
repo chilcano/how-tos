@@ -42,7 +42,7 @@ VSCS_VER="${_VSCS_VER:-$VSCS_VER_LATEST}"
 VSCS_BUNDLE=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r "[.[].assets[].name | select(. | contains(\"${VSCS_VER}\") and contains(\"${VSCS_PKG}\"))][0]")
 #VSCS_BUNDLE=$(curl -s https://api.github.com/repos/cdr/code-server/releases | jq -r ".[].assets[].name" | grep -m 1 $VSCS_VER.$VSCS_PKG | head -1)
 
-if [[ -z "$VSCS_BUNDLE" ]]; then
+if [[ -z ${VSCS_BUNDLE} || ${VSCS_BUNDLE} -ne null || ${VSCS_BUNDLE} != null ]]; then
   printf ">> The Code-Server '$VSCS_BUNDLE' file with pkg '$VSCS_PKG' and ver '$VSCS_VER' doesn't exist. \n"
   printf "\t Try these examples: \n"
   printf "\t . code_server_install.sh --vscs-ver=3.4.1 \n"
