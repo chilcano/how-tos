@@ -50,8 +50,13 @@ if [ -z $VSCS_BUNDLE ]; then
       wget -q $VSCS_URL
   fi
 else
-  printf ">> The file doesn't exist. The pkg '$VSCS_PKG' or ver '$VSCS_VER' don't exist. \n"
-  printf ">> Existing the process. \n"
+  printf ">> The Code-Server with pkg '$VSCS_PKG' and ver '$VSCS_VER' doesn't exist. \n"
+
+  printf ">> Exiting the process. \n"
+  printf "\t Examples: \n"
+  printf "\t . code_server_install.sh --vscs-ver=3.4.1 \n"
+  printf "\t . code_server_install.sh --vscs-ver=3.4.1 --arch=arm \n"
+  printf "\t . code_server_install.sh --arch=arm \n"
   exit 1
 fi 
 
