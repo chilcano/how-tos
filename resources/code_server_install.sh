@@ -45,8 +45,6 @@ VSCS_DOWNLOAD_URL=$(curl -s https://api.github.com/repos/cdr/code-server/release
 VSCS_BUNDLE_NAME=""
 
 if [[ -z ${VSCS_DOWNLOAD_URL} || ${VSCS_DOWNLOAD_URL} -ne null || ${VSCS_DOWNLOAD_URL} != null || ${VSCS_DOWNLOAD_URL} != "" ]]; then
-  VSCS_BUNDLE_NAME="${VSCS_DOWNLOAD_URL##*/}"
-else 
   printf ">> The Code-Server file with pkg '$VSCS_PKG' and ver '$VSCS_VER' doesn't exist. \n"
   printf "\t Try these examples: \n"
   printf "\t . code_server_install.sh --vscs-ver=3.4.1 \n"
@@ -54,6 +52,8 @@ else
   printf "\t . code_server_install.sh --arch=arm \n"
   printf ">> Exiting the process. \n"
   exit 1
+else
+  VSCS_BUNDLE_NAME="${VSCS_DOWNLOAD_URL##*/}"
 fi 
 
 if [ -f "${VSCS_BUNDLE_NAME}" ]; then 
