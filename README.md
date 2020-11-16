@@ -39,10 +39,11 @@ Repository with technical indications to install, configure any interesting stuf
        . code_server_install_wsl2.sh
        . code_server_remove_wsl2.sh
       ```
-   * [Install only **DevOps tools**](resources/devops_tools_install_v2.sh). It works in Ubuntu (amd64), Raspberry Pi (arm) and WSL2 (Ubuntu/amd64).
+   * [Install](resources/devops_tools_install_v2.sh)[Remove](resources/devops_tools_remove_v2.sh) DevOps tools v2. It works in Ubuntu (amd64), Raspberry Pi (arm) and WSL2 (Ubuntu/amd64).
       ```sh
-       wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v2.sh
-       chmod +x devops_tools_install_v2.sh 
+       wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v2.sh \
+                https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_remove_v2.sh
+       chmod +x devops_tools_install_v2.sh devops_tools_remove_v2.sh 
        . devops_tools_install_v2.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
       ```
 7. Customizing the Ubuntu Prompt  
