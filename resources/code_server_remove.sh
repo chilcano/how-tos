@@ -16,6 +16,6 @@ sudo dpkg --configure -a
 
 printf ">> Removing code-server config files. \n"
 rm -rf $HOME/.config/code-server 
-#rm -rf ~/.config/code-server/
+rm -rf $HOME/.local/share/code-server/
 
 printf ">> VSCode Server was removed successfully. \n"
