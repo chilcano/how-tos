@@ -38,6 +38,8 @@ done
 
 export DEBIAN_FRONTEND=noninteractive
 
+ARCH="${_ARCH:-amd}"
+
 echo "==> Installing Git, awscli, curl, jq, unzip and software-properties-common (apt-add-repository)"
 sudo apt update
 sudo apt install -y git awscli curl jq unzip software-properties-common sudo apt-transport-https
@@ -56,7 +58,7 @@ sudo apt install -y default-jdk openjdk-8-jdk
 printf ">> Java installed.\n\n"
 
 echo "==> Selecting Java/Javac 8 as default version and auto-mode"
-if [[ "$_ARCH" = "arm" ]]; then
+if [[ "$ARCH" = "arm" ]]; then
   sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-openjdk-armhf/jre/bin/java 1200
   sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-8-openjdk-armhf/bin/javac 1200
 else 
@@ -91,10 +93,10 @@ echo "==> Installing Terraform"
 #_TF_VER="0.11.15-oci"
 TF_VER_LATEST=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')
 TF_VER="${_TF_VER:-$TF_VER_LATEST}"
-if [[ "$_ARCH" =  "arm" ]]; then
-  TF_BUNDLE="terraform_${TF_VER}_linux_${_ARCH}.zip"
+if [[ "$ARCH" =  "arm" ]]; then
+  TF_BUNDLE="terraform_${TF_VER}_linux_${ARCH}.zip"
 else
-  TF_BUNDLE="terraform_${TF_VER}_linux_${_ARCH}64.zip"
+  TF_BUNDLE="terraform_${TF_VER}_linux_${ARCH}64.zip"
 fi
 wget --quiet "https://releases.hashicorp.com/terraform/${TF_VER}/${TF_BUNDLE}"
 unzip "${TF_BUNDLE}"
@@ -106,10 +108,10 @@ echo "==> Installing Packer"
 #PACKER_VER="1.5.5"
 PACKER_VER_LATEST=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/packer | jq -r -M '.current_version')
 PACKER_VER="${_PACKER_VER:-$PACKER_VER_LATEST}"
-if [[ "$_ARCH" = "arm" ]]; then
-  PACKER_BUNDLE="packer_${PACKER_VER}_linux_${_ARCH}.zip"
+if [[ "$ARCH" = "arm" ]]; then
+  PACKER_BUNDLE="packer_${PACKER_VER}_linux_${ARCH}.zip"
 else
-  PACKER_BUNDLE="packer_${PACKER_VER}_linux_${_ARCH}64.zip"
+  PACKER_BUNDLE="packer_${PACKER_VER}_linux_${ARCH}64.zip"
 fi
 wget --quiet "https://releases.hashicorp.com/packer/${PACKER_VER}/${PACKER_BUNDLE}"
 unzip "${PACKER_BUNDLE}"
