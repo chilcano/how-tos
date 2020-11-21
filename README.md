@@ -48,9 +48,7 @@ Repository with technical indications to install, configure any interesting stuf
       ```
 7. Customizing the Ubuntu Prompt  
    - [With Synth Shell](resources/fancy_prompt_with_synth_shell.md)   
-      ![](resources/fancy_prompt_ubuntu_with_synth_shell.png)  
    - [With Fancy GIT](resources/fancy_prompt_with_fancy_git.md)  
-      ![](resources/fancy_prompt_ubuntu_with_fancy_git_updated3.png) 
 
 8. [Install custom Fonts in Ubuntu](resources/install_fonts_in_ubuntu.sh)  
    This script will install 3 patched fonts including glyphs to be used in custom Terminal Prompt:  
@@ -70,7 +68,7 @@ Repository with technical indications to install, configure any interesting stuf
     sudo ./code-server-font-patch/patch.sh /usr/lib/node_modules/code-server
     systemctl --user restart code-server
    ```  
-10. [Install **Jekyll** in Linux](resources/setting_jekyll_in_linux.sh). Tested in Ubuntu 18.04 or above and Raspbian/Raspberry Pi OS.  
+10. [Install **Jekyll** in Linux](resources/setting_jekyll_in_linux.sh). Tested in Ubuntu 18.04, above and Raspbian/Raspberry Pi OS.  
    It will install also Ruby, Ruby-dev, build-essential, zlib1g-dev, Gem, Bundler, etc.  
    ```sh
     wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_jekyll_in_linux.sh
