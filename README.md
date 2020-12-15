@@ -47,9 +47,9 @@ Repository with technical indications to install, configure any interesting stuf
        . devops_tools_install_v2.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
       ```
 7. Customizing the Ubuntu Prompt  
-   - [With Synth Shell](resources/fancy_prompt_with_synth_shell.md)   
-   - [With Fancy GIT](resources/fancy_prompt_with_fancy_git.md)  
-   - [With Powerline-Go](resources/fancy_prompt_with_powerline_go.md)  
+   - [With Synth Shell](resources/custom_prompt_with_synth_shell.md)  
+   - [With Fancy GIT](resources/custom_prompt_with_fancy_git.md)  
+   - [With Powerline-Go](resources/custom_prompt_with_powerline_go.md)  
 
 8. [Install custom Fonts in Ubuntu](resources/install_fonts_in_ubuntu.sh)  
    This script will install 3 patched fonts including glyphs to be used in custom Terminal Prompt:  

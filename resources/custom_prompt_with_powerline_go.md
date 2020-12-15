@@ -56,7 +56,7 @@ $ fc-cache -f $HOME/.fonts
 $ . ~/.bashrc
 ```
 You should see below image with full prompt in 1 line:
-![](fancy_prompt_ubuntu_with_powerline_go_1_line.png){:width="200"}{:style="display:block;margin:auto;"}
+![](custom_prompt_ubuntu_with_powerline_go_1_line.png){:width="200"}{:style="display:block;margin:auto;"}
 
 
 ### 5) Updating the Ubuntu prompt
@@ -84,13 +84,13 @@ $ . ~/.bashrc
 You should see below images with a prompt in 2 lines.  
 
 In the [Fluent Terminal](https://github.com/felixse/FluentTerminal):  
-![](fancy_prompt_ubuntu_with_powerline_go_2_lines_fluent_terminal.png)
+![](custom_prompt_ubuntu_with_powerline_go_2_lines_fluent_terminal.png)
 
 In the new [Windows Terminal](https://github.com/microsoft/terminal):  
-![](fancy_prompt_ubuntu_with_powerline_go_2_lines_windows_terminal.png)
+![](custom_prompt_ubuntu_with_powerline_go_2_lines_windows_terminal.png)
 
 In the integrated Terminal of [Code-Server](https://github.com/cdr/code-server):  
-![](fancy_prompt_ubuntu_with_powerline_go_2_lines_code_server.png)
+![](custom_prompt_ubuntu_with_powerline_go_2_lines_code_server.png)
 
 
 ### Reference:
