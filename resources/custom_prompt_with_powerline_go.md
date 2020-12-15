@@ -56,7 +56,7 @@ $ fc-cache -f $HOME/.fonts
 $ . ~/.bashrc
 ```
 You should see below image with full prompt in 1 line:
-![](custom_prompt_ubuntu_with_powerline_go_1_line.png)
+![](custom_prompt_ubuntu_powerline_go_1_line.png)
 
 
 ### 5) Updating the Ubuntu prompt
@@ -83,15 +83,14 @@ $ . ~/.bashrc
 ```
 You should see below images with a prompt in 2 lines.  
 
+In [Code-Server Terminal](https://github.com/cdr/code-server):
+![](custom_prompt_ubuntu_powerline_go_2_lines_code_server.png)  
+
 In [Fluent Terminal](https://github.com/felixse/FluentTerminal):
-![](custom_prompt_ubuntu_with_powerline_go_2_lines_fluent_terminal.png)  
+![](custom_prompt_ubuntu_powerline_go_2_lines_fluent_terminal.png)  
 
 In [Windows Terminal](https://github.com/microsoft/terminal):
-![](custom_prompt_ubuntu_with_powerline_go_2_lines_windows_terminal.png)  
-
-In the [integrated Terminal of Code-Server](https://github.com/cdr/code-server):
-![](custom_prompt_ubuntu_with_powerline_go_2_lines_code_server.png)  
-
+![](custom_prompt_ubuntu_powerline_go_2_lines_windows_terminal.png)  
 
 ### Reference:
 - [Microsoft Tutorial: Set up Powerline in Windows Terminal](https://docs.microsoft.com/en-us/windows/terminal/tutorials/powerline-setup)
