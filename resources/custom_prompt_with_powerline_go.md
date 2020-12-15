@@ -84,15 +84,15 @@ $ . ~/.bashrc
 You should see below images with a prompt in 2 lines.  
 
 In the [Fluent Terminal](https://github.com/felixse/FluentTerminal):  
-![](custom_prompt_ubuntu_with_powerline_go_2_lines_fluent_terminal.png)
+![](custom_prompt_ubuntu_with_powerline_go_2_lines_fluent_terminal.png)  
 
 In the new [Windows Terminal](https://github.com/microsoft/terminal):  
-![](custom_prompt_ubuntu_with_powerline_go_2_lines_windows_terminal.png)
+![](custom_prompt_ubuntu_with_powerline_go_2_lines_windows_terminal.png)  
 
 In the integrated Terminal of [Code-Server](https://github.com/cdr/code-server):  
-![](custom_prompt_ubuntu_with_powerline_go_2_lines_code_server.png)
+![](custom_prompt_ubuntu_with_powerline_go_2_lines_code_server.png)  
 
-
+  
 ### Reference:
 - [Microsoft Tutorial: Set up Powerline in Windows Terminal](https://docs.microsoft.com/en-us/windows/terminal/tutorials/powerline-setup)
 - [A Powerline style prompt for your shell](https://github.com/justjanne/powerline-go)
