@@ -49,6 +49,7 @@ Repository with technical indications to install, configure any interesting stuf
 7. Customizing the Ubuntu Prompt  
    - [With Synth Shell](resources/fancy_prompt_with_synth_shell.md)   
    - [With Fancy GIT](resources/fancy_prompt_with_fancy_git.md)  
+   - [With Powerline-Go](resources/fancy_prompt_with_powerline_go.md)  
 
 8. [Install custom Fonts in Ubuntu](resources/install_fonts_in_ubuntu.sh)  
    This script will install 3 patched fonts including glyphs to be used in custom Terminal Prompt:  
@@ -98,5 +99,10 @@ Repository with technical indications to install, configure any interesting stuf
      ```
    - [Creating an Affordable Remote DevOps Desktop with AWS CloudFormation](https://github.com/chilcano/affordable-remote-desktop/tree/master/resources/cloudformation)
    - [Deploying AWS ECS Networking and Architecture Patterns](https://github.com/chilcano/cfn-samples/tree/master/ECS/README.md)
-   
+19. Install Apache Guacamole (web-based remote access) on Ubuntu 20.04
+   ```sh
+    wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/guacamole_install.sh
+    chmod +x guacamole_install.sh  
+    . guacamole_install.sh
+   ```     
   
