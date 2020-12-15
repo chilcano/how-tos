@@ -99,10 +99,10 @@ Repository with technical indications to install, configure any interesting stuf
      ```
    - [Creating an Affordable Remote DevOps Desktop with AWS CloudFormation](https://github.com/chilcano/affordable-remote-desktop/tree/master/resources/cloudformation)
    - [Deploying AWS ECS Networking and Architecture Patterns](https://github.com/chilcano/cfn-samples/tree/master/ECS/README.md)
-19. Install Apache Guacamole (web-based remote access) on Ubuntu 20.04
+19. [Install Apache Guacamole](https://raw.githubusercontent.com/chilcano/how-tos/master/resources/guacamole_install.sh) (web-based remote access) on Ubuntu 20.04
    ```sh
     wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/guacamole_install.sh
     chmod +x guacamole_install.sh  
     . guacamole_install.sh
-   ```     
+   ```
   
