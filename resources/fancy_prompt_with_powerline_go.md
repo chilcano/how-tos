@@ -1,4 +1,4 @@
-## Fancy Prompt in Ubuntu with Powerline Go
+## Custom Prompt in Ubuntu with Powerline Go
 
 ### 1) Install Go
 ```sh
@@ -10,7 +10,7 @@ $ sudo apt install -y golang-go
 $ go get -u github.com/justjanne/powerline-go
 ```
 
-### 3) Configure the Ubuntu prompt
+### 3) Set the Ubuntu prompt configuration
 
 ```sh
 $ cat <<EOF > powerline-go-loader.sh
@@ -32,7 +32,7 @@ $ echo '# Loading Powerline-Go' >> ~/.bashrc
 $ echo '. $HOME/powerline-go-loader.sh' >> ~/.bashrc
 ```
 
-### 4) Loading colored Ubuntu prompt
+### 4) Load configured Ubuntu prompt
 
 #### Installing Fonts with Powerline glyphs.  
 The Microsoft Cascadia Code Fonts includes the Powerline glyphs [here](https://github.com/microsoft/cascadia-code), we need to download and install it in your O.S.  
@@ -84,13 +84,13 @@ $ . ~/.bashrc
 You should see below images with a prompt in 2 lines.  
 
 In the [Fluent Terminal](https://github.com/felixse/FluentTerminal):  
-![](fancy_prompt_ubuntu_with_powerline_go_2_lines_fluent_terminal.png){:width="200"}{:style="display:block;margin:auto;"}
+![](fancy_prompt_ubuntu_with_powerline_go_2_lines_fluent_terminal.png)
 
 In the new [Windows Terminal](https://github.com/microsoft/terminal):  
-![](fancy_prompt_ubuntu_with_powerline_go_2_lines_windows_terminal.png){:width="200"}{:style="display:block;margin:auto;"}
+![](fancy_prompt_ubuntu_with_powerline_go_2_lines_windows_terminal.png)
 
 In the integrated Terminal of [Code-Server](https://github.com/cdr/code-server):  
-![](fancy_prompt_ubuntu_with_powerline_go_2_lines_code_server.png){:width="200"}{:style="display:block;margin:auto;"}
+![](fancy_prompt_ubuntu_with_powerline_go_2_lines_code_server.png)
 
 
 ### Reference:

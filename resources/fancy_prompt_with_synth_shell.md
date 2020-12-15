@@ -1,4 +1,4 @@
-## Fancy Prompt in Ubuntu with Synth Shell
+## Custom Prompt in Ubuntu with Synth Shell
 
 ![](fancy_prompt_ubuntu_with_synth_shell.png)
 

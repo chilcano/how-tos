@@ -1,4 +1,4 @@
-## Fancy Prompt in Ubuntu with Fancy GIT
+## Custom Prompt in Ubuntu with Fancy GIT
 
 ![](fancy_prompt_ubuntu_with_fancy_git_updated3.png)
 
