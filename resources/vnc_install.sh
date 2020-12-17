@@ -53,10 +53,11 @@ EOF
 chmod +x $HOME/.vnc/xstartup
 mv -f xstartup $HOME/.vnc/xstartup
 
-printf "==> Startinng VNC Server running vncserver command \n"
+printf "==> Starting VNC Server using vncserver command \n"
+vncserver -kill :1
 vncserver
 printf "==> Checking if VNC Server is running on 5901 port \n"
-ss -ltn
+ss -ltn | grep '590.'
 
 ## creating VNC Server systemd startup script
 printf ">> Ceating VNC Server systemd startup script \n\n"
