@@ -19,28 +19,28 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove.sh | bash
    ```
    * [Install](resources/code_server_install_rpi.sh)/[remove](resources/code_server_remove_rpi.sh) only **Code-Server** in Raspberry Pi (arm):
-      ```sh
-      wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_install_rpi.sh
-      wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove_rpi.sh
-      chmod +x code_server_install_rpi.sh code_server_remove_rpi.sh
-      . code_server_install_rpi.sh
-      . code_server_remove_rpi.sh
-      ```
+   ```sh
+   wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_install_rpi.sh
+   wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove_rpi.sh
+   chmod +x code_server_install_rpi.sh code_server_remove_rpi.sh
+   . code_server_install_rpi.sh
+   . code_server_remove_rpi.sh
+   ```
    * [Install](resources/code_server_install_wsl2.sh)/[remove](resources/code_server_remove_wsl2.sh) only **Code-Server** in WLS2 (Ubuntu 20.04):
-      ```sh
-      wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_install_wsl2.sh
-      wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove_wsl2.sh
-      chmod +x code_server_install_wsl2.sh code_server_remove_wsl2.sh
-      . code_server_install_wsl2.sh
-      . code_server_remove_wsl2.sh
-      ```
+   ```sh
+   wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_install_wsl2.sh
+   wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove_wsl2.sh
+   chmod +x code_server_install_wsl2.sh code_server_remove_wsl2.sh
+   . code_server_install_wsl2.sh
+   . code_server_remove_wsl2.sh
+   ```
    * [Install](resources/devops_tools_install_v2.sh)[Remove](resources/devops_tools_remove_v2.sh) DevOps tools v2. It works in Ubuntu (amd64), Raspberry Pi (arm) and WSL2 (Ubuntu/amd64).
-      ```sh
-      wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v2.sh \
-               https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_remove_v2.sh
-      chmod +x devops_tools_install_v2.sh devops_tools_remove_v2.sh 
-      . devops_tools_install_v2.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
-      ```
+   ```sh
+   wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v2.sh \
+            https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_remove_v2.sh
+   chmod +x devops_tools_install_v2.sh devops_tools_remove_v2.sh 
+   . devops_tools_install_v2.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
+   ```
 7. Customizing the Ubuntu Prompt  
    - [With Synth Shell](resources/custom_prompt_with_synth_shell.md)  
    - [With Fancy GIT](resources/custom_prompt_with_fancy_git.md)  
@@ -65,7 +65,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    It will install also Ruby, Ruby-dev, build-essential, zlib1g-dev, Gem, Bundler, etc.  
    ```sh
    curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_jekyll_in_linux.sh | bash
-   ```
+   ```   
    Running Jekyll:   
    ```sh
    JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch
@@ -84,9 +84,9 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
 17. [Terraforms samples - where is the issue?](aws-terraform-where-is-the-issue/) 
 18. AWS CloudFormation samples:  
    - Convert JSON to YAML.  
-     ```sh
-     ruby -ryaml -rjson -e 'puts YAML.dump(JSON.load(ARGF))' < cloudformation_template_example.json > cloudformation_template_example.yaml
-     ```
+   ```sh
+   ruby -ryaml -rjson -e 'puts YAML.dump(JSON.load(ARGF))' < cloudformation_template_example.json > cloudformation_template_example.yaml
+   ```
    - [Creating an Affordable Remote DevOps Desktop with AWS CloudFormation](https://github.com/chilcano/affordable-remote-desktop/tree/master/resources/cloudformation)
    - [Deploying AWS ECS Networking and Architecture Patterns](https://github.com/chilcano/cfn-samples/tree/master/ECS/README.md)
 19. [Install TightVNC](https://raw.githubusercontent.com/chilcano/how-tos/master/resources/vnc_install.sh) (VNC remote access) on Ubuntu 20.04
@@ -95,6 +95,6 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    ```
  20. [Install Apache Guacamole](https://raw.githubusercontent.com/chilcano/how-tos/master/resources/guacamole_install.sh) (Remote access Gateway) on Ubuntu 20.04
    ```sh
-    curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/guacamole_install.sh | bash
+   curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/guacamole_install.sh | bash
    ``` 
    
