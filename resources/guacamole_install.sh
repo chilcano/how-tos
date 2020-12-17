@@ -17,7 +17,6 @@ printf ">> Installing tomcat9 \n\n"
 sudo apt install -y tomcat9 tomcat9-admin tomcat9-common tomcat9-user
 
 printf ">> Starting tomcat9 \n\n"
-# systemctl --user restart code-server
 sudo systemctl enable tomcat9
 sudo systemctl start tomcat9
 
@@ -74,8 +73,8 @@ printf ">> Configuring Guacamole \n\n"
 
 cat <<EOF > guacamole.properties
 guacd-hostname: localhost
-guacd-port:    4822
-user-mapping:    /etc/guacamole/user-mapping.xml
+guacd-port: 4822
+user-mapping: /etc/guacamole/user-mapping.xml
 EOF
 sudo chown -R root:root guacamole.properties
 sudo mv -f guacamole.properties /etc/guacamole/guacamole.properties
@@ -86,39 +85,42 @@ sudo mkdir /etc/guacamole/{extensions,lib}
 ## Setting Guacamole home directory
 sudo sh -c "echo \"GUACAMOLE_HOME=/etc/guacamole\" >> /etc/default/tomcat9"
 
-printf ">> Creating Guacamole users \n"
-#GUACAMOLE_USER_RND=$(openssl rand -base64 32)
-GUACAMOLE_USER_RND="demodemo"
-GUACAMOLE_USER_MD5=$(echo -n $GUACAMOLE_USER_RND | md5sum | cut -d ' ' -f 1)
+printf ">> Creating Guacamole an user/password \n"
+GUACAMOLE_PWD_RND=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 1)
+## GUACAMOLE_PWD_RND=$(openssl rand -base64 8)      # alternative option
+GUACAMOLE_PWD_MD5=$(echo -n $GUACAMOLE_PWD_RND | md5sum | cut -d ' ' -f 1)
 
 ## create a new user-mapping.xml
 cat <<EOF > user-mapping.xml
 <user-mapping>
-  <authorize username="admin" password="${GUACAMOLE_USER_MD5}" encoding="md5">
-    <connection name="VNC">
-      <protocol>vnc</protocol>
-      <param name="hostname">192.168.1.53</param>
-      <param name="port">5901</param>
-      <param name="password">VNCPASS</param>
-    </connection>
-
-    <connection name="Windows Server">
-      <protocol>rdp</protocol>
-      <param name="hostname">192.168.10.53</param>
-      <param name="port">3389</param>
-    </connection>
-
-    <connection name="Ubuntu20.04-Server">
+  <authorize username="admin" password="${GUACAMOLE_PWD_MD5}" encoding="md5">
+    <!-- The username must be an existing Linux user and you're going to have its password -->
+    <connection name="Linux Terminal (localhost) - SSH">
       <protocol>ssh</protocol>
       <param name="hostname">192.168.1.53</param>
       <param name="port">22</param>
       <param name="username">chilcano</param>
     </connection>
+    <!-- VNC must be installed in that Linux remote host and listing in that port -->
+    <connection name="Linux Desktop (localhost) - VNC">
+      <protocol>vnc</protocol>
+      <param name="hostname">192.168.1.53</param>
+      <param name="port">5901</param>
+      <param name="password">changeme</param> <!-- check for pwd in ls -la ~/.vnc/ dir -->
+    </connection>
+    <!-- RDP must be installed and configured in below remote Windows host -->
+    <connection name="Windows (remote) - RDP">
+      <protocol>rdp</protocol>
+      <param name="hostname">192.168.1.54</param>
+      <param name="port">3389</param>
+    </connection>
   </authorize>
 </user-mapping>
 EOF
-sudo chown -R root:root user-mapping.xml
-sudo mv -f user-mapping.xml /etc/guacamole/user-mapping.xml
+echo $GUACAMOLE_PWD_RND > user-mapping.xml_plain
+sudo rm -rf /etc/guacamole/user-mapping.xml*
+sudo chown -R root:root user-mapping.xml*
+sudo mv -f user-mapping.xml* /etc/guacamole/
 
 printf ">> Starting Guacamole again \n"
 sudo systemctl restart tomcat9
@@ -126,6 +128,6 @@ sudo systemctl restart guacd
 
 printf ">> Access Guacamole Web UI: \n"
 printf "\t User: admin \n"
-printf "\t Pwd: ${GUACAMOLE_USER_RND} \n"
+printf "\t Pwd: ${GUACAMOLE_PWD_RND} \n"
 
 printf ">> Guacamole Server and Client were installed successfully. \n"

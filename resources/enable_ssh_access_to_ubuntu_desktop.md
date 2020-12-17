@@ -9,9 +9,9 @@ $ sudo apt update
 $ sudo apt install openssh-server -y
 
 $ sudo systemctl status ssh
-```sh
+```
 
-If the firewall is enabled on your system, make sure to open the SSH port:
+If the firewall is enabled on your system, then make sure to open the SSH port:
 ```sh
 $ sudo systemctl status ufw
 $ sudo ufw allow ssh
