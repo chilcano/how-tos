@@ -50,7 +50,7 @@ unset SESSION_MANAGER
 unset DBUS_SESSION_BUS_ADDRESS
 startxfce4 &
 EOF
-chmod +x $HOME/.vnc/xstartup
+chmod +x xstartup
 mv -f xstartup $HOME/.vnc/xstartup
 
 printf "==> Starting VNC Server using vncserver command \n"
@@ -83,8 +83,13 @@ sudo systemctl daemon-reload
 
 ## Enabling and starting VNC Server for DISPLAY NUMBER 1
 printf "==> Enabling and starting VNC Server systemd service with DISPLAY NUMBER 1 \n"
-sudo systemctl enable vncserver@1
-sudo systemctl start vncserver@1 
+## getting error when using sudo because the 'vncserver@.service' is for 'chilcano' user only
+## meantime remove 'sudo' and makes it for any user (todo)
+##sudo systemctl enable vncserver@1
+##sudo systemctl start vncserver@1 
+
+systemctl enable vncserver@1
+systemctl start vncserver@1
 
 ## VNC Server commands:
 ## vncserver     // starts vnc server
