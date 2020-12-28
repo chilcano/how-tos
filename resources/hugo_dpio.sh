@@ -1,7 +1,7 @@
 #!/bin/bash
 
 echo "##########################################################"
-echo "#                   Working with Hugo                    #"
+echo "#           Creating a website with Hugo                 #"
 echo "##########################################################"
 
 # https://gohugo.io/hosting-and-deployment/hosting-on-github/
@@ -26,9 +26,6 @@ git clone ${GIT_REPO_SOURCE} ~/gitrepos/ghp-dpio
 
 printf "\t * Removing preview '~/gitrepos/ghp-dpio/.git' dir. \n"
 rm -rf ~/gitrepos/ghp-dpio/.git
-
-printf "\t * Installing 'hub' git wrapper. \n"
-sudo apt -yqq install hub
 
 cd ${GIT_PARENT_DIR}/${GIT_REPO}
 

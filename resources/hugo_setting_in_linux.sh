@@ -20,5 +20,6 @@ fi
 printf "\t * Installing the $HUGO_BUNDLE_NAME file. \n"
 sudo dpkg -i $HUGO_BUNDLE_NAME
 hugo version
-printf "\t * Installation of $HUGO_BUNDLE_NAME completed. \n"
 
+printf "\t * Installing 'hub' git wrapper. \n"
+sudo apt -yqq install hub

@@ -13,12 +13,12 @@ Repository with technical indications to install, configure any interesting stuf
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v1.sh | bash
 ```  
 6. Install IDE and DevOps tools:  
-   * [Install](resources/code_server_install.sh)/[remove](resources/code_server_remove.sh) only **Code-Server** in Ubuntu (amd64):
+   * [Install](resources/code_server_install.sh)/[Remove](resources/code_server_remove.sh) only **Code-Server** in Ubuntu (amd64):
    ```sh
    curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_install.sh | bash
    curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove.sh | bash
    ```
-   * [Install](resources/code_server_install_rpi.sh)/[remove](resources/code_server_remove_rpi.sh) only **Code-Server** in Raspberry Pi (arm):
+   * [Install](resources/code_server_install_rpi.sh)/[Remove](resources/code_server_remove_rpi.sh) only **Code-Server** in Raspberry Pi (arm):
    ```sh
    wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_install_rpi.sh
    wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove_rpi.sh
@@ -26,7 +26,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    . code_server_install_rpi.sh
    . code_server_remove_rpi.sh
    ```
-   * [Install](resources/code_server_install_wsl2.sh)/[remove](resources/code_server_remove_wsl2.sh) only **Code-Server** in WLS2 (Ubuntu 20.04):
+   * [Install](resources/code_server_install_wsl2.sh)/[Remove](resources/code_server_remove_wsl2.sh) only **Code-Server** in WLS2 (Ubuntu 20.04):
    ```sh
    wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_install_wsl2.sh
    wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/code_server_remove_wsl2.sh
@@ -34,7 +34,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    . code_server_install_wsl2.sh
    . code_server_remove_wsl2.sh
    ```
-   * [Install](resources/devops_tools_install_v2.sh)[Remove](resources/devops_tools_remove_v2.sh) DevOps tools v2. It works in Ubuntu (amd64), Raspberry Pi (arm) and WSL2 (Ubuntu/amd64).
+   * [Install](resources/devops_tools_install_v2.sh)/[Remove](resources/devops_tools_remove_v2.sh) DevOps tools v2. It works in Ubuntu (amd64), Raspberry Pi (arm) and WSL2 (Ubuntu/amd64).
    ```sh
    wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_install_v2.sh \
             https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devops_tools_remove_v2.sh
@@ -61,10 +61,10 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    sudo ./code-server-font-patch/patch.sh /usr/lib/node_modules/code-server
    systemctl --user restart code-server
    ```  
-10. [Install **Jekyll** in Linux](resources/setting_jekyll_in_linux.sh). Tested in Ubuntu 18.04, above and Raspbian/Raspberry Pi OS.  
+10. [Install **Jekyll** in Linux](resources/jekyll_setting_in_linux.sh). Tested in Ubuntu 18.04, above and Raspbian/Raspberry Pi OS.  
    It will install also Ruby, Ruby-dev, build-essential, zlib1g-dev, Gem, Bundler, etc.  
    ```sh
-   curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/setting_jekyll_in_linux.sh | bash
+   curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/jekyll_setting_in_linux.sh | bash
    ```   
    Running Jekyll:   
    ```sh
