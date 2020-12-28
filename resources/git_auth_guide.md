@@ -23,3 +23,37 @@ https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/
 2. Creating a personal access token:  
 https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token
 
+### Working with HUB
+
+__GitHub OAuth authentication__  
+
+  Hub will prompt for GitHub username & password the first time it needs to access the API and exchange it for an OAuth token, which it saves in `~/.config/hub`.
+  To avoid being prompted, use `GITHUB_USER` and `GITHUB_PASSWORD` environment variables.
+  Alternatively, you may provide `GITHUB_TOKEN`, an access token with repo permissions. This will not be written to `~/.config/hub`.
+
+__HTTPS instead of git protocol__  
+
+  If you prefer the HTTPS protocol for git operations, you can configure hub to generate all URLs with https: instead of `git:` or `ssh:`:
+  ```
+  $ git config --global hub.protocol https
+  ```
+  This will affect clone, fork, remote add and other hub commands that expand shorthand references to GitHub repo URLs.
+
+
+# indicate that you prefer HTTPS to SSH git clone URLs
+__Avoid error  when creating repo with hub__  
+
+  git@github.com: Permission denied (publickey).
+  fatal: Could not read from remote repository.
+
+``` 
+$ git config --global hub.protocol https
+```
+
+__References:__  
+
+1. GitHub Hub:  
+https://hub.github.com
+2. Error: Permission denied (publickey):  
+https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/error-permission-denied-publickey
+

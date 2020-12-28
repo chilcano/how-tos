@@ -97,4 +97,22 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    ```sh
    curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/guacamole_install.sh | bash
    ``` 
-   
+21. Host a site on GitHub Pages and Hugo.  
+   Install Hugo and GitHub tools:    
+   ```sh
+   curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/hugo_setting_in_linux.sh | bash
+   ```   
+   Host an existing GitHub Pages repo using Hugo:   
+   ```sh
+   curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/hugo_dpio.sh | bash
+   ```  
+   Serve local Hugo site:  
+   ```sh
+   cd $HOME/gitrepos/ghpages-dpio/
+   git checkout main
+   cd ghp-scripts
+   hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ghpages-dpio/
+   ``` 
+   If GitHub Pages repo is already configured, then open a browser with:
+   * [https://data-plane/github.io/ghpages-dpio](https://data-plane/github.io/ghpages-dpio) - no custom domain has been configured.
+   * [https://data-plane.io](https://data-plane.io) - if a custom domain has been registered in your DNS provider and CNAME file created in the repo.
