@@ -1,11 +1,12 @@
 #!/bin/bash
 
+printf "\n"
 echo "###############################################################"
 echo "#   Creating a website with Hugo from existing GitHub repo    #"
 echo "###############################################################"
 
+# Ref: 
 # https://gohugo.io/hosting-and-deployment/hosting-on-github/
-# https://migueluza.github.io/data-plane/
 
 GIT_SOURCE_REPO_URL="https://github.com/migueluza/data-plane"
 CURRENT_DIR=$PWD
@@ -16,7 +17,7 @@ GIT_PARENT_DIR="${HOME}/gitrepos"
 GIT_HUGO_CONTENT_DIR="ghp-content"
 GIT_HUGO_CONTENT_BRANCH="${GIT_HUGO_CONTENT_DIR}"
 
-# this command avoids error 'git@github.com: Permission denied ...' when creating repo with hub
+# This command avoids error 'git@github.com: Permission denied ...' when creating repo with hub
 printf "==> Setting HTTPS instead of SSH for GitHub clone URLs. \n"
 git config --global hub.protocol https
 
@@ -45,7 +46,7 @@ printf "==> Initializing local repo. \n"
 git init
 
 printf "==> Creating an empty repo on GitHub using current dir as repo's name. \n"
-hub create -d "GitHub Pages for DPio"  ${GIT_ORG}/${GIT_REPO}
+hub create -d "GitHub Pages for DPio" ${GIT_ORG}/${GIT_REPO}
 
 echo "###############################################################"
 echo "#       Configuring GitHub Pages repo (main branch)           #"
@@ -57,13 +58,12 @@ cat <<EOF > .gitignore
 ghp-content/
 *.bak
 EOF
-#mv -f .gitignore ${GIT_PARENT_DIR}/${GIT_REPO}/.gitignore
 
-printf ">> Adding 'README.md' file. \n"
+printf "==> Adding 'README.md' file. \n"
 cat <<EOF > README.md
-Go to [data-plane.io](https://data-plane.io) website!
+Go to [data-plane.io](https://data-plane.io) website!  
+This '${GIT_ORG}/${GIT_REPO}' main branch hosts the Hugo scripts.
 EOF
-#mv -f README.md ${GIT_PARENT_DIR}/${GIT_REPO}/README.md
 
 printf "==> Tweaking 'config.toml'. \n"
 sed -i.bak 's/^baseURL = .*$/baseURL = "https\:\/\/data-plane.github.io\/ghpages-dpio\/"/' ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_SCRIPTS_DIR}/config.toml
@@ -81,47 +81,39 @@ git branch -M main
 printf "==> Pushing to remote repo in 'main' branch. \n"
 git push -u origin main
 
+printf "\n"
 echo "###############################################################"
 echo "#       Configuring GitHub Pages repo ($GIT_HUGO_CONTENT_BRANCH branch)    #"
 echo "###############################################################"
 
 printf "==> Create the orphan branch on local machine and switch in this branch. \n"
-#git checkout -b ${GIT_HUGO_CONTENT_BRANCH}
 git checkout --orphan ${GIT_HUGO_CONTENT_BRANCH}
 
-# removes everything to its initial state
+printf "==> Removes everything to its initial state. \n"
 git reset --hard
 
-# commit an empty orphan branch
+printf "==> Commit an empty orphan branch. \n"
 git commit --allow-empty -m "Initializing ${GIT_HUGO_CONTENT_BRANCH}"
 
-# push to remote origin from ${GIT_HUGO_CONTENT_BRANCH}
+printf "==> Push to remote origin from '${GIT_HUGO_CONTENT_BRANCH}'. \n"
 git push origin ${GIT_HUGO_CONTENT_BRANCH}
 
-# Switching to 'main' branch
-git checkout main
+printf "==> Switching to 'main' branch. \n"
+git checkout main --quiet
 
+printf "\n"
 echo "###############################################################"
-echo "#         First time updating '$GIT_HUGO_CONTENT_BRANCH' branch        #"
+echo "#            First updating of '$GIT_HUGO_CONTENT_BRANCH' branch           #"
 echo "###############################################################"
 
-# delete hugo content dir
+printf "==> Delete hugo content dir. \n"
 rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_CONTENT_BRANCH}
 
-# worktree allows you to have multiple branches of the same local repo to be checked out in different dirs
+printf "==> Worktree allows you to have multiple branches of the same local repo to be checked out in different dirs. \n"
 git worktree add -B ${GIT_HUGO_CONTENT_BRANCH} ${GIT_HUGO_CONTENT_DIR} origin/${GIT_HUGO_CONTENT_BRANCH}
 
 printf "==> Generating Hugo content in <root>/${GIT_HUGO_CONTENT_DIR}/docs dir. \n"
 cd ${GIT_HUGO_SCRIPTS_DIR}; hugo
-
-#printf "==> Updating .gitignore file. \n"
-#rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/.gitignore
-#rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_SCRIPTS_DIR}
-#cat <<EOF > .gitignore
-## Hugo
-#${GIT_HUGO_SCRIPTS_DIR}/
-#*.bak
-#EOF
 
 #printf ">> Setting a custom Domain adding 'CNAME' file under 'docs/' dir. \n"
 #cat <<EOF > CNAME
@@ -131,21 +123,27 @@ cd ${GIT_HUGO_SCRIPTS_DIR}; hugo
 ## configure a CNAME record with your DNS provider (gandi.net)
 ## https://holisticsecurity.io/2019/10/14/migrating-wordpress-com-blog-to-github-pages-with-jekyll-part1
 
+printf "==> Adding 'README.md' file to 'GIT_HUGO_CONTENT_BRANCH'. \n"
+cat <<EOF > README.md
+Go to [data-plane.io](https://data-plane.io) website!  
+This '${GIT_HUGO_CONTENT_BRANCH}' branch hosts the Hugo content.
+EOF
+mv -f README.md ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_CONTENT_DIR}/.
+
 printf "==> Adding Hugo content only to local repo. \n"
 cd ../${GIT_HUGO_CONTENT_DIR}; git add .
 
 printf "==> Commit Hugo content to local repo. \n"
 git commit -m "Publishing Hugo content to ${GIT_HUGO_CONTENT_BRANCH}" --quiet; cd ../
 
-# If the changes in your local '${GIT_HUGO_CONTENT_BRANCH}' branch look alright, push them to the remote repo:
+# If the changes in your local '${GIT_HUGO_CONTENT_BRANCH}' branch look alright, push them to the remote repo.
 printf "==> Pushing to remote repo in '${GIT_HUGO_CONTENT_BRANCH}' branch. \n"
-#git push -u origin ${GIT_HUGO_CONTENT_BRANCH}
 git push origin ${GIT_HUGO_CONTENT_BRANCH}
 
 # hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ghpages-dpio/
 
 printf "==> Switching to 'main' branch. \n"
-git checkout main
+git checkout main --quiet
 
 printf "==> Returning to current dir. \n"
 cd ${CURRENT_DIR}
