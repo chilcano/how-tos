@@ -104,15 +104,20 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    ```   
    Host an existing GitHub Pages repo using Hugo:   
    ```sh
-   curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/hugo_dpio.sh | bash
+   curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/hugo_dpio_create.sh | bash
    ```  
    Serve local Hugo site:  
    ```sh
    cd $HOME/gitrepos/ghpages-dpio/
    git checkout main
    cd ghp-scripts
+   // replace the ip with yours
    hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ghpages-dpio/
    ``` 
    If GitHub Pages repo is already configured, then open a browser with:
-   * [https://data-plane/github.io/ghpages-dpio](https://data-plane/github.io/ghpages-dpio) - no custom domain has been configured.
-   * [https://data-plane.io](https://data-plane.io) - if a custom domain has been registered in your DNS provider and CNAME file created in the repo.
+   * [https://data-plane/github.io/ghpages-dpio](https://data-plane/github.io/ghpages-dpio)
+   But if a custom domain has been registered in your DNS provider and CNAME file created in the repo, then update the `baserURL` in `ghpages-dpio/ghp-scripts/config.toml`:
+   ```sh
+
+   ``` 
+   * [https://data-plane.io](https://data-plane.io) - 
