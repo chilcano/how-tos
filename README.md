@@ -93,7 +93,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    ```sh
    curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/vnc_install.sh | bash 
    ```
- 20. [Install Apache Guacamole](https://raw.githubusercontent.com/chilcano/how-tos/master/resources/guacamole_install.sh) (Remote access Gateway) on Ubuntu 20.04
+20. [Install Apache Guacamole](https://raw.githubusercontent.com/chilcano/how-tos/master/resources/guacamole_install.sh) (Remote access Gateway) on Ubuntu 20.04
    ```sh
    curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/guacamole_install.sh | bash
    ``` 
@@ -119,4 +119,13 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    // replace the IP address with yours
    hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ghpages-dpio/
    ``` 
-
+22. [Migration of Jekyll to Hugo](migrate_jekyll_to_hugo.md)  
+   ```sh
+   // Cloning jekyll repo and import it as Hugo repo
+   curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash
+   
+   // check it locally
+   
+   // publish it to GitHub
+   
+   ``` 
