@@ -1,0 +1,115 @@
+$ sh Downloads/Ardour-6.5.0-x86_64-gcc5.run 
+Verifying archive integrity...  100%   All good.
+Uncompressing Ardour  100%  
+
+Welcome to the Ardour installer
+
+Ardour will be installed for user roger in /opt
+
+[sudo] password for roger: 
+lun 04 ene 2021 12:55:58 CET
+Architecture is x86_64
+Checking for required disk space
+Bundle is on ext4 filesystem
+Unpacking bundle for x86_64
+Bundle unpacked
+
+Checking system libs to see if they are compatible with Ardour.
+
+
+Installing Ardour 6.5.0 in /opt
+
+Adding Ardour to the applications menu
+
+Creating a desktop link for Ardour in /home/roger/Desktop
+
+Copying uninstall script to /opt
+
+
+Creating link Ardour6 in /usr/local/bin
+
+Install Harrison XT plugins? [Y/n]: y
+Deploying Harrison plugins to /opt/Ardour-6.5.0/lib/LV2/Harrison.lv2
+
+Checking to see if Jack is installed
+
+
+The program Jack is missing from this system.
+
+Jack is a very useful utility to allow you to interconnect Ardour and other audio/MIDI applications.
+You can use Ardour without it, but you may find it useful to have around.
+
+Install jack using system software repository? [y/n]: y
+Attempting to install Jack
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+jackd is already the newest version (5+nmu1).
+The following packages were automatically installed and are no longer required:
+  a2jmidid cadence-data cadence-tools carla-data catia claudia gir1.2-appindicator3-0.1 jack-capture kxstudio-menu ladish libcpufreq0 libftgl2 liblo7 libqt5designer5 libqt5help5 libqt5opengl5
+  libqt5sql5 libqt5sql5-sqlite libqt5test5 libqt5xml5 libsdl-image1.2 libsdl1.2debian lsp-plugins-data python3-dbus.mainloop.pyqt5 python3-html5lib python3-isodate python3-liblo python3-pyparsing
+  python3-pyqt5 python3-pyqt5.qtopengl python3-pyqt5.qtsvg python3-rdflib python3-sip python3-sparqlwrapper python3-webencodings rtirq-init zynaddsubfx-data
+Use 'sudo apt autoremove' to remove them.
+0 to upgrade, 0 to newly install, 0 to remove and 0 not to upgrade.
+/tmp/selfgz8130/.stage2.run: 766: jackd: not found
+/tmp/selfgz8130/.stage2.run: 773: [: =: argument expected
+/tmp/selfgz8130/.stage2.run: 791: [: =: argument expected
+
+!!! WARNING !!! - The version of Jack on this system is too old!
+Using an old version of Jack is not recommended. Please update
+Jack for best results.
+
+System Jack version:
+   
+
+Recommended minimum versions:
+   Jack1 - 0.121.3
+   Jack2 - 1.9.8
+
+Press ENTER to continue:
+
+The program QjackCtl is missing from this system.
+QjackCtl is an extremely useful tool for any system that runs JACK applications like Ardour.
+We recommend that you install it.
+
+Install QjackCtl using system software repository? [y/n]: y
+Attempting to install QjackCtl
+Reading package lists... Done
+Building dependency tree       
+Reading state information... Done
+The following packages were automatically installed and are no longer required:
+  a2jmidid cadence-data cadence-tools carla-data catia claudia gir1.2-appindicator3-0.1 jack-capture kxstudio-menu ladish libcpufreq0 libftgl2 liblo7 libqt5designer5 libqt5help5 libqt5opengl5
+  libqt5sql5 libqt5sql5-sqlite libqt5test5 libsdl-image1.2 libsdl1.2debian lsp-plugins-data python3-dbus.mainloop.pyqt5 python3-html5lib python3-isodate python3-liblo python3-pyparsing python3-pyqt5
+  python3-pyqt5.qtopengl python3-pyqt5.qtsvg python3-rdflib python3-sip python3-sparqlwrapper python3-webencodings rtirq-init zynaddsubfx-data
+Use 'sudo apt autoremove' to remove them.
+The following NEW packages will be installed
+  qjackctl
+0 to upgrade, 1 to newly install, 0 to remove and 0 not to upgrade.
+Need to get 452 kB of archives.
+After this operation, 1.854 kB of additional disk space will be used.
+Get:1 http://es.archive.ubuntu.com/ubuntu focal/universe amd64 qjackctl amd64 0.5.0-1ubuntu2 [452 kB]
+Fetched 452 kB in 0s (1.509 kB/s)
+Selecting previously unselected package qjackctl.
+(Reading database ... 243413 files and directories currently installed.)
+Preparing to unpack .../qjackctl_0.5.0-1ubuntu2_amd64.deb ...
+Unpacking qjackctl (0.5.0-1ubuntu2) ...
+Setting up qjackctl (0.5.0-1ubuntu2) ...
+Processing triggers for mime-support (3.64ubuntu1) ...
+Processing triggers for hicolor-icon-theme (0.17-2) ...
+Processing triggers for gnome-menus (3.36.0-1ubuntu1) ...
+Processing triggers for man-db (2.9.1-1) ...
+Processing triggers for desktop-file-utils (0.24-1ubuntu3) ...
+
+System failed the quick sanity check... Looking for the cause
+
+!!! WARNING !!! - Your system seems to use frequency scaling.
+This can have a serious impact on audio latency.
+For best results turn it off, e.g. by choosing the 'performance' governor.
+
+Press ENTER to continue:
+
+Cleaning up
+
+!!! Install Complete !!!
+
+Press ENTER to exit installer:
