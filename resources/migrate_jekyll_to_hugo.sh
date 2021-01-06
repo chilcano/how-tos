@@ -11,7 +11,7 @@ DIR_GITREPOS="gitrepos"
 DIR_SOURCE_JEKYLL="ghpages-holosec"
 DIR_TARGET_HUGO="ghpages-holosecio"
 
-HUGO_THEME_URL="https://github.com/spf13/herring-cove.git"
+HUGO_THEME_URL="https://github.com/spf13/herring-cove"
 HUGO_THEME_NAME="${HUGO_THEME_URL##*/}"
 
 if [ -f "${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}/README.md" ]; then
