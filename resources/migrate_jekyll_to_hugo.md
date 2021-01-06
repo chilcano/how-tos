@@ -35,6 +35,8 @@ But if you don't want to wait, I've created a bash script, just run below comman
 ```sh
 // cloning jekyll repo and import it as Hugo repo
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash -s -- -t=https://github.com/vividvilla/ezhil
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash -s -- --theme=https://github.com/ribice/kiss
 
 // check it locally
 

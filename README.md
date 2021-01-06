@@ -124,7 +124,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    // Cloning jekyll repo and import it as Hugo repo
    curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash
    curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash -s -- -t=https://github.com/vividvilla/ezhil
-
+   curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash -s -- --theme=https://github.com/ribice/kiss
    
    // check it locally
    
