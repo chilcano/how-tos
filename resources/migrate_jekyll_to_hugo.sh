@@ -26,7 +26,8 @@ printf "~~> Cleaning existing '${DIR_TARGET_HUGO}' Hugo GitHub Pages repo. \n"
 rm -rf ${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}
 mkdir -p ${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/themes/
 
-hugo import jekyll ${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL} ${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}
+printf "~~> Importing from Jekyll to Hugo. \n"
+hugo import jekyll --force ${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL} ${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}
 
 printf "~~> Importing the '${HUGO_THEME_URL}' Hugo Theme. \n"
 git clone ${HUGO_THEME_URL} ${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/themes/${HUGO_THEME_NAME}
