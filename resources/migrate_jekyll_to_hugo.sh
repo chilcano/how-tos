@@ -40,29 +40,31 @@ HUGO_THEME_URL_DEFAULT="https://github.com/calintat/minimal"
 # https://themes.gohugo.io/kiss - https://github.com/ribice/kiss
 # https://themes.gohugo.io/ezhil - https://github.com/vividvilla/ezhil.git
 
+DIR_SOURCE_PATH="${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}"
+DIR_TARGET_PATH="${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}"
 HUGO_THEME_URL="${_THEME_URL:-$HUGO_THEME_URL_DEFAULT}"
 HUGO_THEME_NAME="${HUGO_THEME_URL##*/}"
 
-if [ -f "${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}/README.md" ]; then
-    printf "==> The '${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}' GitHub repo exists and contains files. Nothing to do. \n"
+if [ -f "${DIR_SOURCE_PATH}/README.md" ]; then
+    printf "==> The '${DIR_SOURCE_PATH}' GitHub repo exists and contains files. Nothing to do. \n"
 else 
     printf "==> Cloning the '${DIR_SOURCE_JEKYLL}' Jekyll GitHub Pages repo. \n"
-    mkdir -p $HOME/$DIR_GITREPOS/$DIR_SOURCE_JEKYLL 
-    git clone https://github.com/${GIT_USER}/${DIR_SOURCE_JEKYLL} ${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}
+    mkdir -p ${DIR_SOURCE_PATH}
+    git clone https://github.com/${GIT_USER}/${DIR_SOURCE_JEKYLL} ${DIR_SOURCE_PATH}
 fi 
 
 printf "==> Cleaning existing '${DIR_TARGET_HUGO}' Hugo GitHub Pages repo. \n"
-rm -rf $HOME/$DIR_GITREPOS/$DIR_TARGET_HUGO
-mkdir -p $HOME/$DIR_GITREPOS/$DIR_TARGET_HUGO/themes/
+rm -rf ${DIR_TARGET_PATH}
+mkdir -p ${DIR_TARGET_PATH}/themes/
 
 printf "==> Importing from Jekyll to Hugo. \n"
-hugo import jekyll --force ${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL} ${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}
+hugo import jekyll --force ${DIR_SOURCE_PATH} ${DIR_TARGET_PATH}
 
 printf "==> Importing the '${HUGO_THEME_URL}' Hugo Theme. \n"
-git clone ${HUGO_THEME_URL} ${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/themes/${HUGO_THEME_NAME}
+git clone ${HUGO_THEME_URL} ${HOME}/${DIR_TARGET_PATH}/themes/${HUGO_THEME_NAME}
 
 printf "==> Serving the Hugo site over the LAN. \n"
-cd $HOME/$DIR_GITREPOS/$DIR_TARGET_HUGO
-printf "\t cd ${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO} \n\n"
+cd ${DIR_TARGET_PATH}
+printf "\t cd ${DIR_TARGET_PATH} \n"
 printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ \n"
 printf "\t cd ${DIR_CURRENT} \n\n"
