@@ -119,7 +119,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    // replace the IP address with yours
    hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ghpages-dpio/
    ``` 
-22. [Migration of Jekyll to Hugo](migrate_jekyll_to_hugo.md)  
+22. [Migration of Jekyll to Hugo](resources/migrate_jekyll_to_hugo.md)  
    ```sh
    // Cloning jekyll repo and import it as Hugo repo
    curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash
