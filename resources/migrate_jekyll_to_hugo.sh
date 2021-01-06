@@ -1,5 +1,25 @@
 #!/bin/bash
 
+unset _THEME_URL
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --theme*|-t*)
+      if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no '=' 
+      _THEME_URL="${1#*=}"
+      ;;
+    --help|-h)
+      printf "Migrate Jekyll GitHub Pages site to Hugo."
+      exit 0
+      ;;
+    *)
+      >&2 printf "Error: Invalid argument: '$1' \n"
+      exit 1
+      ;;
+  esac
+  shift
+done
+
 printf "\n"
 echo "###############################################################"
 echo "#          Migrating existing Jekyll site to Hugo             #"
@@ -10,8 +30,17 @@ GIT_USER="chilcano"
 DIR_GITREPOS="gitrepos"
 DIR_SOURCE_JEKYLL="ghpages-holosec"
 DIR_TARGET_HUGO="ghpages-holosecio"
+HUGO_THEME_URL_DEFAULT="https://github.com/calintat/minimal"
+## Minimal themes:
+# https://themes.gohugo.io/minimal - https://github.com/calintat/minimal.git
+# https://themes.gohugo.io/hugo-researcher
+# https://themes.gohugo.io/hugo_theme_pickles
+# https://themes.gohugo.io/hugo-theme-console
+# https://themes.gohugo.io/etch
+# https://themes.gohugo.io/kiss
+# https://themes.gohugo.io/ezhil - https://github.com/vividvilla/ezhil.git
 
-HUGO_THEME_URL="https://github.com/spf13/herring-cove"
+HUGO_THEME_URL="${_THEME_URL:-$HUGO_THEME_URL_DEFAULT}"
 HUGO_THEME_NAME="${HUGO_THEME_URL##*/}"
 
 if [ -f "${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}/README.md" ]; then
@@ -34,6 +63,5 @@ git clone ${HUGO_THEME_URL} ${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/themes/${
 
 printf "~~> Serving the Hugo site in the LAN. \n"
 cd ${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/
-# hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ghpages-dpio/
-printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} \n"
+printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ \n"
 printf "\t cd ${DIR_CURRENT} \n\n"
