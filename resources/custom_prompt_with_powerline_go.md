@@ -1,4 +1,11 @@
-## Custom Prompt in Ubuntu with Powerline Go
+# Custom Prompt in Ubuntu with Powerline Go
+
+If you don't want go through below steps, I've created a bash script to automate the process and get the same results. 
+```sh
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/custom_prompt_with_powerline_go.sh | bash
+```
+
+## Steps
 
 ### 1) Install Go
 ```sh
@@ -59,9 +66,9 @@ You should see below image with full prompt in 1 line:
 ![](custom_prompt_ubuntu_powerline_go_1_line.png)
 
 
-### 5) Updating the Ubuntu prompt
+### 5) Customize the Ubuntu prompt
 
-I'd like to show the prompt in a two lines, first line for the full path and second line only with cursor. The, to do that let's modify the `powerline-go-loader.sh`.  
+I'd like to show the prompt in a two lines, first line for the full path and second line only with cursor. Then, to do that let's modify the `powerline-go-loader.sh`.  
 The `powerline-go -help` command will show all parameters to customize your prompt. In this specific case I'll use `-newline`.
 ```sh
 $ nano $HOME/powerline-go-loader.sh
