@@ -1,6 +1,6 @@
 ## Custom Prompt in Ubuntu with Fancy GIT
 
-![](custom_prompt_ubuntu_with_fancy_git_updated3.png)
+![](imgs/custom_prompt_ubuntu_with_fancy_git_updated3.png)
 
 ### 1) Install fonts
 ```sh
@@ -58,7 +58,7 @@ has_added_files=" +"
 has_unpushed_commits=" ?"
 working_on_venv=" ≤"
 ```
-![](custom_prompt_ubuntu_with_fancy_git_updated.png)
+![](imgs/custom_prompt_ubuntu_with_fancy_git_updated.png)
 
 If it still doesn't work, then load a text-based fancy prompt:
 ```sh

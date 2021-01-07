@@ -1,6 +1,6 @@
 ## Custom Prompt in Ubuntu with Synth Shell
 
-![](custom_prompt_ubuntu_with_synth_shell.png)
+![](imgs/custom_prompt_ubuntu_with_synth_shell.png)
 
 ```sh
 $ sudo apt install -y fonts-powerline
