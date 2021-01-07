@@ -131,3 +131,4 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    // publish it to GitHub
    
    ``` 
+23. [Creating booteable USB on Ubuntu](resources/booteable_usb_on_ubuntu.md)  

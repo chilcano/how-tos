@@ -3,7 +3,8 @@
 ## References:
 1. [Migrating from Jekyll to Hugo - 2020/Apr/29](https://chenhuijing.com/blog/migrating-from-jekyll-to-hugo/)
 2. [Migrating from Jekyll+Github Pages to Hugo+Netlify - 2017/Jun/6](https://www.sarasoueidan.com/blog/jekyll-ghpages-to-hugo-netlify/)
-3. [](https://victoria.dev/blog/hugo-vs-jekyll-an-epic-battle-of-static-site-generator-themes/)
+3. [Hugo vs Jekyll: an epic battle of static site generator themes - 2020/April/27](https://victoria.dev/blog/hugo-vs-jekyll-an-epic-battle-of-static-site-generator-themes/)
+4. [Migrate from jekyll to gohugo - 2019/Nov/12](https://haefelfinger.ch/posts/2019/2019-11-12-Migrate-from-jekyll-to-hugo/)
 
 ## Requisites
 
