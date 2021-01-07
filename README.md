@@ -132,3 +132,4 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    
    ``` 
 23. [Creating booteable USB on Ubuntu](resources/booteable_usb_on_ubuntu.md)  
+24. [Google Drive on Ubuntu with XFCE](resources/google_drive_on_linux.md)  

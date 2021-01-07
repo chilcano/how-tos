@@ -2,6 +2,7 @@
 
 If you don't want go through below steps, I've created a bash script to automate the process and get the same results. 
 ```sh
+sudo apt -yqq install golang-go curl jq git unzip wget
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/custom_prompt_with_powerline_go.sh | bash
 ```
 
