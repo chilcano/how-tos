@@ -27,7 +27,7 @@ Update `/etc/caddy/Caddyfile` with your configuration:
 ```sh
 NOW1=$(date +"%y%m%d.%H%M%S")
 
-cat <<EOF > Caddyfile
+cat << EOF > Caddyfile
 :443
 
 reverse_proxy 127.0.0.1:8001

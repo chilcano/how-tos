@@ -61,7 +61,7 @@ sudo ln -s -f $(npm config get prefix)/bin/node /usr/bin/node
 sudo ln -s -f $(npm config get prefix)/bin/code-server /usr/bin/code-server
 
 printf ">> Creating Systemd Code-Server service. \n"
-cat <<EOF > code-server.service
+cat << EOF > code-server.service
 [Unit]
 Description=code-server
 After=network.target

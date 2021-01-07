@@ -10,7 +10,11 @@ go get -u github.com/justjanne/powerline-go
 
 printf "==> 3) Set the Ubuntu prompt configuration (-newline sets prompt in 2 lines) \n"
 
-cat <<EOF > powerline-go-loader.sh
+## The delimiting identifier is quoted to avoid the shell substitutes all variables, commands 
+## and special characters before passing the here-document lines to the command.
+## https://linuxize.com/post/bash-heredoc/
+
+cat << 'EOF' > powerline-go-loader.sh
 #!/bin/bash
 
 GOPATH=$HOME/go

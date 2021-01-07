@@ -53,14 +53,14 @@ echo "#       Configuring GitHub Pages repo (main branch)           #"
 echo "###############################################################"
 
 printf ">> Adding '.gitignore' file. \n"
-cat <<EOF > .gitignore
+cat << EOF > .gitignore
 ## Hugo
 ghp-content/
 *.bak
 EOF
 
 printf "==> Adding 'README.md' file. \n"
-cat <<EOF > README.md
+cat << EOF > README.md
 Go to [data-plane.io](https://data-plane.io) website!  
 This '${GIT_ORG}/${GIT_REPO}' main branch hosts the Hugo scripts.
 EOF
@@ -116,7 +116,7 @@ printf "==> Generating Hugo content in <root>/${GIT_HUGO_CONTENT_DIR}/docs dir. 
 cd ${GIT_HUGO_SCRIPTS_DIR}; hugo
 
 #printf ">> Setting a custom Domain adding 'CNAME' file under 'docs/' dir. \n"
-#cat <<EOF > CNAME
+#cat << EOF > CNAME
 #data-plane.io
 #EOF
 
@@ -124,7 +124,7 @@ cd ${GIT_HUGO_SCRIPTS_DIR}; hugo
 ## https://holisticsecurity.io/2019/10/14/migrating-wordpress-com-blog-to-github-pages-with-jekyll-part1
 
 printf "==> Adding 'README.md' file to 'GIT_HUGO_CONTENT_BRANCH'. \n"
-cat <<EOF > README.md
+cat << EOF > README.md
 Go to [data-plane.io](https://data-plane.io) website!  
 This '${GIT_HUGO_CONTENT_BRANCH}' branch hosts the Hugo content.
 EOF

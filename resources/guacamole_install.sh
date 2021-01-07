@@ -71,7 +71,7 @@ sudo systemctl restart guacd
 
 printf ">> Configuring Guacamole \n\n"
 
-cat <<EOF > guacamole.properties
+cat << EOF > guacamole.properties
 guacd-hostname: localhost
 guacd-port: 4822
 user-mapping: /etc/guacamole/user-mapping.xml
@@ -91,7 +91,7 @@ GUACAMOLE_PWD_RND=$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 8 | head -n 
 GUACAMOLE_PWD_MD5=$(echo -n $GUACAMOLE_PWD_RND | md5sum | cut -d ' ' -f 1)
 
 ## create a new user-mapping.xml
-cat <<EOF > user-mapping.xml
+cat << EOF > user-mapping.xml
 <user-mapping>
   <authorize username="admin" password="${GUACAMOLE_PWD_MD5}" encoding="md5">
     <!-- The username must be an existing Linux user and you're going to have its password -->

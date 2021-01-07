@@ -43,7 +43,7 @@ chmod -R 0600 $HOME/.vnc/passwd*
 printf "\t VNC (non-user) password created: ${VNC_PWD_RND} \n"
 
 printf "==> Configure VNC Server to start the XFCE4 \n"
-cat <<EOF > xstartup
+cat << EOF > xstartup
 #!/bin/sh
 
 unset SESSION_MANAGER
@@ -61,7 +61,7 @@ ss -ltn | grep '590.'
 
 ## creating VNC Server systemd startup script
 printf ">> Ceating VNC Server systemd startup script \n\n"
-cat <<EOF > vncserver@.service
+cat << EOF > vncserver@.service
 [Unit]
 Description=Systemd VNC Server startup script for Ubuntu 20.04
 After=syslog.target network.target

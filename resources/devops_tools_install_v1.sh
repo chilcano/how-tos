@@ -35,7 +35,7 @@ sudo apt install -y maven
 printf ">> Maven installed.\n\n"
 
 echo "==> Creating '/etc/profile.d/maven.sh'"
-cat <<EOF > maven.sh
+cat << 'EOF' > maven.sh
 #!/bin/bash
 
 JAVA_HOME=/usr/lib/jvm/default-java
