@@ -42,5 +42,5 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migr
 // check it locally
 
 // publish it to GitHub
-
+ 
 ``` 
