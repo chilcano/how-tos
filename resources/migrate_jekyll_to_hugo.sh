@@ -64,29 +64,32 @@ mkdir -p ${DIR_TARGET_PATH}/themes/
 printf "==> Importing from Jekyll to Hugo. \n"
 hugo import jekyll --force ${DIR_SOURCE_PATH} ${DIR_TARGET_PATH}
 
-printf "==> Initializing the GitHub Repo Parent directory. \n"
+printf "==> Getting into '${DIR_TARGET_PATH}' directory and initializing as Git repository. \n"
 cd ${DIR_TARGET_PATH}
 git init
+mv config.yaml config.yaml.bak
 
 printf "==> Importing and configuring the '${HUGO_THEME_URL}' Hugo Theme. \n"
 
 case "$HUGO_THEME_NAME" in
   minimal)
-    printf "\t Using the Hugo Theme as Submodule. \n"
-    git submodule add ${HUGO_THEME_URL} themes/${HUGO_THEME_NAME}
+    printf "\t > Using the Hugo Theme as Submodule. \n"
+    git submodule add ${HUGO_THEME_URL} themes/${HUGO_THEME_NAME} --quiet
     git submodule init
     git submodule update
     cp themes/minimal/exampleSite/config.toml .
     ;;
   ezhil)
-    printf "\t Using the Hugo Theme as Repository. \n"
+    printf "\t > Using the Hugo Theme as Repository. \n"
     git clone ${HUGO_THEME_URL} themes/${HUGO_THEME_NAME}
     ;;
   *)
-    printf "The Hugo Theme '$HUGO_THEME_NAME' doesn't require custom configuration. \n"
+    printf "\t > The Hugo Theme '$HUGO_THEME_NAME' doesn't require custom configuration. \n"
     ;;
 esac
 
+printf "==> Getting back to initial directory. \n"
+cd ${DIR_CURRENT}
+
 printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory. \n"
-printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ \n"
-printf "\t cd ${DIR_CURRENT} \n\n"
+printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ \n\n"
