@@ -37,31 +37,33 @@ DIR_TARGET_HUGO="${_DESTINATION:-ghpages-holosecio}"
 HUGO_THEME_URL_DEFAULT="https://github.com/calintat/minimal"
 ## Minimal themes:
 # https://themes.gohugo.io/minimal - https://github.com/calintat/minimal.git
-# https://themes.gohugo.io/hugo-researcher
-# https://themes.gohugo.io/hugo_theme_pickles
-# https://themes.gohugo.io/hugo-theme-console
-# https://themes.gohugo.io/etch
-# https://themes.gohugo.io/kiss - https://github.com/ribice/kiss
+# https://themes.gohugo.io/kiss - https://github.com/ribice/kiss.git
 # https://themes.gohugo.io/ezhil - https://github.com/vividvilla/ezhil.git
+# https://themes.gohugo.io/hugo-theme-cactus/ - https://github.com/monkeyWzr/hugo-theme-cactus.gi
+# https://themes.gohugo.io/minimal-bootstrap-hugo-theme/
 
 DIR_SOURCE_PATH="${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}"
 DIR_TARGET_PATH="${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}"
 HUGO_THEME_URL="${_THEME_URL:-$HUGO_THEME_URL_DEFAULT}"
 HUGO_THEME_NAME="${HUGO_THEME_URL##*/}"
 
-if [ -f "${DIR_SOURCE_PATH}/README.md" ]; then
-    printf "==> The '${DIR_SOURCE_PATH}' GitHub repo exists and contains files. Nothing to do. \n"
+if [ -f "${DIR_SOURCE_PATH}/_config.yml" ]; then
+  printf "==> The source GitHub repo (${DIR_SOURCE_PATH}) exists and contains files. Nothing to do. \n"
 else 
-    printf "==> Cloning the '${DIR_SOURCE_JEKYLL}' Jekyll GitHub Pages repo. \n"
-    mkdir -p ${DIR_SOURCE_PATH}
-    git clone https://github.com/${GIT_USER}/${DIR_SOURCE_JEKYLL} ${DIR_SOURCE_PATH}
+  printf "==> Cloning the '${DIR_SOURCE_JEKYLL}' Jekyll GitHub Pages repo. \n"
+  git clone https://github.com/${GIT_USER}/${DIR_SOURCE_JEKYLL} ${DIR_SOURCE_PATH}
 fi 
 
-printf "==> Cleaning existing '${DIR_TARGET_HUGO}' Hugo GitHub Pages repo. \n"
-rm -rf ${DIR_TARGET_PATH}
-mkdir -p ${DIR_TARGET_PATH}/themes/
 
-printf "==> Importing from Jekyll to Hugo. \n"
+if [ -f "${DIR_TARGET_PATH}/config.yaml" ]; then
+  printf "==> The target GitHub repo (${DIR_TARGET_PATH}) exists and contains files. Nothing to do. \n"
+else 
+  printf "==> Creating a clean '${DIR_TARGET_HUGO}' Hugo GitHub Pages repo. \n"
+  rm -rf ${DIR_TARGET_PATH}
+  mkdir -p ${DIR_TARGET_PATH}/themes/
+fi 
+
+printf "==> Importing from existing Jekyll to the target GitHub repo (${DIR_TARGET_PATH}). \n"
 hugo import jekyll --force ${DIR_SOURCE_PATH} ${DIR_TARGET_PATH}
 
 printf "==> Getting into '${DIR_TARGET_PATH}' directory and initializing as Git repository. \n"
@@ -72,14 +74,14 @@ mv config.yaml config.yaml.bak
 printf "==> Importing and configuring the '${HUGO_THEME_URL}' Hugo Theme. \n"
 
 case "$HUGO_THEME_NAME" in
-  minimal)
+  minimal | minimal-bootstrap-hugo-theme)
     printf "\t > Using the Hugo Theme as Submodule. \n"
     git submodule add ${HUGO_THEME_URL} themes/${HUGO_THEME_NAME} --quiet
     git submodule init
-    git submodule update
-    cp themes/minimal/exampleSite/config.toml .
+    #git submodule update
+    git submodule update --remote --merge
     ;;
-  ezhil)
+   ezhil | kiss | hugo-theme-cactus)
     printf "\t > Using the Hugo Theme as Repository. \n"
     git clone ${HUGO_THEME_URL} themes/${HUGO_THEME_NAME}
     ;;
@@ -87,6 +89,7 @@ case "$HUGO_THEME_NAME" in
     printf "\t > The Hugo Theme '$HUGO_THEME_NAME' doesn't require custom configuration. \n"
     ;;
 esac
+cp themes/${$HUGO_THEME_NAME}/exampleSite/config.toml .
 
 printf "==> Getting back to initial directory. \n"
 cd ${DIR_CURRENT}
