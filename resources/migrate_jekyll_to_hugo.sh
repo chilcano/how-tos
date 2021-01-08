@@ -1,12 +1,16 @@
 #!/bin/bash
 
-unset _THEME_URL
+unset _THEME_URL _DESTINATION
 
 while [ $# -gt 0 ]; do
   case "$1" in
     --theme*|-t*)
       if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no '=' 
       _THEME_URL="${1#*=}"
+      ;;
+    --destination*|-d*)
+      if [[ "$1" != *=* ]]; then shift; fi
+      _DESTINATION="${1#*=}"
       ;;
     --help|-h)
       printf "Migrate Jekyll GitHub Pages site to Hugo."
@@ -29,7 +33,7 @@ DIR_CURRENT=$PWD
 GIT_USER="chilcano"
 DIR_GITREPOS="gitrepos"
 DIR_SOURCE_JEKYLL="ghpages-holosec"
-DIR_TARGET_HUGO="ghpages-holosecio"
+DIR_TARGET_HUGO="${_DESTINATION:-ghpages-holosecio}"
 HUGO_THEME_URL_DEFAULT="https://github.com/calintat/minimal"
 ## Minimal themes:
 # https://themes.gohugo.io/minimal - https://github.com/calintat/minimal.git

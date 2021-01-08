@@ -38,6 +38,7 @@ But if you don't want to wait, I've created a bash script, just run below comman
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash -s -- -t=https://github.com/vividvilla/ezhil
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash -s -- --theme=https://github.com/ribice/kiss
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash -s -- -d=dir1
 
 // check it locally
 
