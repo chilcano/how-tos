@@ -61,12 +61,6 @@ printf "==> Cleaning existing '${DIR_TARGET_HUGO}' Hugo GitHub Pages repo. \n"
 rm -rf ${DIR_TARGET_PATH}
 mkdir -p ${DIR_TARGET_PATH}/themes/
 
-printf "==> Hub > Removing remote GitHub repo. \n"
-echo "yes" | hub delete ${GIT_USER}/${DIR_TARGET_HUGO}
-
-printf "==> Hub > Creating an empty repo on GitHub using current dir as repo's name. \n"
-hub create -d "GitHub Pages for HolisticSecurity.io" ${GIT_USER}/${DIR_TARGET_HUGO}
-
 printf "==> Importing from Jekyll to Hugo. \n"
 hugo import jekyll --force ${DIR_SOURCE_PATH} ${DIR_TARGET_PATH}
 
