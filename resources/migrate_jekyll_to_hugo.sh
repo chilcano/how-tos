@@ -35,12 +35,12 @@ DIR_GITREPOS="gitrepos"
 DIR_SOURCE_JEKYLL="ghpages-holosec"
 DIR_TARGET_HUGO="${_DESTINATION:-ghpages-holosecio}"
 HUGO_THEME_URL_DEFAULT="https://github.com/calintat/minimal.git"
-## Minimal themes:
+## Hugo themes:
 # https://themes.gohugo.io/minimal - https://github.com/calintat/minimal.git
 # https://themes.gohugo.io/kiss - https://github.com/ribice/kiss.git
 # https://themes.gohugo.io/ezhil - https://github.com/vividvilla/ezhil.git
 # https://themes.gohugo.io/hugo-theme-cactus/ - https://github.com/monkeyWzr/hugo-theme-cactus.git
-# https://themes.gohugo.io/minimal-bootstrap-hugo-theme/
+# https://themes.gohugo.io/minimal-bootstrap-hugo-theme/ - https://github.com/zwbetz-gh/minimal-bootstrap-hugo-theme.git
 
 DIR_SOURCE_PATH="${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}"
 DIR_TARGET_PATH="${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}"
@@ -55,8 +55,7 @@ else
   git clone https://github.com/${GIT_USER}/${DIR_SOURCE_JEKYLL} ${DIR_SOURCE_PATH}
 fi 
 
-
-if [ -f "${DIR_TARGET_PATH}/config.yaml" ]; then
+if [ -f "${DIR_TARGET_PATH}/config.toml" ] || [ -f "${DIR_TARGET_PATH}/config.yaml" ] || [ -f "${DIR_TARGET_PATH}/config.yaml.bak" ]; then
   printf "==> The target GitHub repo (${DIR_TARGET_PATH}) exists and contains files. Nothing to do. \n"
 else 
   printf "==> Creating a clean '${DIR_TARGET_HUGO}' Hugo GitHub Pages repo. \n"
