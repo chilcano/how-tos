@@ -34,18 +34,19 @@ GIT_USER="chilcano"
 DIR_GITREPOS="gitrepos"
 DIR_SOURCE_JEKYLL="ghpages-holosec"
 DIR_TARGET_HUGO="${_DESTINATION:-ghpages-holosecio}"
-HUGO_THEME_URL_DEFAULT="https://github.com/calintat/minimal"
+HUGO_THEME_URL_DEFAULT="https://github.com/calintat/minimal.git"
 ## Minimal themes:
 # https://themes.gohugo.io/minimal - https://github.com/calintat/minimal.git
 # https://themes.gohugo.io/kiss - https://github.com/ribice/kiss.git
 # https://themes.gohugo.io/ezhil - https://github.com/vividvilla/ezhil.git
-# https://themes.gohugo.io/hugo-theme-cactus/ - https://github.com/monkeyWzr/hugo-theme-cactus.gi
+# https://themes.gohugo.io/hugo-theme-cactus/ - https://github.com/monkeyWzr/hugo-theme-cactus.git
 # https://themes.gohugo.io/minimal-bootstrap-hugo-theme/
 
 DIR_SOURCE_PATH="${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}"
 DIR_TARGET_PATH="${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}"
 HUGO_THEME_URL="${_THEME_URL:-$HUGO_THEME_URL_DEFAULT}"
-HUGO_THEME_NAME="${HUGO_THEME_URL##*/}"
+HUGO_THEME_FULLNAME="${HUGO_THEME_URL##*/}"
+HUGO_THEME_NAME="${HUGO_THEME_FULLNAME%.*}"
 
 if [ -f "${DIR_SOURCE_PATH}/_config.yml" ]; then
   printf "==> The source GitHub repo (${DIR_SOURCE_PATH}) exists and contains files. Nothing to do. \n"
@@ -81,7 +82,7 @@ case "$HUGO_THEME_NAME" in
     #git submodule update
     git submodule update --remote --merge
     ;;
-   ezhil | kiss | hugo-theme-cactus)
+  ezhil | kiss | hugo-theme-cactus)
     printf "\t > Using the Hugo Theme as Repository. \n"
     git clone ${HUGO_THEME_URL} themes/${HUGO_THEME_NAME}
     ;;
@@ -89,7 +90,7 @@ case "$HUGO_THEME_NAME" in
     printf "\t > The Hugo Theme '$HUGO_THEME_NAME' doesn't require custom configuration. \n"
     ;;
 esac
-cp themes/${$HUGO_THEME_NAME}/exampleSite/config.toml .
+cp themes/${HUGO_THEME_NAME}/exampleSite/config.toml .
 
 printf "==> Getting back to initial directory. \n"
 cd ${DIR_CURRENT}
