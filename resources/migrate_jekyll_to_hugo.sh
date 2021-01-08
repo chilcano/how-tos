@@ -64,8 +64,11 @@ mkdir -p ${DIR_TARGET_PATH}/themes/
 printf "==> Importing from Jekyll to Hugo. \n"
 hugo import jekyll --force ${DIR_SOURCE_PATH} ${DIR_TARGET_PATH}
 
-printf "==> Importing and configuring the '${HUGO_THEME_URL}' Hugo Theme. \n"
+printf "==> Initializing the GitHub Repo Parent directory. \n"
 cd ${DIR_TARGET_PATH}
+git init
+
+printf "==> Importing and configuring the '${HUGO_THEME_URL}' Hugo Theme. \n"
 
 case "$HUGO_THEME_NAME" in
   minimal)
