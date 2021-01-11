@@ -72,7 +72,7 @@ git init
 cd ${DIR_TARGET_PATH}/ghp-scripts/
 mv config.yaml config.yaml.bak
 
-printf "==> Importing and configuring the '${HUGO_THEME_URL}' Hugo Theme. \n"
+printf "==> Importing the '${HUGO_THEME_URL}' Hugo Theme. \n"
 
 case "$HUGO_THEME_NAME" in
   minimal | minimal-bootstrap-hugo-theme)
@@ -90,11 +90,64 @@ case "$HUGO_THEME_NAME" in
     printf "\t > The Hugo Theme '$HUGO_THEME_NAME' doesn't require custom configuration. \n"
     ;;
 esac
-cp themes/${HUGO_THEME_NAME}/exampleSite/config.toml .
 
-printf "==> Getting back to initial directory. \n"
-cd ${DIR_CURRENT}
+printf "==> Configuring the '${HUGO_THEME_URL}' Hugo site. \n"
+#cp themes/${HUGO_THEME_NAME}/exampleSite/config.toml .
+
+cat << EOF > /config.toml
+baseURL = "http://holisticsecurity.io/"
+languageCode = "en-us"
+title = "HolisticSecurity.io"
+theme = "minimal"
+#disqusShortname = "username"
+#googleAnalytics = ""
+paginate = 10
+publishDir = "../ghp-content/docs"
+
+[params]
+  author = "Roger Carhuatocto"
+  description = "The Systems Thinking Methodology and IT Security"
+  githubUsername = "#"
+  #accent = "red"
+  accent = "#1478ff"
+  showBorder = true
+  backgroundColor = "white"
+  font = "Raleway" # should match the name on Google Fonts!
+  highlight = true
+  highlightStyle = "default"
+  highlightLanguages = ["go", "haskell", "kotlin", "scala", "swift"]
+
+[[menu.main]]
+  url = "/"
+  name = "Home"
+  weight = 1
+[[menu.main]]
+  url = "/about/"
+  name = "About"
+  weight = 2
+[[menu.main]]
+  url = "/post/"
+  name = "Posts"
+  weight = 3
+
+[[menu.icon]]
+  url = "https://github.com/chilcano/"
+  name = "fab fa-github"
+  weight = 1
+[[menu.icon]]
+  url = "https://twitter.com/chilcano/"
+  name = "fab fa-twitter"
+  weight = 2
+[[menu.icon]]
+  url = "https://www.linkedin.com/in/chilcano/"
+  name = "fab fa-linkedin"
+  weight = 3
+EOF
 
 printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory. \n"
-printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ \n\n"
-printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/  \n\n"
+printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ \n"
+printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/  \n"
+printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ --configDir=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-scripts/ \n\n"
+
+printf "==> Getting back to initial directory. \n"
+printf "\t cd ${DIR_CURRENT} \n\n"
