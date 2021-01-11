@@ -96,8 +96,4 @@ cd ${DIR_CURRENT}
 
 printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory. \n"
 printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ \n\n"
-printf "\t hugo server --bind=0.0.0.0 \\n
-                       --buildDrafts  \\n
-                       --theme=${HUGO_THEME_NAME} \\n
-                       --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ \\n
-                       --destination="${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}_docs/  \n\n"
+printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ --destination="${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}_docs/  \n\n"
