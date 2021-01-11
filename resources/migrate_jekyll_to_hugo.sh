@@ -92,9 +92,10 @@ case "$HUGO_THEME_NAME" in
 esac
 
 printf "==> Configuring the '${HUGO_THEME_URL}' Hugo site. \n"
-#cp themes/${HUGO_THEME_NAME}/exampleSite/config.toml .
 
-cat << EOF > /config.toml
+cp themes/${HUGO_THEME_NAME}/exampleSite/config.toml .
+
+cat << EOF > config.toml.ok
 baseURL = "http://holisticsecurity.io/"
 languageCode = "en-us"
 title = "HolisticSecurity.io"
