@@ -1,12 +1,12 @@
 #!/bin/bash
 
-unset _THEME_URL _DESTINATION
+unset _CLEAN _DESTINATION
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --theme*|-t*)
+    --clean*|-c*)
       if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no '=' 
-      _THEME_URL="${1#*=}"
+      _CLEAN="${1#*=}"
       ;;
     --destination*|-d*)
       if [[ "$1" != *=* ]]; then shift; fi
@@ -34,19 +34,10 @@ GIT_USER="chilcano"
 DIR_GITREPOS="gitrepos"
 DIR_SOURCE_JEKYLL="ghpages-holosec"
 DIR_TARGET_HUGO="${_DESTINATION:-ghpages-holosecio}"
-HUGO_THEME_URL_DEFAULT="https://github.com/calintat/minimal.git"
-## Hugo themes:
-# https://themes.gohugo.io/minimal - https://github.com/calintat/minimal.git
-# https://themes.gohugo.io/kiss - https://github.com/ribice/kiss.git
-# https://themes.gohugo.io/ezhil - https://github.com/vividvilla/ezhil.git
-# https://themes.gohugo.io/hugo-theme-cactus/ - https://github.com/monkeyWzr/hugo-theme-cactus.git
-# https://themes.gohugo.io/minimal-bootstrap-hugo-theme/ - https://github.com/zwbetz-gh/minimal-bootstrap-hugo-theme.git
+
 
 DIR_SOURCE_PATH="${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}"
 DIR_TARGET_PATH="${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}"
-HUGO_THEME_URL="${_THEME_URL:-$HUGO_THEME_URL_DEFAULT}"
-HUGO_THEME_FULLNAME="${HUGO_THEME_URL##*/}"
-HUGO_THEME_NAME="${HUGO_THEME_FULLNAME%.*}"
 
 if [ -f "${DIR_SOURCE_PATH}/_config.yml" ]; then
   printf "==> The source GitHub repo (${DIR_SOURCE_PATH}) exists and contains files. Nothing to do. \n"
@@ -55,7 +46,7 @@ else
   git clone https://github.com/${GIT_USER}/${DIR_SOURCE_JEKYLL} ${DIR_SOURCE_PATH}
 fi 
 
-if [ -f "${DIR_TARGET_PATH}/config.toml" ] || [ -f "${DIR_TARGET_PATH}/config.yaml" ] || [ -f "${DIR_TARGET_PATH}/config.yaml.bak" ]; then
+if [ -z "${_CLEAN+x}" ]; then
   printf "==> The target GitHub repo (${DIR_TARGET_PATH}) exists and contains files. Nothing to do. \n"
 else 
   printf "==> Creating a clean '${DIR_TARGET_HUGO}' Hugo GitHub Pages repo. \n"
@@ -72,30 +63,55 @@ git init
 cd ${DIR_TARGET_PATH}/ghp-scripts/
 mv config.yaml config.yaml.bak
 
-printf "==> Importing the '${HUGO_THEME_URL}' Hugo Theme. \n"
+## Hugo themes:
+# https://themes.gohugo.io/minimal - https://github.com/calintat/minimal.git
+# https://themes.gohugo.io/minimal-bootstrap-hugo-theme/ - https://github.com/zwbetz-gh/minimal-bootstrap-hugo-theme.git
 
-case "$HUGO_THEME_NAME" in
-  minimal | minimal-bootstrap-hugo-theme)
-    printf "\t > Using the Hugo Theme as Submodule. \n"
-    git submodule add ${HUGO_THEME_URL} themes/${HUGO_THEME_NAME} --quiet
-    git submodule init
-    #git submodule update
-    git submodule update --remote --merge
-    ;;
-  ezhil | kiss | hugo-theme-cactus)
-    printf "\t > Using the Hugo Theme as Repository. \n"
-    git clone ${HUGO_THEME_URL} themes/${HUGO_THEME_NAME}
-    ;;
-  *)
-    printf "\t > The Hugo Theme '$HUGO_THEME_NAME' doesn't require custom configuration. \n"
-    ;;
-esac
 
-printf "==> Configuring the '${HUGO_THEME_URL}' Hugo site. \n"
+declare -a ARRAY_THEMES_MODU=(
+"https://github.com/calintat/minimal.git"
+"https://github.com/zwbetz-gh/minimal-bootstrap-hugo-theme.git"
+)
 
-cp themes/${HUGO_THEME_NAME}/exampleSite/config.toml .
+# https://themes.gohugo.io/kiss - https://github.com/ribice/kiss.git
+# https://themes.gohugo.io/ezhil - https://github.com/vividvilla/ezhil.git
+# https://themes.gohugo.io/hugo-theme-cactus/ - https://github.com/monkeyWzr/hugo-theme-cactus.git
 
-cat << EOF > config.toml.ok
+declare -a ARRAY_THEMES_REPO=(
+"https://github.com/ribice/kiss.git"
+"https://github.com/vividvilla/ezhil.git"
+"https://github.com/monkeyWzr/hugo-theme-cactus.git"
+)
+
+printf "==> Importing the ${#ARRAY_THEMES_MODU[@]} +  ${#ARRAY_THEMES_REPO[@]} Hugo Themes. \n"
+
+
+for tm_url in "${ARRAY_THEMES_MODU[@]}"
+do
+  tm_fullname="${tm_url##*/}"
+  tm_name="${tm_fullname%.*}"
+  printf "\t > Adding the '${tm_name}' Hugo Theme as submodule. \n"
+  git submodule add ${tm_url} themes/${tm_name} --quiet
+  git submodule init
+  #git submodule update
+  git submodule update --remote --merge
+  printf "\t Copying existing configuration of '${tm_name}' included in the theme. \n"
+   cp themes/${tm_name}/exampleSite/config.toml  config.toml.${tm_name}
+done
+
+for tr_url in "${ARRAY_THEMES_REPO[@]}"
+do
+  tr_fullname="${tr_url##*/}"
+  tr_name="${tr_fullname%.*}"
+  printf "\t > Adding the '${tr_name}' Hugo Theme as repository. \n"
+  git clone ${tr_url} themes/${tr_name}
+  printf "\t Copying existing configuration of '${tr_name}' included in the theme. \n"
+  cp themes/${tr_name}/exampleSite/config.toml config.toml.${tr_name}
+done
+
+printf "==> Configuring a general configuration (config.toml) to the Hugo site. \n"
+
+cat << EOF > config.toml
 baseURL = "http://holisticsecurity.io/"
 languageCode = "en-us"
 title = "HolisticSecurity.io"
@@ -147,8 +163,10 @@ EOF
 
 printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory. \n"
 printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ \n"
-printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/  \n"
-printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ --configDir=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-scripts/ \n\n"
-
+printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=minimal \n"
+printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=/minimal-bootstrap-hugo-theme \n"
+printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=kiss \n"
+printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=ezhil \n"
+printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=hugo-theme-cactus \n"
 printf "==> Getting back to initial directory. \n"
 printf "\t cd ${DIR_CURRENT} \n\n"
