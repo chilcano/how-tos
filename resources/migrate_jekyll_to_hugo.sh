@@ -49,7 +49,7 @@ fi
 if [ -z "${_CLEAN+x}" ]; then
   printf "==> The target GitHub repo (${DIR_TARGET_PATH}) exists and contains files. Nothing to do. \n"
 else 
-  printf "==> Creating a clean '${DIR_TARGET_HUGO}' Hugo GitHub Pages repo. \n"
+  printf "==> Creating a cleaned '${DIR_TARGET_HUGO}' Hugo GitHub Pages repo. \n"
   rm -rf ${DIR_TARGET_PATH}
   mkdir -p ${DIR_TARGET_PATH}/ghp-scripts/themes/
 fi 
@@ -83,8 +83,7 @@ declare -a ARRAY_THEMES_REPO=(
 "https://github.com/monkeyWzr/hugo-theme-cactus.git"
 )
 
-printf "==> Importing the ${#ARRAY_THEMES_MODU[@]} +  ${#ARRAY_THEMES_REPO[@]} Hugo Themes. \n"
-
+printf "==> Importing the ${#ARRAY_THEMES_MODU[@]} + ${#ARRAY_THEMES_REPO[@]} Hugo Themes. \n"
 
 for tm_url in "${ARRAY_THEMES_MODU[@]}"
 do
@@ -92,10 +91,10 @@ do
   tm_name="${tm_fullname%.*}"
   printf "\t > Adding the '${tm_name}' Hugo Theme as submodule. \n"
   git submodule add ${tm_url} themes/${tm_name} --quiet
-  git submodule init
+  git submodule init  --quiet
   #git submodule update
-  git submodule update --remote --merge
-  printf "\t Copying existing configuration of '${tm_name}' included in the theme. \n"
+  git submodule update --remote --merge  --quiet
+  printf "\t > Copying existing configuration of '${tm_name}' included in the theme. \n"
    cp themes/${tm_name}/exampleSite/config.toml  config.toml.${tm_name}
 done
 
@@ -104,8 +103,8 @@ do
   tr_fullname="${tr_url##*/}"
   tr_name="${tr_fullname%.*}"
   printf "\t > Adding the '${tr_name}' Hugo Theme as repository. \n"
-  git clone ${tr_url} themes/${tr_name}
-  printf "\t Copying existing configuration of '${tr_name}' included in the theme. \n"
+  git clone ${tr_url} themes/${tr_name}  --quiet
+  printf "\t > Copying existing configuration of '${tr_name}' included in the theme. \n"
   cp themes/${tr_name}/exampleSite/config.toml config.toml.${tr_name}
 done
 
