@@ -133,6 +133,50 @@ publishDir = "../ghp-content/docs"
   highlightStyle = "default"
   highlightLanguages = ["go", "haskell", "kotlin", "scala", "swift"]
 
+### cactus
+[[params.social]]
+  name = "github"
+  link = "https://github.com/chilcano"
+[[params.social]]
+  name = "linkedin"
+  link = "https://www.linkedin.com/in/chilcano/"
+[[params.social]]
+  name = "email"
+  link = "roger@intix.info"  # no need for "mailto:" in the head  
+[[params.social]]
+  name = "twitter"
+  link = "chilcano" 
+
+## bootstrap
+[menu]
+  [[menu.nav]]
+  name = "Home"
+  url = "/"
+  weight = 1
+
+  [[menu.nav]]
+  name = "Posts"
+  url = "/"
+  weight = 2
+
+  [[menu.nav]]
+  name = "Tags"
+  url = "/tags/"
+  weight = 3
+
+  [[menu.nav]]
+  name = "About"
+  url = "/about/"
+  weight = 4
+  
+  [[menu.nav]]
+  name = "RSS"
+  url = "/index.xml"
+  weight = 5
+
+
+
+
 [[menu.main]]
   url = "/"
   name = "Home"
@@ -145,6 +189,10 @@ publishDir = "../ghp-content/docs"
   url = "/post/"
   name = "Posts"
   weight = 3
+[[menu.main]]
+  url = "/tags"
+  name = "Tags"
+  weight = 4
 
 [[menu.icon]]
   url = "https://github.com/chilcano/"
@@ -163,7 +211,7 @@ EOF
 printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory. \n"
 printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ \n"
 printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=minimal \n"
-printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=/minimal-bootstrap-hugo-theme \n"
+printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=minimal-bootstrap-hugo-theme \n"
 printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=kiss \n"
 printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=ezhil \n"
 printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=hugo-theme-cactus \n"
