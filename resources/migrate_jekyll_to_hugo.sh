@@ -60,15 +60,16 @@ if [ -f "${DIR_TARGET_PATH}/config.toml" ] || [ -f "${DIR_TARGET_PATH}/config.ya
 else 
   printf "==> Creating a clean '${DIR_TARGET_HUGO}' Hugo GitHub Pages repo. \n"
   rm -rf ${DIR_TARGET_PATH}
-  mkdir -p ${DIR_TARGET_PATH}/themes/
+  mkdir -p ${DIR_TARGET_PATH}/ghp-scripts/themes/
 fi 
 
 printf "==> Importing from existing Jekyll to the target GitHub repo (${DIR_TARGET_PATH}). \n"
-hugo import jekyll --force ${DIR_SOURCE_PATH} ${DIR_TARGET_PATH}
+hugo import jekyll --force ${DIR_SOURCE_PATH} ${DIR_TARGET_PATH}/ghp-scripts/
 
 printf "==> Getting into '${DIR_TARGET_PATH}' directory and initializing as Git repository. \n"
 cd ${DIR_TARGET_PATH}
 git init
+cd ${DIR_TARGET_PATH}/ghp-scripts/
 mv config.yaml config.yaml.bak
 
 printf "==> Importing and configuring the '${HUGO_THEME_URL}' Hugo Theme. \n"
@@ -96,4 +97,4 @@ cd ${DIR_CURRENT}
 
 printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory. \n"
 printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ \n\n"
-printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}_docs/  \n\n"
+printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/  \n\n"
