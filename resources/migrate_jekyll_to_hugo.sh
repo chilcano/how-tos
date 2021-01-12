@@ -63,30 +63,26 @@ git init
 cd ${DIR_TARGET_PATH}/ghp-scripts/
 mv config.yaml config.yaml.bak
 
-## Hugo themes:
-# https://themes.gohugo.io/minimal - https://github.com/calintat/minimal.git
-# https://themes.gohugo.io/minimal-bootstrap-hugo-theme/ - https://github.com/zwbetz-gh/minimal-bootstrap-hugo-theme.git
-
+## Preloading Hugo themes:
 
 declare -a ARRAY_THEMES_MODU=(
 "https://github.com/calintat/minimal.git"
 "https://github.com/zwbetz-gh/minimal-bootstrap-hugo-theme.git"
 )
 
-# https://themes.gohugo.io/kiss - https://github.com/ribice/kiss.git
-# https://themes.gohugo.io/ezhil - https://github.com/vividvilla/ezhil.git
-# https://themes.gohugo.io/hugo-theme-cactus/ - https://github.com/monkeyWzr/hugo-theme-cactus.git
-
 declare -a ARRAY_THEMES_REPO=(
 "https://github.com/ribice/kiss.git"
 "https://github.com/vividvilla/ezhil.git"
 "https://github.com/monkeyWzr/hugo-theme-cactus.git"
+"https://github.com/rhazdon/hugo-theme-hello-friend-ng.git"
+"https://github.com/panr/hugo-theme-terminal.git"
+"https://github.com/athul/archie.git"
+"https://github.com/colorchestra/smol"
 )
 
 printf "==> Importing the ${#ARRAY_THEMES_MODU[@]} + ${#ARRAY_THEMES_REPO[@]} Hugo Themes. \n"
 
-for tm_url in "${ARRAY_THEMES_MODU[@]}"
-do
+for tm_url in "${ARRAY_THEMES_MODU[@]}"; do
   tm_fullname="${tm_url##*/}"
   tm_name="${tm_fullname%.*}"
   printf "\t > Adding the '${tm_name}' Hugo Theme as submodule. \n"
@@ -98,8 +94,7 @@ do
    cp themes/${tm_name}/exampleSite/config.toml  config.toml.${tm_name}
 done
 
-for tr_url in "${ARRAY_THEMES_REPO[@]}"
-do
+for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
   tr_fullname="${tr_url##*/}"
   tr_name="${tr_fullname%.*}"
   printf "\t > Adding the '${tr_name}' Hugo Theme as repository. \n"
@@ -174,9 +169,6 @@ publishDir = "../ghp-content/docs"
   url = "/index.xml"
   weight = 5
 
-
-
-
 [[menu.main]]
   url = "/"
   name = "Home"
@@ -209,11 +201,13 @@ publishDir = "../ghp-content/docs"
 EOF
 
 printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory. \n"
-printf "\t hugo server -D --bind=0.0.0.0 --theme=${HUGO_THEME_NAME} --baseURL=http://192.168.1.59:1313/${DIR_TARGET_HUGO}/ \n"
-printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=minimal \n"
-printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=minimal-bootstrap-hugo-theme \n"
-printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=kiss \n"
-printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=ezhil \n"
-printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ --destination=${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}/ghp-content/docs/ -t=hugo-theme-cactus \n"
+
+INSTALLED_THEMES_STRING="$(ls -d ${DIR_TARGET_PATH}/ghp-scripts/themes/*)"
+INSTALLED_THEMES_ARRAY=(${INSTALLED_THEMES_STRING})
+for theme in "${INSTALLED_THEMES_ARRAY[@]}"; do
+  themename="${theme##*/}"
+  printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ -d=${DIR_TARGET_PATH}/ghp-content/docs/ -t=${themename} \n"
+done 
+
 printf "==> Getting back to initial directory. \n"
 printf "\t cd ${DIR_CURRENT} \n\n"
