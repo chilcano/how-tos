@@ -115,18 +115,28 @@ theme = "minimal"
 paginate = 10
 publishDir = "../ghp-content/docs"
 
+copyright = "Roger Carhuatocto" # cactus will use title if copyright is not set
+# summaryLength = 2
+
 [params]
-  author = "Roger Carhuatocto"
-  description = "The Systems Thinking Methodology and IT Security"
-  githubUsername = "#"
-  #accent = "red"
-  accent = "#1478ff"
-  showBorder = true
-  backgroundColor = "white"
-  font = "Raleway" # should match the name on Google Fonts!
-  highlight = true
-  highlightStyle = "default"
-  highlightLanguages = ["go", "haskell", "kotlin", "scala", "swift"]
+  colortheme = "white" # dark, light, white, or classic
+  rss = true # generate rss feed. default value is false
+  googleAnalyticsAsync = true # use asynchronous tracking. Synchronous tracking by default
+  # Home page settings
+  description = "The Systems Thinking Methodology and IT Security."
+  #mainSection = "posts" # your main section
+  showAllPostsOnHomePage = false # default
+  postsOnHomePage = 5 # this option will be ignored if showAllPostsOnHomePage is set to true
+  tagsOverview = true # show tags overview by default.
+  showProjectsList = false # show projects list by default (if projects data file exists).
+  projectsUrl = "https://github.com/gohugoio" # title link for projects list
+  # https://gohugo.io/functions/format/#hugo-date-and-time-templating-reference
+  dateFormat = "2006-01-02" # default
+  # Post page settings
+  show_updated = false # default
+  [params.comments]
+    enabled = false # default
+    engine = "disqus" # more supported engines will be added.
 
 ### cactus
 [[params.social]]
@@ -142,32 +152,11 @@ publishDir = "../ghp-content/docs"
   name = "twitter"
   link = "chilcano" 
 
-## bootstrap
-[menu]
-  [[menu.nav]]
-  name = "Home"
-  url = "/"
-  weight = 1
-
-  [[menu.nav]]
-  name = "Posts"
-  url = "/"
-  weight = 2
-
-  [[menu.nav]]
-  name = "Tags"
-  url = "/tags/"
-  weight = 3
-
-  [[menu.nav]]
-  name = "About"
-  url = "/about/"
-  weight = 4
-  
-  [[menu.nav]]
-  name = "RSS"
-  url = "/index.xml"
-  weight = 5
+[markup]
+  [markup.tableOfContents]
+    endLevel = 4
+    ordered = false
+    startLevel = 2
 
 [[menu.main]]
   url = "/"
@@ -206,7 +195,7 @@ INSTALLED_THEMES_STRING="$(ls -d ${DIR_TARGET_PATH}/ghp-scripts/themes/*)"
 INSTALLED_THEMES_ARRAY=(${INSTALLED_THEMES_STRING})
 for theme in "${INSTALLED_THEMES_ARRAY[@]}"; do
   themename="${theme##*/}"
-  printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ -d=${DIR_TARGET_PATH}/ghp-content/docs/ -t=${themename} \n"
+  printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ -t=${themename} \n"
 done 
 
 printf "==> Getting back to initial directory. \n"
