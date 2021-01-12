@@ -112,7 +112,7 @@ title = "HolisticSecurity.io"
 theme = "minimal"
 #disqusShortname = "username"
 #googleAnalytics = ""
-paginate = 10
+paginate = 20
 publishDir = "../ghp-content/docs"
 
 copyright = "Roger Carhuatocto" # cactus will use title if copyright is not set
@@ -126,16 +126,15 @@ copyright = "Roger Carhuatocto" # cactus will use title if copyright is not set
   description = "The Systems Thinking Methodology and IT Security."
   #mainSection = "posts" # your main section
   showAllPostsOnHomePage = false # default
-  postsOnHomePage = 5 # this option will be ignored if showAllPostsOnHomePage is set to true
+  postsOnHomePage = 10 # this option will be ignored if showAllPostsOnHomePage is set to true
   tagsOverview = true # show tags overview by default.
   showProjectsList = false # show projects list by default (if projects data file exists).
-  projectsUrl = "https://github.com/gohugoio" # title link for projects list
-  # https://gohugo.io/functions/format/#hugo-date-and-time-templating-reference
+  projectsUrl = "https://github.com/chilcano" # title link for projects list
   dateFormat = "2006-01-02" # default
   # Post page settings
   show_updated = false # default
   [params.comments]
-    enabled = false # default
+    enabled = true # false default
     engine = "disqus" # more supported engines will be added.
 
 ### cactus
@@ -189,7 +188,7 @@ copyright = "Roger Carhuatocto" # cactus will use title if copyright is not set
   weight = 3
 EOF
 
-printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory. \n"
+printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory with different pre-installed Themes: \n"
 
 INSTALLED_THEMES_STRING="$(ls -d ${DIR_TARGET_PATH}/ghp-scripts/themes/*)"
 INSTALLED_THEMES_ARRAY=(${INSTALLED_THEMES_STRING})
@@ -197,6 +196,9 @@ for theme in "${INSTALLED_THEMES_ARRAY[@]}"; do
   themename="${theme##*/}"
   printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ -t=${themename} \n"
 done 
+
+printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory with 'hugo-theme-cactus' Theme: \n"
+printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ \n"
 
 printf "==> Getting back to initial directory. \n"
 printf "\t cd ${DIR_CURRENT} \n\n"
