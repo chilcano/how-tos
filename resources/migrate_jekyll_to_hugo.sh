@@ -35,7 +35,6 @@ DIR_GITREPOS="gitrepos"
 DIR_SOURCE_JEKYLL="ghpages-holosec"
 DIR_TARGET_HUGO="${_DESTINATION:-ghpages-holosecio}"
 
-
 DIR_SOURCE_PATH="${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}"
 DIR_TARGET_PATH="${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}"
 
@@ -115,38 +114,33 @@ theme = "minimal"
 paginate = 20
 publishDir = "../ghp-content/docs"
 
-copyright = "Roger Carhuatocto" # cactus will use title if copyright is not set
-# summaryLength = 2
+copyright = "Roger Carhuatocto" 
+#summaryLength = 2
 
 [params]
-  colortheme = "white" # dark, light, white, or classic
-  rss = true # generate rss feed. default value is false
-  googleAnalyticsAsync = true # use asynchronous tracking. Synchronous tracking by default
-  # Home page settings
+  colortheme = "white"            # dark, light, white, or classic
+  rss = true                      # generate rss feed. default value is false
+  googleAnalyticsAsync = true     # use asynchronous tracking. Synchronous tracking by default
   description = "The Systems Thinking Methodology and IT Security."
-  #mainSection = "posts" # your main section
-  showAllPostsOnHomePage = false # default
-  postsOnHomePage = 10 # this option will be ignored if showAllPostsOnHomePage is set to true
-  tagsOverview = true # show tags overview by default.
-  showProjectsList = false # show projects list by default (if projects data file exists).
+  #mainSection = "posts"          # your main section
+  showAllPostsOnHomePage = false  # default
+  postsOnHomePage = 10            # this option will be ignored if showAllPostsOnHomePage is set to true
+  tagsOverview = true             # show tags overview by default.
+  showProjectsList = false        # show projects list by default (if projects data file exists).
   projectsUrl = "https://github.com/chilcano" # title link for projects list
-  dateFormat = "2006-01-02" # default
+  dateFormat = "2006-01-02"
   # Post page settings
-  show_updated = false # default
+  show_updated = false 
   [params.comments]
-    enabled = true # false default
-    engine = "disqus" # more supported engines will be added.
+    enabled = true 
+    engine = "disqus"             # more supported engines will be added.
 
-### cactus
 [[params.social]]
   name = "github"
   link = "https://github.com/chilcano"
 [[params.social]]
   name = "linkedin"
   link = "https://www.linkedin.com/in/chilcano/"
-[[params.social]]
-  name = "email"
-  link = "roger@intix.info"  # no need for "mailto:" in the head  
 [[params.social]]
   name = "twitter"
   link = "chilcano" 

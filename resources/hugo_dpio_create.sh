@@ -12,10 +12,10 @@ GIT_SOURCE_REPO_URL="https://github.com/migueluza/data-plane"
 CURRENT_DIR=$PWD
 GIT_ORG="data-plane"
 GIT_REPO="ghpages-dpio"
-GIT_HUGO_SCRIPTS_DIR="ghp-scripts"
 GIT_PARENT_DIR="${HOME}/gitrepos"
-GIT_HUGO_CONTENT_DIR="ghp-content"
-GIT_HUGO_CONTENT_BRANCH="${GIT_HUGO_CONTENT_DIR}"
+HUGO_SCRIPTS_DIR="ghp-scripts"
+HUGO_CONTENT_DIR="ghp-content"
+HUGO_CONTENT_BRANCH="${HUGO_CONTENT_DIR}"
 
 # This command avoids error 'git@github.com: Permission denied ...' when creating repo with hub
 printf "==> Setting HTTPS instead of SSH for GitHub clone URLs. \n"
@@ -28,16 +28,16 @@ printf "==> Removing remote GitHub repo with 'hub'. \n"
 echo "yes" | hub delete ${GIT_ORG}/${GIT_REPO}
 
 printf "==> Creating a fresh dir. \n"
-mkdir -p ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_SCRIPTS_DIR} 
+mkdir -p ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_SCRIPTS_DIR} 
 
 printf "==> Cloning source repo into fresh dir. \n"
-git clone ${GIT_SOURCE_REPO_URL} ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_SCRIPTS_DIR}
+git clone ${GIT_SOURCE_REPO_URL} ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_SCRIPTS_DIR}
 
 printf "==> Removing older '.git/' dir, Hugo 'docs/' dir and .gitignore file. \n"
-rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_SCRIPTS_DIR}/.git
-rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_SCRIPTS_DIR}/docs
-rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_SCRIPTS_DIR}/.gitignore
-rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_CONTENT_BRANCH}
+rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_SCRIPTS_DIR}/.git
+rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_SCRIPTS_DIR}/docs
+rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_SCRIPTS_DIR}/.gitignore
+rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_CONTENT_BRANCH}
 
 printf "==> Changing working dir. \n"
 cd ${GIT_PARENT_DIR}/${GIT_REPO}
@@ -66,8 +66,8 @@ This '${GIT_ORG}/${GIT_REPO}' main branch hosts the Hugo scripts.
 EOF
 
 printf "==> Tweaking 'config.toml'. \n"
-sed -i.bak 's/^baseURL = .*$/baseURL = "https\:\/\/data-plane.github.io\/ghpages-dpio\/"/' ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_SCRIPTS_DIR}/config.toml
-sed -i.bak 's/^publishDir = "docs"$/publishDir = "..\/ghp-content\/docs"/' ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_SCRIPTS_DIR}/config.toml
+sed -i.bak 's/^baseURL = .*$/baseURL = "https\:\/\/data-plane.github.io\/ghpages-dpio\/"/' ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_SCRIPTS_DIR}/config.toml
+sed -i.bak 's/^publishDir = "docs"$/publishDir = "..\/ghp-content\/docs"/' ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_SCRIPTS_DIR}/config.toml
 
 printf "==> Adding resources to local repo. \n"
 git add .
@@ -83,37 +83,37 @@ git push -u origin main
 
 printf "\n"
 echo "###############################################################"
-echo "#       Configuring GitHub Pages repo ($GIT_HUGO_CONTENT_BRANCH branch)    #"
+echo "#       Configuring GitHub Pages repo ($HUGO_CONTENT_BRANCH branch)    #"
 echo "###############################################################"
 
 printf "==> Create the orphan branch on local machine and switch in this branch. \n"
-git checkout --orphan ${GIT_HUGO_CONTENT_BRANCH}
+git checkout --orphan ${HUGO_CONTENT_BRANCH}
 
 printf "==> Removes everything to its initial state. \n"
 git reset --hard
 
 printf "==> Commit an empty orphan branch. \n"
-git commit --allow-empty -m "Initializing ${GIT_HUGO_CONTENT_BRANCH}"
+git commit --allow-empty -m "Initializing ${HUGO_CONTENT_BRANCH}"
 
-printf "==> Push to remote origin from '${GIT_HUGO_CONTENT_BRANCH}'. \n"
-git push origin ${GIT_HUGO_CONTENT_BRANCH}
+printf "==> Push to remote origin from '${HUGO_CONTENT_BRANCH}'. \n"
+git push origin ${HUGO_CONTENT_BRANCH}
 
 printf "==> Switching to 'main' branch. \n"
 git checkout main --quiet
 
 printf "\n"
 echo "###############################################################"
-echo "#            First updating of '$GIT_HUGO_CONTENT_BRANCH' branch           #"
+echo "#            First updating of '$HUGO_CONTENT_BRANCH' branch           #"
 echo "###############################################################"
 
 printf "==> Delete hugo content dir. \n"
-rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_CONTENT_BRANCH}
+rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_CONTENT_BRANCH}
 
 printf "==> Worktree allows you to have multiple branches of the same local repo to be checked out in different dirs. \n"
-git worktree add -B ${GIT_HUGO_CONTENT_BRANCH} ${GIT_HUGO_CONTENT_DIR} origin/${GIT_HUGO_CONTENT_BRANCH}
+git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
 
-printf "==> Generating Hugo content in <root>/${GIT_HUGO_CONTENT_DIR}/docs dir. \n"
-cd ${GIT_HUGO_SCRIPTS_DIR}; hugo
+printf "==> Generating Hugo content in <root>/${HUGO_CONTENT_DIR}/docs dir. \n"
+cd ${HUGO_SCRIPTS_DIR}; hugo
 
 #printf ">> Setting a custom Domain adding 'CNAME' file under 'docs/' dir. \n"
 #cat << EOF > CNAME
@@ -123,22 +123,22 @@ cd ${GIT_HUGO_SCRIPTS_DIR}; hugo
 ## configure a CNAME record with your DNS provider (gandi.net)
 ## https://holisticsecurity.io/2019/10/14/migrating-wordpress-com-blog-to-github-pages-with-jekyll-part1
 
-printf "==> Adding 'README.md' file to 'GIT_HUGO_CONTENT_BRANCH'. \n"
+printf "==> Adding 'README.md' file to 'HUGO_CONTENT_BRANCH'. \n"
 cat << EOF > README.md
 Go to [data-plane.io](https://data-plane.io) website!  
-This '${GIT_HUGO_CONTENT_BRANCH}' branch hosts the Hugo content.
+This '${HUGO_CONTENT_BRANCH}' branch hosts the Hugo content.
 EOF
-mv -f README.md ${GIT_PARENT_DIR}/${GIT_REPO}/${GIT_HUGO_CONTENT_DIR}/.
+mv -f README.md ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_CONTENT_DIR}/.
 
 printf "==> Adding Hugo content only to local repo. \n"
-cd ../${GIT_HUGO_CONTENT_DIR}; git add .
+cd ../${HUGO_CONTENT_DIR}; git add .
 
 printf "==> Commit Hugo content to local repo. \n"
-git commit -m "Publishing Hugo content to ${GIT_HUGO_CONTENT_BRANCH}" --quiet; cd ../
+git commit -m "Publishing Hugo content to ${HUGO_CONTENT_BRANCH}" --quiet; cd ../
 
-# If the changes in your local '${GIT_HUGO_CONTENT_BRANCH}' branch look alright, push them to the remote repo.
-printf "==> Pushing to remote repo in '${GIT_HUGO_CONTENT_BRANCH}' branch. \n"
-git push origin ${GIT_HUGO_CONTENT_BRANCH}
+# If the changes in your local '${HUGO_CONTENT_BRANCH}' branch look alright, push them to the remote repo.
+printf "==> Pushing to remote repo in '${HUGO_CONTENT_BRANCH}' branch. \n"
+git push origin ${HUGO_CONTENT_BRANCH}
 
 # hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ghpages-dpio/
 
