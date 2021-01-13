@@ -36,7 +36,7 @@ DIR_TARGET_PATH="${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}"
 
 printf "\n"
 echo "####################################################################"
-echo "  Migrating '${GIT_USER}/${DIR_SOURCE_JEKYLL}' Jekyll Site to Hugo  "
+echo " Migrating '${GIT_USER}/${DIR_SOURCE_JEKYLL}' Jekyll Site to Hugo"
 echo "####################################################################"
 
 # This command avoids error 'git@github.com: Permission denied ...' when creating repo with hub
@@ -70,18 +70,19 @@ echo "yes" | hub delete ${GIT_USER}/${DIR_TARGET_HUGO}
 printf "==> Creating an empty repo on GitHub using current dir as repo's name. \n"
 hub create -d "GitHub Pages for HoloSec" ${GIT_USER}/${DIR_TARGET_HUGO}
 
+printf "\n"
 echo "---------------------------------------------------------------"
-echo "        Main branch - Configuring GitHub Pages repo            "
+echo " Main branch - Configuring GitHub Pages repo"
 echo "---------------------------------------------------------------"
 
-printf ">> Adding '.gitignore' file. \n"
+printf "==> Adding '.gitignore' file. \n"
 cat << EOF > .gitignore
 ## Hugo
 ghp-content/
 *.bak
 EOF
 
-printf ">> Adding 'README.md' file. \n"
+printf "==> Adding 'README.md' file. \n"
 cat << EOF > README.md
 Go to [HolisticSecurity.io](https://holisticsecurity.io) website!  
 This '${GIT_USER}/${DIR_TARGET_HUGO}' main branch hosts the Hugo scripts.
@@ -198,8 +199,9 @@ done
 printf "==> Changing to '${DIR_TARGET_PATH}/' as working directory. \n"
 cd ${DIR_TARGET_PATH}/
 
+printf "\n"
 echo "---------------------------------------------------------------"
-echo "       Main branch - First push into GitHub Pages repo         "
+echo " Main branch - First push into GitHub Pages repo"
 echo "---------------------------------------------------------------"
 
 printf "==> Adding resources to local repo. \n"
@@ -216,7 +218,7 @@ git push -u origin main
 
 printf "\n"
 echo "---------------------------------------------------------------"
-echo "          ${HUGO_CONTENT_BRANCH} branch - Configuring branch             "
+echo " ${HUGO_CONTENT_BRANCH} branch - Configuring branch"
 echo "---------------------------------------------------------------"
 
 printf "==> Create the orphan branch on local machine and switch in this branch. \n"
@@ -236,7 +238,7 @@ git checkout main --quiet
 
 printf "\n"
 echo "---------------------------------------------------------------"
-echo "          ${HUGO_CONTENT_BRANCH} branch - First push into branch         "
+echo " ${HUGO_CONTENT_BRANCH} branch - First push into branch"
 echo "---------------------------------------------------------------"
 
 printf "==> Delete existing Hugo content dir. \n"
@@ -246,7 +248,7 @@ printf "==> Worktree allows you to have multiple branches of the same local repo
 git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
 
 printf "==> Changing to '${HUGO_SCRIPTS_DIR}/' dir. \n"
-cd ${DIR_TARGET_PATH}/${HUGO_SCRIPTS_DIR}
+cd ${DIR_TARGET_PATH}/${HUGO_SCRIPTS_DIR}/
 
 printf "==> Generating Hugo content in <root>/${HUGO_CONTENT_DIR}/docs dir according to 'config.toml'. \n"
 hugo
@@ -273,8 +275,10 @@ git checkout main --quiet
 
 printf "\n"
 echo "---------------------------------------------------------------"
-echo "               Serving the Hugo site over the LAN              "
+echo " Serving the Hugo site over the LAN"
 echo "---------------------------------------------------------------"
+printf "==> Changing to '${HUGO_SCRIPTS_DIR}/' dir. \n"
+cd ${DIR_TARGET_PATH}/${HUGO_SCRIPTS_DIR}/
 
 printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory with different pre-installed Themes: \n"
 
