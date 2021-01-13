@@ -20,11 +20,6 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-printf "\n"
-echo "###############################################################"
-echo "#           Migrating HoloSec Jekyll site to Hugo             #"
-echo "###############################################################"
-
 DIR_CURRENT=$PWD
 GIT_USER="chilcano"
 
@@ -38,6 +33,11 @@ HUGO_CONTENT_BRANCH="${HUGO_CONTENT_DIR}"
 
 DIR_SOURCE_PATH="${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}"
 DIR_TARGET_PATH="${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}"
+
+printf "\n"
+echo "---------------------------------------------------------------"
+echo "# Migrating '${GIT_USER}/${DIR_SOURCE_JEKYLL}' Jekyll Site to Hugo #"
+echo "---------------------------------------------------------------"
 
 # This command avoids error 'git@github.com: Permission denied ...' when creating repo with hub
 printf "==> Setting HTTPS instead of SSH for GitHub clone URLs. \n"
@@ -70,9 +70,9 @@ echo "yes" | hub delete ${GIT_USER}/${DIR_TARGET_HUGO}
 printf "==> Creating an empty repo on GitHub using current dir as repo's name. \n"
 hub create -d "GitHub Pages for HoloSec" ${GIT_USER}/${DIR_TARGET_HUGO}
 
-echo "###############################################################"
-echo "#      Main branch - Configuring GitHub Pages repo           #"
-echo "###############################################################"
+echo "---------------------------------------------------------------"
+echo "        Main branch - Configuring GitHub Pages repo            "
+echo "---------------------------------------------------------------"
 
 printf ">> Adding '.gitignore' file. \n"
 cat << EOF > .gitignore
@@ -196,12 +196,12 @@ done
 printf "==> Changing to '${DIR_TARGET_PATH}/' as working directory. \n"
 cd ${DIR_TARGET_PATH}/
 
-echo "###############################################################"
-echo "#      Main branch - First push into GitHub Pages repo        #"
-echo "###############################################################"
+echo "---------------------------------------------------------------"
+echo "       Main branch - First push into GitHub Pages repo         "
+echo "---------------------------------------------------------------"
 
 printf "==> Adding resources to local repo. \n"
-git add . --quiet
+git add . 
 
 printf "==> Commit Hugo scripts to local repo. \n"
 git commit -m "Hugo scripts for HoloSec site." --quiet
@@ -213,9 +213,9 @@ printf "==> Pushing to remote repo in 'main' branch. \n"
 git push -u origin main
 
 printf "\n"
-echo "###############################################################"
-echo "#      ${HUGO_CONTENT_BRANCH} branch - Configuring branch          #"
-echo "###############################################################"
+echo "---------------------------------------------------------------"
+echo "          ${HUGO_CONTENT_BRANCH} branch - Configuring branch             "
+echo "---------------------------------------------------------------"
 
 printf "==> Create the orphan branch on local machine and switch in this branch. \n"
 git checkout --orphan ${HUGO_CONTENT_BRANCH}
@@ -233,9 +233,9 @@ printf "==> Switching to 'main' branch. \n"
 git checkout main --quiet
 
 printf "\n"
-echo "###############################################################"
-echo "#      ${HUGO_CONTENT_BRANCH} branch - First push into branch      #"
-echo "###############################################################"
+echo "---------------------------------------------------------------"
+echo "          ${HUGO_CONTENT_BRANCH} branch - First push into branch         "
+echo "---------------------------------------------------------------"
 
 printf "==> Delete existing Hugo content dir. \n"
 rm -rf ${DIR_TARGET_PATH}/${HUGO_CONTENT_BRANCH}
@@ -270,9 +270,9 @@ printf "==> Switching to 'main' branch. \n"
 git checkout main --quiet
 
 printf "\n"
-echo "###############################################################"
-echo "#              Serving the Hugo site over the LAN             #"
-echo "###############################################################"
+echo "---------------------------------------------------------------"
+echo "               Serving the Hugo site over the LAN              "
+echo "---------------------------------------------------------------"
 
 printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory with different pre-installed Themes: \n"
 
