@@ -35,9 +35,9 @@ DIR_SOURCE_PATH="${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}"
 DIR_TARGET_PATH="${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}"
 
 printf "\n"
-echo "---------------------------------------------------------------"
-echo "# Migrating '${GIT_USER}/${DIR_SOURCE_JEKYLL}' Jekyll Site to Hugo #"
-echo "---------------------------------------------------------------"
+echo "####################################################################"
+echo "  Migrating '${GIT_USER}/${DIR_SOURCE_JEKYLL}' Jekyll Site to Hugo  "
+echo "####################################################################"
 
 # This command avoids error 'git@github.com: Permission denied ...' when creating repo with hub
 printf "==> Setting HTTPS instead of SSH for GitHub clone URLs. \n"
@@ -189,6 +189,8 @@ for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
   tr_name="${tr_fullname%.*}"
   printf "\t > Cloning the '${tr_name}' Hugo Theme. \n"
   git clone ${tr_url} ${DIR_TARGET_PATH}/${HUGO_SCRIPTS_DIR}/themes/${tr_name} --quiet
+  printf "\t > Removing '.git/', '.github/' and '.gitignore' of '${tr_name}'. \n"
+  rm -rf ${DIR_TARGET_PATH}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/.git
   printf "\t > Copying existing configuration of '${tr_name}' included in the theme. \n"
   cp ${DIR_TARGET_PATH}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/exampleSite/config.toml config.toml.${tr_name}
 done
