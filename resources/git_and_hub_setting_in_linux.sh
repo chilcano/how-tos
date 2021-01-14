@@ -17,7 +17,8 @@ while [ $# -gt 0 ]; do
       exit 1
       ;;
   esac
-  shif
+  shift
+done
 
 GITHUB_USERNAME="${_GH_USERNAME:-Chilcano}"
 GITHUB_EMAIL="${_GH_EMAIL:-chilcano@intix.info}"
