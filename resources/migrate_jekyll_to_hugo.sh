@@ -1,16 +1,24 @@
 #!/bin/bash
 
-unset _CLEAN _DESTINATION
+unset _GHUSER _GHSOURCE _GHDESTINATION _HUGOTHEME
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --clean*|-c*)
-      if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no '=' 
-      _CLEAN="${1#*=}"
+    --ghuser*|-u*)
+      if [[ "$1" != *=* ]]; then shift; fi
+      _GHUSER="${1#*=}"
+      ;;
+    --source_url*|-s*)
+      if [[ "$1" != *=* ]]; then shift; fi
+      _GHSOURCE_URL="${1#*=}"
       ;;
     --destination*|-d*)
       if [[ "$1" != *=* ]]; then shift; fi
-      _DESTINATION="${1#*=}"
+      _GHDESTINATION="${1#*=}"
+      ;;
+    --hugotheme*|-t*)
+      if [[ "$1" != *=* ]]; then shift; fi
+      _HUGOTHEME="${1#*=}"
       ;;
     --help|-h)
       printf "Migrate Jekyll GitHub Pages site to Hugo."
@@ -24,52 +32,27 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-printf "\n"
-echo "###############################################################"
-echo "#          Migrating existing Jekyll site to Hugo             #"
-echo "###############################################################"
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_holosec_to_hugo.sh)
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_holosec_to_hugo.sh) -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=ghpages-holosecio -t=hugo-theme-cactus
 
 DIR_CURRENT=$PWD
-GIT_USER="chilcano"
-DIR_GITREPOS="gitrepos"
-DIR_SOURCE_JEKYLL="ghpages-holosec"
-DIR_TARGET_HUGO="${_DESTINATION:-ghpages-holosecio}"
-
-DIR_SOURCE_PATH="${HOME}/${DIR_GITREPOS}/${DIR_SOURCE_JEKYLL}"
-DIR_TARGET_PATH="${HOME}/${DIR_GITREPOS}/${DIR_TARGET_HUGO}"
-
-if [ -f "${DIR_SOURCE_PATH}/_config.yml" ]; then
-  printf "==> The source GitHub repo (${DIR_SOURCE_PATH}) exists and contains files. Nothing to do. \n"
-else 
-  printf "==> Cloning the '${DIR_SOURCE_JEKYLL}' Jekyll GitHub Pages repo. \n"
-  git clone https://github.com/${GIT_USER}/${DIR_SOURCE_JEKYLL} ${DIR_SOURCE_PATH}
-fi 
-
-if [ -z "${_CLEAN+x}" ]; then
-  printf "==> The target GitHub repo (${DIR_TARGET_PATH}) exists and contains files. Nothing to do. \n"
-else 
-  printf "==> Creating a cleaned '${DIR_TARGET_HUGO}' Hugo GitHub Pages repo. \n"
-  rm -rf ${DIR_TARGET_PATH}
-  mkdir -p ${DIR_TARGET_PATH}/ghp-scripts/themes/
-fi 
-
-printf "==> Importing from existing Jekyll to the target GitHub repo (${DIR_TARGET_PATH}). \n"
-hugo import jekyll --force ${DIR_SOURCE_PATH} ${DIR_TARGET_PATH}/ghp-scripts/
-
-printf "==> Getting into '${DIR_TARGET_PATH}' directory and initializing as Git repository. \n"
-cd ${DIR_TARGET_PATH}
-git init
-cd ${DIR_TARGET_PATH}/ghp-scripts/
-mv config.yaml config.yaml.bak
-
-## Preloading Hugo themes:
-
-declare -a ARRAY_THEMES_MODU=(
-"https://github.com/calintat/minimal.git"
-"https://github.com/zwbetz-gh/minimal-bootstrap-hugo-theme.git"
-)
+GH_ROOT_DIR="gitrepos"
+GH_USER="${_GHUSER:-chilcano}"
+GHREPO_SOURCE_JEKYLL_URL="${_GHSOURCE_URL:-https://github.com/chilcano/ghpages-holosec.git}"
+_GHREPOFULLNAME="${GHREPO_SOURCE_JEKYLL_URL##*/}"
+_GHREPONAME="${_GHREPOFULLNAME%.*}"
+REPONAME_SOURCE_JEKYLL="${_GHREPONAME:-ghpages-holosec}"
+REPONAME_TARGET_HUGO="${_GHDESTINATION:-ghpages-holosecio}"
+HUGO_SCRIPTS_DIR="ghp-scripts"
+HUGO_CONTENT_DIR="ghp-content"
+HUGO_CONTENT_BRANCH="${HUGO_CONTENT_DIR}"
+PATH_SOURCE_REPO="${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}"
+PATH_TARGET_REPO="${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}"
+HUGO_THEME_NAME="${_HUGOTHEME:-hugo-theme-cactus}"
 
 declare -a ARRAY_THEMES_REPO=(
+"https://github.com/calintat/minimal.git"
+"https://github.com/zwbetz-gh/minimal-bootstrap-hugo-theme.git"
 "https://github.com/ribice/kiss.git"
 "https://github.com/vividvilla/ezhil.git"
 "https://github.com/monkeyWzr/hugo-theme-cactus.git"
@@ -79,41 +62,76 @@ declare -a ARRAY_THEMES_REPO=(
 "https://github.com/colorchestra/smol"
 )
 
-printf "==> Importing the ${#ARRAY_THEMES_MODU[@]} + ${#ARRAY_THEMES_REPO[@]} Hugo Themes. \n"
+printf "\n"
+echo "####################################################################"
+echo " Migrating '${GH_USER}/${REPONAME_SOURCE_JEKYLL}' Jekyll Site to Hugo"
+echo "####################################################################"
 
-for tm_url in "${ARRAY_THEMES_MODU[@]}"; do
-  tm_fullname="${tm_url##*/}"
-  tm_name="${tm_fullname%.*}"
-  printf "\t > Adding the '${tm_name}' Hugo Theme as submodule. \n"
-  git submodule add ${tm_url} themes/${tm_name} --quiet
-  git submodule init  --quiet
-  #git submodule update
-  git submodule update --remote --merge  --quiet
-  printf "\t > Copying existing configuration of '${tm_name}' included in the theme. \n"
-   cp themes/${tm_name}/exampleSite/config.toml  config.toml.${tm_name}
-done
+# This command avoids error 'git@github.com: Permission denied ...' when creating repo with hub
+printf "==> Setting HTTPS instead of SSH for GitHub clone URLs. \n"
+git config --global hub.protocol https
 
-for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
-  tr_fullname="${tr_url##*/}"
-  tr_name="${tr_fullname%.*}"
-  printf "\t > Adding the '${tr_name}' Hugo Theme as repository. \n"
-  git clone ${tr_url} themes/${tr_name}  --quiet
-  printf "\t > Copying existing configuration of '${tr_name}' included in the theme. \n"
-  cp themes/${tr_name}/exampleSite/config.toml config.toml.${tr_name}
-done
+if [ -f "${PATH_SOURCE_REPO}/_config.yml" ]; then
+  printf "==> The source GitHub repo (${PATH_SOURCE_REPO}) exists and contains files. Nothing to do. \n"
+else 
+  printf "==> Cloning the '${REPONAME_SOURCE_JEKYLL}' Jekyll GitHub Pages repo. \n"
+  git clone ${GHREPO_SOURCE_JEKYLL_URL} ${PATH_SOURCE_REPO}
+fi 
 
-printf "==> Configuring a general configuration (config.toml) to the Hugo site. \n"
+printf "==> Creating a fresh '${REPONAME_TARGET_HUGO}' Hugo GitHub Pages repo locally. \n"
+rm -rf ${PATH_TARGET_REPO}
+mkdir -p ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/
+mkdir -p ${PATH_TARGET_REPO}/${HUGO_CONTENT_DIR}/
 
+printf "==> Importing from existing Jekyll to the target GitHub repo (${PATH_TARGET_REPO}). \n"
+hugo import jekyll --force ${PATH_SOURCE_REPO} ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
+
+printf "==> Changing to '${PATH_TARGET_REPO}' as working directory. \n"
+cd ${PATH_TARGET_REPO}/
+
+printf "==> Initializing '${PATH_TARGET_REPO}' Git repository. \n"
+git init
+
+printf "==> Removing remote GitHub repo with 'hub'. \n"
+echo "yes" | hub delete ${GH_USER}/${REPONAME_TARGET_HUGO}
+
+printf "==> Creating an empty repo on GitHub using current dir as repo's name. \n"
+hub create -d "GitHub Pages for HoloSec" ${GH_USER}/${REPONAME_TARGET_HUGO}
+
+printf "\n"
+echo "---------------------------------------------------------------"
+echo " Main branch - Configuring GitHub Pages repo"
+echo "---------------------------------------------------------------"
+
+printf "==> Adding '.gitignore' file. \n"
+cat << EOF > .gitignore
+## Hugo
+ghp-content/
+*.bak
+EOF
+
+printf "==> Adding 'README.md' file. \n"
+cat << EOF > README.md
+[HolisticSecurity.io](https://holisticsecurity.io) website!  
+
+This '${GH_USER}/${REPONAME_TARGET_HUGO}' main branch hosts the Hugo scripts.
+EOF
+
+printf "==> Changing to '${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/' as working directory. \n"
+cd ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
+
+printf "==> Adding a new Hugo configuration file (config.toml) into '${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/'. \n"
+
+rm -rf config.yaml config.yaml.bak config.toml
 cat << EOF > config.toml
 baseURL = "http://holisticsecurity.io/"
 languageCode = "en-us"
 title = "HolisticSecurity.io"
-theme = "minimal"
+theme = "hugo-theme-cactus"
 #disqusShortname = "username"
 #googleAnalytics = ""
 paginate = 20
-publishDir = "../ghp-content/docs"
-
+publishDir = "../${HUGO_CONTENT_DIR}/docs"
 copyright = "Chilcano" 
 #summaryLength = 2
 
@@ -182,17 +200,117 @@ copyright = "Chilcano"
   weight = 3
 EOF
 
-printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory with different pre-installed Themes: \n"
+printf "==> Pre-loading ${#ARRAY_THEMES_REPO[@]} Hugo Themes. \n"
 
-INSTALLED_THEMES_STRING="$(ls -d ${DIR_TARGET_PATH}/ghp-scripts/themes/*)"
+
+
+for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
+  tr_fullname="${tr_url##*/}"
+  tr_name="${tr_fullname%.*}"
+  printf "> Cloning the '${tr_name}' Hugo Theme. \n"
+  git clone ${tr_url} ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name} --quiet
+  printf "> Removing '.git/', '.github/' and '.gitignore' of '${tr_name}'. \n"
+  rm -rf ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/.git
+  printf "> Copying existing configuration of '${tr_name}' included in the theme. \n"
+  cp ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/exampleSite/config.toml config.toml.${tr_name}
+done
+
+printf "==> Changing to '${PATH_TARGET_REPO}/' as working directory. \n"
+cd ${PATH_TARGET_REPO}/
+
+printf "\n"
+echo "---------------------------------------------------------------"
+echo " Main branch - First push into GitHub Pages repo"
+echo "---------------------------------------------------------------"
+
+printf "==> Adding resources to local repo. \n"
+git add . 
+
+printf "==> Commit Hugo scripts to local repo. \n"
+git commit -m "Hugo scripts for HoloSec site." --quiet
+
+printf "==> Creating the 'main' branch. \n"
+git branch -M main
+
+printf "==> Pushing to remote repo in 'main' branch. \n"
+git push -u origin main
+
+printf "\n"
+echo "---------------------------------------------------------------"
+echo " ${HUGO_CONTENT_BRANCH} branch - Configuring branch"
+echo "---------------------------------------------------------------"
+
+printf "==> Create the orphan branch on local machine and switch in this branch. \n"
+git checkout --orphan ${HUGO_CONTENT_BRANCH}
+
+printf "==> Removes everything to its initial state. \n"
+git reset --hard
+
+printf "==> Commit an empty orphan branch. \n"
+git commit --allow-empty -m "Initializing ${HUGO_CONTENT_BRANCH}"
+
+printf "==> Push to remote origin from '${HUGO_CONTENT_BRANCH}'. \n"
+git push origin ${HUGO_CONTENT_BRANCH}
+
+printf "==> Switching to 'main' branch. \n"
+git checkout main --quiet
+
+printf "\n"
+echo "---------------------------------------------------------------"
+echo " ${HUGO_CONTENT_BRANCH} branch - First push into branch"
+echo "---------------------------------------------------------------"
+
+printf "==> Delete existing Hugo content dir. \n"
+rm -rf ${PATH_TARGET_REPO}/${HUGO_CONTENT_BRANCH}
+
+printf "==> Worktree allows you to have multiple branches of the same local repo to be checked out in different dirs. \n"
+git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
+
+printf "==> Changing to '${HUGO_SCRIPTS_DIR}/' dir. \n"
+cd ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
+
+printf "==> Generating Hugo content in <root>/${HUGO_CONTENT_DIR}/docs dir according to 'config.toml'. \n"
+hugo
+
+printf "==> Adding 'README.md' file to 'HUGO_CONTENT_BRANCH'. \n"
+cat << EOF > README.md
+[HolisticSecurity.io](https://holisticsecurity.io) website!  
+
+This '${HUGO_CONTENT_BRANCH}' branch hosts the Hugo content.
+EOF
+mv -f README.md ${PATH_TARGET_REPO}/${HUGO_CONTENT_DIR}/.
+
+printf "==> Adding Hugo content only to local repo. \n"
+cd ../${HUGO_CONTENT_DIR}; git add .
+
+printf "==> Commit Hugo content to local repo. \n"
+git commit -m "Publishing Hugo content to ${HUGO_CONTENT_BRANCH}" --quiet; cd ../
+
+# If the changes in your local '${HUGO_CONTENT_BRANCH}' branch look alright, push them to the remote repo.
+printf "==> Pushing to remote repo in '${HUGO_CONTENT_BRANCH}' branch. \n"
+git push origin ${HUGO_CONTENT_BRANCH}
+
+printf "==> Switching to 'main' branch. \n"
+git checkout main --quiet
+
+printf "\n"
+echo "---------------------------------------------------------------"
+echo " Serving the Hugo site over the LAN"
+echo "---------------------------------------------------------------"
+printf "==> Changing to '${HUGO_SCRIPTS_DIR}/' dir. \n"
+cd ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
+
+printf "==> Serving the Hugo site over the LAN from '${PATH_TARGET_REPO}' directory with different pre-installed Themes: \n"
+
+INSTALLED_THEMES_STRING="$(ls -d ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/*)"
 INSTALLED_THEMES_ARRAY=(${INSTALLED_THEMES_STRING})
 for theme in "${INSTALLED_THEMES_ARRAY[@]}"; do
   themename="${theme##*/}"
-  printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ -t=${themename} \n"
+  printf "hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ -t=${themename} \n"
 done 
 
-printf "==> Serving the Hugo site over the LAN from '${DIR_TARGET_PATH}' directory with 'hugo-theme-cactus' Theme: \n"
-printf "\t hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ \n"
+printf "==> Serving the Hugo site using default 'hugo-theme-cactus' Theme: \n"
+printf "hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ \n"
 
 printf "==> Getting back to initial directory. \n"
-printf "\t cd ${DIR_CURRENT} \n\n"
+printf "cd ${DIR_CURRENT} \n\n"

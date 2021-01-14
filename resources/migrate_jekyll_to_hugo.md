@@ -5,7 +5,7 @@
 
 1. Install and configure Git CLI and Hub CLI
 ```sh
-# Install git, hub, configure git and authentication, test hub, etc.
+# Install git, hub, configure git and authentication, test hub, etc
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_and_hub_setting_in_linux.sh) -u=Chilcano -e=chilcano@intix.info
 ```
 2. Hugo CLI
