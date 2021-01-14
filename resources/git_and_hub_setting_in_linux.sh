@@ -26,14 +26,16 @@ GITHUB_EMAIL="${_GH_EMAIL:-chilcano@intix.info}"
 # source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_and_hub_setting_in_linux.sh)
 # source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_and_hub_setting_in_linux.sh) -u=Chilcano -e=chilcano@intix.info
 
+printf "\n"
 echo "##########################################################"
 echo "   Installing and configuring Git and Hub CLI on Ubuntu   "
 echo "##########################################################"
 
-echo "# HitHub's Hub is a wrapper of git CLI useful to automate some git operations, It requires"
-echo "# generate a new Personal Access Token (PAT) in the GitHub > Settings > Developer settings" 
-echo "# (https://github.com/settings/tokens) anduse it as Password when It's prompted in your"
-echo "# Terminal, even if 'git' command is used."
+printf "\n"
+echo "> HitHub's Hub is a wrapper of git CLI useful to automate some git operations, It requires"
+echo "> generate a new Personal Access Token (PAT) in the GitHub > Settings > Developer settings" 
+echo "> (https://github.com/settings/tokens) anduse it as Password when It's prompted in your"
+echo "> Terminal, even if 'git' command is used."
 
 printf "\n"
 printf "==> Installing Git CLI and other tools. \n"
@@ -58,13 +60,16 @@ CURRENT_DIR="${PWD}"
 REPO_TMP_DIR="${GITHUB_USERNAME}_testrepo"
 mkdir -p ${REPO_TMP_DIR}
 cd ${REPO_TMP_DIR}
-printf "\t > Initializing '${GITHUB_USERNAME}_test_repo' folder. \n"
+printf "> Initializing '${GITHUB_USERNAME}_test_repo' folder. \n"
 git init
-printf "\t > Create a repo on GitHub from an initialized folder. \n"
+printf "> Create a repo on GitHub from an initialized folder. \n"
 hub create -d "The repository '${REPO_TMP_DIR}' created!" ${GITHUB_USERNAME}/${REPO_TMP_DIR}
 
 printf "==> Testing Hub CLI - Remove a Git repository in GitHub.com. \n"
-printf "\n > Removing remote GitHub repo. \n"
-#echo "yes" | hub delete ${GITHUB_USERNAME}/${REPO_TMP_DIR}
+printf "> Removing remote GitHub repo. \n"
+hub delete ${GITHUB_USERNAME}/${REPO_TMP_DIR}
+printf "> Going back to initial directory. \n"
+cd ${CURRENT_DIR}
 
-printf "==> Testing Hub CLI completed!! \n"
+printf "==> Testing Hub CLI completed. \n"
+printf "> Now can remove created directory. \n"
