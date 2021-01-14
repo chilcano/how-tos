@@ -60,7 +60,7 @@ cd ${REPO_TMP_DIR}
 printf "\t > Initializing '${GITHUB_USERNAME}_test_repo' folder. \n"
 git init
 printf "\t > Create a repo on GitHub from an initialized folder. \n"
-hub create -d "The '${GITHUB_USERNAME}_test_repo' created!" ${GITHUB_USERNAME}/${REPO_TMP_DIR}
+hub create -d "The repository '${REPO_TMP_DIR}' created!" ${GITHUB_USERNAME}/${REPO_TMP_DIR}
 
 printf "==> Testing Hub CLI - Remove a Git repository in GitHub.com. \n"
 printf "\n > Removing remote GitHub repo. \n"
