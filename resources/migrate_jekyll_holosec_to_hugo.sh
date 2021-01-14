@@ -112,7 +112,7 @@ EOF
 
 printf "==> Adding 'README.md' file. \n"
 cat << EOF > README.md
-[HolisticSecurity.io](https://holisticsecurity.io) website!  
+Website [https://__${GH_USER}__.github.io/__${REPONAME_TARGET_HUGO}__/](https://${GH_USER}.github.io/${REPONAME_TARGET_HUGO}/) !  
 
 This '${GH_USER}/${REPONAME_TARGET_HUGO}' main branch hosts the Hugo scripts.
 EOF
@@ -124,7 +124,7 @@ printf "==> Adding a new Hugo configuration file (config.toml) into '${REPONAME_
 
 rm -rf config.yaml config.yaml.bak config.toml
 cat << EOF > config.toml
-baseURL = "http://holisticsecurity.io/"
+baseURL = "https://${GH_USER}.github.io/${REPONAME_TARGET_HUGO}/"
 languageCode = "en-us"
 title = "HolisticSecurity.io"
 theme = "hugo-theme-cactus"
@@ -274,7 +274,7 @@ hugo
 
 printf "==> Adding 'README.md' file to 'HUGO_CONTENT_BRANCH'. \n"
 cat << EOF > README.md
-[HolisticSecurity.io](https://holisticsecurity.io) website!  
+Website [https://__${GH_USER}__.github.io/__${REPONAME_TARGET_HUGO}__/](https://${GH_USER}.github.io/${REPONAME_TARGET_HUGO}/) !   
 
 This '${HUGO_CONTENT_BRANCH}' branch hosts the Hugo content.
 EOF

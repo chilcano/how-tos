@@ -2,6 +2,18 @@
 
 unset _GHUSER _GHSOURCE _GHDESTINATION _HUGOTHEME
 
+declare -a ARRAY_THEMES_REPO=(
+"https://github.com/calintat/minimal.git"
+"https://github.com/zwbetz-gh/minimal-bootstrap-hugo-theme.git"
+"https://github.com/ribice/kiss.git"
+"https://github.com/vividvilla/ezhil.git"
+"https://github.com/monkeyWzr/hugo-theme-cactus.git"
+"https://github.com/rhazdon/hugo-theme-hello-friend-ng.git"
+"https://github.com/panr/hugo-theme-terminal.git"
+"https://github.com/athul/archie.git"
+"https://github.com/colorchestra/smol"
+)
+
 while [ $# -gt 0 ]; do
   case "$1" in
     --ghuser*|-u*)
@@ -19,9 +31,21 @@ while [ $# -gt 0 ]; do
     --hugotheme*|-t*)
       if [[ "$1" != *=* ]]; then shift; fi
       _HUGOTHEME="${1#*=}"
+      for _url in "${ARRAY_THEMES_REPO[@]}"; do
+        _fullname="${_url##*/}"
+        _name="${_fullname%.*}"
+        if [ $_name == $_HUGOTHEME ]; then shift; fi
+      done
       ;;
     --help|-h)
-      printf "Migrate Jekyll GitHub Pages site to Hugo."
+      printf "Migrate Jekyll GitHub Pages site to Hugo. \n"
+      printf "migrate_jekyll_holosec_to_hugo.sh -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=ghpages-holosecio -t=hugo-theme-cactus \n"
+      printf " --ghuser | -u \n"
+      printf " --source_url | -s \n"
+      printf " --destination | -d \n"
+      printf " --hugotheme | -t : minimal, minimal-bootstrap-hugo-theme, kiss, ezhil, hugo-theme-cactus, hugo-theme-hello-friend-ng, hugo-theme-terminal, archie, smol \n"
+      done
+
       exit 0
       ;;
     *)
@@ -49,18 +73,6 @@ HUGO_CONTENT_BRANCH="${HUGO_CONTENT_DIR}"
 PATH_SOURCE_REPO="${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}"
 PATH_TARGET_REPO="${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}"
 HUGO_THEME_NAME="${_HUGOTHEME:-hugo-theme-cactus}"
-
-declare -a ARRAY_THEMES_REPO=(
-"https://github.com/calintat/minimal.git"
-"https://github.com/zwbetz-gh/minimal-bootstrap-hugo-theme.git"
-"https://github.com/ribice/kiss.git"
-"https://github.com/vividvilla/ezhil.git"
-"https://github.com/monkeyWzr/hugo-theme-cactus.git"
-"https://github.com/rhazdon/hugo-theme-hello-friend-ng.git"
-"https://github.com/panr/hugo-theme-terminal.git"
-"https://github.com/athul/archie.git"
-"https://github.com/colorchestra/smol"
-)
 
 printf "\n"
 echo "####################################################################"
@@ -112,7 +124,7 @@ EOF
 
 printf "==> Adding 'README.md' file. \n"
 cat << EOF > README.md
-[HolisticSecurity.io](https://holisticsecurity.io) website!  
+Website [https://__${GH_USER}__.github.io/__${REPONAME_TARGET_HUGO}__/](https://${GH_USER}.github.io/${REPONAME_TARGET_HUGO}/) !  
 
 This '${GH_USER}/${REPONAME_TARGET_HUGO}' main branch hosts the Hugo scripts.
 EOF
@@ -120,100 +132,30 @@ EOF
 printf "==> Changing to '${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/' as working directory. \n"
 cd ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
 
-printf "==> Adding a new Hugo configuration file (config.toml) into '${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/'. \n"
-
+printf "==> Loading ${#ARRAY_THEMES_REPO[@]} Hugo Themes. \n"
+printf "> Removing existing Hugo configuration file. \n"
 rm -rf config.yaml config.yaml.bak config.toml
-cat << EOF > config.toml
-baseURL = "http://holisticsecurity.io/"
-languageCode = "en-us"
-title = "HolisticSecurity.io"
-theme = "hugo-theme-cactus"
-#disqusShortname = "username"
-#googleAnalytics = ""
-paginate = 20
-publishDir = "../${HUGO_CONTENT_DIR}/docs"
-copyright = "Chilcano" 
-#summaryLength = 2
-
-[params]
-  colortheme = "white"            # dark, light, white, or classic
-  rss = true                      # generate rss feed. default value is false
-  googleAnalyticsAsync = true     # use asynchronous tracking. Synchronous tracking by default
-  description = "The Systems Thinking Methodology and IT Security."
-  #mainSection = "posts"          # your main section
-  showAllPostsOnHomePage = false  # default
-  postsOnHomePage = 10            # this option will be ignored if showAllPostsOnHomePage is set to true
-  tagsOverview = true             # show tags overview by default.
-  showProjectsList = false        # show projects list by default (if projects data file exists).
-  projectsUrl = "https://github.com/chilcano" # title link for projects list
-  dateFormat = "2006-01-02"
-  # Post page settings
-  show_updated = false 
-  [params.comments]
-    enabled = true 
-    engine = "disqus"             # more supported engines will be added.
-
-[[params.social]]
-  name = "github"
-  link = "https://github.com/chilcano"
-[[params.social]]
-  name = "linkedin"
-  link = "https://www.linkedin.com/in/chilcano/"
-[[params.social]]
-  name = "twitter"
-  link = "chilcano" 
-
-[markup]
-  [markup.tableOfContents]
-    endLevel = 4
-    ordered = false
-    startLevel = 2
-
-[[menu.main]]
-  url = "/"
-  name = "Home"
-  weight = 1
-[[menu.main]]
-  url = "/about/"
-  name = "About"
-  weight = 2
-[[menu.main]]
-  url = "/post/"
-  name = "Posts"
-  weight = 3
-[[menu.main]]
-  url = "/tags"
-  name = "Tags"
-  weight = 4
-
-[[menu.icon]]
-  url = "https://github.com/chilcano/"
-  name = "fab fa-github"
-  weight = 1
-[[menu.icon]]
-  url = "https://twitter.com/chilcano/"
-  name = "fab fa-twitter"
-  weight = 2
-[[menu.icon]]
-  url = "https://www.linkedin.com/in/chilcano/"
-  name = "fab fa-linkedin"
-  weight = 3
-EOF
-
-printf "==> Pre-loading ${#ARRAY_THEMES_REPO[@]} Hugo Themes. \n"
-
-
 
 for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
   tr_fullname="${tr_url##*/}"
   tr_name="${tr_fullname%.*}"
-  printf "> Cloning the '${tr_name}' Hugo Theme. \n"
-  git clone ${tr_url} ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name} --quiet
-  printf "> Removing '.git/', '.github/' and '.gitignore' of '${tr_name}'. \n"
-  rm -rf ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/.git
-  printf "> Copying existing configuration of '${tr_name}' included in the theme. \n"
-  cp ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/exampleSite/config.toml config.toml.${tr_name}
+  if [ $tr_name == $HUGO_THEME_NAME ]; then
+    printf "> Cloning the '${tr_name}' Hugo Theme. \n"
+    git clone ${tr_url} ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name} --quiet
+    printf "> Removing '.git/', '.github/' and '.gitignore' of '${tr_name}'. \n"
+    rm -rf ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/.git
+    printf "> Copying existing configuration of '${tr_name}' included in the theme. \n"
+    cp ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/exampleSite/config.toml config.toml
+  fi
 done
+
+printf "==> Updating the new Hugo configuration file (config.toml) into '${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/'. \n"
+cat << EOF > config.toml
+baseURL = "https://${GH_USER}.github.io/${REPONAME_TARGET_HUGO}/"
+title = "HolisticSecurity.io"
+theme = "hugo-theme-cactus"
+publishDir = "../${HUGO_CONTENT_DIR}/docs"
+EOF
 
 printf "==> Changing to '${PATH_TARGET_REPO}/' as working directory. \n"
 cd ${PATH_TARGET_REPO}/
@@ -274,7 +216,7 @@ hugo
 
 printf "==> Adding 'README.md' file to 'HUGO_CONTENT_BRANCH'. \n"
 cat << EOF > README.md
-[HolisticSecurity.io](https://holisticsecurity.io) website!  
+Website [https://__${GH_USER}__.github.io/__${REPONAME_TARGET_HUGO}__/](https://${GH_USER}.github.io/${REPONAME_TARGET_HUGO}/) !  
 
 This '${HUGO_CONTENT_BRANCH}' branch hosts the Hugo content.
 EOF
@@ -300,17 +242,8 @@ echo "---------------------------------------------------------------"
 printf "==> Changing to '${HUGO_SCRIPTS_DIR}/' dir. \n"
 cd ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
 
-printf "==> Serving the Hugo site over the LAN from '${PATH_TARGET_REPO}' directory with different pre-installed Themes: \n"
-
-INSTALLED_THEMES_STRING="$(ls -d ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/*)"
-INSTALLED_THEMES_ARRAY=(${INSTALLED_THEMES_STRING})
-for theme in "${INSTALLED_THEMES_ARRAY[@]}"; do
-  themename="${theme##*/}"
-  printf "hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ -t=${themename} \n"
-done 
-
-printf "==> Serving the Hugo site using default 'hugo-theme-cactus' Theme: \n"
-printf "hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ \n"
+printf "==> Serving the Hugo site using the '${HUGO_THEME_NAME}' theme: \n"
+printf "> hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ \n"
 
 printf "==> Getting back to initial directory. \n"
 printf "cd ${DIR_CURRENT} \n\n"
