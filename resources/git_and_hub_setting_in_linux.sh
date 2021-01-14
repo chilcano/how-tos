@@ -20,7 +20,7 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-GITHUB_USERNAME="${_GH_USERNAME:-Chilcano}"
+GITHUB_USERNAME="${_GH_USERNAME:-chilcano}"
 GITHUB_EMAIL="${_GH_EMAIL:-chilcano@intix.info}"
 
 # source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_and_hub_setting_in_linux.sh)
@@ -42,10 +42,6 @@ sudo apt -yqq install curl wget jq unzip git
 printf "==> Installing Hub CLI. \n"
 sudo apt -yqq install hub
 
-# This command avoids error 'git@github.com: Permission denied ...' when creating repo with hub
-printf "==> Setting GitHub HTTPS instead of SSH. \n"
-git config --global hub.protocol https
-
 printf "==> Setting GitHub user.email and user.name. \n"
 git config --global user.email "${GITHUB_EMAIL}"
 git config --global user.name "${GITHUB_USERNAME}"
@@ -53,9 +49,13 @@ git config --global user.name "${GITHUB_USERNAME}"
 printf "==> Setting GitHub to save the credentials permanently. \n"
 git config --global credential.helper store
 
+# This command avoids error 'git@github.com: Permission denied ...' when creating repo with hub
+printf "==> Setting GitHub HTTPS instead of SSH. \n"
+git config --global hub.protocol https
+
 printf "==> Testing Hub CLI - Create a Git repository in GitHub.com. \n"
 CURRENT_DIR="${PWD}"
-REPO_TMP_DIR="${GITHUB_USERNAME}_test_repo"
+REPO_TMP_DIR="${GITHUB_USERNAME}_testrepo"
 mkdir -p ${REPO_TMP_DIR}
 cd ${REPO_TMP_DIR}
 printf "\t > Initializing '${GITHUB_USERNAME}_test_repo' folder. \n"
