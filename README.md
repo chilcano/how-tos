@@ -76,6 +76,10 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
 11. GIT guides:
    - [Github - Persisting credentials](resources/git_auth_guide.md)
    - [Github - Pull Request](resources/git_pull_request_guide.md)
+   - [GitHub's Hub wrapper - Install and confgure](resources/git_and_hub_setting_in_linux.sh)
+   ```sh
+   source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_and_hub_setting_in_linux.sh) -u=Chilcano -e=chilcano@intix.info
+   ```
 12. [Getting CPU and GPU temperature in Ubuntu 19.04](resources/getting_temperature_cpu_gpu_hd_in_ubuntu.md)
 13. [Installing Logitech Unifying (Keyboard adn mice) in Ubuntu 19.04](resources/installing_logitech_unifying_in_ubuntu_19_04.md)
 14. [Install and configure Asus MB168b screen in Ubuntu 18.04](resources/install_and_setup_mb168b_in_ubuntu.md)
