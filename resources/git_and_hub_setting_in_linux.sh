@@ -58,12 +58,14 @@ git config --global hub.protocol https
 printf "==> Testing Hub CLI - Create a Git repository in GitHub.com. \n"
 CURRENT_DIR="${PWD}"
 REPO_TMP_DIR="${GITHUB_USERNAME}_testrepo"
+rm -rf ${REPO_TMP_DIR}
 mkdir -p ${REPO_TMP_DIR}
 cd ${REPO_TMP_DIR}
 printf "> Initializing '${GITHUB_USERNAME}_test_repo' folder. \n"
 git init
 printf "> Create a repo on GitHub from an initialized folder. \n"
 hub create -d "The repository '${REPO_TMP_DIR}' created!" ${GITHUB_USERNAME}/${REPO_TMP_DIR}
+printf "> The '${GITHUB_USERNAME}/${REPO_TMP_DIR}' was created successfully. \n"
 
 printf "==> Testing Hub CLI - Remove a Git repository in GitHub.com. \n"
 printf "> Removing remote GitHub repo. \n"
