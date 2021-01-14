@@ -53,16 +53,17 @@ printf "==> Setting GitHub to save the credentials permanently. \n"
 git config --global credential.helper store
 
 printf "==> Testing Hub CLI - Create a Git repository in GitHub.com. \n"
-CURRENT_DIR=${PWD}
-mkdir -p ${GITHUB_USERNAME}_test_repo
-cd ${GITHUB_USERNAME}_test_repo
+CURRENT_DIR="${PWD}"
+REPO_TMP_DIR="${GITHUB_USERNAME}_test_repo"
+mkdir -p ${REPO_TMP_DIR}
+cd ${REPO_TMP_DIR}
 printf "\t > Initializing '${GITHUB_USERNAME}_test_repo' folder. \n"
 git init
 printf "\t > Create a repo on GitHub from an initialized folder. \n"
-hub create -d "The '${GITHUB_USERNAME}_test_repo' created!" ${GITHUB_USERNAME}/${GITHUB_USERNAME}_test_repo
+hub create -d "The '${GITHUB_USERNAME}_test_repo' created!" ${GITHUB_USERNAME}/${REPO_TMP_DIR}
 
 printf "==> Testing Hub CLI - Remove a Git repository in GitHub.com. \n"
 printf "\n > Removing remote GitHub repo. \n"
-#echo "yes" | hub delete ${GITHUB_USERNAME}/${GITHUB_USERNAME}_test_repo
+#echo "yes" | hub delete ${GITHUB_USERNAME}/${REPO_TMP_DIR}
 
 printf "==> Testing Hub CLI completed!! \n"
