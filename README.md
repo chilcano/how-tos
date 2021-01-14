@@ -74,7 +74,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    RUBYOPT=-W0 JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch 
    ```
 11. GIT guides:
-   - [Github - Persisting credentials](resources/git_saving_credentials.md)
+   - [Github - Persisting credentials](resources/git_auth_guide.md)
    - [Github - Pull Request](resources/git_pull_request_guide.md)
 12. [Getting CPU and GPU temperature in Ubuntu 19.04](resources/getting_temperature_cpu_gpu_hd_in_ubuntu.md)
 13. [Installing Logitech Unifying (Keyboard adn mice) in Ubuntu 19.04](resources/installing_logitech_unifying_in_ubuntu_19_04.md)

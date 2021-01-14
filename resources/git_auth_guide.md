@@ -1,4 +1,4 @@
-## Github managing authentication
+## Managing authentication in Github
 
 ### Persisting GitHub credentials
 

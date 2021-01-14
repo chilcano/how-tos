@@ -1,0 +1,68 @@
+#!/bin/bash
+
+unset _GH_USERNAME _GH_EMAIL
+
+while [ $# -gt 0 ]; do
+  case "$1" in
+    --username*|-u*)
+      if [[ "$1" != *=* ]]; then shift; fi
+      _GH_USERNAME="${1#*=}"
+      ;;
+    --email*|-e*)
+      if [[ "$1" != *=* ]]; then shift; fi
+      _GH_EMAIL="${1#*=}"
+      ;;
+    *)
+      >&2 printf "Error: Invalid argument: '$1' \n"
+      exit 1
+      ;;
+  esac
+  shif
+
+GITHUB_USERNAME="${_GH_USERNAME:-Chilcano}"
+GITHUB_EMAIL="${_GH_EMAIL:-chilcano@intix.info}"
+
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_and_hub_setting_in_linux.sh)
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_and_hub_setting_in_linux.sh) -u=Chilcano -e=chilcano@intix.info
+
+echo "##########################################################"
+echo "   Installing and configuring Git and Hub CLI on Ubuntu   "
+echo "##########################################################"
+
+echo "# HitHub's Hub is a wrapper of git CLI useful to automate some git operations, It requires"
+echo "# generate a new Personal Access Token (PAT) in the GitHub > Settings > Developer settings" 
+echo "# (https://github.com/settings/tokens) anduse it as Password when It's prompted in your"
+echo "# Terminal, even if 'git' command is used."
+
+printf "\n"
+printf "==> Installing Git CLI and other tools. \n"
+sudo apt -yqq install curl wget jq unzip git
+
+printf "==> Installing Hub CLI. \n"
+sudo apt -yqq install hub
+
+# This command avoids error 'git@github.com: Permission denied ...' when creating repo with hub
+printf "==> Setting GitHub HTTPS instead of SSH. \n"
+git config --global hub.protocol https
+
+printf "==> Setting GitHub user.email and user.name. \n"
+git config --global user.email "${GITHUB_EMAIL}"
+git config --global user.name "${GITHUB_USERNAME}"
+
+printf "==> Setting GitHub to save the credentials permanently. \n"
+git config --global credential.helper store
+
+printf "==> Testing Hub CLI - Create a Git repository in GitHub.com. \n"
+CURRENT_DIR=${PWD}
+mkdir -p ${GITHUB_USERNAME}_test_repo
+cd ${GITHUB_USERNAME}_test_repo
+printf "\t > Initializing '${GITHUB_USERNAME}_test_repo' folder. \n"
+git init
+printf "\t > Create a repo on GitHub from an initialized folder. \n"
+hub create -d "The '${GITHUB_USERNAME}_test_repo' created!" ${GITHUB_USERNAME}/${GITHUB_USERNAME}_test_repo
+
+printf "==> Testing Hub CLI - Remove a Git repository in GitHub.com. \n"
+printf "\n > Removing remote GitHub repo. \n"
+#echo "yes" | hub delete ${GITHUB_USERNAME}/${GITHUB_USERNAME}_test_repo
+
+printf "==> Testing Hub CLI completed!! \n"

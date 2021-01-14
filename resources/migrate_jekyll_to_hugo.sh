@@ -114,7 +114,7 @@ theme = "minimal"
 paginate = 20
 publishDir = "../ghp-content/docs"
 
-copyright = "Roger Carhuatocto" 
+copyright = "Chilcano" 
 #summaryLength = 2
 
 [params]

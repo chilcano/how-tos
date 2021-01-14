@@ -1,16 +1,18 @@
 # Migrate existing Jekyll site to Hugo 
 
-## References:
-1. [Migrating from Jekyll to Hugo - 2020/Apr/29](https://chenhuijing.com/blog/migrating-from-jekyll-to-hugo/)
-2. [Migrating from Jekyll+Github Pages to Hugo+Netlify - 2017/Jun/6](https://www.sarasoueidan.com/blog/jekyll-ghpages-to-hugo-netlify/)
-3. [Hugo vs Jekyll: an epic battle of static site generator themes - 2020/April/27](https://victoria.dev/blog/hugo-vs-jekyll-an-epic-battle-of-static-site-generator-themes/)
-4. [Migrate from jekyll to gohugo - 2019/Nov/12](https://haefelfinger.ch/posts/2019/2019-11-12-Migrate-from-jekyll-to-hugo/)
 
 ## Requisites
 
-1. Git CLI
-2. GitHub Hub CLI (a GIT CLI wrapper)
-3. Hugo CLI
+1. Install and configure Git CLI and Hub CLI
+```sh
+# Install git, hub, configure git and authentication, test hub, etc.
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_and_hub_setting_in_linux.sh) -u=Chilcano -e=chilcano@intix.info
+```
+2. Hugo CLI
+```sh
+# Install latest Hugo binary
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/hugo_setting_in_linux.sh | bash
+```
 
 ## Steps
 
@@ -49,3 +51,9 @@ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resou
 // publish it to GitHub
  
 ```
+
+## References:
+1. [Migrating from Jekyll to Hugo - 2020/Apr/29](https://chenhuijing.com/blog/migrating-from-jekyll-to-hugo/)
+2. [Migrating from Jekyll+Github Pages to Hugo+Netlify - 2017/Jun/6](https://www.sarasoueidan.com/blog/jekyll-ghpages-to-hugo-netlify/)
+3. [Hugo vs Jekyll: an epic battle of static site generator themes - 2020/April/27](https://victoria.dev/blog/hugo-vs-jekyll-an-epic-battle-of-static-site-generator-themes/)
+4. [Migrate from jekyll to gohugo - 2019/Nov/12](https://haefelfinger.ch/posts/2019/2019-11-12-Migrate-from-jekyll-to-hugo/)
