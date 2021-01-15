@@ -14,6 +14,9 @@ declare -a ARRAY_THEMES_REPO=(
 "https://github.com/colorchestra/smol"
 )
 
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_holosec_to_hugo.sh)
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_holosec_to_hugo.sh) -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=site01 -t=hugo-theme-cactus
+
 while [ $# -gt 0 ]; do
   case "$1" in
     --ghuser*|-u*)
@@ -56,9 +59,6 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_holosec_to_hugo.sh)
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_holosec_to_hugo.sh) -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=ghpages-holosecio -t=hugo-theme-cactus
-
 DIR_CURRENT=$PWD
 GH_ROOT_DIR="gitrepos"
 GH_USER="${_GHUSER:-chilcano}"
@@ -69,6 +69,7 @@ REPONAME_SOURCE_JEKYLL="${_GHREPONAME:-ghpages-holosec}"
 REPONAME_TARGET_HUGO="${_GHDESTINATION:-ghpages-holosecio}"
 HUGO_SCRIPTS_DIR="ghp-scripts"
 HUGO_CONTENT_DIR="ghp-content"
+HUGO_SITE_TITLE="HolisticSecurity.io"
 HUGO_CONTENT_BRANCH="${HUGO_CONTENT_DIR}"
 PATH_SOURCE_REPO="${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}"
 PATH_TARGET_REPO="${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}"
@@ -141,21 +142,19 @@ for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
   tr_name="${tr_fullname%.*}"
   if [ $tr_name == $HUGO_THEME_NAME ]; then
     printf "> Cloning the '${tr_name}' Hugo Theme. \n"
-    git clone ${tr_url} ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name} --quiet
+    git clone ${tr_url} themes/${tr_name} --quiet
     printf "> Removing '.git/', '.github/' and '.gitignore' of '${tr_name}'. \n"
-    rm -rf ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/.git
+    rm -rf themes/${tr_name}/.git
     printf "> Copying existing configuration of '${tr_name}' included in the theme. \n"
-    cp ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/exampleSite/config.toml config.toml
+    cp themes/${tr_name}/exampleSite/config.toml config.toml
   fi
 done
 
-printf "==> Updating the new Hugo configuration file (config.toml) into '${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/'. \n"
-cat << EOF > config.toml
-baseURL = "https://${GH_USER}.github.io/${REPONAME_TARGET_HUGO}/"
-title = "HolisticSecurity.io"
-theme = "hugo-theme-cactus"
-publishDir = "../${HUGO_CONTENT_DIR}/docs"
-EOF
+printf "==> Tweaking the new Hugo configuration file '${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/config.toml'. \n"
+sed -i.bak 's/^baseURL = .*$/baseURL = "https\:\/\/${GH_USER}.github.io\/${REPONAME_TARGET_HUGO}\/"/' config.toml
+sed -i.bak 's/^publishDir = "docs"$/publishDir = "..\/${HUGO_CONTENT_DIR}\/docs"/' config.toml
+sed -i.bak 's/^title = .*$/title = "${HUGO_SITE_TITLE}"/' config.toml
+sed -i.bak 's/^theme = .*$/theme = "${HUGO_THEME_NAME}"/' config.toml
 
 printf "==> Changing to '${PATH_TARGET_REPO}/' as working directory. \n"
 cd ${PATH_TARGET_REPO}/
