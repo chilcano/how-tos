@@ -131,7 +131,7 @@ EOF
 printf "==> Changing to '${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/' as working directory. \n"
 cd ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
 
-printf "==> Loading ${#ARRAY_THEMES_REPO[@]} Hugo Themes. \n"
+printf "==> This scripts can install ${#ARRAY_THEMES_REPO[@]} Hugo Themes, but only will install one. \n"
 printf "> Removing existing Hugo configuration file. \n"
 rm -rf config.yaml config.yaml.bak config.toml
 
@@ -149,10 +149,10 @@ for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
 done
 
 printf "==> Tweaking the new Hugo configuration file '${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/config.toml'. \n"
-sed -i.bak 's/^baseURL = .*$/baseURL = "https\:\/\/${GH_USER}.github.io\/${REPONAME_TARGET_HUGO}\/"/' config.toml
-sed -i.bak 's/^publishDir = "docs"$/publishDir = "..\/${HUGO_CONTENT_DIR}\/docs"/' config.toml
-sed -i.bak 's/^title = .*$/title = "${HUGO_SITE_TITLE}"/' config.toml
-sed -i.bak 's/^theme = .*$/theme = "${HUGO_THEME_NAME}"/' config.toml
+sed -i.bak "s|^baseURL = .*$|baseURL = \"https://${GH_USER}.github.io/${REPONAME_TARGET_HUGO}/\"|" config.toml
+sed -i.bak "s|^publishDir = .*$|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" config.toml
+sed -i.bak "s|^title = .*$|title = \"${HUGO_SITE_TITLE}\"|" config.toml
+sed -i.bak "s|^theme = .*$|theme = \"${HUGO_THEME_NAME}\"|" config.toml
 
 printf "==> Changing to '${PATH_TARGET_REPO}/' as working directory. \n"
 cd ${PATH_TARGET_REPO}/
