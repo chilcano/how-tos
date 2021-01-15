@@ -14,8 +14,8 @@ declare -a ARRAY_THEMES_REPO=(
 "https://github.com/colorchestra/smol"
 )
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_holosec_to_hugo.sh)
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_holosec_to_hugo.sh) -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=site01 -t=hugo-theme-cactus
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh)
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh) -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=site01 -t=hugo-theme-cactus
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -47,8 +47,6 @@ while [ $# -gt 0 ]; do
       printf " --source_url | -s \n"
       printf " --destination | -d \n"
       printf " --hugotheme | -t : minimal, minimal-bootstrap-hugo-theme, kiss, ezhil, hugo-theme-cactus, hugo-theme-hello-friend-ng, hugo-theme-terminal, archie, smol \n"
-      done
-
       exit 0
       ;;
     *)
