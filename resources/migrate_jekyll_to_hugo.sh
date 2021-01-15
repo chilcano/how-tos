@@ -158,6 +158,15 @@ sed -i.bak "s|^theme = .*$|theme = \"${HUGO_THEME_NAME}\"|" config.toml
 # grep -q '^option' file && sed -i 's/^option.*/option=value/' file || echo 'option=value' >> file
 grep -q '^publishDir' config.toml && sed -i "s|^publishDir = .*$|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" config.toml || sed -i "s|^\(theme = .*\)$|\1\npublishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" config.toml
 
+printf "\n"
+echo "---------------------------------------------------------------"
+echo " Main branch - Removing not used files (only for https://github.com/chilcano/ghpages-holosec.git)"
+echo "---------------------------------------------------------------"
+rm -rf static/assets/main.scss
+rm -rf static/assets/fonts/
+rm -rf static/wp_export/
+rm -rf static/CNAME
+
 printf "==> Changing to '${PATH_TARGET_REPO}/' as working directory. \n"
 cd ${PATH_TARGET_REPO}/
 
