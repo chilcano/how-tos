@@ -150,9 +150,13 @@ done
 
 printf "==> Tweaking the new Hugo configuration file '${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/config.toml'. \n"
 sed -i.bak "s|^baseURL = .*$|baseURL = \"https://${GH_USER}.github.io/${REPONAME_TARGET_HUGO}/\"|" config.toml
-sed -i.bak "s|^publishDir = .*$|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" config.toml
 sed -i.bak "s|^title = .*$|title = \"${HUGO_SITE_TITLE}\"|" config.toml
 sed -i.bak "s|^theme = .*$|theme = \"${HUGO_THEME_NAME}\"|" config.toml
+
+# if publishDir exist, then update it else add it after theme
+# sed -e '/^\(option=\).*/{s//\1value/;:a;n;ba;q}' -e '$aoption=value' filename
+# grep -q '^option' file && sed -i 's/^option.*/option=value/' file || echo 'option=value' >> file
+grep -q '^publishDir' config.toml && sed -i "s|^publishDir = .*$|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" config.toml || sed -i "s|^\(theme = .*\)$|\1\npublishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" config.toml
 
 printf "==> Changing to '${PATH_TARGET_REPO}/' as working directory. \n"
 cd ${PATH_TARGET_REPO}/
@@ -241,6 +245,4 @@ cd ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
 
 printf "==> Serving the Hugo site using the '${HUGO_THEME_NAME}' theme: \n"
 printf "> hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ \n"
-
-printf "==> Getting back to initial directory. \n"
-printf "cd ${DIR_CURRENT} \n\n"
+printf "> cd ${DIR_CURRENT} \n\n"
