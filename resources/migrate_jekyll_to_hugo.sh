@@ -42,7 +42,7 @@ while [ $# -gt 0 ]; do
       ;;
     --help|-h)
       printf "Migrate Jekyll GitHub Pages site to Hugo. \n"
-      printf "migrate_jekyll_holosec_to_hugo.sh -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=ghpages-holosecio -t=hugo-theme-cactus \n"
+      printf "migrate_jekyll_to_hugo.sh -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=ghpages-holosecio -t=hugo-theme-cactus \n"
       printf " --ghuser | -u \n"
       printf " --source_url | -s \n"
       printf " --destination | -d \n"
@@ -91,7 +91,7 @@ fi
 
 printf "==> Creating a fresh '${REPONAME_TARGET_HUGO}' Hugo GitHub Pages repo locally. \n"
 rm -rf ${PATH_TARGET_REPO}
-mkdir -p ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/themes/
+mkdir -p ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
 mkdir -p ${PATH_TARGET_REPO}/${HUGO_CONTENT_DIR}/
 
 printf "==> Importing from existing Jekyll to the target GitHub repo (${PATH_TARGET_REPO}). \n"
@@ -106,7 +106,7 @@ git init
 printf "==> Removing remote GitHub repo with 'hub'. \n"
 echo "yes" | hub delete ${GH_USER}/${REPONAME_TARGET_HUGO}
 
-printf "==> Creating an empty repo on GitHub using current dir as repo's name. \n"
+printf "==> Creating an empty repo on GitHub using current dir as the repository name. \n"
 hub create -d "GitHub Pages for HoloSec" ${GH_USER}/${REPONAME_TARGET_HUGO}
 
 printf "\n"
