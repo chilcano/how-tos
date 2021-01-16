@@ -33,23 +33,17 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/hugo
 8. Check everything!
 
 
-But if you don't want to wait, I've created a bash script, just run below commands:
+But if you don't want to wait, I've created a bash script, only run below commands:
 
 ```sh
-// cloning jekyll repo and import it as Hugo repo
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash -s -- -c
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash -s -- --clean
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash -s -- -d=site0
+// Running the script in this way, we will run the bash in the current shell context which allow us to change directory
+// This script also will publish the imported site to GitHub in Hugo format
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh) --help
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh) --ghuser=<github_usr> --source_url=https://github.com/<usr>/<jekyll_repo> --destination=<dir> --theme=<hugo_theme>
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh) -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=site01 -t=hugo-theme-cactus
 
-//running the script in the same bash context allow change directory
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh) -d=site0
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh) -d=site0 -c 
-
-// check it locally
-
-// publish it to GitHub
- 
+// Check the Site locally
+hugo server -D --bind=0.0.0.0 --baseURL=http://<your_hugo_ip_address>:1313/
 ```
 
 ## References:

@@ -124,17 +124,6 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    // replace the IP address with yours
    hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ghpages-dpio/
    ``` 
-22. [Migration of Jekyll to Hugo](resources/migrate_jekyll_to_hugo.md)  
-   ```sh
-   // Cloning jekyll repo and import it as Hugo repo
-   curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash
-   curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash -s -- -t=https://github.com/vividvilla/ezhil
-   curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh | bash -s -- --theme=https://github.com/ribice/kiss
-   
-   // check it locally
-   
-   // publish it to GitHub
-   
-   ``` 
+22. [Migration of GitHub Page site from Jekyll to Hugo](resources/migrate_jekyll_to_hugo.md)  
 23. [Creating booteable USB on Ubuntu](resources/booteable_usb_on_ubuntu.md)  
 24. [Google Drive on Ubuntu with XFCE](resources/google_drive_on_linux.md)  
