@@ -170,7 +170,8 @@ if [[ "${GHREPO_SOURCE_JEKYLL_URL,,}" =~  .*"github.com/chilcano/ghpages-holosec
   rm -rf static/assets/fonts/
   rm -rf static/assets/main.scss
   find static/assets/ -maxdepth 1 -type f -name '*.png' -o -name '*.jpg' -o -name '*.pdf' -exec rm -rf {} \;
-  find static/assets/ -type d -name 'blog201*' -o -name 'blog' -exec rm -rf {} \;
+  rm -rf static/assets/blog
+  rm -rf static/assets/blog201*
   find content/post -maxdepth 1 -type f -name '200[7-9]*' -exec rm -rf {} \;
   find content/post -maxdepth 1 -type f -name '201[0-8]*' -exec rm -rf {} \;
 fi
