@@ -82,6 +82,11 @@ echo "####################################################################"
 printf "==> Setting HTTPS instead of SSH for GitHub clone URLs. \n"
 git config --global hub.protocol https
 
+printf "\n"
+echo "---------------------------------------------------------------"
+echo "  Clone/download existing Jekyll GitHub Pages site"
+echo "---------------------------------------------------------------"
+
 if [ -f "${PATH_SOURCE_REPO}/_config.yml" ]; then
   printf "==> The source GitHub repo (${PATH_SOURCE_REPO}) exists and contains files. Nothing to do. \n"
 else 

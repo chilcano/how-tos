@@ -127,3 +127,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
 22. [Migration of GitHub Page site from Jekyll to Hugo](resources/migrate_jekyll_to_hugo.md)  
 23. [Creating booteable USB on Ubuntu](resources/booteable_usb_on_ubuntu.md)  
 24. [Google Drive on Ubuntu with XFCE](resources/google_drive_on_linux.md)  
+25. [Change the brightness level of a screen](resources/set_brightness_level.sh)
+```sh
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/set_brightness_level.sh) --screen=DP-1 --level=0.90
+```
