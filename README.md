@@ -131,3 +131,4 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
 ```sh
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/set_brightness_level.sh) --screen=DP-1 --level=0.90
 ```
+26. [Take screenshots silently in Ubuntu](resources/silent_screenshooter.md)
