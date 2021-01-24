@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/hugo_dpio_create.sh)
+
 printf "\n"
 echo "###############################################################"
 echo "#   Creating a website with Hugo from existing GitHub repo    #"
@@ -61,7 +63,7 @@ EOF
 
 printf "==> Adding 'README.md' file. \n"
 cat << EOF > README.md
-[data-plane.io](https://data-plane.io)  
+[https://${GIT_ORG}.github.io/${GIT_REPO}](https://${GIT_ORG}.github.io/${GIT_REPO}) 
 
 This '${GIT_ORG}/${GIT_REPO}' main branch hosts the Hugo scripts.
 EOF
@@ -128,7 +130,7 @@ cd ${HUGO_SCRIPTS_DIR}; hugo
 
 printf "==> Adding 'README.md' file to 'HUGO_CONTENT_BRANCH'. \n"
 cat << EOF > README.md
-[data-plane.io](https://data-plane.io) 
+[https://${GIT_ORG}.github.io/${GIT_REPO}](https://${GIT_ORG}.github.io/${GIT_REPO}) 
 
 This '${HUGO_CONTENT_BRANCH}' branch hosts the Hugo content.
 EOF
