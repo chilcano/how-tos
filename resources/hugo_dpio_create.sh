@@ -114,8 +114,7 @@ printf "==> Delete hugo content dir. \n"
 rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_CONTENT_BRANCH}
 
 printf "==> Worktree allows you to have multiple branches of the same local repo to be checked out in different dirs. \n"
-#git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH} 
-git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} upstream/${HUGO_CONTENT_BRANCH}
+git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH} 
 
 printf "==> Generating Hugo content in <root>/${HUGO_CONTENT_DIR}/docs dir. \n"
 cd ${HUGO_SCRIPTS_DIR}; hugo
@@ -144,8 +143,7 @@ git commit -m "Publishing Hugo content to ${HUGO_CONTENT_BRANCH}" --quiet; cd ..
 
 # If the changes in your local '${HUGO_CONTENT_BRANCH}' branch look alright, push them to the remote repo.
 printf "==> Pushing to remote repo in '${HUGO_CONTENT_BRANCH}' branch. \n"
-#git push origin ${HUGO_CONTENT_BRANCH}
-git push upstream ${HUGO_CONTENT_BRANCH}
+git push origin ${HUGO_CONTENT_BRANCH}
 
 # hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ghpages-dpio/
 
