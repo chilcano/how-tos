@@ -47,8 +47,7 @@ rm -rf ${HUGO_CONTENT_DIR}/*
 #cd ${HUGO_CONTENT_DIR}; git pull; cd ../
 
 printf "==> Regenerating Hugo content in <root>/${HUGO_CONTENT_DIR}/docs dir. \n"
-#cd ${HUGO_SCRIPTS_DIR}; hugo
-hugo
+cd ${HUGO_SCRIPTS_DIR}; hugo
 
 printf "==> Updating Hugo content in '${HUGO_CONTENT_BRANCH}' branch. \n"
 msg="hugo_dpio_update.sh > Published content to '${HUGO_CONTENT_BRANCH}' branch ($(date '+%Y%m%d %H:%M:%S'))"
