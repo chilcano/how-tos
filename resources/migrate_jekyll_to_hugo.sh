@@ -230,8 +230,7 @@ printf "==> Delete existing Hugo content dir. \n"
 rm -rf ${PATH_TARGET_REPO}/${HUGO_CONTENT_BRANCH}
 
 printf "==> Worktree allows you to have multiple branches of the same local repo to be checked out in different dirs. \n"
-#git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
-git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} upstream/${HUGO_CONTENT_BRANCH}
+git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
 
 printf "==> Changing to '${HUGO_SCRIPTS_DIR}/' dir. \n"
 cd ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
@@ -255,8 +254,7 @@ git commit -m "Publishing Hugo content to ${HUGO_CONTENT_BRANCH}" --quiet; cd ..
 
 # If the changes in your local '${HUGO_CONTENT_BRANCH}' branch look alright, push them to the remote repo.
 printf "==> Pushing to remote repo in '${HUGO_CONTENT_BRANCH}' branch. \n"
-#git push origin ${HUGO_CONTENT_BRANCH}
-git push upstream ${HUGO_CONTENT_BRANCH}
+git push origin ${HUGO_CONTENT_BRANCH}
 
 printf "==> Switching to 'main' branch. \n"
 git checkout main --quiet
