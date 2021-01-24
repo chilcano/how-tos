@@ -44,6 +44,8 @@ fi
 printf "==> Worktree allows you to have multiple branches of the same local repo to be checked out in different dirs. \n"
 git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
 
+#git worktree add -B ghp-content ghp-content upstream/ghp-content
+
 printf "==> Pulling latest changes of Hugo content from '${HUGO_CONTENT_BRANCH}' branch. \n"
 cd ${HUGO_CONTENT_DIR}; git pull; cd ../
 
