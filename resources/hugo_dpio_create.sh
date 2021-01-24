@@ -99,8 +99,7 @@ printf "==> Commit an empty orphan branch. \n"
 git commit --allow-empty -m "Initializing ${HUGO_CONTENT_BRANCH}"
 
 printf "==> Push to remote origin from '${HUGO_CONTENT_BRANCH}'. \n"
-#git push origin ${HUGO_CONTENT_BRANCH}
-git push upstream ${HUGO_CONTENT_BRANCH}
+git push origin ${HUGO_CONTENT_BRANCH}
 
 printf "==> Switching to 'main' branch. \n"
 git checkout main --quiet
