@@ -27,6 +27,7 @@ cd ${GIT_PARENT_DIR}/${GIT_REPO}
 if [ "`git status -s`" ]
 then
     printf "==> The working directory is dirty. Please commit any pending changes. \n"
+    cd ${CURRENT_DIR}
     exit 1;
 fi
 
