@@ -32,15 +32,15 @@ then
 fi
 
 printf "==> Deleting older content and history under '${HUGO_CONTENT_BRANCH}' \n" 
-rm -rf ${HUGO_CONTENT_DIR}
-mkdir -p ${HUGO_CONTENT_DIR}
+rm -rf ${HUGO_CONTENT_DIR}/docs/
+mkdir -p ${HUGO_CONTENT_DIR}/docs/
 git worktree prune
 rm -rf .git/worktrees/${HUGO_CONTENT_DIR}/
 
 printf "==> This worktree will allow us to get all content in '${HUGO_CONTENT_BRANCH}' branch as a dir. \n"
 git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
 printf "==> Deleting older content and history under '${HUGO_CONTENT_BRANCH}' \n" 
-rm -rf ${HUGO_CONTENT_DIR}/*
+rm -rf ${HUGO_CONTENT_DIR}/docs/*
 #git worktree add -B ghp-content ghp-content origin/ghp-content
 
 # no es necesario
