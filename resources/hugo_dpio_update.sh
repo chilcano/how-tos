@@ -40,7 +40,7 @@ printf "==> This worktree will allow us to get all content in '${HUGO_CONTENT_BR
 git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
 printf "==> Deleting older content and history under '${HUGO_CONTENT_BRANCH}' except CNAME \n" 
 #rm -rf ${HUGO_CONTENT_DIR}/docs/*
-find ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_CONTENT_DIR}/docs/* ! -name 'CNAME' -exec rm -f {} +
+find ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_CONTENT_DIR}/docs/* ! -name 'CNAME' -exec rm -rf {} +
 #git worktree add -B ghp-content ghp-content origin/ghp-content
 
 #printf "==> Forcinf to adding CNAME file in '${HUGO_CONTENT_DIR}/docs/'. \n"
