@@ -30,17 +30,17 @@ then
     exit 1;
 fi
 
-printf "==> Deleting older content and history under '${HUGO_CONTENT_BRANCH}' \n" 
-rm -rf ${HUGO_CONTENT_DIR}/
-mkdir -p ${HUGO_CONTENT_DIR}/
+printf "==> Deleting older content and history of '${HUGO_CONTENT_BRANCH}' \n" 
+rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_CONTENT_DIR}/
+#mkdir -p ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_CONTENT_DIR}/
 git worktree prune
-rm -rf .git/worktrees/${HUGO_CONTENT_DIR}/
+rm -rf ${GIT_PARENT_DIR}/${GIT_REPO}/.git/worktrees/${HUGO_CONTENT_DIR}/
 
 printf "==> This worktree will allow us to get all content in '${HUGO_CONTENT_BRANCH}' branch as a dir. \n"
 git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
 printf "==> Deleting older content and history under '${HUGO_CONTENT_BRANCH}' except CNAME \n" 
 #rm -rf ${HUGO_CONTENT_DIR}/docs/*
-find ${HUGO_CONTENT_DIR}/docs/* ! -name 'CNAME' -exec rm -f {} +
+find ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_CONTENT_DIR}/docs/* ! -name 'CNAME' -exec rm -f {} +
 #git worktree add -B ghp-content ghp-content origin/ghp-content
 
 #printf "==> Forcinf to adding CNAME file in '${HUGO_CONTENT_DIR}/docs/'. \n"
@@ -54,11 +54,11 @@ find ${HUGO_CONTENT_DIR}/docs/* ! -name 'CNAME' -exec rm -f {} +
 #cd ${HUGO_CONTENT_DIR}; git pull; cd ../
 
 printf "==> Regenerating Hugo content in <root>/${HUGO_CONTENT_DIR}/docs dir. \n"
-cd ${HUGO_SCRIPTS_DIR}; hugo
+cd ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_SCRIPTS_DIR}; hugo
 
 printf "==> Updating Hugo content in '${HUGO_CONTENT_BRANCH}' branch. \n"
 msg="hugo_dpio_update.sh > Published content to '${HUGO_CONTENT_BRANCH}' branch ($(date '+%Y%m%d %H:%M:%S'))"
-cd ../${HUGO_CONTENT_DIR}; git add .; git commit -m "$msg" --quiet
+cd ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_CONTENT_DIR}; git add .; git commit -m "$msg" --quiet
 
 printf "\n"
 printf "==> Run this command to push all changes:  git push --all \n\n"
