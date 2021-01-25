@@ -31,7 +31,7 @@ then
 fi
 
 printf "==> Deleting older content and history under '${HUGO_CONTENT_BRANCH}' \n" 
-rm -rf ${HUGO_CONTENT_DIR}/docs/
+rm -rf ${HUGO_CONTENT_DIR}/
 mkdir -p ${HUGO_CONTENT_DIR}/docs/
 git worktree prune
 rm -rf .git/worktrees/${HUGO_CONTENT_DIR}/
