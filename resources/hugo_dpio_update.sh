@@ -2,13 +2,12 @@
 
 # source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/hugo_dpio_update.sh)
 
+# Ref: https://gohugo.io/hosting-and-deployment/hosting-on-github/
+
 printf "\n"
 echo "###############################################################"
 echo "#             Updating DPio Hugo content                      #"
 echo "###############################################################"
-
-# Ref: 
-# https://gohugo.io/hosting-and-deployment/hosting-on-github/
 
 CURRENT_DIR=$PWD
 GIT_ORG="data-plane"
@@ -39,9 +38,16 @@ rm -rf .git/worktrees/${HUGO_CONTENT_DIR}/
 
 printf "==> This worktree will allow us to get all content in '${HUGO_CONTENT_BRANCH}' branch as a dir. \n"
 git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
-printf "==> Deleting older content and history under '${HUGO_CONTENT_BRANCH}' \n" 
-rm -rf ${HUGO_CONTENT_DIR}/docs/*
+printf "==> Deleting older content and history under '${HUGO_CONTENT_BRANCH}' except CNAME \n" 
+#rm -rf ${HUGO_CONTENT_DIR}/docs/*
+find ${HUGO_CONTENT_DIR}/docs/* ! -name 'CNAME' -exec rm -f {} +
 #git worktree add -B ghp-content ghp-content origin/ghp-content
+
+#printf "==> Forcinf to adding CNAME file in '${HUGO_CONTENT_DIR}/docs/'. \n"
+#cat << EOF > CNAME
+#data-plane.io
+#EOF
+#mv -f CNAME ${HUGO_CONTENT_DIR}/docs/.
 
 # no es necesario
 #printf "==> Pulling latest changes of Hugo content from '${HUGO_CONTENT_BRANCH}' branch. \n"
