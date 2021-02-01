@@ -70,8 +70,6 @@ HUGO_SCRIPTS_DIR="ghp-scripts"
 HUGO_CONTENT_DIR="ghp-content"
 HUGO_SITE_TITLE="Holistic Security"
 HUGO_CONTENT_BRANCH="${HUGO_CONTENT_DIR}"
-PATH_SOURCE_REPO="${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}"
-PATH_TARGET_REPO="${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}"
 HUGO_THEME_NAME="${_HUGOTHEME:-hugo-theme-cactus}"
 
 printf "\n"
@@ -88,25 +86,31 @@ echo "---------------------------------------------------------------"
 echo "  Clone/download existing Jekyll GitHub Pages site"
 echo "---------------------------------------------------------------"
 
-if [ -f "${PATH_SOURCE_REPO}/_config.yml" ]; then
-  printf "==> The source GitHub repo (${PATH_SOURCE_REPO}) exists and contains files. Nothing to do. \n"
+if [ -f "${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}/_config.yml" ]; then
+  printf "==> The source GitHub repo (${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}) exists and contains files. Nothing to do. \n"
 else 
   printf "==> Cloning the '${REPONAME_SOURCE_JEKYLL}' Jekyll GitHub Pages repo. \n"
-  git clone ${GHREPO_SOURCE_JEKYLL_URL} ${PATH_SOURCE_REPO}
+  git clone ${GHREPO_SOURCE_JEKYLL_URL} ${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}
 fi 
 
 printf "==> Creating a fresh '${REPONAME_TARGET_HUGO}' Hugo GitHub Pages repo locally. \n"
-rm -rf ${PATH_TARGET_REPO}
-mkdir -p ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
-mkdir -p ${PATH_TARGET_REPO}/${HUGO_CONTENT_DIR}/
+rm -rf ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}
+mkdir -p ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/
+mkdir -p ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_CONTENT_DIR}/
 
-printf "==> Importing from existing Jekyll repo (${PATH_SOURCE_REPO}) to the target GitHub repo (${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}). \n"
-hugo import jekyll --force ${PATH_SOURCE_REPO} ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
+printf "==> Importing from \n\t  > existing Jekyll repo (${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}) \n\t > to the target GitHub repo (${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}). \n"
+## import doesnt work with target paths with dash char in forlder name
+## Error: abort: target path should not be inside the Jekyll root
+## https://github.com/gohugoio/hugo/pull/2293
+##hugo import jekyll --force ${REPONAME_SOURCE_JEKYLL} ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/
+hugo import jekyll --force ${REPONAME_SOURCE_JEKYLL} tmp_dir_imported
+mv tmp_dir_imported ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/
+mv tmp_dir_imported ${HUGO_SCRIPTS_DIR}
 
-printf "==> Changing to '${PATH_TARGET_REPO}' as working directory. \n"
-cd ${PATH_TARGET_REPO}/
+printf "==> Changing to '${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}' as working directory. \n"
+cd ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/
 
-printf "==> Initializing '${PATH_TARGET_REPO}' Git repository. \n"
+printf "==> Initializing '${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}' Git repository. \n"
 git init
 
 printf "==> Removing remote GitHub repo with 'hub'. \n"
@@ -134,8 +138,8 @@ Website [https://__${GH_USER}__.github.io/__${REPONAME_TARGET_HUGO}__/](https://
 This '${GH_USER}/${REPONAME_TARGET_HUGO}' main branch hosts the Hugo scripts.
 EOF
 
-printf "==> Changing to '${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/' as working directory. \n"
-cd ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
+printf "==> Changing to '${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/' as working directory. \n"
+cd ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/
 
 printf "==> This scripts can install ${#ARRAY_THEMES_REPO[@]} Hugo Themes, but only one can be used. \n"
 printf "> Removing existing Hugo configuration file. \n"
@@ -181,8 +185,8 @@ if [[ "${GHREPO_SOURCE_JEKYLL_URL,,}" =~  .*"github.com/chilcano/ghpages-holosec
   find content/post -maxdepth 1 -type f -name '201[0-8]*' -exec rm -rf {} \;
 fi
 
-printf "==> Changing to '${PATH_TARGET_REPO}/' as working directory. \n"
-cd ${PATH_TARGET_REPO}/
+printf "==> Changing to '${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/' as working directory. \n"
+cd ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/
 
 printf "\n"
 echo "---------------------------------------------------------------"
@@ -227,13 +231,13 @@ echo " Content branch - First push into ' ${HUGO_CONTENT_BRANCH}' branch"
 echo "---------------------------------------------------------------"
 
 printf "==> Delete existing Hugo content dir. \n"
-rm -rf ${PATH_TARGET_REPO}/${HUGO_CONTENT_BRANCH}
+rm -rf ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_CONTENT_BRANCH}
 
 printf "==> Worktree allows you to have multiple branches of the same local repo to be checked out in different dirs. \n"
 git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
 
 printf "==> Changing to '${HUGO_SCRIPTS_DIR}/' dir. \n"
-cd ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
+cd ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/
 
 printf "==> Generating Hugo content in <root>/${HUGO_CONTENT_DIR}/docs dir according to 'config.toml'. \n"
 hugo
@@ -244,7 +248,7 @@ Website [https://__${GH_USER}__.github.io/__${REPONAME_TARGET_HUGO}__/](https://
 
 This '${HUGO_CONTENT_BRANCH}' branch hosts the Hugo content.
 EOF
-mv -f README.md ${PATH_TARGET_REPO}/${HUGO_CONTENT_DIR}/.
+mv -f README.md ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_CONTENT_DIR}/.
 
 printf "==> Adding Hugo content only to local repo. \n"
 cd ../${HUGO_CONTENT_DIR}; git add .
@@ -264,7 +268,7 @@ echo "---------------------------------------------------------------"
 echo " Serving the Hugo site over the LAN"
 echo "---------------------------------------------------------------"
 printf "==> Changing to '${HUGO_SCRIPTS_DIR}/' dir. \n"
-cd ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
+cd ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/
 
 printf "==> Serving the Hugo site using the '${HUGO_THEME_NAME}' theme: \n"
 printf "> hugo server -D --bind=0.0.0.0 \n"
