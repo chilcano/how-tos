@@ -95,7 +95,7 @@ fi
 
 printf "==> Creating a fresh '${REPONAME_TARGET_HUGO}' Hugo GitHub Pages repo locally. \n"
 rm -rf ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}
-mkdir -p ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/
+#####mkdir -p ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/
 mkdir -p ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_CONTENT_DIR}/
 
 printf "==> Importing from \n\t > existing Jekyll repo (${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}) \n\t > to the target GitHub repo (${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}). \n"
@@ -105,7 +105,7 @@ printf "==> Importing from \n\t > existing Jekyll repo (${HOME}/${GH_ROOT_DIR}/$
 ##hugo import jekyll --force ${REPONAME_SOURCE_JEKYLL} ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/
 hugo import jekyll --force ${REPONAME_SOURCE_JEKYLL} tmp_dir_imported
 mv tmp_dir_imported ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/
-mv tmp_dir_imported ${HUGO_SCRIPTS_DIR}
+mv ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/tmp_dir_imported ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}
 
 printf "==> Changing to '${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}' as working directory. \n"
 cd ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/
@@ -274,3 +274,14 @@ printf "==> Serving the Hugo site using the '${HUGO_THEME_NAME}' theme: \n"
 printf "> hugo server -D --bind=0.0.0.0 \n"
 printf "> hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ \n"
 printf "> cd ${DIR_CURRENT} \n\n"
+
+printf "\n"
+echo "---------------------------------------------------------------"
+echo " Tweaking the Hugo site"
+echo "---------------------------------------------------------------"
+printf "==> Copy the logo \n"
+printf "> source: ${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}/assets/img/logo* \n"
+printf "> target: ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/static/imgages/logo.png \n"
+printf "==> Copy the favicon \n"
+printf "> use the logo.png and rename to favicon.png \n"
+printf "> target: ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/static/imgages/favicon.png \n"
