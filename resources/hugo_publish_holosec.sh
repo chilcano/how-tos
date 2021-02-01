@@ -52,7 +52,8 @@ msg="Published content (hugo_publish_holosec.sh)"
 cd ../${HUGO_CONTENT_DIR}; git add .; git commit -m "$msg" --quiet
 
 printf "\n"
-printf "==> Run this command to push all changes:  git push --all \n\n"
+printf "==> Publishing fresh hugo content with 'git push --all' \n\n"
+git push --all
 
 printf "==> Returning to current dir. \n"
-cd ..
+cd ../
