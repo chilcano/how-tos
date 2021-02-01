@@ -15,7 +15,8 @@ declare -a ARRAY_THEMES_REPO=(
 )
  
 # source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh)
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh) -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=site01 -t=hugo-theme-cactus
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh) -d=site01
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh) -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=site02 -t=hugo-theme-cactus
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -99,7 +100,7 @@ rm -rf ${PATH_TARGET_REPO}
 mkdir -p ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
 mkdir -p ${PATH_TARGET_REPO}/${HUGO_CONTENT_DIR}/
 
-printf "==> Importing from existing Jekyll to the target GitHub repo (${PATH_TARGET_REPO}). \n"
+printf "==> Importing from existing Jekyll repo (${PATH_SOURCE_REPO}) to the target GitHub repo (${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}). \n"
 hugo import jekyll --force ${PATH_SOURCE_REPO} ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
 
 printf "==> Changing to '${PATH_TARGET_REPO}' as working directory. \n"
