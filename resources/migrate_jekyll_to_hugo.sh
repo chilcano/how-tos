@@ -67,7 +67,7 @@ REPONAME_SOURCE_JEKYLL="${_GHREPONAME:-ghpages-holosec}"
 REPONAME_TARGET_HUGO="${_GHDESTINATION:-ghpages-holosecio}"
 HUGO_SCRIPTS_DIR="ghp-scripts"
 HUGO_CONTENT_DIR="ghp-content"
-HUGO_SITE_TITLE="HolisticSecurity.io"
+HUGO_SITE_TITLE="Holistic Security"
 HUGO_CONTENT_BRANCH="${HUGO_CONTENT_DIR}"
 PATH_SOURCE_REPO="${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}"
 PATH_TARGET_REPO="${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}"
@@ -136,7 +136,7 @@ EOF
 printf "==> Changing to '${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/' as working directory. \n"
 cd ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
 
-printf "==> This scripts can install ${#ARRAY_THEMES_REPO[@]} Hugo Themes, but only will install one. \n"
+printf "==> This scripts can install ${#ARRAY_THEMES_REPO[@]} Hugo Themes, but only one can be used. \n"
 printf "> Removing existing Hugo configuration file. \n"
 rm -rf config.yaml config.yaml.bak config.toml
 
@@ -162,7 +162,6 @@ sed -i.bak "s|^theme = .*$|theme = \"${HUGO_THEME_NAME}\"|" config.toml
 # sed -e '/^\(option=\).*/{s//\1value/;:a;n;ba;q}' -e '$aoption=value' filename
 # grep -q '^option' file && sed -i 's/^option.*/option=value/' file || echo 'option=value' >> file
 grep -q '^publishDir' config.toml && sed -i "s|^publishDir = .*$|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" config.toml || sed -i "s|^\(theme = .*\)$|\1\npublishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" config.toml
-
 
 if [[ "${GHREPO_SOURCE_JEKYLL_URL,,}" =~  .*"github.com/chilcano/ghpages-holosec".* ]]; then
   printf "\n"
@@ -203,7 +202,7 @@ git push -u origin main
 
 printf "\n"
 echo "---------------------------------------------------------------"
-echo " ${HUGO_CONTENT_BRANCH} branch - Configuring content branch"
+echo " Content branch - Initializing '${HUGO_CONTENT_BRANCH}' branch"
 echo "---------------------------------------------------------------"
 
 printf "==> Create the orphan branch on local machine and switch in this branch. \n"
@@ -223,7 +222,7 @@ git checkout main --quiet
 
 printf "\n"
 echo "---------------------------------------------------------------"
-echo " ${HUGO_CONTENT_BRANCH} branch - First push into content branch"
+echo " Content branch - First push into ' ${HUGO_CONTENT_BRANCH}' branch"
 echo "---------------------------------------------------------------"
 
 printf "==> Delete existing Hugo content dir. \n"
@@ -267,5 +266,6 @@ printf "==> Changing to '${HUGO_SCRIPTS_DIR}/' dir. \n"
 cd ${PATH_TARGET_REPO}/${HUGO_SCRIPTS_DIR}/
 
 printf "==> Serving the Hugo site using the '${HUGO_THEME_NAME}' theme: \n"
+printf "> hugo server -D --bind=0.0.0.0 \n"
 printf "> hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ \n"
 printf "> cd ${DIR_CURRENT} \n\n"

@@ -2,6 +2,21 @@
 
 unset _GHUSER _GHSOURCE _GHDESTINATION _HUGOTHEME
 
+declare -a ARRAY_THEMES_REPO=(
+"https://github.com/calintat/minimal.git"
+"https://github.com/zwbetz-gh/minimal-bootstrap-hugo-theme.git"
+"https://github.com/ribice/kiss.git"
+"https://github.com/vividvilla/ezhil.git"
+"https://github.com/monkeyWzr/hugo-theme-cactus.git"
+"https://github.com/rhazdon/hugo-theme-hello-friend-ng.git"
+"https://github.com/panr/hugo-theme-terminal.git"
+"https://github.com/athul/archie.git"
+"https://github.com/colorchestra/smol"
+)
+
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_holosec_to_hugo.sh)
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_holosec_to_hugo.sh) -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=ghpages-holosecio -t=hugo-theme-cactus
+
 while [ $# -gt 0 ]; do
   case "$1" in
     --ghuser*|-u*)
@@ -32,9 +47,6 @@ while [ $# -gt 0 ]; do
   shift
 done
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_holosec_to_hugo.sh)
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_holosec_to_hugo.sh) -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=ghpages-holosecio -t=hugo-theme-cactus
-
 DIR_CURRENT=$PWD
 GH_ROOT_DIR="gitrepos"
 GH_USER="${_GHUSER:-chilcano}"
@@ -49,18 +61,6 @@ HUGO_CONTENT_BRANCH="${HUGO_CONTENT_DIR}"
 PATH_SOURCE_REPO="${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}"
 PATH_TARGET_REPO="${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}"
 HUGO_THEME_NAME="${_HUGOTHEME:-hugo-theme-cactus}"
-
-declare -a ARRAY_THEMES_REPO=(
-"https://github.com/calintat/minimal.git"
-"https://github.com/zwbetz-gh/minimal-bootstrap-hugo-theme.git"
-"https://github.com/ribice/kiss.git"
-"https://github.com/vividvilla/ezhil.git"
-"https://github.com/monkeyWzr/hugo-theme-cactus.git"
-"https://github.com/rhazdon/hugo-theme-hello-friend-ng.git"
-"https://github.com/panr/hugo-theme-terminal.git"
-"https://github.com/athul/archie.git"
-"https://github.com/colorchestra/smol"
-)
 
 printf "\n"
 echo "####################################################################"
@@ -136,7 +136,7 @@ copyright = "Chilcano"
 #summaryLength = 2
 
 [params]
-  colortheme = "white"            # dark, light, white, or classic
+  colortheme = "light"            # dark, light, white, or classic
   rss = true                      # generate rss feed. default value is false
   googleAnalyticsAsync = true     # use asynchronous tracking. Synchronous tracking by default
   description = "The Systems Thinking Methodology and IT Security."
@@ -201,8 +201,6 @@ copyright = "Chilcano"
 EOF
 
 printf "==> Pre-loading ${#ARRAY_THEMES_REPO[@]} Hugo Themes. \n"
-
-
 
 for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
   tr_fullname="${tr_url##*/}"
