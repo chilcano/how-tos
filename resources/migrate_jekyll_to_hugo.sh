@@ -98,7 +98,7 @@ rm -rf ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}
 mkdir -p ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}/
 mkdir -p ${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_CONTENT_DIR}/
 
-printf "==> Importing from \n\t  > existing Jekyll repo (${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}) \n\t > to the target GitHub repo (${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}). \n"
+printf "==> Importing from \n\t > existing Jekyll repo (${HOME}/${GH_ROOT_DIR}/${REPONAME_SOURCE_JEKYLL}) \n\t > to the target GitHub repo (${HOME}/${GH_ROOT_DIR}/${REPONAME_TARGET_HUGO}/${HUGO_SCRIPTS_DIR}). \n"
 ## import doesnt work with target paths with dash char in forlder name
 ## Error: abort: target path should not be inside the Jekyll root
 ## https://github.com/gohugoio/hugo/pull/2293
