@@ -43,16 +43,6 @@ printf "==> Deleting older content under '${HUGO_CONTENT_BRANCH}' except CNAME \
 find ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_CONTENT_DIR}/docs/* ! -name 'CNAME' -exec rm -rf {} +
 #git worktree add -B ghp-content ghp-content origin/ghp-content
 
-#printf "==> Forcinf to adding CNAME file in '${HUGO_CONTENT_DIR}/docs/'. \n"
-#cat << EOF > CNAME
-#data-plane.io
-#EOF
-#mv -f CNAME ${HUGO_CONTENT_DIR}/docs/.
-
-# no es necesario
-#printf "==> Pulling latest changes of Hugo content from '${HUGO_CONTENT_BRANCH}' branch. \n"
-#cd ${HUGO_CONTENT_DIR}; git pull; cd ../
-
 printf "==> Regenerating Hugo content in <root>/${HUGO_CONTENT_DIR}/docs dir. \n"
 cd ${GIT_PARENT_DIR}/${GIT_REPO}/${HUGO_SCRIPTS_DIR}; hugo
 

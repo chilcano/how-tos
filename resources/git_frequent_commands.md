@@ -14,13 +14,117 @@ git branch -r
 ```sh
 git branch -a
 ```
+4. Delete branch if you have fully merged
+```sh
+git branch -d <branch>
+```
+5. Delete branch if you have NOT fully merged or if you want ignore or discard modifications
+```sh
+git branch -D <branch>
+```
+6. Renaming the `master` branch to `main`   
+You already can change it from `GitHub > Settings > Branches` automatically, however if you want to do manually, these are the steps:
+```sh
+# create main in the local repo 
+$ git branch -m master main
 
-## Parallelizing branches with worktree
+# create branch in remote repo
+# make sure your current local HEAD branch is still "main" when executing next cmd
+$ git push -u origin main
+
+# remove the old master branch on the remote
+$ git push origin --delete master
+```
+You will have an error because you're going to delete a remote branch whis it's the GitHub default branch for your repository.
+Change it from `GitHub > Settings > Branches` and after that, re-run the above command.
+
+7. What your teammates have to do if you have renamed the branch?  
 
 ```sh
-git worktree add <exitsting-branch> <directory>
-git worktree remove <exitsting-branch>
+# Switch to the "master" branch:
+$ git checkout master
+
+# Rename it to "main":
+$ git branch -m master main
+
+# Get the latest commits (and branches!) from the remote:
+$ git fetch
+
+# Remove the existing tracking connection with "origin/master":
+$ git branch --unset-upstream
+
+# Create a new tracking connection with the new "origin/main" branch:
+$ git branch -u origin/main
+```
+
+## Parallel branches with worktree
+
+1. Create <path> and checkout <commit-ish> into it
+```sh
+git worktree add <path> [<commit-ish>]
+
+// Creates new branch `hotfix` and checks it out at path `../hotfix`.
+git worktree add ../hotfix 
+```
+
+2. Work on an existing branch in a new working tree.
+```sh
+git worktree add <path> <existing-branch>
+```
+
+3. Create a new branch named <new-branch> starting at <commit-ish>, and check out <new-branch> into the new working tree.
+```sh
+git worktree add -B <path> <new-branch>
+```
+
+4. Remove worktree and its associated administrative files
+```sh
+git worktree remove <branch>
+git worktree prune          // run it in the main or any linked working tree to clean up
+```
+
+4. List worktrees
+```sh
 git worktree list
+```
+
+
+## Change existing directory to a new worktree branch
+
+Step 1. Initialize new branch under root repo
+```sh
+## we have to be in the project root
+CURRENT_DIR=${PWD}
+BRANCH_NAME="${1:-code-server-ec2}"
+BRANCH_DIR="${BRANCH_NAME}"
+
+echo "${BRANCH_DIR}" >> .gitignore
+git checkout --orphan ${BRANCH_NAME}
+git reset --hard
+git commit --allow-empty -m "Initializing '${BRANCH_NAME}' branch"
+git push upstream ${BRANCH_NAME}
+git checkout main
+``` 
+
+Step 2. Move all content to new worktree branch
+
+```sh
+# cleaning admin files in root 
+git worktree prune
+rm -rf .git/worktrees/${BRANCH_DIR}/
+# make a copy
+mv ${BRANCH_DIR} ../.
+# ${BRANCH_DIR} can be empty or it shouldn't exist
+git worktree add -B ${BRANCH_NAME} ${BRANCH_DIR} origin/${BRANCH_NAME}
+#git worktree add -B code-server-ec2 code-server-ec2 origin/code-server-ec2
+cp -R ../${BRANCH_DIR}/* ${BRANCH_DIR}/.
+cd ${BRANCH_DIR} && git add --all && git commit -m "All content moved" && cd ..
+git push origin ${BRANCH_NAME}
+#git push origin code-server-ec2
+``` 
+I've created a [script](resources/git_dir_to_worktree.sh) to automate this process and you can use the scrips without download it:
+```sh
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_dir_to_worktree.sh) code-server-ec2
 ```
 
 ## Github Pull Request Guide
