@@ -74,8 +74,8 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/devo
    RUBYOPT=-W0 JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch 
    ```
 11. GIT guides:
+   - [Github - Frequent commands](resources/git_frequent_commands.md)
    - [Github - Persisting credentials](resources/git_auth_guide.md)
-   - [Github - Pull Request](resources/git_pull_request_guide.md)
    - [GitHub's Hub wrapper - Install and configure](resources/git_and_hub_setting_in_linux.sh)
    ```sh
    source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_and_hub_setting_in_linux.sh)
