@@ -2,27 +2,44 @@
 
 ## Working with branches
 
-1. List local branches
+### 1. List local branches
 ```sh
 git branch
 ```
-2. List remote branches
+### 2. List remote branches
 ```sh
 git branch -r
 ```
-3. List local and remote branches
+### 3. List local and remote branches
 ```sh
 git branch -a
 ```
-4. Delete branch if you have fully merged
+### 4. Delete branch 
+
+Local branch and if you have fully merged.
 ```sh
 git branch -d <branch>
 ```
-5. Delete branch if you have NOT fully merged or if you want ignore or discard modifications
+Local branch and if you have NOT fully merged or if you want ignore or discard modifications.
 ```sh
 git branch -D <branch>
 ```
-6. Renaming the `master` branch to `main`   
+Delete remote branch.
+```sh
+git push -u origin <branch>
+git push origin --delete <branch>
+```
+Example:
+```sh
+$ git branch -r
+  origin/code01
+  origin/main
+  origin/simple02
+
+$ git push -u origin simple02
+```
+
+### 5. Renaming the `master` branch to `main`   
 You already can change it from `GitHub > Settings > Branches` automatically, however if you want to do manually, these are the steps:
 ```sh
 # create main in the local repo 
@@ -38,7 +55,7 @@ $ git push origin --delete master
 You will have an error because you're going to delete a remote branch whis it's the GitHub default branch for your repository.
 Change it from `GitHub > Settings > Branches` and after that, re-run the above command.
 
-7. What your teammates have to do if you have renamed the branch?  
+### 6. What your teammates have to do if you have renamed the branch?  
 
 ```sh
 # Switch to the "master" branch:
