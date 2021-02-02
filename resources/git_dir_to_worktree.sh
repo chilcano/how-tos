@@ -5,7 +5,7 @@
 
 if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]
 then
-    printf "==> Please, enter a valid directory name without '/' or '\' . \n"
+    printf "==> Please, enter a valid directory name without '/' or '\'. \n"
     exit 1;
 fi
 
