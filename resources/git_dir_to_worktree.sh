@@ -2,7 +2,6 @@
 
 # source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_dir_to_worktree.sh) code-server-ec2
 
-
 if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]
 then
     printf "==> Please, enter a valid directory name without '/' or '\'. \n"
