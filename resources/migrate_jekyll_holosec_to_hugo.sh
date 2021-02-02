@@ -126,13 +126,13 @@ rm -rf config.yaml config.yaml.bak config.toml
 cat << EOF > config.toml
 baseURL = "https://${GH_USER}.github.io/${REPONAME_TARGET_HUGO}/"
 languageCode = "en-us"
-title = "HolisticSecurity.io"
+title = "Holistic Security"
 theme = "hugo-theme-cactus"
+publishDir = "../${HUGO_CONTENT_DIR}/docs"
+#copyright = "Roger Carhuatocto"
 #disqusShortname = "username"
 #googleAnalytics = ""
-paginate = 20
-publishDir = "../${HUGO_CONTENT_DIR}/docs"
-copyright = "Chilcano" 
+paginate = 10
 #summaryLength = 2
 
 [params]
@@ -161,7 +161,7 @@ copyright = "Chilcano"
   link = "https://www.linkedin.com/in/chilcano/"
 [[params.social]]
   name = "twitter"
-  link = "chilcano" 
+  ink = "https://twitter.com/chilcano"  
 
 [markup]
   [markup.tableOfContents]
@@ -174,16 +174,16 @@ copyright = "Chilcano"
   name = "Home"
   weight = 1
 [[menu.main]]
-  url = "/about/"
-  name = "About"
-  weight = 2
-[[menu.main]]
   url = "/post/"
   name = "Posts"
-  weight = 3
+  weight = 2
 [[menu.main]]
   url = "/tags"
   name = "Tags"
+  weight = 3
+[[menu.main]]
+  url = "/about/"
+  name = "About"
   weight = 4
 
 [[menu.icon]]
