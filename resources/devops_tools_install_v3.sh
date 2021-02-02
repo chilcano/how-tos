@@ -127,4 +127,8 @@ sudo usermod -aG docker $USER
 DOCKER_VER="$(curl -s --unix-socket /var/run/docker.sock http://latest/version | jq -r -M '.Version')"
 printf ">> Docker ${DOCKER_VER} installed.\n\n"
 
+echo "==> Installing NodeJS, NPM and AWS CDK"
+sudo apt -yqq install nodejs npm
+sudo npm i -g aws-cdk
+
 printf ">> End!! \n\n"
