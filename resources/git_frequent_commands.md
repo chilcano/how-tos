@@ -83,7 +83,7 @@ $ git branch -u origin/main
 ```sh
 git worktree add <path> [<commit-ish>]
 
-// Creates new branch `hotfix` and checks it out at path `../hotfix`.
+# Creates new branch `hotfix` and checks it out at path `../hotfix`.
 git worktree add ../hotfix 
 ```
 
@@ -101,6 +101,10 @@ git worktree add -B <path> <branch> origin/<branch>
 ```sh
 git worktree remove <branch>
 git worktree prune          // run it in the main or any linked working tree to clean up
+
+# additionally remove local and remote branch
+git branch -D <branch>
+git push origin --delete <branch>
 ```
 
 4. List worktrees
