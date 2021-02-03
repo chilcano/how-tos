@@ -26,7 +26,6 @@ git branch -D <branch>
 ```
 Delete remote branch.
 ```sh
-git push -u origin <branch>
 git push origin --delete <branch>
 ```
 Example:
@@ -48,8 +47,7 @@ You already can change it from `GitHub > Settings > Branches` automatically, how
 # create main in the local repo 
 $ git branch -m master main
 
-# create branch in remote repo
-# make sure your current local HEAD branch is still "main" when executing next cmd
+# create branch in remote repo, make sure your current local HEAD branch is still "main" when executing next cmd
 $ git push -u origin main
 
 # remove the old master branch on the remote
