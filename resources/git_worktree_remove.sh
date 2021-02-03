@@ -13,6 +13,6 @@ BRANCH_DIR="${1}"
 # https://askubuntu.com/questions/76808/how-do-i-use-variables-in-a-sed-command
 sed -i '/'"${BRANCH_DIR}"'/d' .gitignore
 
-git worktree remove ${BRANCH_DIR}
+git worktree remove ${BRANCH_DIR} --force
 git branch -D ${BRANCH_DIR} 
 git push origin --delete ${BRANCH_DIR}
