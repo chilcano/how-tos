@@ -79,6 +79,8 @@ $ git branch -u origin/main
 
 ## Worktree
 
+### 1. General
+
 1. Create <path> and checkout <commit-ish> into it
 ```sh
 git worktree add <path> [<commit-ish>]
@@ -108,8 +110,7 @@ git worktree prune          // run it in the main or any linked working tree to 
 git worktree list
 ```
 
-
-### Converting directory to a new worktree branch
+### 2. Converting directory to a new worktree branch
 
 Step 1. Initialize new branch under root repo
 ```sh
@@ -146,6 +147,26 @@ I've created a [script](resources/git_dir_to_worktree.sh) to automate this proce
 ```sh
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_dir_to_worktree.sh) code-server-ec2
 ```
+
+### 3. Creating an empty worktree branch
+
+```sh
+CURRENT_DIR=${PWD}
+BRANCH_NAME="${1:-code-server-ec2}"
+BRANCH_DIR="${BRANCH_NAME}"
+
+echo "${BRANCH_DIR}" >> .gitignore
+
+git checkout --orphan ${BRANCH_NAME}
+git reset --hard
+git commit --allow-empty -m "Initializing branch"
+git push upstream ${BRANCH_NAME}
+git checkout main
+``` 
+
+
+
+
 
 ## Github Pull Request Guide
 
@@ -194,7 +215,6 @@ git branch -d v0.1
 11. END
 
 ## Troubleshooting
-
 
 ### 1. warning: ignoring broken ref refs/remotes/origin/HEAD`
 
