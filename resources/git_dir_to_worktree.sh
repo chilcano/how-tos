@@ -14,6 +14,7 @@ BRANCH_NAME="${1:-code-server-ec2}"
 BRANCH_DIR="${BRANCH_NAME}"
 
 echo "${BRANCH_DIR}" >> .gitignore
+
 git checkout --orphan ${BRANCH_NAME}
 git reset --hard
 git commit --allow-empty -m "Initializing '${BRANCH_NAME}' branch"

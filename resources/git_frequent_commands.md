@@ -39,7 +39,10 @@ $ git branch -r
 $ git push -u origin simple02
 ```
 
-### 5. Renaming the `master` branch to `main`   
+### 5. Renaming branches
+
+#### From `master` branch to `main`
+
 You already can change it from `GitHub > Settings > Branches` automatically, however if you want to do manually, these are the steps:
 ```sh
 # create main in the local repo 
@@ -55,7 +58,7 @@ $ git push origin --delete master
 You will have an error because you're going to delete a remote branch whis it's the GitHub default branch for your repository.
 Change it from `GitHub > Settings > Branches` and after that, re-run the above command.
 
-### 6. What your teammates have to do if you have renamed the branch?  
+#### What your teammates have to do if you have renamed the branch?  
 
 ```sh
 # Switch to the "master" branch:
@@ -74,7 +77,7 @@ $ git branch --unset-upstream
 $ git branch -u origin/main
 ```
 
-## Parallel branches with worktree
+## Worktree
 
 1. Create <path> and checkout <commit-ish> into it
 ```sh
@@ -89,9 +92,9 @@ git worktree add ../hotfix
 git worktree add <path> <existing-branch>
 ```
 
-3. Create a new branch named <new-branch> starting at <commit-ish>, and check out <new-branch> into the new working tree.
+3. Create a branch and checkout it
 ```sh
-git worktree add -B <path> <new-branch>
+git worktree add -B <path> <branch> origin/<branch>
 ```
 
 4. Remove worktree and its associated administrative files
@@ -106,7 +109,7 @@ git worktree list
 ```
 
 
-## Change existing directory to a new worktree branch
+### Converting directory to a new worktree branch
 
 Step 1. Initialize new branch under root repo
 ```sh
@@ -189,3 +192,19 @@ git checkout master
 git branch -d v0.1
 ```
 11. END
+
+## Troubleshooting
+
+
+### 1. warning: ignoring broken ref refs/remotes/origin/HEAD`
+
+* The master (root) branch was removed or renamed.
+* Ref: https://stackoverflow.com/questions/45811971/warning-ignoring-broken-ref-refs-remotes-origin-head
+
+```sh
+$ git symbolic-ref refs/remotes/origin/HEAD
+refs/remotes/origin/old_dev
+
+// Where "new_dev" is a branch name. Replace it with the name of the branch you want HEAD to point to.
+$ git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/new_dev
+```
