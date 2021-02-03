@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_initialize_worktree.sh) newbranch
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_worktree_initialize.sh) newbranch
 
 if [[ -z "$1" ]] || [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]
 then
@@ -8,11 +8,12 @@ then
     exit 1;
 fi
 
-BRANCH_NAME="${1:-newbranch}"
-BRANCH_DIR="${BRANCH_NAME}"
+BRANCH_NAME="${1}"
+BRANCH_DIR="${1}"
 
-####echo "${BRANCH_DIR}" >> .gitignore
-sed -i "$ a ${BRANCH_DIR}" .gitignore
+# echo "${BRANCH_DIR}" >> .gitignore (doesn't work with source <())
+# https://askubuntu.com/questions/76808/how-do-i-use-variables-in-a-sed-command
+sed -i -e '$a'"${BRANCH_DIR}"'' .gitignore
 
 git checkout --orphan ${BRANCH_NAME}
 git reset --hard
