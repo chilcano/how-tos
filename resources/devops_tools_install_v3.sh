@@ -41,7 +41,8 @@ export DEBIAN_FRONTEND=noninteractive
 ARCH="${_ARCH:-amd}"
 
 echo "==> Installing Git, awscli, curl, jq, unzip and software-properties-common (apt-add-repository)"
-sudo apt update
+sudo apt -yqq update
+sudo apt -yqq upgrade
 sudo apt -yqq install git awscli curl jq unzip software-properties-common sudo apt-transport-https
 printf ">> Git, awscli, curl, jq and unzip installed.\n\n"
 
@@ -51,7 +52,7 @@ printf ">> Git, awscli, curl, jq and unzip installed.\n\n"
 #sudo apt install -y ansible
 #printf ">> Ansible installed.\n\n"
 
-echo "==> Installing Java 8, 11 (default) and Oracle Java 11"
+echo "==> Installing Java 8 and 11 (default)"
 sudo apt install -y default-jdk openjdk-8-jdk
 ##sudo add-apt-repository --yes --update ppa:linuxuprising/java
 ##sudo apt install -y oracle-java11-installer-local
@@ -130,5 +131,8 @@ printf ">> Docker ${DOCKER_VER} installed.\n\n"
 echo "==> Installing NodeJS, NPM and AWS CDK"
 sudo apt -yqq install nodejs npm
 sudo npm i -g aws-cdk
+
+echo "==> Installing Python3, Python3-Pip and Dev tools"
+sudo apt install -y python3 python3-pip build-essential libssl-dev libffi-dev python3-dev
 
 printf ">> End!! \n\n"

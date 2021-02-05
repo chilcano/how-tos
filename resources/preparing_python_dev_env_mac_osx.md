@@ -184,7 +184,6 @@ $ source venv-my-sample/bin/activate
 
 ```
 
-
 If your Python project requires a new Python module, you can add it to your current development environment, for example, if your need `request` module, then add it as shown below:
 
 ```bash
