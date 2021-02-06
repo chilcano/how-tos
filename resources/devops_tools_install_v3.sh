@@ -133,6 +133,6 @@ sudo apt -yqq install nodejs npm
 sudo npm i -g aws-cdk
 
 echo "==> Installing Python3, Python3-Pip and Dev tools"
-sudo apt install -y python3 python3-pip build-essential libssl-dev libffi-dev python3-dev
+sudo apt install -y python3 python3-pip build-essential libssl-dev libffi-dev python3-dev python3-venv
 
 printf ">> End!! \n\n"
