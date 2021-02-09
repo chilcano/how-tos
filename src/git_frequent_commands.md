@@ -166,7 +166,7 @@ rm -rf .git/worktrees/${BRANCH_DIR}/
 mv ${BRANCH_DIR} ../.
 # ${BRANCH_DIR} can be empty or it shouldn't exist
 git worktree add -B ${BRANCH_NAME} ${BRANCH_DIR} origin/${BRANCH_NAME}
-#git worktree add -B code-server-ec2 code-server-ec2 origin/code-server-ec2
+#git worktree add -B path branch origin/branch
 cp -R ../${BRANCH_DIR}/* ${BRANCH_DIR}/.
 cd ${BRANCH_DIR} && git add --all && git commit -m "All content moved" && cd ..
 git push origin ${BRANCH_NAME}
