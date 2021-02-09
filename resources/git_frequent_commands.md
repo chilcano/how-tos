@@ -2,30 +2,67 @@
 
 ## Working with branches
 
-### 1. List local branches
-```sh
-git branch
-```
-### 2. List remote branches
-```sh
-git branch -r
-```
-### 3. List local and remote branches
-```sh
-git branch -a
-```
-### 4. Delete branch 
+### 1. List branches
 
-Local branch and if you have fully merged.
 ```sh
+## local branches
+$ git branch
+```
+
+```sh
+## remote branches
+$ git branch -r
+```
+
+```sh
+## local and remote branches
+$ git branch -a
+```
+
+### 2. Create branches
+
+```sh
+## create a branch on local and switch in this branch
+$ git checkout -b <branch>
+
+## create a branch on local but *not* switch in this branch
+$ git branch <branch>
+
+# create branch in remote repo, make sure your current local HEAD branch is still <branch> when executing next cmd
+$ git checkout <branch>
+$ git push -u origin <branch>
+```
+
+### 3. Switch to branches
+
+```sh
+## switch in this branch
+$ git checkout <branch>
+```
+
+### 4. Update your working branch
+
+```sh
+$ git add .
+$ git commit -m "Update branch"
+$ git push origin <branch>
+```
+
+### 5. Delete branch 
+
+
+```sh
+## Local branch and if you have fully merged.
 git branch -d <branch>
 ```
-Local branch and if you have NOT fully merged or if you want ignore or discard modifications.
+
 ```sh
+## Local branch and if you have NOT fully merged or if you want ignore or discard modifications.
 git branch -D <branch>
 ```
-Delete remote branch.
+
 ```sh
+## Delete remote branch.
 git push origin --delete <branch>
 ```
 Example:
@@ -38,7 +75,7 @@ $ git branch -r
 $ git push -u origin simple02
 ```
 
-### 5. Renaming branches
+### 6. Renaming branches
 
 #### From `master` branch to `main`
 
