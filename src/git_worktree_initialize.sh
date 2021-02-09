@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_worktree_initialize.sh) newbranch
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_worktree_initialize.sh) newbranch
 
 if [[ -z "$1" ]] || [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]
 then

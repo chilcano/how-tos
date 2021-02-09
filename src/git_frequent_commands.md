@@ -114,28 +114,16 @@ $ git branch -u origin/main
 
 ## Worktree
 
-### 1. General
+### 1. Create worktree
 
-1. Create <path> and checkout <commit-ish> into it
 ```sh
-git worktree add <path> [<commit-ish>]
-
-# Creates new branch `hotfix` and checks it out at path `../hotfix`.
-git worktree add ../hotfix 
-```
-
-2. Work on an existing branch in a new working tree.
-```sh
-git worktree add <path> <existing-branch>
-```
-
-3. Create a branch and checkout it
-```sh
+## Create a worktree branch and switch to it
 git worktree add -B <path> <branch> origin/<branch>
 ```
 
-4. Remove worktree and its associated administrative files
+### 2. Remove worktree
 ```sh
+## Remove worktree and its associated administrative files
 git worktree remove <branch>
 git worktree prune          // run it in the main or any linked working tree to clean up
 
@@ -144,12 +132,13 @@ git branch -D <branch>
 git push origin --delete <branch>
 ```
 
-4. List worktrees
+### 3. List worktrees
 ```sh
+## List worktrees
 git worktree list
 ```
 
-### 2. Converting directory to a new worktree branch
+### 4. Converting directory to a new worktree branch
 
 #### Step 1. Initialize new branch under root repo
 
@@ -183,9 +172,9 @@ cd ${BRANCH_DIR} && git add --all && git commit -m "All content moved" && cd ..
 git push origin ${BRANCH_NAME}
 #git push origin code-server-ec2
 ``` 
-I've created a [script](resources/git_dir_to_worktree.sh) to automate this process and you can use the scrips without download it:
+I've created a [script](src/git_dir_to_worktree.sh) to automate this process and you can use the scrips without download it:
 ```sh
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_dir_to_worktree.sh) code-server-ec2
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_dir_to_worktree.sh) code-server-ec2
 ```
 
 ### 3. Creating an empty worktree branch

@@ -23,8 +23,8 @@ done
 GITHUB_USERNAME="${_GH_USERNAME:-chilcano}"
 GITHUB_EMAIL="${_GH_EMAIL:-chilcano@intix.info}"
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_and_hub_setting_in_linux.sh)
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_and_hub_setting_in_linux.sh) -u=Chilcano -e=chilcano@intix.info
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_and_hub_setting_in_linux.sh)
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_and_hub_setting_in_linux.sh) -u=Chilcano -e=chilcano@intix.info
 
 printf "\n"
 echo "##########################################################"

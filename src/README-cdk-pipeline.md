@@ -6,7 +6,7 @@
 
 ```sh
 # initialize subdir as worktree to allocate cdk project
-$ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_worktree_initialize.sh) api-lambda-pipeline
+$ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_worktree_initialize.sh) api-lambda-pipeline
 
 $ sed -i -e '$aapi-lambda-pipeline' .gitignore
 

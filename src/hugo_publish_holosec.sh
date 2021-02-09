@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/hugo_publish_holosec.sh)
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_publish_holosec.sh)
 
 # Ref: https://gohugo.io/hosting-and-deployment/hosting-on-github/
 

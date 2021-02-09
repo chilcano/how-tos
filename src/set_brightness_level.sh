@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/set_brightness_level.sh) --screen=DP-1 --level=0.90
+## source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/set_brightness_level.sh) --screen=DP-1 --level=0.90
 ## Ref: https://forum.manjaro.org/t/screen-brightness-resets-to-full-after-every-reboot/19893
 
 ## Screens available:

@@ -44,8 +44,8 @@ NOW1=$(date +"%y%m%d.%H%M%S")
 
 ## ------------------ load caddy.json from cmd, also works in WSL
 sudo caddy start
-curl localhost:2019/load -X POST -H "Content-Type: application/json" -d @/home/rogerc/gitrepos/how-tos/resources/caddy.json
-#curl localhost:2019/load -X POST -H "Content-Type: application/json" -d @/home/pi/gitrepos/how-tos/resources/caddy.json
+curl localhost:2019/load -X POST -H "Content-Type: application/json" -d @/home/rogerc/gitrepos/how-tos/src/caddy.json
+#curl localhost:2019/load -X POST -H "Content-Type: application/json" -d @/home/pi/gitrepos/how-tos/src/caddy.json
 caddy reverse-proxy --from :8443 --to 127.0.0.1:8080
 
 # ------------------ query the config loaded

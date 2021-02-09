@@ -9,7 +9,7 @@ NOW=$(date +"%y%m%d.%H%M%S")
 printf "\n==> Look&Feel and config \n"
 
 echo "> Getting 'settings.json' and copying to '$HOME/.config/Code/User/settings.json'"
-wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/resources/vscode/dot_config/Code/User/settings.json
+wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/src/vscode/dot_config/Code/User/settings.json
 if [ -f "${HOME}/.config/Code/User/settings.json" ]; then
     printf "\t Making a backup of '${HOME}/.config/Code/User/settings.json'\n"
     mv ${HOME}/.config/Code/User/settings.json ${HOME}/.config/Code/User/settings.json.bak.${NOW} 

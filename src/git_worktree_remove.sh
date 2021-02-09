@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_worktree_remove.sh) mybranch
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_worktree_remove.sh) mybranch
 
 if [[ -z "$1" ]] || [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]
 then

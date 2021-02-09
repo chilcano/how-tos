@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/hugo_dpio_create.sh)
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_dpio_create.sh)
 
 printf "\n"
 echo "###############################################################"

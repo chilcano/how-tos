@@ -6,12 +6,12 @@
 1. Install and configure Git CLI and Hub CLI
 ```sh
 # Install git, hub, configure git and authentication, test hub, etc
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/git_and_hub_setting_in_linux.sh) -u=Chilcano -e=chilcano@intix.info
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_and_hub_setting_in_linux.sh) -u=Chilcano -e=chilcano@intix.info
 ```
 2. Hugo CLI
 ```sh
 # Install latest Hugo binary
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/hugo_setting_in_linux.sh | bash
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_setting_in_linux.sh | bash
 ```
 
 ## Steps
@@ -38,9 +38,9 @@ But if you don't want to wait, I've created a bash script, only run below comman
 ```sh
 // Running the script in this way, we will run the bash in the current shell context which allow us to change directory
 // This script also will publish the imported site to GitHub in Hugo format
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh) --help
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh) --ghuser=<github_usr> --source_url=https://github.com/<usr>/<jekyll_repo> --destination=<dir> --theme=<hugo_theme>
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/resources/migrate_jekyll_to_hugo.sh) -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=site01 -t=hugo-theme-cactus
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/migrate_jekyll_to_hugo.sh) --help
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/migrate_jekyll_to_hugo.sh) --ghuser=<github_usr> --source_url=https://github.com/<usr>/<jekyll_repo> --destination=<dir> --theme=<hugo_theme>
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/migrate_jekyll_to_hugo.sh) -u=chilcano -s=https://github.com/chilcano/ghpages-holosec.git -d=site01 -t=hugo-theme-cactus
 
 // Check the Site locally
 hugo server -D --bind=0.0.0.0 --baseURL=http://<your_hugo_ip_address>:1313/
