@@ -26,13 +26,13 @@ git checkout main
 git worktree prune
 rm -rf .git/worktrees/${BRANCH_DIR}/
 # make a copy
-mv ${BRANCH_DIR} ../.
+mv ${BRANCH_DIR} ../${BRANCH_DIR}_backup
 # ${BRANCH_DIR} can be empty or it shouldn't exist
 git worktree add -B ${BRANCH_NAME} ${BRANCH_DIR} origin/${BRANCH_NAME}
 #git worktree add -B code-server-ec2 code-server-ec2 origin/code-server-ec2
 #cp -R ../${BRANCH_DIR}/* ${BRANCH_DIR}/.
 # copy all files, even .gitignore and .npmignore
-cp -R ../${BRANCH_DIR}/. ${BRANCH_DIR}/.
+cp -R ../${BRANCH_DIR}_backup/. ${BRANCH_DIR}/.
 cd ${BRANCH_DIR} && git add --all && git commit -m "All content moved" && cd ..
 git push origin ${BRANCH_NAME}
 #git push origin code-server-ec2

@@ -114,7 +114,8 @@ git worktree list
 
 ### 2. Converting directory to a new worktree branch
 
-Step 1. Initialize new branch under root repo
+#### Step 1. Initialize new branch under root repo
+
 ```sh
 ## we have to be in the project root
 CURRENT_DIR=${PWD}
@@ -129,7 +130,7 @@ git push upstream ${BRANCH_NAME}
 git checkout main
 ``` 
 
-Step 2. Move all content to new worktree branch
+#### Step 2. Move all content to new worktree branch
 
 ```sh
 # cleaning admin files in root 
