@@ -40,10 +40,10 @@ export DEBIAN_FRONTEND=noninteractive
 
 ARCH="${_ARCH:-amd}"
 
-echo "==> Installing Git, awscli, curl, jq, unzip and software-properties-common (apt-add-repository)"
+echo "==> Installing Git, awscli, curl, jq, unzip, software-properties-common and tree"
 sudo apt -yqq update
 sudo apt -yqq upgrade
-sudo apt -yqq install git awscli curl jq unzip software-properties-common sudo apt-transport-https > "/dev/null" 2>&1
+sudo apt -yqq install git awscli curl jq unzip software-properties-common sudo apt-transport-https tree > "/dev/null" 2>&1
 printf ">> Git, awscli, curl, jq and unzip installed.\n\n"
 
 # Disabled installation of Ansible (Ubuntu 20.04 has issues)
