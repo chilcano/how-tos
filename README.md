@@ -22,7 +22,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_too
    ```sh
    wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_install_rpi.sh
    wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_remove_rpi.sh
-   chmod +x code_server_install_rpi.sh code_server_remove_rpi.sh
+   chmod +x code_server_*.sh
    . code_server_install_rpi.sh
    . code_server_remove_rpi.sh
    ```
@@ -30,7 +30,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_too
    ```sh
    wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_install_wsl2.sh
    wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_remove_wsl2.sh
-   chmod +x code_server_install_wsl2.sh code_server_remove_wsl2.sh
+   chmod +x code_server_*.sh
    . code_server_install_wsl2.sh
    . code_server_remove_wsl2.sh
    ```
@@ -38,7 +38,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_too
    ```sh
    wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_install_v3.sh \
             https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_remove_v3.sh
-   chmod +x devops_tools_install_v3.sh devops_tools_remove_v3.sh 
+   chmod +x devops_tools_*.sh  
    . devops_tools_install_v3.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
    ```
 7. Customizing the Ubuntu Prompt  

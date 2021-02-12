@@ -53,7 +53,7 @@ printf ">> Git, awscli, curl, jq and unzip installed.\n\n"
 #printf ">> Ansible installed.\n\n"
 
 echo "==> Installing Java 8 and 11 (default)"
-sudo apt -yqq install default-jdk openjdk-8-jdk
+sudo apt -yqq install default-jdk openjdk-8-jdk > "/dev/null" 2>&1
 ##sudo add-apt-repository --yes --update ppa:linuxuprising/java
 ##sudo apt -yqq install oracle-java11-installer-local
 printf ">> Java installed.\n\n"
@@ -69,7 +69,7 @@ fi
 printf "\n\n"
 
 echo "==> Installing Maven"
-sudo apt -yqq install maven
+sudo apt -yqq install maven > "/dev/null" 2>&1
 printf ">> Maven installed.\n\n"
 
 echo "==> Creating '/etc/profile.d/maven.sh'"
@@ -100,7 +100,7 @@ else
   TF_BUNDLE="terraform_${TF_VER}_linux_${ARCH}64.zip"
 fi
 wget --quiet "https://releases.hashicorp.com/terraform/${TF_VER}/${TF_BUNDLE}"
-unzip "${TF_BUNDLE}"
+unzip -q "${TF_BUNDLE}"
 sudo mv terraform /usr/local/bin/
 rm -rf terraf*
 printf ">> Terraform ${TF_VER} installed.\n\n"
@@ -115,13 +115,13 @@ else
   PACKER_BUNDLE="packer_${PACKER_VER}_linux_${ARCH}64.zip"
 fi
 wget --quiet "https://releases.hashicorp.com/packer/${PACKER_VER}/${PACKER_BUNDLE}"
-unzip "${PACKER_BUNDLE}"
+unzip -q "${PACKER_BUNDLE}"
 sudo mv packer /usr/local/bin/
 rm -rf packer*
 printf ">> Packer installed.\n\n"
 
 echo "==> Installing Docker"
-sudo apt -yqq install docker.io
+sudo apt -yqq install docker.io > "/dev/null" 2>&1
 sudo systemctl enable --now docker
 sudo apt-mark hold docker.io
 sudo usermod -aG docker $USER
@@ -129,10 +129,10 @@ DOCKER_VER="$(curl -s --unix-socket /var/run/docker.sock http://latest/version |
 printf ">> Docker ${DOCKER_VER} installed.\n\n"
 
 echo "==> Installing NodeJS, NPM and AWS CDK"
-sudo apt -yqq install nodejs npm
-sudo npm install --quiet -g aws-cdk
+sudo apt -yqq install nodejs npm > "/dev/null" 2>&1
+sudo npm install --quiet -g aws-cdk > "/dev/null" 2>&1
 
 echo "==> Installing Python3, Python3-Pip and Dev tools"
-sudo apt -yqq install python3 python3-pip build-essential libssl-dev libffi-dev python3-dev python3-venv
+sudo apt -yqq install python3 python3-pip build-essential libssl-dev libffi-dev python3-dev python3-venv > "/dev/null" 2>&1
 
 printf ">> End!! \n\n"
