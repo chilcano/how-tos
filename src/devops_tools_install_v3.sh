@@ -49,13 +49,13 @@ printf ">> Git, awscli, curl, jq and unzip installed.\n\n"
 # Disabled installation of Ansible (Ubuntu 20.04 has issues)
 #echo "==> Installing Ansible"
 #sudo apt-add-repository --yes --update ppa:ansible/ansible
-#sudo apt install -y ansible
+#sudo apt -yqq install ansible
 #printf ">> Ansible installed.\n\n"
 
 echo "==> Installing Java 8 and 11 (default)"
-sudo apt install -y default-jdk openjdk-8-jdk
+sudo apt -yqq install default-jdk openjdk-8-jdk
 ##sudo add-apt-repository --yes --update ppa:linuxuprising/java
-##sudo apt install -y oracle-java11-installer-local
+##sudo apt -yqq install oracle-java11-installer-local
 printf ">> Java installed.\n\n"
 
 echo "==> Selecting Java/Javac 8 as default version and auto-mode"
@@ -130,9 +130,9 @@ printf ">> Docker ${DOCKER_VER} installed.\n\n"
 
 echo "==> Installing NodeJS, NPM and AWS CDK"
 sudo apt -yqq install nodejs npm
-sudo npm i -g aws-cdk
+sudo npm install --quiet -g aws-cdk
 
 echo "==> Installing Python3, Python3-Pip and Dev tools"
-sudo apt install -y python3 python3-pip build-essential libssl-dev libffi-dev python3-dev python3-venv
+sudo apt -yqq install python3 python3-pip build-essential libssl-dev libffi-dev python3-dev python3-venv
 
 printf ">> End!! \n\n"
