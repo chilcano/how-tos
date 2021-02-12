@@ -6,17 +6,15 @@ echo "##########################################################"
 echo "####               Remove DevOps tools v3             ####"
 echo "##########################################################"
 
-sudo apt -yqq remove git awscli curl jq unzip software-properties-common sudo apt-transport-https
+sudo apt -yqq remove git awscli curl jq unzip software-properties-common sudo apt-transport-https  > "/dev/null" 2>&1
 printf ">> Git, awscli, curl, jq and unzip removed.\n\n"
 
-echo "==> Removing Java 8, 11 (default) and Oracle Java 11"
-sudo apt -yqq remove default-jdk openjdk-8-jdk
-##sudo add-apt-repository --yes --update ppa:linuxuprising/java
-##sudo apt install -y oracle-java11-installer-local
+echo "==> Removing Java 8 and 11 (default)"
+sudo apt -yqq remove default-jdk openjdk-8-jdk > "/dev/null" 2>&1
 printf ">> Java removed.\n\n"
 
 echo "==> Removing Maven"
-sudo apt -yqq remove maven
+sudo apt -yqq remove maven > "/dev/null" 2>&1
 printf ">> Maven removed.\n\n"
 
 echo "==> Removing '/etc/profile.d/maven.sh'"

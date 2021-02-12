@@ -2,7 +2,7 @@
 
 printf "==> 1) Install Go, jq, curl, git, unzip \n"
 
-sudo apt install -yqq golang-go curl jq git unzip wget
+sudo apt -yqq install golang-go curl jq git unzip wget > "/dev/null" 2>&1
 
 printf "==> 2) Install Powerline-Go \n"
 

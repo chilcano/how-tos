@@ -86,7 +86,7 @@ sudo chown -R root:root maven.sh
 sudo chmod +x maven.sh
 sudo mv maven.sh /etc/profile.d/maven.sh
 . /etc/profile.d/maven.sh
-printf ">> Java and Maven configured."
+printf ">> Java and Maven configured.\n"
 mvn -version
 printf "\n\n"
 
@@ -103,7 +103,7 @@ wget --quiet "https://releases.hashicorp.com/terraform/${TF_VER}/${TF_BUNDLE}"
 unzip -q "${TF_BUNDLE}"
 sudo mv terraform /usr/local/bin/
 rm -rf terraf*
-printf ">> Terraform ${TF_VER} installed.\n\n"
+printf ">> $(terraform version) installed.\n\n"
 
 echo "==> Installing Packer"
 #PACKER_VER="1.5.5"
