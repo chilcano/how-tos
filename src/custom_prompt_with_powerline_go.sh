@@ -8,7 +8,7 @@ printf "==> 2) Install Powerline-Go \n"
 
 go get -u github.com/justjanne/powerline-go
 
-printf "==> 3) Set the Ubuntu prompt configuration (-newline sets prompt in 2 lines) \n"
+printf "==> 3) Set the Ubuntu prompt configuration ('-newline' param sets prompt in 2 lines) \n"
 
 ## The delimiting identifier is quoted to avoid the shell substitutes all variables, commands 
 ## and special characters before passing the here-document lines to the command.
@@ -47,7 +47,8 @@ wget -q $PL_FONTS_URL
 unzip -oq $PL_FONTS_NAME -d $HOME/.fonts/powerline/$PL_FONTS_NAME
 fc-cache -f $HOME/.fonts  
 
-printf "==> 5) Reload the init bash script to apply the new styled Ubuntu prompt  \n"
+printf "==> 5) Reload the init bash script to apply the new styled Ubuntu prompt \n"
 . ~/.bashrc
+printf "\t. ~/.bashrc \n"
 
 printf "==> 6) Installation and configuration completed \n\n"
