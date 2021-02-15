@@ -58,13 +58,22 @@ sudo apt -yqq install default-jdk openjdk-8-jdk > "/dev/null" 2>&1
 ##sudo apt -yqq install oracle-java11-installer-local
 printf ">> Java installed.\n\n"
 
-echo "==> Selecting Java/Javac 8 as default version and auto-mode"
+echo "==> Selecting the default Java/Javac version and auto-mode"
 if [[ "$ARCH" = "arm" ]]; then
   sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-openjdk-armhf/jre/bin/java 1200
   sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-8-openjdk-armhf/bin/javac 1200
 else 
-  sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java 1200
-  sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac 1200
+  ## Selecting manually the java version
+  # sudo update-alternatives --config java
+  # sudo update-alternatives --config javac
+
+  ## Java-8
+  #sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java 1200
+  #sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-8-openjdk-amd64/bin/javac 1200
+  
+  ## Java-11
+  sudo update-alternatives --install /usr/bin/java java /usr/lib/jvm/java-11-openjdk-amd64/bin/java 1111
+  sudo update-alternatives --install /usr/bin/javac javac /usr/lib/jvm/java-11-openjdk-amd64/bin/javac 1111
 fi
 printf "\n\n"
 
