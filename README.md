@@ -75,7 +75,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_too
    ```
 11. GIT guides:
    - [Github - Frequent commands](src/git_frequent_commands.md)
-   - [Github - Persisting credentials](src/git_auth_guide.md)
+   - [Github - Authentication](src/git_auth_guide.md)
    - [GitHub's Hub wrapper - Install and configure](src/git_and_hub_setting_in_linux.sh)
    ```sh
    source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_and_hub_setting_in_linux.sh)

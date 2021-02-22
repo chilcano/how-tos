@@ -1,27 +1,32 @@
 ## Managing authentication in Github
 
-### Persisting GitHub credentials
+
+### GitHub Authentication
 
 ```sh
+# 
 $ git config --global user.email "chilcano@intix.info"
 $ git config --global user.name "Chilcano"
 
 // Save the credentials permanently
 $ git config --global credential.helper store
 
-// Save the credentials for a session
+// Save the credentials for a session  
 $ git config --global credential.helper cache
 
 // Also set a timeout for the above setting
 $ git config --global credential.helper 'cache --timeout=600'
 ```
 
-### Enabling 2FA and Personal Access Token
+__Enabling 2FA and Personal Access Token__
 
 1. Accessing GitHub using two-factor authentication:  
 https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/accessing-github-using-two-factor-authentication
 2. Creating a personal access token:  
 https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token
+
+> Only introduce the Personal Access Token you generated instead to enter your GitHub password when prompting during commiting your changes.
+
 
 ### Working with HUB
 
@@ -40,7 +45,8 @@ __HTTPS instead of git protocol__
   This will affect clone, fork, remote add and other hub commands that expand shorthand references to GitHub repo URLs.
 
 
-# indicate that you prefer HTTPS to SSH git clone URLs
+# Indicate that you prefer HTTPS to SSH git clone URLs
+
 __Avoid error  when creating repo with hub__  
 
   git@github.com: Permission denied (publickey).
