@@ -46,6 +46,10 @@ printf ">> Java and Maven configured.\n"
 mvn -version
 printf "\n\n"
 
+echo "==> Installing Golang"
+sudo apt -yqq install golang > "/dev/null" 2>&1
+printf ">> Golang ($(go version)) installed.\n\n"
+
 echo "==> Installing Terraform"
 TF_VER_LATEST=$(curl -s https://checkpoint-api.hashicorp.com/v1/check/terraform | jq -r -M '.current_version')
 TF_BUNDLE="terraform_${TF_VER_LATEST}_linux_${ARCH}64.zip"
