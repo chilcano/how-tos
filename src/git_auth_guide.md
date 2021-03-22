@@ -4,7 +4,6 @@
 ### GitHub Authentication
 
 ```sh
-# 
 $ git config --global user.email "chilcano@intix.info"
 $ git config --global user.name "Chilcano"
 
@@ -26,6 +25,16 @@ https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/
 https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token
 
 > Only introduce the Personal Access Token you generated instead to enter your GitHub password when prompting during commiting your changes.
+
+__Troubleshooting__   
+
+1. protocol 'https' is not supported   
+
+```sh
+$ git clone https://github.com/chilcano/how-tos
+Cloning into 'how-tos'...
+fatal: protocol 'https' is not supported
+```
 
 
 ### Working with HUB
