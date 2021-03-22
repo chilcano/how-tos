@@ -131,4 +131,5 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_too
 ```sh
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/set_brightness_level.sh) --screen=DP-1 --level=0.90
 ```
-26. [Take screenshots silently in Ubuntu](src/silent_screenshooter.md)
+26. [Screenshot and Screen Annotation Tools](src/screen_tools.md)
+[Take screenshots silently in Ubuntu](src/silent_screenshooter.md)
