@@ -30,12 +30,12 @@ __Troubleshooting__
 
 1. protocol 'https' is not supported   
 
-```sh
-$ git clone https://github.com/chilcano/how-tos
-Cloning into 'how-tos'...
-fatal: protocol 'https' is not supported
-```
-
+   ```sh
+   $ git clone https://github.com/chilcano/how-tos
+   Cloning into 'how-tos'...
+   fatal: protocol 'https' is not supported
+   ```
+   * Ref: https://stackoverflow.com/questions/53988638/git-fatal-protocol-https-is-not-supported
 
 ### Working with HUB
 
