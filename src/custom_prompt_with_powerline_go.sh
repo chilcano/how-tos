@@ -2,8 +2,8 @@
 
 printf "==> 1) Install Go, jq, curl, git, unzip \n"
 sudo apt -yqq install curl jq git unzip wget fontconfig > "/dev/null" 2>&1
-# sudo apt -yqq install golang-go  # (18.04: go1.10.4, 20.04: go1.13.8)
-sudo snap install go --classic     # (18.04: go1.15.8) 
+sudo apt -yqq install golang-go  # (18.04: go1.10.4, 20.04: go1.13.8)
+# sudo snap install go --classic     # (18.04: go1.15.8) 
 
 printf "==> 2) Install Powerline-Go \n"
 go get -u github.com/justjanne/powerline-go
