@@ -1,4 +1,4 @@
-# Building static website with Jekyll and Hugo and hosted on GiHub Pages
+# Static website with Jekyll and Hugo and hosted on GiHub Pages
 
 ## Guides and scripts
 
