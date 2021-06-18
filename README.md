@@ -34,5 +34,4 @@ Repository with technical indications to install, configure any interesting stuf
 ```sh
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/set_brightness_level.sh) --screen=DP-1 --level=0.90
 ```
-22. [Screenshot and Screen Annotation Tools](src/screen_tools.md)
-23. [Take screenshots silently in Ubuntu](src/silent_screenshooter.md)
+22. [Screenshot and Screen Annotation Tools](src/screen_tools.md) 

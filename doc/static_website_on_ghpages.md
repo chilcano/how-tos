@@ -3,7 +3,7 @@
 ## Guides and scripts
 
 
-### 1. [Install **Jekyll** in Linux](src/jekyll_setting_in_linux.sh). Tested in Ubuntu 18.04, above and Raspbian/Raspberry Pi OS.  
+### 1. [Install Jekyll in Linux](src/jekyll_setting_in_linux.sh). Tested in Ubuntu 18.04, above and Raspbian/Raspberry Pi OS.  
 
 It will install also Ruby, Ruby-dev, build-essential, zlib1g-dev, Gem, Bundler, etc.  
 ```sh
