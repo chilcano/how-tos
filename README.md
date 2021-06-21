@@ -35,3 +35,4 @@ Repository with technical indications to install, configure any interesting stuf
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/set_brightness_level.sh) --screen=DP-1 --level=0.90
 ```
 22. [Screenshot and Screen Annotation Tools](src/screen_tools.md) 
+23. [Regex examples](doc/regex_examples.md)
