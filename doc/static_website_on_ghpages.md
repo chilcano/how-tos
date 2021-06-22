@@ -18,7 +18,7 @@ JEKYLL_ENV=production bundle exec jekyll serve --watch --drafts
 RUBYOPT=-W0 JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch 
 ```
 
-### 2. [Migration of GitHub Page site from Jekyll to Hugo](src/migrate_jekyll_to_hugo.md)  
+### 2. [Migration of GitHub Page site from Jekyll to Hugo](/src/migrate_jekyll_to_hugo.md)  
 
 
 ### 3. Host a site on GitHub Pages and Hugo.  
