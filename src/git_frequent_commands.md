@@ -114,14 +114,58 @@ $ git branch -u origin/main
 
 ## Worktree
 
-### 1. Create worktree
+### 1. Create worktree (or switch to existing worktree)
 
+Create a worktree branch and switch to it
 ```sh
-## Create a worktree branch and switch to it
 git worktree add -B <path> <branch> origin/<branch>
 ```
 
-### 2. Remove worktree
+### 2. Switch to an existing worktree
+
+Clone the repo.
+```sh
+git clone https://github.com/chilcano/aws-cdk-examples
+```
+
+List all branches.
+```sh
+git branch -a
+* main
+  remotes/origin/HEAD -> origin/main
+  remotes/origin/code-server-ec2
+  remotes/origin/main
+  remotes/origin/simple-frontend-backend-ecs
+  remotes/origin/simple-php-ts-ecs
+
+```
+
+List worktree.
+```sh
+git worktree list
+/home/roger/gitrepos/aws-cdk-examples  d593c74 [main]
+```
+
+Switch to worktree branch.
+```sh
+## simple-php-ts-ecs
+git worktree add -B simple-php-ts-ecs simple-php-ts-ecs origin/simple-php-ts-ecs
+
+## simple-frontend-backend-ecs
+git worktree add -B simple-frontend-backend-ecs simple-frontend-backend-ecs origin/simple-frontend-backend-ecs
+
+## code-server-ec2
+git worktree add -B code-server-ec2 code-server-ec2 origin/code-server-ec2
+```
+
+List worktree again.
+```sh
+git worktree list
+/home/roger/gitrepos/aws-cdk-examples                    d593c74 [main]
+/home/roger/gitrepos/aws-cdk-examples/simple-php-ts-ecs  6c18906 [simple-php-ts-ecs]
+```
+
+### 3. Remove worktree
 ```sh
 ## Remove worktree and its associated administrative files
 git worktree remove <branch>
@@ -132,13 +176,13 @@ git branch -D <branch>
 git push origin --delete <branch>
 ```
 
-### 3. List worktrees
+### 4. List worktrees
 ```sh
 ## List worktrees
 git worktree list
 ```
 
-### 4. Converting directory to a new worktree branch
+### 5. Converting directory to a new worktree branch
 
 #### Step 1. Initialize new branch under root repo
 
