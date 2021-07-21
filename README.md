@@ -36,10 +36,7 @@ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/s
 ```
 22. [Screenshot and Screen Annotation Tools](src/screen_tools.md) 
 23. [Regex examples](doc/regex_examples.md)
-24. [Generate and import SSH Pub Key to all AWS Regions](src/import_ssh_pub_key_to_aws_regions.sh)
-```sh
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/import_ssh_pub_key_to_aws_regions.sh)
-```
+24. [Generate and import SSH Pub Key to all AWS Regions](doc/import_ssh_keys_to_aws_regions.md)
 25. [Setup Python in WSL with Ubuntu 20.04](src/setup_python_env_in_wsl.sh)
 ```sh
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/setup_python_env_in_wsl.sh)
