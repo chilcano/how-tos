@@ -18,10 +18,11 @@ chmod 0600 ${HOME}/.ssh/${SSH_KEY_NAME}.pub
 # AWS CLI v2.x is needed
 ALL_AWS_PROFILES="$(aws configure list-profiles)"
 echo "=> AWS Named Profiles found: ${ALL_AWS_PROFILES}" | tr '\n' ' ' 
-echo "-"
 
 for profile in ${ALL_AWS_PROFILES}; do
+  printf "\n\n"
   echo "=> Using '${profile}' AWS Named Profile."
+  printf "\n\n"
   PROFILE_PARAM="--profile ${profile}"
   # Get all regions
   ALL_AWS_REGIONS="$(aws ec2 describe-regions --query 'Regions[*].RegionName' --output text ${PROFILE_PARAM})"
@@ -45,7 +46,7 @@ for profile in ${ALL_AWS_PROFILES}; do
       ${PROFILE_PARAM}
   done
 done
-
+printf "\n\n"
 echo "=> SSH Pub Key was imported successfully to all AWS Regions in all AWS Profiles configured."
 echo "=> Now, you can use this command to get remote access:"
 echo "   ssh ubuntu@\$(terraform output -json node_ips | jq -r '.[0]') -i ~/.ssh/${SSH_KEY_NAME}"
