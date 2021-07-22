@@ -10,7 +10,7 @@ SSH_KEY_NAME="tmpkey"
 
 if [ -z ${AWS_PROFILE+x} ]; then 
   echo "=> AWS_PROFILE is unset" 
-  if [ -z ${AWS_ACCESS_KEY_ID+x} || -z ${AWS_SECRET_ACCESS_KEY+x} || -z ${AWS_DEFAULT_REGION+x} ]; then 
+  if [[ -z ${AWS_ACCESS_KEY_ID+x} || -z ${AWS_SECRET_ACCESS_KEY+x} || -z ${AWS_DEFAULT_REGION+x} ]]; then 
     echo "=> AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY or AWS_DEFAULT_REGION are unset." 
     # It will use all aws profiles
     # AWS CLI v2.x is needed
