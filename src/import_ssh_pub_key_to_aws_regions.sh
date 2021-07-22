@@ -1,6 +1,6 @@
 #!/bin/bash
 
-## export AWS_PROFILE=es
+## AWS_PROFILE
 ## AWS_ACCESS_KEY_ID
 ## AWS_SECRET_ACCESS_KEY
 ## AWS_DEFAULT_REGION
@@ -91,9 +91,6 @@ gen_and_upload_ssh_keys_by_envvars(){
   ssh-keygen -b 2048 -f ${HOME}/.ssh/${SSH_KEY_NAME} -t rsa -q -N ""
   SSH_PUB_KEY="${HOME}/.ssh/${SSH_KEY_NAME}.pub"
   chmod 0600 ${HOME}/.ssh/${SSH_KEY_NAME}.pub
-
-  # AWS Profiles to be used
-  echo "=> AWS_XYZ env vars will be used." 
 
   # Make sure to remove blank space after '\'
   for region in ${ALL_AWS_REGIONS}; do
