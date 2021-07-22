@@ -11,18 +11,21 @@ SSH_KEY_NAME="tmpkey"
 if [ -z ${AWS_PROFILE+x} ]; then 
   echo "=> AWS_PROFILE is unset" 
   if [[ -z ${AWS_ACCESS_KEY_ID+x} || -z ${AWS_SECRET_ACCESS_KEY+x} || -z ${AWS_DEFAULT_REGION+x} ]]; then 
-    echo "=> AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY or AWS_DEFAULT_REGION are unset." 
+    echo "=> AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY or AWS_DEFAULT_REGION are unset."
+    printf "\n" 
     # It will use all aws profiles
     # AWS CLI v2.x is needed
     AWS_PROFILES="$(aws configure list-profiles)"
     gen_and_upload_ssh_keys_by_profile
   else 
     echo "=> AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY or AWS_DEFAULT_REGION have been defined."
+    printf "\n"
     # It will use the defined AWS_XYZ env vars
     gen_and_upload_ssh_keys_by_envvars
   fi
 else 
   echo "=> AWS_PROFILE is set to '$AWS_PROFILE'"
+  printf "\n"
   # It will use the AWS_PROFILE env var
   AWS_PROFILES="${AWS_PROFILE}"
   gen_and_upload_ssh_keys_by_profile
@@ -88,6 +91,9 @@ gen_and_upload_ssh_keys_by_envvars(){
   ssh-keygen -b 2048 -f ${HOME}/.ssh/${SSH_KEY_NAME} -t rsa -q -N ""
   SSH_PUB_KEY="${HOME}/.ssh/${SSH_KEY_NAME}.pub"
   chmod 0600 ${HOME}/.ssh/${SSH_KEY_NAME}.pub
+
+  # AWS Profiles to be used
+  echo "=> AWS_XYZ env vars will be used." 
 
   # Make sure to remove blank space after '\'
   for region in ${ALL_AWS_REGIONS}; do
