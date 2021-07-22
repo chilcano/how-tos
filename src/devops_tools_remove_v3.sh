@@ -9,6 +9,13 @@ echo "##########################################################"
 sudo apt -yqq remove git awscli curl jq unzip software-properties-common sudo apt-transport-https  > "/dev/null" 2>&1
 printf ">> Git, awscli, curl, jq and unzip removed.\n\n"
 
+echo "==> Removing AWS CLI 2.x installed manually"
+awscli_path_to_bin=$(which aws)
+sudo rm ${awscli_path_to_bin}
+sudo rm ${awscli_path_to_bin}_completer
+sudo rm -rf /usr/local/aws-cli
+printf ">> AWS CLI v2.x removed.\n\n"
+
 echo "==> Removing Java 8 and 11 (default)"
 sudo apt -yqq remove default-jdk openjdk-8-jdk > "/dev/null" 2>&1
 printf ">> Java removed.\n\n"

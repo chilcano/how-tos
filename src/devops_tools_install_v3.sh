@@ -40,11 +40,18 @@ export DEBIAN_FRONTEND=noninteractive
 
 ARCH="${_ARCH:-amd}"
 
-echo "==> Installing Git, awscli, curl, jq, unzip, software-properties-common and tree"
+echo "==> Installing Git, curl, jq, unzip, software-properties-common and tree"
 sudo apt -yqq update
 sudo apt -yqq upgrade
-sudo apt -yqq install git awscli curl jq unzip software-properties-common sudo apt-transport-https tree > "/dev/null" 2>&1
-printf ">> Git, awscli, curl, jq and unzip installed.\n\n"
+sudo apt -yqq install git curl jq unzip software-properties-common sudo apt-transport-https tree > "/dev/null" 2>&1
+printf ">> Git, curl, jq and unzip installed.\n\n"
+
+echo "==> Installing AWS CLI v2.x"
+curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+rm -rf awscliv2.zip ./aws
+printf ">> '$(aws --version)' installed.\n\n"
 
 # Disabled installation of Ansible (Ubuntu 20.04 has issues)
 #echo "==> Installing Ansible"
