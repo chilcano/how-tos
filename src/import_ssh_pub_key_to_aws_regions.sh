@@ -17,7 +17,8 @@ chmod 0600 ${HOME}/.ssh/${SSH_KEY_NAME}.pub
 # Get list of configured profiles
 # AWS CLI v2.x is needed
 ALL_AWS_PROFILES="$(aws configure list-profiles)"
-echo "=> AWS Named Profiles found: ${ALL_AWS_PROFILES}"
+echo "=> AWS Named Profiles found: ${ALL_AWS_PROFILES}" | tr '\n' ' ' 
+echo "-"
 
 for profile in ${ALL_AWS_PROFILES}; do
   echo "=> Using '${profile}' AWS Named Profile."
@@ -28,18 +29,19 @@ for profile in ${ALL_AWS_PROFILES}; do
   # Make sure to remove blank space after '\'
   for region in ${ALL_AWS_REGIONS}; do
     # Removing previous imported ssh pub keys
-    echo "--> Deleting imported SSH Pub Key in '$region' region."
+    echo " --> Deleting imported SSH Pub Key in '$region' region."
     aws ec2 delete-key-pair \
       --key-name ${SSH_KEY_NAME} \
       --region $region \
       ${PROFILE_PARAM}
 
-    echo "--> Importing SSH Pub Key in '$region' region."
+    echo " --> Importing SSH Pub Key in '$region' region."
     # Importing new generated ssh pub keys
     aws ec2 import-key-pair \
       --key-name ${SSH_KEY_NAME} \
       --public-key-material fileb://${SSH_PUB_KEY} \
       --region $region \
+      --output text \
       ${PROFILE_PARAM}
   done
 done
