@@ -11,7 +11,6 @@
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_install_v1.sh | bash
 ```  
 
-
 2. [Install](../src/code_server_install.sh) and [remove](../src/code_server_remove.sh) **Code-Server** in Ubuntu (amd64).
 
 ```sh
@@ -41,7 +40,7 @@ chmod +x code_server_*.sh
 . code_server_remove_wsl2.sh
 ```
 
-5. [Install](../src/devops_tools_install_v3.sh) and [remove](../src/devops_tools_remove_v2.sh) DevOps tools v3. It works in Ubuntu (amd64), Raspberry Pi (arm) and WSL2 (Ubuntu/amd64).
+5. [Install](../src/devops_tools_install_v3.sh) and [remove](../src/devops_tools_remove_v3.sh) DevOps tools v3. It works in Ubuntu (amd64), Raspberry Pi (arm) and WSL2 (Ubuntu/amd64).
 
 ```sh
 wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_install_v3.sh \
