@@ -33,7 +33,7 @@ fi
 
 #####################################################
 
-gen_and_upload_ssh_keys_by_profile(){
+function gen_and_upload_ssh_keys_by_profile(){
   PROFILE_PARAM=""
   # Remove generated previous ssh keys under HOME
   rm -rf ${HOME}/.ssh/${SSH_KEY_NAME}*
@@ -83,7 +83,7 @@ gen_and_upload_ssh_keys_by_profile(){
 
 #####################################################
 
-gen_and_upload_ssh_keys_by_envvars(){
+function gen_and_upload_ssh_keys_by_envvars(){
   # Remove generated previous ssh keys under HOME
   rm -rf ${HOME}/.ssh/${SSH_KEY_NAME}*
 
