@@ -6,8 +6,9 @@ echo "##########################################################"
 echo "####               Remove DevOps tools v3             ####"
 echo "##########################################################"
 
-sudo apt -yqq remove git awscli curl jq unzip software-properties-common sudo apt-transport-https  > "/dev/null" 2>&1
-printf ">> Git, awscli, curl, jq and unzip removed.\n\n"
+sudo apt -yqq remove awscli curl jq unzip software-properties-common sudo apt-transport-https  > "/dev/null" 2>&1
+printf ">> Git will not be removed.\n"
+printf ">> awscli, curl, jq and unzip removed.\n\n"
 
 echo "==> Removing AWS CLI 2.x installed manually"
 awscli_path_to_bin=$(which aws)
@@ -26,7 +27,7 @@ printf ">> Maven removed.\n\n"
 
 echo "==> Removing '/etc/profile.d/maven.sh'"
 sudo rm /etc/profile.d/maven.sh
-printf ">> Completed. n\n"
+printf ">> Completed. \n\n"
 
 echo "==> Removing Terraform"
 sudo rm /usr/local/bin/terraform

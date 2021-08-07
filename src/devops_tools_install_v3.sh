@@ -48,7 +48,7 @@ printf ">> Git, curl, jq and unzip installed.\n\n"
 
 echo "==> Installing AWS CLI v2.x"
 curl -s "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
+unzip -q awscliv2.zip
 sudo ./aws/install
 rm -rf awscliv2.zip ./aws
 printf ">> '$(aws --version)' installed.\n\n"
