@@ -52,6 +52,8 @@ function gen_and_upload_ssh_keys_by_profile(){
   printf "\n"
   echo "=> SSH Pub Key was imported successfully to all AWS Regions in all AWS Profiles configured."
   echo "=> Now, you can use this command to get remote access:"
+  echo "   ssh ubuntu@<IP_ADDRESS> -i ~/.ssh/${SSH_KEY_NAME}"
+  echo "   ssh ubuntu@<FQDN> -i ~/.ssh/${SSH_KEY_NAME}"
   echo "   ssh ubuntu@\$(terraform output -json node_ips | jq -r '.[0]') -i ~/.ssh/${SSH_KEY_NAME}"
   echo "   ssh ubuntu@\$(terraform output node_fqdn) -i ~/.ssh/${SSH_KEY_NAME}"  
 }
@@ -87,6 +89,8 @@ function gen_and_upload_ssh_keys_by_envvars(){
   printf "\n"
   echo "=> SSH Pub Key was imported successfully to all AWS Regions in all AWS Profiles configured."
   echo "=> Now, you can use this command to get remote access:"
+  echo "   ssh ubuntu@<IP_ADDRESS> -i ~/.ssh/${SSH_KEY_NAME}"
+  echo "   ssh ubuntu@<FQDN> -i ~/.ssh/${SSH_KEY_NAME}"
   echo "   ssh ubuntu@\$(terraform output -json node_ips | jq -r '.[0]') -i ~/.ssh/${SSH_KEY_NAME}"
   echo "   ssh ubuntu@\$(terraform output node_fqdn) -i ~/.ssh/${SSH_KEY_NAME}"  
 }
