@@ -1,0 +1,687 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<summaryreport xmlns="https://www.veracode.com/schema/reports/export/1.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" account_id="71203" analysis_id="14332803" any_type_scan_due="2022-09-29 16:58:52 UTC" app_id="952815" app_name="TestApp01" assurance_level="5" build_id="14359538" business_criticality="5" business_owner="Roger C" business_unit="Acme UK" first_build_submitted_date="2021-07-02 13:06:30 UTC" flaws_not_mitigated="8" generation_date="2021-09-30 07:47:25 UTC" grace_period_expired="false" is_latest_build="false" last_update_time="2021-09-29 16:58:59 UTC" legacy_scan_engine="false" life_cycle_stage="Not Specified" planned_deployment_date="2020-10-23 12:14:27 UTC" platform="Not Specified" policy_compliance_status="Pass" policy_name="Acme Secure Development Policy" policy_rules_status="Did Not Pass" policy_version="5" report_format_version="1.3" sandbox_id="2622445" sandbox_name="DEV_CI" scan_overdue="false" static_analysis_unit_id="14348461" submitter="Roger C" tags="" teams="CI266564282_BUKSmartAnswersAWSOffering.smartans" total_flaws="8" veracode_level="VL1" version="BuildID_110_210929_1651" xsi:schemaLocation="https://www.veracode.com/schema/reports/export/1.0 https://analysiscenter.veracode.com/resource/summaryreport.xsd">
+    <static-analysis analysis_size_bytes="500966" engine_version="20210924124846" published_date="2021-09-29 16:58:52 UTC" rating="D" score="87" submitted_date="2021-09-29 16:55:35 UTC" version="BuildID_110_210929_1651">
+        <modules>
+            <module architecture="Python" compiler="Python" loc="13054" name="Python files within python-app-pkg.zip" numflawssev0="0" numflawssev1="0" numflawssev2="1" numflawssev3="5" numflawssev4="0" numflawssev5="2" os="" score="87"/>
+            <module architecture="JAVASCRIPT" compiler="JAVASCRIPT_5_1" loc="1466" name="JS files within python-app-pkg.zip" numflawssev0="0" numflawssev1="0" numflawssev2="0" numflawssev3="0" numflawssev4="0" numflawssev5="0" os="JavaScript" score="100"/>
+        </modules>
+    </static-analysis>
+    <severity level="5">
+        <category categoryname="Code Injection" count="2" severity="Very High"/>
+    </severity>
+    <severity level="4"/>
+    <severity level="3">
+        <category categoryname="Directory Traversal" count="4" severity="Medium"/>
+        <category categoryname="Server Configuration" count="1" severity="Medium"/>
+    </severity>
+    <severity level="2">
+        <category categoryname="Information Leakage" count="1" severity="Low"/>
+    </severity>
+    <severity level="1"/>
+    <severity level="0"/>
+    <flaw-status cannot-reproduce="0" fixed="0" new="0" not_mitigated="8" open="8" reopen="0" sev-1-change="0" sev-2-change="0" sev-3-change="0" sev-4-change="0" sev-5-change="0" total="8"/>
+    <customfields>
+        <customfield name="ITBS" value="CI266564282"/>
+        <customfield name="ITSO" value="CI1464990490"/>
+        <customfield name="Not_In_Use_BU" value="BUK"/>
+        <customfield name="Platform" value="iOS;Android"/>
+        <customfield name="BTBLeadMailId" value="jamie.gascoigne@barclays.com"/>
+        <customfield name="AppClassification" value="IFE;"/>
+        <customfield name="ProgrammingLanguages" value="Python"/>
+        <customfield name="CIType" value="Jenkins"/>
+        <customfield name="Not_In_Use_AutomationAccount" value="sysBUKsmrtansvc"/>
+        <customfield name="OnboardingState" value="1.1"/>
+        <customfield name="BugTool" value="Jira"/>
+        <customfield name="TCID" value="TC14"/>
+        <customfield name="Not_In_Use_TCName" value="Customer Digital and Data"/>
+        <customfield name="HostedEnvironment" value=""/>
+        <customfield name="ApplicationProductID" value=""/>
+        <customfield name="ApplicationCategory" value=""/>
+        <customfield name="OnboardingJIRANumber" value=""/>
+        <customfield name="PrimaryAppClassification" value="IFE"/>
+        <customfield name="Phase 1/2 App" value="Y"/>
+        <customfield name="REI Meeting Completion Date" value=" "/>
+        <customfield name="WebApp" value=""/>
+        <customfield name="SourceCodePath" value=""/>
+    </customfields>
+    <software_composition_analysis components_violated_policy="0" third_party_components="63" violate_policy="false">
+        <vulnerable_components>
+            <component component_affects_policy_compliance="false" component_id="03dec2b1-c018-40be-ace1-15c0960cbfe0" description="" file_name="certifi" library="certifi" library_id="pypi:certifi::2020.6.20:source" max_cvss_score="" sha1="" vendor="" version="2020.6.20" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/certifi"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MPL-2.0.html" mitigation="false" name="Mozilla Public License 2.0" risk_rating="3" spdx_id="MPL-2.0"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="0df22043-7f0c-4c0e-bfc4-94089e2be4e1" description="" file_name="pycountry" library="pycountry" library_id="pypi:pycountry::20.7.3:source" max_cvss_score="" sha1="" vendor="" version="20.7.3" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pycountry"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/LGPL-2.1-only.html" mitigation="false" name="GNU Lesser General Public License v2.1 only" risk_rating="4" spdx_id="LGPL-2.1-only"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="10c3214e-3e3e-4f79-a0f2-d8af11d003d6" description="" file_name="six" library="six" library_id="pypi:six::1.15.0:source" max_cvss_score="" sha1="" vendor="" version="1.15.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/six"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="1357e8df-3fc8-4abd-add4-6220cc3e25df" description="" file_name="stevedore" library="stevedore" library_id="pypi:stevedore::3.2.1:source" max_cvss_score="" sha1="" vendor="" version="3.2.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/stevedore"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="" mitigation="false" name="" risk_rating="" spdx_id=""/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="15ee5037-3783-4b3a-b82d-c9fd85890864" description="" file_name="future" library="future" library_id="pypi:future::0.18.2:source" max_cvss_score="" sha1="" vendor="" version="0.18.2" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/future"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="18dc7037-fdf0-4b74-9ddd-de0e4db0c526" description="" file_name="more_itertools" library="more-itertools" library_id="pypi:more_itertools::8.5.0:source" max_cvss_score="" sha1="" vendor="" version="8.5.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/more_itertools"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="18f77bf4-c182-4f2a-a6d6-945239dd8c1c" description="" file_name="black" library="black" library_id="pypi:black::19.10b0:source" max_cvss_score="" sha1="" vendor="" version="19.10b0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/black"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="1966d477-569a-41c4-9be2-1d78b9cc4a51" description="" file_name="packaging" library="packaging" library_id="pypi:packaging::20.4:source" max_cvss_score="" sha1="" vendor="" version="20.4" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/packaging"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="" mitigation="false" name="" risk_rating="" spdx_id=""/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="1f9a36e6-6f7d-42e4-b879-c75ad1e9b1fc" description="" file_name="regex" library="regex" library_id="pypi:regex::2020.7.14:source" max_cvss_score="" sha1="" vendor="" version="2020.7.14" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/regex"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="" mitigation="false" name="" risk_rating="" spdx_id=""/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="212d1b0b-7046-4f01-b603-44a94d334200" description="" file_name="networkx" library="networkx" library_id="pypi:networkx::2.5:source" max_cvss_score="" sha1="" vendor="" version="2.5" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/networkx"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="" mitigation="false" name="" risk_rating="" spdx_id=""/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="23c3c669-7d9c-4e09-91e2-7b5d9cadbb21" description="" file_name="gitdb" library="gitdb" library_id="pypi:gitdb::4.0.5:source" max_cvss_score="" sha1="" vendor="" version="4.0.5" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/gitdb"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/BSD-3-Clause.html" mitigation="false" name="BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License" risk_rating="2" spdx_id="BSD-3-Clause"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="2727b3f1-9f72-4c3b-ae11-47113cb4aa59" description="" file_name="s3transfer" library="s3transfer" library_id="pypi:s3transfer::0.3.3:source" max_cvss_score="" sha1="" vendor="" version="0.3.3" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/s3transfer"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/Apache-2.0.html" mitigation="false" name="Apache License 2.0" risk_rating="2" spdx_id="Apache-2.0"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="2837cbed-2d9e-40e0-9b4c-5e6c60af8fa7" description="" file_name="pyrsistent" library="pyrsistent" library_id="pypi:pyrsistent::0.16.0:source" max_cvss_score="" sha1="" vendor="" version="0.16.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pyrsistent"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="2b1137f1-90a8-4265-aa60-eacbffc58503" description="" file_name="pbr" library="pbr" library_id="pypi:pbr::5.5.0:source" max_cvss_score="" sha1="" vendor="" version="5.5.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pbr"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="" mitigation="false" name="" risk_rating="" spdx_id=""/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="3a128357-f438-4521-8d8f-525e6a3840a4" description="" file_name="flake8" library="flake8" library_id="pypi:flake8::3.8.3:source" max_cvss_score="" sha1="" vendor="" version="3.8.3" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/flake8"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="3b05c2cc-6767-40f4-9d49-e4b9a1f77a19" description="" file_name="pyflakes" library="pyflakes" library_id="pypi:pyflakes::2.2.0:source" max_cvss_score="" sha1="" vendor="" version="2.2.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pyflakes"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="3bb0a62e-ed79-4647-96e4-82977f3afcbd" description="" file_name="docutils" library="docutils" library_id="pypi:docutils::0.15.2:source" max_cvss_score="" sha1="" vendor="" version="0.15.2" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/docutils"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="" mitigation="false" name="" risk_rating="" spdx_id=""/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="4387c858-6fff-488c-9b12-fa68ead7ead1" description="" file_name="aws_xray_sdk" library="aws-xray-sdk" library_id="pypi:aws_xray_sdk::2.6.0:source" max_cvss_score="" sha1="" vendor="" version="2.6.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/aws_xray_sdk"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/Apache-2.0.html" mitigation="false" name="Apache License 2.0" risk_rating="2" spdx_id="Apache-2.0"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="43ff48d0-0871-4d76-8b88-a78880e5b70c" description="" file_name="pycodestyle" library="pycodestyle" library_id="pypi:pycodestyle::2.6.0:source" max_cvss_score="" sha1="" vendor="" version="2.6.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pycodestyle"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="45f3a7be-4da1-42a6-84c9-6d89e8280f44" description="" file_name="py" library="py" library_id="pypi:py::1.9.0:source" max_cvss_score="" sha1="" vendor="" version="1.9.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/py"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="4ceb5ec5-365a-49af-90bb-cd7fb1b0ce2c" description="" file_name="pytest_mock" library="pytest-mock" library_id="pypi:pytest_mock::3.3.1:source" max_cvss_score="" sha1="" vendor="" version="3.3.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pytest_mock"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="56407f7e-2b2b-4679-be70-656c5be7545a" description="" file_name="wrapt" library="wrapt" library_id="pypi:wrapt::1.12.1:source" max_cvss_score="" sha1="" vendor="" version="1.12.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/wrapt"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/BSD-3-Clause.html" mitigation="false" name="BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License" risk_rating="2" spdx_id="BSD-3-Clause"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="58abc80c-c425-4e7c-8386-9d2d5ab21e4f" description="" file_name="appdirs" library="appdirs" library_id="pypi:appdirs::1.4.4:source" max_cvss_score="" sha1="" vendor="" version="1.4.4" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/appdirs"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="5bd9a72f-d927-44a6-b01b-d8651dd47e39" description="" file_name="safety" library="safety" library_id="pypi:safety::1.9.0:source" max_cvss_score="" sha1="" vendor="" version="1.9.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/safety"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="5e2fb784-b979-4ed4-a7f6-81b9f359fd41" description="" file_name="iniconfig" library="iniconfig" library_id="pypi:iniconfig::1.0.1:source" max_cvss_score="" sha1="" vendor="" version="1.0.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/iniconfig"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="5fd9d4c7-a42d-45d2-bb58-5313366f3a5d" description="" file_name="pyparsing" library="pyparsing" library_id="pypi:pyparsing::2.4.7:source" max_cvss_score="" sha1="" vendor="" version="2.4.7" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pyparsing"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="6212b8c1-03d5-4058-a568-390606f74dfd" description="" file_name="jsonpickle" library="jsonpickle" library_id="pypi:jsonpickle::1.4.1:source" max_cvss_score="" sha1="" vendor="" version="1.4.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/jsonpickle"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="" mitigation="false" name="" risk_rating="" spdx_id=""/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="6511d045-f964-4467-889d-615f71501c2c" description="" file_name="pytest_cov" library="pytest-cov" library_id="pypi:pytest_cov::2.10.1:source" max_cvss_score="" sha1="" vendor="" version="2.10.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pytest_cov"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="65a9d410-ce1b-4112-b5f6-51cbc84340ee" description="" file_name="jmespath" library="jmespath" library_id="pypi:jmespath::0.10.0:source" max_cvss_score="" sha1="" vendor="" version="0.10.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/jmespath"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="66ddc4e9-b13d-4915-8dc8-512867e64ac9" description="" file_name="boto3" library="boto3" library_id="pypi:boto3::1.14.58:source" max_cvss_score="" sha1="" vendor="" version="1.14.58" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/boto3"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/Apache-2.0.html" mitigation="false" name="Apache License 2.0" risk_rating="2" spdx_id="Apache-2.0"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="673fbb95-048e-4a12-95e9-e7253af08366" description="" file_name="junit_xml" library="junit-xml" library_id="pypi:junit_xml::1.9:py2.py3" max_cvss_score="" sha1="" vendor="" version="1.9" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/junit_xml"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="6b5ad4e1-9ae4-4c68-97be-d66943c226a5" description="" file_name="jsonpointer" library="jsonpointer" library_id="pypi:jsonpointer::2.0:source" max_cvss_score="" sha1="" vendor="" version="2.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/jsonpointer"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/BSD-3-Clause.html" mitigation="false" name="BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License" risk_rating="2" spdx_id="BSD-3-Clause"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="703d00ed-b472-4101-89f7-89e30e21f060" description="" file_name="pytest_html" library="pytest-html" library_id="pypi:pytest_html::2.1.1:source" max_cvss_score="" sha1="" vendor="" version="2.1.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pytest_html"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="" mitigation="false" name="" risk_rating="" spdx_id=""/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="70dbc97b-4357-4e12-a5e0-90eec4da81c5" description="" file_name="attrs" library="attrs" library_id="pypi:attrs::20.2.0:source" max_cvss_score="" sha1="" vendor="" version="20.2.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/attrs"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="75bc1144-a0f1-487b-a64f-919e240d623b" description="" file_name="pluggy" library="pluggy" library_id="pypi:pluggy::0.13.1:source" max_cvss_score="" sha1="" vendor="" version="0.13.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pluggy"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="766ab03f-25e1-4109-b7fe-e4a801cfc1e8" description="" file_name="pathspec" library="pathspec" library_id="pypi:pathspec::0.8.0:source" max_cvss_score="" sha1="" vendor="" version="0.8.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pathspec"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MPL-2.0.html" mitigation="false" name="Mozilla Public License 2.0" risk_rating="3" spdx_id="MPL-2.0"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="766eaade-b448-4373-98cd-c5fe2ca0ad01" description="" file_name="aws_sam_translator" library="aws-sam-translator" library_id="pypi:aws_sam_translator::1.26.0:source" max_cvss_score="" sha1="" vendor="" version="1.26.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/aws_sam_translator"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/Apache-2.0.html" mitigation="false" name="Apache License 2.0" risk_rating="2" spdx_id="Apache-2.0"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="7a2c1f0a-1e5b-429e-aa87-4c78e0c3a3a9" description="" file_name="importlib_metadata" library="importlib-metadata" library_id="pypi:importlib_metadata::1.7.0:source" max_cvss_score="" sha1="" vendor="" version="1.7.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/importlib_metadata"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="" mitigation="false" name="" risk_rating="" spdx_id=""/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="8a671c31-62e8-410e-adfe-e324ab30e9e0" description="" file_name="pytz" library="pytz" library_id="pypi:pytz::2020.1:source" max_cvss_score="" sha1="" vendor="" version="2020.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pytz"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="921d7c23-d9ae-4db0-a11a-4392d0be5e20" description="" file_name="decorator" library="decorator" library_id="pypi:decorator::4.4.2:source" max_cvss_score="" sha1="" vendor="" version="4.4.2" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/decorator"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/BSD-3-Clause.html" mitigation="false" name="BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License" risk_rating="2" spdx_id="BSD-3-Clause"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="94227700-c41c-4a27-b3ac-ce3f1a4799ce" description="" file_name="typed_ast" library="typed-ast" library_id="pypi:typed_ast::1.4.1:source" max_cvss_score="" sha1="" vendor="" version="1.4.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/typed_ast"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/Apache-2.0.html" mitigation="false" name="Apache License 2.0" risk_rating="2" spdx_id="Apache-2.0"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="9656b9c3-60c2-4f78-883e-7fc2808df3c7" description="" file_name="zipp" library="zipp" library_id="pypi:zipp::3.1.0:source" max_cvss_score="" sha1="" vendor="" version="3.1.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/zipp"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="" mitigation="false" name="" risk_rating="" spdx_id=""/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="9be4badf-4628-42e7-81e4-03b292921950" description="" file_name="jsonpatch" library="jsonpatch" library_id="pypi:jsonpatch::1.26:source" max_cvss_score="" sha1="" vendor="" version="1.26" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/jsonpatch"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/BSD-3-Clause.html" mitigation="false" name="BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License" risk_rating="2" spdx_id="BSD-3-Clause"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="9d5f0556-2f9c-4b08-90cd-8e392cb72f96" description="" file_name="requests" library="requests" library_id="pypi:requests::2.24.0:source" max_cvss_score="" sha1="" vendor="" version="2.24.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/requests"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/Apache-2.0.html" mitigation="false" name="Apache License 2.0" risk_rating="2" spdx_id="Apache-2.0"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="a20120da-bc39-4363-bca4-a4a9ae722deb" description="" file_name="bandit" library="bandit" library_id="pypi:bandit::1.6.2:source" max_cvss_score="" sha1="" vendor="" version="1.6.2" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/bandit"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="" mitigation="false" name="" risk_rating="" spdx_id=""/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="a8ac1abc-0dd4-446f-994d-4b3ee5905ca4" description="" file_name="chardet" library="chardet" library_id="pypi:chardet::3.0.4:source" max_cvss_score="" sha1="" vendor="" version="3.0.4" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/chardet"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/LGPL-3.0-only.html" mitigation="false" name="GNU Lesser General Public License v3.0 only" risk_rating="4" spdx_id="LGPL-3.0-only"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="a8c52508-4892-486c-a65b-ae5541993d25" description="" file_name="mccabe" library="mccabe" library_id="pypi:mccabe::0.6.1:source" max_cvss_score="" sha1="" vendor="" version="0.6.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/mccabe"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="a924d2ad-f923-4d57-b803-dc90e7b96f15" description="" file_name="pytest_metadata" library="pytest-metadata" library_id="pypi:pytest_metadata::1.10.0:source" max_cvss_score="" sha1="" vendor="" version="1.10.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pytest_metadata"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="" mitigation="false" name="" risk_rating="" spdx_id=""/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="a9c0096e-0602-454e-a2b2-06b8a61f665a" description="" file_name="smmap" library="smmap" library_id="pypi:smmap::3.0.4:source" max_cvss_score="" sha1="" vendor="" version="3.0.4" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/smmap"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/BSD-3-Clause.html" mitigation="false" name="BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License" risk_rating="2" spdx_id="BSD-3-Clause"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="b3f9dee1-a99a-46b3-9c6a-d94988dde122" description="" file_name="gitpython" library="GitPython" library_id="pypi:gitpython::3.1.8:source" max_cvss_score="" sha1="" vendor="" version="3.1.8" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/gitpython"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/BSD-3-Clause.html" mitigation="false" name="BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License" risk_rating="2" spdx_id="BSD-3-Clause"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="b9e7eead-5cc6-493c-a803-889d6ef7f667" description="" file_name="freezegun" library="freezegun" library_id="pypi:freezegun::1.0.0:source" max_cvss_score="" sha1="" vendor="" version="1.0.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/freezegun"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/Apache-2.0.html" mitigation="false" name="Apache License 2.0" risk_rating="2" spdx_id="Apache-2.0"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="bf1c8646-72cb-4851-aa37-a0520d2d2285" description="" file_name="dparse" library="dparse" library_id="pypi:dparse::0.5.1:source" max_cvss_score="" sha1="" vendor="" version="0.5.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/dparse"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="bf60c973-3fac-46bc-b8f9-2485617f4664" description="" file_name="jsonschema" library="jsonschema" library_id="pypi:jsonschema::3.2.0:source" max_cvss_score="" sha1="" vendor="" version="3.2.0" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/jsonschema"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="c633f20f-f46f-475e-b749-82ee70720242" description="" file_name="click" library="click" library_id="pypi:click::7.1.2:source" max_cvss_score="" sha1="" vendor="" version="7.1.2" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/click"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/BSD-3-Clause.html" mitigation="false" name="BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License" risk_rating="2" spdx_id="BSD-3-Clause"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="c6390188-9a15-498f-9d72-9a7f05697313" description="" file_name="pyyaml" library="PyYAML" library_id="pypi:pyyaml::5.3.1:source" max_cvss_score="9.8" sha1="" vendor="" version="5.3.1" vulnerabilities="1">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pyyaml"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities>
+                    <vulnerability cve_id="CVE-2020-14343" cve_summary="pyyaml is vulnerable to arbitrary code execution. The `.yaml` files that are parsed by `FullLoader` uses the unsafe `yaml.load()` by default. This vulnerability exists due to a bypass of the fix for CVE-2020-1747." cvss_score="9.8" cwe_id="" first_found_date="2020-10-27 06:55:09 UTC" mitigation="false" severity="5" severity_desc="Very High" vulnerability_affects_policy_compliance="false"/>
+                </vulnerabilities>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="c7d2d259-f36e-422c-852f-9f8425e41554" description="" file_name="idna" library="idna" library_id="pypi:idna::2.10:source" max_cvss_score="" sha1="" vendor="" version="2.10" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/idna"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/BSD-3-Clause.html" mitigation="false" name="BSD 3-Clause &quot;New&quot; or &quot;Revised&quot; License" risk_rating="2" spdx_id="BSD-3-Clause"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="e27155b7-64ba-417f-9954-d630392e81f7" description="" file_name="cfn_lint" library="cfn-lint" library_id="pypi:cfn_lint::0.35.1:source" max_cvss_score="" sha1="" vendor="" version="0.35.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/cfn_lint"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT-0.html" mitigation="false" name="MIT No Attribution" risk_rating="0" spdx_id="MIT-0"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="e72dfd21-c324-42f2-ad0d-4c384406fe6f" description="" file_name="urllib3" library="urllib3" library_id="pypi:urllib3::1.25.10:source" max_cvss_score="7.5" sha1="" vendor="" version="1.25.10" vulnerabilities="1">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/urllib3"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities>
+                    <vulnerability cve_id="CVE-2021-33503" cve_summary="urllib3 is vulnerable to denial of service. An attacker is able to send a URL containing many `@` characters in the authority component as a parameter or redirected to via an HTTP redirect, causing catastrophic backtracking and a denial of service.&#10;" cvss_score="7.5" cwe_id="" first_found_date="2021-06-02 08:52:38 UTC" mitigation="false" severity="4" severity_desc="High" vulnerability_affects_policy_compliance="false"/>
+                </vulnerabilities>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="f0de7534-3616-4f1d-928f-a6f30f23332e" description="" file_name="coverage" library="coverage" library_id="pypi:coverage::5.2.1:source" max_cvss_score="" sha1="" vendor="" version="5.2.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/coverage"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/Apache-2.0.html" mitigation="false" name="Apache License 2.0" risk_rating="2" spdx_id="Apache-2.0"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="f1c75151-519e-43a2-8096-58ff2125c8c7" description="" file_name="toml" library="toml" library_id="pypi:toml::0.10.1:source" max_cvss_score="" sha1="" vendor="" version="0.10.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/toml"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="f1d339b8-81f5-43db-a1a0-fcccc1f29584" description="" file_name="botocore" library="botocore" library_id="pypi:botocore::1.17.58:source" max_cvss_score="" sha1="" vendor="" version="1.17.58" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/botocore"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/Apache-2.0.html" mitigation="false" name="Apache License 2.0" risk_rating="2" spdx_id="Apache-2.0"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="f8a0d997-628e-4b03-9a55-c957e79d17b5" description="" file_name="python_dateutil" library="python-dateutil" library_id="pypi:python_dateutil::2.8.1:source" max_cvss_score="" sha1="" vendor="" version="2.8.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/python_dateutil"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/Apache-2.0.html" mitigation="false" name="Apache License 2.0" risk_rating="2" spdx_id="Apache-2.0"/>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/BSD-2-Clause.html" mitigation="false" name="BSD 2-Clause &quot;Simplified&quot; License" risk_rating="2" spdx_id="BSD-2-Clause"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+            <component component_affects_policy_compliance="false" component_id="ffe8b2d6-ffa5-403f-ac01-ab99c7af9a63" description="" file_name="pytest" library="pytest" library_id="pypi:pytest::6.0.1:source" max_cvss_score="" sha1="" vendor="" version="6.0.1" vulnerabilities="0">
+                <file_paths>
+                    <file_path value="file7958856551_1632934367412_html/chatbot.3-bot-fulfillment/src/fulfillment/Pipfile.lock/pytest"/>
+                </file_paths>
+                <licenses>
+                    <license license_affects_policy_compliance="false" license_url="https://spdx.org/licenses/MIT.html" mitigation="false" name="MIT License" risk_rating="2" spdx_id="MIT"/>
+                </licenses>
+                <vulnerabilities/>
+                <violated_policy_rules/>
+            </component>
+        </vulnerable_components>
+    </software_composition_analysis>
+</summaryreport>

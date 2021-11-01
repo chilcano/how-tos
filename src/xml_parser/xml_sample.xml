@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<list xmlns="https://holisticsecurity.io/schema/1.0/list">
+    <metadata>
+        <food color="yellow" time="morning">
+            <recipe kind="breakfast" origen="UK" status="available" />
+            <item kind="breakfast1" country="UK">Idly</item>
+            <price>$2.5</price>
+            <calories>553</calories>
+        </food>
+        <food color="orange" time="evening">
+            <recipe kind="breakfast" origen="usa" status="nope" />
+            <item kind="breakfast2" country="USA">Paper Dosa</item>
+            <price>$2.7</price>
+            <calories>700</calories>
+        </food>
+        <food color="blue" time="afternoon">
+            <recipe kind="lunch" origen="india" status="yes" />
+            <item kind="breakfast3" country="INDIA">Upma</item>
+            <price>$3.65</price>
+            <calories>600</calories>
+        </food>
+        <food color="red" time="midnight">
+            <recipe kind="papeo" origen="peru" status="si" />
+            <item kind="breakfast4" country="PERÚ">Bisi Bele Bath</item>
+            <price>$4.50</price>
+            <calories>400</calories>
+        </food>
+        <food color="pink" time="night">
+            <recipe kind="dinner" origen="spain" status="siii" />
+            <item kind="breakfast5" country="SPAIN">Kesari Bath</item>
+            <price>$1.95</price>
+            <calories>950</calories>
+        </food>
+    </metadata>
+</list>

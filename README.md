@@ -41,3 +41,4 @@ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/s
 ```sh
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/setup_python_env_in_wsl.sh)
 ```
+26. [Simple XML Parser in Python](src/xml_parser/)

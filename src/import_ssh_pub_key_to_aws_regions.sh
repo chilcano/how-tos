@@ -23,7 +23,7 @@ function gen_and_upload_ssh_keys_by_profile(){
 
   for profile in ${AWS_PROFILES}; do
     printf "\n"
-    echo "=> Using '${profile}' AWS Named Profile."
+    echo "=> Using '${profile}' as AWS Named Profile."
     printf "\n"
     PROFILE_PARAM="--profile ${profile}"
     # Get all regions
