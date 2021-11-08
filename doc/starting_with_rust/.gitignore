@@ -1,0 +1,13 @@
+# Ignores
+\.DS_Store
+\.classpath
+\.project
+\.settings
+\.metadata/
+Servers/
+target/
+.idea
+.vagrant
+.vscode
+*.deb
+*.exe
