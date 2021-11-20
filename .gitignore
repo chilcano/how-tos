@@ -10,7 +10,3 @@ target/
 .vagrant
 .vscode
 *.deb
-
-## Rust
-*.lock
-

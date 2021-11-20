@@ -1,13 +1,16 @@
-# Ignores
-\.DS_Store
-\.classpath
-\.project
-\.settings
-\.metadata/
-Servers/
+##### Rust
+
+## Ignore binaries (without extension)
+# Ignore all
+*
+# Unignore all with extensions
+!*.*
+# Unignore all dirs
+!*/
+
+# Will have compiled files and executables
+debug/
 target/
-.idea
-.vagrant
-.vscode
-*.deb
-*.exe
+Cargo.lock
+# MSVC Windows builds of rustc generate these, which store debugging info
+*.pdb

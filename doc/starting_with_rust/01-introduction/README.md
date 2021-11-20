@@ -16,7 +16,7 @@
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 // Shorter version
-curl https://sh.rustup.rs -sSf | sh
+curl -sSf https://sh.rustup.rs | sh
 ```
 
 * WSL: 
@@ -26,21 +26,21 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 ### 1.2. Check 
 
-* Reload ENV: . $HOME/.bashrc
-* Version: 
-
+* Reload the Shell: 
 ```sh
-$ rustc -V
+source $HOME/.bashrc
 
-rustup 1.24.3 (ce5817a94 2021-05-31)
-info: This is the version for the rustup toolchain manager, not the rustc compiler.
-info: The currently active `rustc` version is `rustc 1.56.1 (59eed8a2a 2021-11-01)`
+// Or
+source $HOME/.cargo/env
+```
 
+* Version: 
+```sh
 $ rustc -V
 rustc 1.56.1 (59eed8a2a 2021-11-01)
 ```
 
-* Files installed
+* Files installed:
 ```sh
 $ ls -la $HOME/.cargo/bin
 
@@ -64,7 +64,6 @@ drwxr-xr-x  3 rogerc rogerc     4096 Nov  8 19:35 ..
 ### 1.3. Uninstall
 
 * Uninstall: 
-
 ```sh
 $ rustup self uninstall
 ```
@@ -73,8 +72,12 @@ $ rustup self uninstall
 
 ```sh
 $ mkdir 01-hola-mundo; cd 01-hola-mundo
-
-$ code hola.rs
+```
+Create a file `hola.rs` and add it the following content:
+```rust
+fn main(){
+    println!("Hola mundo!!");
+}
 ```
 
 ### 2.1. Compile and execute the binary
