@@ -112,8 +112,10 @@ hola-rust
     └── main.rs
 
 2 directories, 2 files
+```
 
-$ cat hola-rust/Cargo.toml 
+Edit `hola-rust/Cargo.toml` and give it this content:
+```toml
 [package]
 name = "hola-rust"
 version = "0.1.0"
@@ -122,8 +124,10 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+```
 
-$ cat hola-rust/src/main.rs 
+Update `hola-rust/src/main.rs` with this content:
+```rust
 fn main() {
     println!("Hello, world!");
 }
@@ -182,7 +186,7 @@ Hello, world!
 
 ### 3.3. Run
 
-We can remove `target/` and execute the application without running ``build`. The `run` command will build automatically.
+We can remove `target/` and execute the application without running `build`. The `run` command will build automatically.
 ```sh
 $ rm -rf target/
 
@@ -193,8 +197,7 @@ $ cargo run
 Hello, world!
 ```
 
-
-
+### 3.4. Creating 'hola-rust-exe' program with Cargo
 ```sh
 $ cd ../
 

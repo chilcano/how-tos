@@ -8,6 +8,9 @@
 # Unignore all dirs
 !*/
 
+# sub dir
+.git/
+
 # Will have compiled files and executables
 debug/
 target/
