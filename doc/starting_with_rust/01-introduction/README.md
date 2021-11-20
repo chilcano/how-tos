@@ -10,7 +10,12 @@
 ### 1.1. Install
 
 * Linux/Unix: 
-```
+
+```sh
+// Recommended
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+// Shorter version
 curl https://sh.rustup.rs -sSf | sh
 ```
 
