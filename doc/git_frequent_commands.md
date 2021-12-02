@@ -133,8 +133,10 @@ $ git checkout <target-branch>
 
 # merge <source-branch> into <target-branch>
 $ git merge <source-branch>
-``` 
 
+# now, push the changes (you have to be in <target-branch>)
+$ git push
+``` 
 
 ## Using Worktrees
 
