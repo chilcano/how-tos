@@ -31,7 +31,7 @@ $ git branch <branch>
 # switch branch, it makes sure your current local HEAD branch is still <branch> when executing next cmd (push)
 $ git checkout <branch>
 
-# push changes into remote branch (note -u = set-upstream)
+# make sure (git checkout <branch>) you have switched to branch, then push changes into remote branch (note -u = set-upstream)
 $ git push -u origin <branch>
 
 # now you will see local <branch> being upstramed to remote <branch>
@@ -56,7 +56,6 @@ $ git push origin <branch>
 ```
 
 ### 5. Delete branch 
-
 
 ```sh
 ## Local branch and if you have fully merged.
@@ -119,7 +118,25 @@ $ git branch --unset-upstream
 $ git branch -u origin/main
 ```
 
-## Worktree
+### 7. Merging branches
+
+There are 3 options when merging:
+* `--no-ff`: Creates a merge commit even when a fast-forward would be possible.
+* `--squash`: Combines all integrated changes into a single commit, instead of preserving them as individual commits.
+* `--abort`: When a conflict occurs, this option can be used to abort the merge and restore the project's state as it was before starting the merge.
+
+By default is fast-forward and recursive.
+
+```sh
+# switch to target branch
+$ git checkout <target-branch>
+
+# merge <source-branch> into <target-branch>
+$ git merge <source-branch>
+``` 
+
+
+## Using Worktrees
 
 ### 1. Create worktree (or switch to existing worktree)
 
