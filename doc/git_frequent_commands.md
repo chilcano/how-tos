@@ -28,9 +28,16 @@ $ git checkout -b <branch>
 ## create a branch on local but *not* switch in this branch
 $ git branch <branch>
 
-# create branch in remote repo, make sure your current local HEAD branch is still <branch> when executing next cmd
+# switch branch, it makes sure your current local HEAD branch is still <branch> when executing next cmd (push)
 $ git checkout <branch>
+
+# push changes into remote branch (note -u = set-upstream)
 $ git push -u origin <branch>
+
+# now you will see local <branch> being upstramed to remote <branch>
+$ git branch -a
+* my-new-branch
+  remotes/origin/my-new-branch
 ```
 
 ### 3. Switch to branches
