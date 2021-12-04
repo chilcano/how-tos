@@ -42,3 +42,4 @@ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/s
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/setup_python_env_in_wsl.sh)
 ```
 26. [Simple XML Parser in Python](src/xml_parser/)
+27. [Install Code-Server on Headless Raspberry Pi 3B+ with Ubuntu 64bit](src/install_code_server_on_headless_rpi.md)
