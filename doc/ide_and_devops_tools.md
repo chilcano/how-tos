@@ -11,12 +11,24 @@
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_install_v1.sh | bash
 ```  
 
-2. [Install](../src/code_server_install.sh) and [remove](../src/code_server_remove.sh) **Code-Server** in Ubuntu (amd64).
+2. [Install](../src/code_server_install.sh) and [remove](../src/code_server_remove.sh) **Code-Server** in Ubuntu (amd64 and arm64).
 
 ```sh
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_install.sh | bash
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_remove.sh | bash
 ```
+2nd method and installation for Ubuntu OS 64 bits on Raspberry Pi 3 b+:
+```sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_install.sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_remove.sh
+
+sudo apt -y install jq
+
+chmod +x code_server_*.sh
+. code_server_install.sh --arch=arm
+. code_server_remove_rpi.sh
+```
+
 
 3. [Install](../src/code_server_install_rpi.sh) and [remove](../src/code_server_remove_rpi.sh)  **Code-Server** in Raspberry Pi (arm).
 
