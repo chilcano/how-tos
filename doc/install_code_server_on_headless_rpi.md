@@ -166,10 +166,13 @@ echo "10.42.0.159	vscs.ubuntu" | sudo tee -a /etc/hosts
 
 * 2.5. Enter the Code-Server Password generated during the installation process.
 
+Now, you should see this:
+
+![](img/code-server-headless-rpi-ubuntu-64bits-network-connection-03.png)
+
 
 ### Remove Code-Server
 
 ```sh
 . code_server_remove_rpi.sh
-
 ```
