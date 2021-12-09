@@ -9,9 +9,11 @@
 
 ## Install and configure Ubuntu OS in headless RPi 
 
-### 1. Before 1st successful boot:
+### 1. Before 1st successful boot
 
+```sh
 $ touch /media/roger/system-boot/ssh
+```
 
 ### 2. Insert SD Card and boot your RPi
 
@@ -19,7 +21,7 @@ $ touch /media/roger/system-boot/ssh
 
 * 3.1. Connect Raspberry Pi to Laptop with Ethernet.
 
-* 3.2. Go to Settings > Network > Wired 
+* 3.2. Go to Settings > Network > Wired.
 
 ![](img/code-server-headless-rpi-ubuntu-64bits-network-connection-01.png)
 ![](img/code-server-headless-rpi-ubuntu-64bits-network-connection-02.png)
@@ -71,27 +73,41 @@ Host is up (0.00057s latency).
 Nmap done: 256 IP addresses (2 hosts up) scanned in 2.40 seconds
 ```
 
+Run it with `sudo` to get hostnames:
+
+```sh
+$ sudo nmap -sn 10.42.0.0/24
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2021-12-09 17:57 CET
+Nmap scan report for 10.42.0.159
+Host is up (0.00068s latency).
+MAC Address: B8:27:EB:1B:CF:C8 (Raspberry Pi Foundation)
+Nmap scan report for inti (10.42.0.1)
+Host is up.
+Nmap done: 256 IP addresses (2 hosts up) scanned in 9.25 seconds
+```
+
 * 3.6. SSH to Raspberry Pi from the Laptop Terminal: 
 
 ```sh
 $ ssh pi@<ip-of-raspberry-pi>   // Pwd: raspberry
-$ ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
-
+$ ssh ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
 ```
 
 ## Install Code-Server
 
-
 ### 1. Install Code-Server on RPi with Ubuntu 64bits
 
 ```sh
-wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_install.sh
-wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_remove.sh
+$ wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_install.sh
 
-sudo apt -y install jq
+$ wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_remove.sh
 
-chmod +x code_server_*.sh
-. code_server_install.sh --arch=arm
+$ sudo apt -y install jq
+
+$ chmod +x code_server_*.sh
+
+$ . code_server_install.sh --arch=arm
 ```
 
 You will see this:
@@ -151,13 +167,13 @@ Extension 'aws-toolkit-vscode-1.34.0.vsix' was successfully installed.
 
 Open Terminal in Laptop and run this command:
 ```sh
-scp ubuntu@10.42.0.159:/home/ubuntu/.local/share/mkcert/rootCA.pem rootCA.pem
+$ scp ubuntu@10.42.0.159:/home/ubuntu/.local/share/mkcert/rootCA.pem rootCA.pem
 ```
 
 * 2.2. Add RPi IP address to Hosts file in Laptop
 
 ```sh
-echo "10.42.0.159	vscs.ubuntu" | sudo tee -a /etc/hosts
+$ echo "10.42.0.159	vscs.ubuntu" | sudo tee -a /etc/hosts
 ```
 
 * 2.3. Install above Code-Server rootCA into Laptop's browser
@@ -174,5 +190,5 @@ Now, you should see this:
 ### Remove Code-Server
 
 ```sh
-. code_server_remove_rpi.sh
+$ . code_server_remove_rpi.sh
 ```
