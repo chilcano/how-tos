@@ -10,15 +10,17 @@ Open Etcher App and follow the steps.
 
 ### Etcher from Terminal
 
-1. Open Etcher from a Terminal
+1. Open Etcher from a Terminal.  
 ```sh
 $ ./balenaEtcher-1.5.113-x64.AppImage
 ```
-2. If you get errors, install required libs
+
+2. If you get errors, install required libs.  
 ```sh
 $ sudo apt install libgconf-2-4
 ```
-3. Follow the steps in Etcher GUI
+
+3. Follow the steps in Etcher GUI.  
 
 ## 2. Using dd from Terminal
 
@@ -26,6 +28,7 @@ $ sudo apt install libgconf-2-4
 2. Use `lsblk` to find the USB device.
 ```sh
 $ lsblk | grep -vE "loop"
+
 NAME   MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT
 sda      8:0    0 238,5G  0 disk 
 ├─sda1   8:1    0   512M  0 part 
@@ -44,7 +47,7 @@ sdd      8:48   1  58,9G  0 disk
 
 ** Also you can use `sudo fdisk -l` to find the USB.
 
-3. So in our case its `/dev/sdc`.
+3. So in our case it is `/dev/sdc`.
 
 4. Unmount the device. 
 ```sh

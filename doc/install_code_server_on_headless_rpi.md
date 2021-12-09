@@ -9,15 +9,27 @@
 
 ## Install and configure Ubuntu OS in headless RPi 
 
-### 1. Before 1st successful boot
+### 1. Bootstraping OS image in Raspberry Pi
+
+You can use this bash script to bootstrap an OS (Ubuntu, Raspbian, Debian or Raspberry Pi OS) in your Raspberry Pi. 
+The next bash script will enable SSH and WIFI when burning the OS image in your SD card. Only follow the next steps:
 
 ```sh
-$ touch /media/roger/system-boot/ssh
+$ wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_rpi_img.sh
+
+$ chmod +x bootstrap_rpi_img.sh
+
+$ . bootstrap_rpi_img.sh \
+ --if=/media/roger/Transcend/isos-images/rpi/2021-10-30-raspios-bullseye-armhf.zip \
+ --of=/dev/sdc \
+ --ssh=enable \
+ --wifi=enable
 ```
 
 ### 2. Insert SD Card and boot your RPi
 
-### 3. In your Ubuntu Laptop
+
+### 3. RPi connected directly to Ubuntu Laptop
 
 * 3.1. Connect Raspberry Pi to Laptop with Ethernet.
 
@@ -26,9 +38,9 @@ $ touch /media/roger/system-boot/ssh
 ![](img/code-server-headless-rpi-ubuntu-64bits-network-connection-01.png)
 ![](img/code-server-headless-rpi-ubuntu-64bits-network-connection-02.png)
 
-* 3.3. Navigate to IPv4 option and select "Shared to other computers".
+* 3.3. Navigate to `IPv4` option and select `Shared to other computers`.
 
-* 3.4. Open Terminal and type next command ($ ip a s) to get the IP address for the enx<MAC-ADDRESS> Network Interface. Also you can see it in Wired Settings > IPv4. 
+* 3.4. Open Terminal and type next command (`$ ip a s`) to get the IP address for the `enx<MAC-ADDRESS>` Network Interface. Also you can see it in `Wired Settings > IPv4`. 
 
 ```sh
 $ ip a s
@@ -90,7 +102,38 @@ Nmap done: 256 IP addresses (2 hosts up) scanned in 9.25 seconds
 * 3.6. SSH to Raspberry Pi from the Laptop Terminal: 
 
 ```sh
-$ ssh pi@<ip-of-raspberry-pi>   // Pwd: raspberry
+$ ssh pi@<ip-of-raspberry-pi>       // Pwd: raspberry
+$ ssh ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
+```
+
+### 4. RPi connected directly to same Ubuntu Laptop's LAN
+
+* 4.1. Getting the Ubuntu Laptop's IP address.
+
+```sh
+$ hostname -I
+
+192.168.1.152 172.18.0.1 172.17.0.1
+```
+
+* 4.2. Getting the Raspberry Pi IP address using `nmap`.
+
+```sh
+$ sudo nmap -sn 192.168.1.0/24
+
+Starting Nmap 7.80 ( https://nmap.org ) at 2021-12-09 22:56 CET
+Nmap scan report for 192.168.1.160
+Host is up (0.0040s latency).
+MAC Address: B8:27:EB:1B:CF:C8 (Raspberry Pi Foundation)
+Nmap scan report for inti (192.168.1.152)
+Host is up.
+Nmap done: 256 IP addresses (2 hosts up) scanned in 2.46 seconds
+```
+
+* 4.3. SSH to Raspberry Pi from the Laptop Terminal: 
+
+```sh
+$ ssh pi@<ip-of-raspberry-pi>       // Pwd: raspberry
 $ ssh ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
 ```
 

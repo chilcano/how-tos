@@ -8,7 +8,7 @@ while [ $# -gt 0 ]; do
       if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no '=' (3.5.0, 3.4.1, 3.4.0)
       _VSCS_VER="${1#*=}"
       ;;
-    --arch*|-a*)                           
+    --arch*|-a*)
       if [[ "$1" != *=* ]]; then shift; fi # Value is next arg if no `=` (amd, arm)
       _ARCH="${1#*=}"
       ;;
