@@ -1,14 +1,5 @@
 # Code-Server on Headless Raspberry Pi with Ubuntu 64bits
 
-## References
-- https://www.raspberrypi.com/software/
-- https://www.raspberrypi.com/software/operating-systems/
-- https://www.raspberrypi.com/documentation/computers/remote-access.html
-- https://github.com/chilcano/how-tos/blob/main/doc/ide_and_devops_tools.md
-- https://raspberrytips.com/ipad-as-raspberry-pi-monitor/
-- https://hrushi-deshmukh.medium.com/getting-started-with-raspberry-pi-using-command-line-only-18aab667f183
-- https://www.makeuseof.com/tag/install-operating-system-raspberry-pi/
-
 ## Install and configure Ubuntu OS in headless RPi 
 
 ### 1. Bootstraping OS image in Raspberry Pi
@@ -237,3 +228,12 @@ Now, you should see this:
 ```sh
 $ . code_server_remove_rpi.sh
 ```
+
+## References
+- https://www.raspberrypi.com/software/
+- https://www.raspberrypi.com/software/operating-systems/
+- https://www.raspberrypi.com/documentation/computers/remote-access.html
+- https://github.com/chilcano/how-tos/blob/main/doc/ide_and_devops_tools.md
+- https://raspberrytips.com/ipad-as-raspberry-pi-monitor/
+- https://hrushi-deshmukh.medium.com/getting-started-with-raspberry-pi-using-command-line-only-18aab667f183
+- https://www.makeuseof.com/tag/install-operating-system-raspberry-pi/
