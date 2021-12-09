@@ -6,6 +6,7 @@
 - https://www.raspberrypi.com/documentation/computers/remote-access.html
 - https://github.com/chilcano/how-tos/blob/main/doc/ide_and_devops_tools.md
 - https://raspberrytips.com/ipad-as-raspberry-pi-monitor/
+- https://hrushi-deshmukh.medium.com/getting-started-with-raspberry-pi-using-command-line-only-18aab667f183
 
 ## Install and configure Ubuntu OS in headless RPi 
 
