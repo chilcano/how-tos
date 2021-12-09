@@ -7,6 +7,7 @@
 - https://github.com/chilcano/how-tos/blob/main/doc/ide_and_devops_tools.md
 - https://raspberrytips.com/ipad-as-raspberry-pi-monitor/
 - https://hrushi-deshmukh.medium.com/getting-started-with-raspberry-pi-using-command-line-only-18aab667f183
+- https://www.makeuseof.com/tag/install-operating-system-raspberry-pi/
 
 ## Install and configure Ubuntu OS in headless RPi 
 
