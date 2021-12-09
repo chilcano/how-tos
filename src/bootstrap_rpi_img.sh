@@ -28,7 +28,7 @@ while [ $# -gt 0 ]; do
       ;;
     --wifi*|-w*)
       if [[ "$1" != *=* ]]; then shift; fi 
-      _SSID="${1#*=}"
+      _WIFI="${1#*=}"
       ;;
     --help|-h)
       printf "Bootstrap OS Image on Raspberry Pi."
@@ -51,13 +51,19 @@ sd_cards_list=$(lsblk --nodeps -n -o name -I8)
 # sdb
 # sdc
 
-#sudo dd bs=1M if=/path/to/raspberrypi/image of=/dev/sdcardname status=progress conv=fsync
-sudo dd bs=1M if=${_IF} of=${_OF} status=progress conv=fsync
-echo "=> The ${_IF} copied into ${_OF} sucessfully."
+_SSH="enable"
+_WIFI="enable"
+_SSID="test-ssid"
+_PSK="test-pwd"
 
 path_boot_ubu="/media/${USER}/system-boot"
 path_boot_rasp="/media/${USER}/boot"
 path_boot=""
+
+#sudo dd bs=1M if=/path/to/raspberrypi/image of=/dev/sdcardname status=progress conv=fsync
+sudo dd bs=1M if=${_IF} of=${_OF} status=progress conv=fsync
+echo "=> The ${_IF} copied into ${_OF} sucessfully."
+
 
 if [ -d "${path_boot_ubu}" ]; then
     path_boot="${path_boot_ubu}"
@@ -80,7 +86,7 @@ country=ES
 
 network={
     #ssid="<Name of your wireless LAN>"
-    psk="<Password for your wireless LAN>"
+    #psk="<Password for your wireless LAN>"
     ssid="${_SSID}"
     psk="${_PSK}"
 }
