@@ -178,7 +178,7 @@ $ echo "10.42.0.159	vscs.ubuntu" | sudo tee -a /etc/hosts
 
 * 2.3. Install above Code-Server rootCA into Laptop's browser
 
-* 2.4. Open the Code-Server URL `[https://vscs.ubuntu:8443](https://vscs.ubuntu:8443)` in your browser.
+* 2.4. Open the Code-Server URL [`https://vscs.ubuntu:8443`](https://vscs.ubuntu:8443) in your browser.
 
 * 2.5. Enter the Code-Server Password generated during the installation process.
 
