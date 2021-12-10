@@ -199,17 +199,22 @@ Extension 'aws-toolkit-vscode-1.34.0.vsix' was successfully installed.
 
 ### 2. Connect to Code-Server remotely
 
-* 2.1. Copy the certificate from RPi to Laptop
+* 2.1. Copy the certificate from RPi to Laptop.
 
-Open Terminal in Laptop and run this command:
+If you have connected the RPi directly to your Laptop, in your Laptop execute this:
 ```sh
 $ scp ubuntu@10.42.0.159:/home/ubuntu/.local/share/mkcert/rootCA.pem rootCA.pem
 ```
+But if you have connected the RPi to your LAN, then execute this:
+```sh
+$ scp ubuntu@192.168.1.160:/home/ubuntu/.local/share/mkcert/rootCA.pem rootCA.pem
+```
 
-* 2.2. Add RPi IP address to Hosts file in Laptop
+* 2.2. Add RPi IP address to Hosts file in Laptop.
 
 ```sh
 $ echo "10.42.0.159	vscs.ubuntu" | sudo tee -a /etc/hosts
+$ echo "192.168.1.160	vscs.ubuntu" | sudo tee -a /etc/hosts
 ```
 
 * 2.3. Install above Code-Server rootCA into Laptop's browser
