@@ -94,12 +94,13 @@ echo "=> SSH enabled on ${path_boot}/ssh"
 
 # Enable and config WIFI
 cat << EOF > wpa_supplicant.conf
+country=${_COUNTRY}
 ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
 update_config=1
-country=${_COUNTRY}
 network={
   ssid="${_SSID}"
   psk="${_PSK}"
+  key_mgmt=WPA-PSK
 }
 EOF
 mv -f wpa_supplicant.conf ${path_boot}/wpa_supplicant.conf
