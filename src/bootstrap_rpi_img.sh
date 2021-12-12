@@ -95,16 +95,13 @@ echo "=> SSH enabled on ${path_boot}/ssh"
 # Enable and config WIFI
 if [ -d "${path_boot_ubu}" ]; then
   ## Ubuntu
-  cat << EOF > network-config
-  wifis:
-    wlan0:
-      dhcp4: true
-      optional: true
-      access-points:
-        "${_SSID}":
-          password: "${_PSK}"
-  EOF
-  mv -f network-config ${path_boot}/network-config
+  echo "wifis:" | tee -a ${path_boot}/network-config
+  echo "  wlan0:" | tee -a ${path_boot}/network-config
+  echo "    dhcp4: true" | tee -a ${path_boot}/network-config
+  echo "    optional: true" | tee -a ${path_boot}/network-config
+  echo "    access-points:" | tee -a ${path_boot}/network-config
+  echo '      "${_SSID}":' | tee -a ${path_boot}/network-config
+  echo '        password: "${_PSK}"' | tee -a ${path_boot}/network-config
   echo "=> WIFI enabled and configured on ${path_boot}/network-config"
 elif [ -d "${path_boot_rasp}" ]; then
   ## Raspbian, RPi OS
