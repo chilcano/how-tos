@@ -59,8 +59,7 @@ else
   _SSID=$(iwgetid -r)
   echo "=> The same WIFI (${_SSID}) LAN to which it is connected will be used."
   read -s -p "=> Enter the password to connect to WIFI (${_SSID}) LAN: " _PSK
-  echo " "
-  echo "=> Insert 2 letters ISO 3166-1 Country code here (i.e. ES, GB, US, ...): "
+  echo "\n=> Insert 2 letters ISO 3166-1 Country code here (i.e. ES, GB, US, ...): "
   read _COUNTRY
 fi
 
