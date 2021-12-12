@@ -93,21 +93,37 @@ touch ${path_boot}/ssh
 echo "=> SSH enabled on ${path_boot}/ssh"
 
 # Enable and config WIFI
-cat << EOF > wpa_supplicant.conf
-ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-country=${_COUNTRY}
-update_config=1
+if [ -d "${path_boot_ubu}" ]; then
+  ## Ubuntu
+  cat << EOF > network-config
+  wifis:
+    wlan0:
+      dhcp4: true
+      optional: true
+      access-points:
+        "${_SSID}":
+          password: "${_PSK}"
+  EOF
+  mv -f network-config ${path_boot}/network-config
+  echo "=> WIFI enabled and configured on ${path_boot}/network-config"
+elif [ -d "${path_boot_rasp}" ]; then
+  ## Raspbian, RPi OS
+  cat << EOF > wpa_supplicant.conf
+  ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
+  country=${_COUNTRY}
+  update_config=1
 
-network={
-  ssid="${_SSID}"
-  psk="${_PSK}"
-  proto=RSN
-  key_mgmt=WPA-PSK
-  pairwise=CCMP
-  auth_alg=OPEN
-}
-EOF
-mv -f wpa_supplicant.conf ${path_boot}/wpa_supplicant.conf
-echo "=> WIFI enabled and configured on ${path_boot}/wpa_supplicant.conf"
+  network={
+    ssid="${_SSID}"
+    psk="${_PSK}"
+    proto=RSN
+    key_mgmt=WPA-PSK
+    pairwise=CCMP
+    auth_alg=OPEN
+  }
+  EOF
+  mv -f wpa_supplicant.conf ${path_boot}/wpa_supplicant.conf
+  echo "=> WIFI enabled and configured on ${path_boot}/wpa_supplicant.conf"
+fi
 
 echo "=> OS Image has been copied and configured. Now, You can plug your SD to your Raspberry Pi and boot it."
