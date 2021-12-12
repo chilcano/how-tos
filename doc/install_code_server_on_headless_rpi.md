@@ -257,8 +257,7 @@ $ . code_server_remove_rpi.sh
 ```
 
 ## References
-- https://www.raspberrypi.com/software/
-- https://www.raspberrypi.com/software/operating-systems/
+- https://www.raspberrypi.com/documentation/computers/getting-started.html
 - https://www.raspberrypi.com/documentation/computers/remote-access.html
 - https://github.com/chilcano/how-tos/blob/main/doc/ide_and_devops_tools.md
 - https://raspberrytips.com/ipad-as-raspberry-pi-monitor/
