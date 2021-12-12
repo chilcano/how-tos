@@ -66,6 +66,12 @@ path_boot_ubu="/media/${USER}/system-boot"
 path_boot_rasp="/media/${USER}/boot"
 path_boot=""
 
+read -p "\n=> We are ready to burn the Image in your SD Card. Continue? [y/n]" _CONTINUE
+if [ "${_CONTINUE}" != "y" ]; then
+  echo "=> Process cancelled."
+  exit 0
+fi
+
 #sudo dd bs=1M if=/path/to/raspberrypi/image of=/dev/sdcardname status=progress conv=fsync
 sudo dd bs=1M if=${_IF} of=${_OF} status=progress conv=fsync
 echo "=> The ${_IF} copied into ${_OF} sucessfully."
@@ -93,8 +99,7 @@ network={
   psk="${_PSK}"
 }
 EOF
-sudo chown -R root:root wpa_supplicant.conf
-sudo mv -f wpa_supplicant.conf ${path_boot}/wpa_supplicant.conf
+mv -f wpa_supplicant.conf ${path_boot}/wpa_supplicant.conf
 echo "=> WIFI enabled and configured on ${path_boot}/wpa_supplicant.conf"
 
 echo "=> OS Image has been copied and configured. Now, You can plug your SD to your Raspberry Pi and boot it."
