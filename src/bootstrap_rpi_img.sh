@@ -105,21 +105,18 @@ if [ -d "${path_boot_ubu}" ]; then
   echo "=> WIFI enabled and configured on ${path_boot}/network-config"
 elif [ -d "${path_boot_rasp}" ]; then
   ## Raspbian, RPi OS
-  cat << EOF > wpa_supplicant.conf
-  ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev
-  country=${_COUNTRY}
-  update_config=1
-
-  network={
-    ssid="${_SSID}"
-    psk="${_PSK}"
-    proto=RSN
-    key_mgmt=WPA-PSK
-    pairwise=CCMP
-    auth_alg=OPEN
-  }
-  EOF
-  mv -f wpa_supplicant.conf ${path_boot}/wpa_supplicant.conf
+  echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" | tee -a ${path_boot}/wpa_supplicant.conf
+  echo "country=${_COUNTRY}" | tee -a ${path_boot}/wpa_supplicant.conf
+  echo "update_config=1" | tee -a ${path_boot}/wpa_supplicant.conf
+  echo "" | tee -a ${path_boot}/wpa_supplicant.conf
+  echo "network={" | tee -a ${path_boot}/wpa_supplicant.conf
+  echo '  ssid="${_SSID}"' | tee -a ${path_boot}/wpa_supplicant.conf
+  echo '  psk="${_PSK}"' | tee -a ${path_boot}/wpa_supplicant.conf
+  echo "  proto=RSN" | tee -a ${path_boot}/wpa_supplicant.conf
+  echo "  key_mgmt=WPA-PSK" | tee -a ${path_boot}/wpa_supplicant.conf
+  echo "  pairwise=CCMP" | tee -a ${path_boot}/wpa_supplicant.conf
+  echo "  auth_alg=OPEN" | tee -a ${path_boot}/wpa_supplicant.conf
+  echo "}" | tee -a ${path_boot}/wpa_supplicant.conf
   echo "=> WIFI enabled and configured on ${path_boot}/wpa_supplicant.conf"
 fi
 
