@@ -4,14 +4,17 @@
 
 ### 1. Bootstraping OS image in Raspberry Pi
 
-You can use this [bash script to bootstrap an OS](https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_rpi_img.sh) (Ubuntu, Raspbian, Debian or Raspberry Pi OS) in your Raspberry Pi. 
-The next bash script will enable SSH and WIFI when burning the OS image in your SD card. Only follow the next steps:
+You can use this [bash script to bootstrap an OS](https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_rpi_img.sh) (Ubuntu, Raspbian, Debian or Raspberry Pi OS) in your Raspberry Pi. I've downloaded the next Images:
 
+1. `2021-10-30-raspios-bullseye-armhf.zip` - It is Raspberry PI OS image which requires be uncompress to get `2021-10-30-raspios-bullseye-armhf.img`.
+2. `ubuntu-20.04.3-preinstalled-server-arm64+raspi.img.xz` - It is Ubuntu 20.04 image for ARM 64bit architectures which requires be uncompress to get `ubuntu-20.04.3-preinstalled-server-arm64+raspi.img`.
+
+Since I want to install Code-Server in my Raspberry Pi running Ubuntu 64bits, we need to pass that info to bash script,  enable SSH and WIFI when burning the OS image in your SD card:
 ```sh
 $ wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_rpi_img.sh
 $ chmod +x bootstrap_rpi_img.sh
 $ . bootstrap_rpi_img.sh \
- --if=/media/roger/Transcend/isos-images/rpi/2021-10-30-raspios-bullseye-armhf.img \
+ --if=/media/roger/Transcend/isos-images/rpi/ubuntu-20.04.3-preinstalled-server-arm64+raspi.img \
  --of=/dev/sdc \
  --wifi=enable
 ```
@@ -19,7 +22,7 @@ $ . bootstrap_rpi_img.sh \
 Or this single command:
 ```sh
 $ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_rpi_img.sh) \
- --if=/media/roger/Transcend/isos-images/rpi/2021-10-30-raspios-bullseye-armhf.img \
+ --if=/media/roger/Transcend/isos-images/rpi/ubuntu-20.04.3-preinstalled-server-arm64+raspi.img \
  --of=/dev/sdc \
  --wifi=enable
 ```
