@@ -76,12 +76,21 @@ $ ip a s
        valid_lft forever preferred_lft forever
 ```
 
-* 3.5. With that IP address (enx8cae4cf9014c with 10.42.0.1/24), run the next command to scan all active IP addresses under the 10.42.0.0/24 network.
+* 3.5. Install `nmap` 7.9x (7.8 has a bug).
+
+```sh
+$ sudo apt install snapd
+$ sudo snap install nmap
+$ sudo snap connect nmap:network-control
+``` 
+Now, you are ready to run `nmap`.
+
+* 3.6. With that IP address (enx8cae4cf9014c with 10.42.0.1/24), run the next command to scan all active IP addresses under the 10.42.0.0/24 network.
 
 ```sh
 $ nmap -sn 10.42.0.0/24
 
-Starting Nmap 7.80 ( https://nmap.org ) at 2021-12-04 00:28 CET
+Starting Nmap 7.92 ( https://nmap.org ) at 2021-12-04 00:28 CET
 Nmap scan report for inti (10.42.0.1)
 Host is up (0.00027s latency).
 Nmap scan report for 10.42.0.159
@@ -94,7 +103,7 @@ Run it with `sudo` to get hostnames:
 ```sh
 $ sudo nmap -sn 10.42.0.0/24
 
-Starting Nmap 7.80 ( https://nmap.org ) at 2021-12-09 17:57 CET
+Starting Nmap 7.92 ( https://nmap.org ) at 2021-12-09 17:57 CET
 Nmap scan report for 10.42.0.159
 Host is up (0.00068s latency).
 MAC Address: B8:27:EB:1B:CF:C8 (Raspberry Pi Foundation)
@@ -103,7 +112,7 @@ Host is up.
 Nmap done: 256 IP addresses (2 hosts up) scanned in 9.25 seconds
 ```
 
-* 3.6. SSH to Raspberry Pi from the Laptop Terminal: 
+* 3.7. SSH to Raspberry Pi from the Laptop Terminal: 
 
 ```sh
 $ ssh pi@<ip-of-raspberry-pi>       // Pwd: raspberry
@@ -125,7 +134,7 @@ $ hostname -I
 ```sh
 $ sudo nmap -sn 192.168.1.0/24
 
-Starting Nmap 7.80 ( https://nmap.org ) at 2021-12-09 22:56 CET
+Starting Nmap 7.92 ( https://nmap.org ) at 2021-12-09 22:56 CET
 Nmap scan report for 192.168.1.160
 Host is up (0.0040s latency).
 MAC Address: B8:27:EB:1B:CF:C8 (Raspberry Pi Foundation)
@@ -253,3 +262,4 @@ $ . code_server_remove_rpi.sh
 - https://raspberrytips.com/ipad-as-raspberry-pi-monitor/
 - https://hrushi-deshmukh.medium.com/getting-started-with-raspberry-pi-using-command-line-only-18aab667f183
 - https://www.makeuseof.com/tag/install-operating-system-raspberry-pi/
+- [Install nmap 7.9 on Ubuntu 21.04](https://unix.stackexchange.com/questions/662450/nmap-7-8-assertion-failed-htn-toclock-running-true)
