@@ -23,7 +23,7 @@ while [ $# -gt 0 ]; do
       printf "\t . code_server_install.sh --vscs-ver=3.4.1 \n"
       printf "\t . code_server_install.sh --vscs-ver=3.4.1 --arch=arm \n"
       printf "\t . code_server_install.sh --arch=arm \n"
-      printf "\t . code_server_install.sh --arch=amd --tls=disable \n"
+      printf "\t . code_server_install.sh --arch=amd --tls=no \n"
       exit 0
       ;;
     *)
