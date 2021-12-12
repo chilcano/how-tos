@@ -59,17 +59,19 @@ else
   _SSID=$(iwgetid -r)
   echo "=> The same WIFI (${_SSID}) LAN to which it is connected will be used."
   read -s -p "=> Enter the password to connect to WIFI (${_SSID}) LAN: " _PSK
-  read -p "\n=> Insert 2 letters ISO 3166-1 country code here (i.e. ES, GB, US, ...): " _COUNTRY
+  echo "=> Insert 2 letters ISO 3166-1 country code here (i.e. ES, GB, US, ...): "
+  read _COUNTRY
 fi
 
 path_boot_ubu="/media/${USER}/system-boot"
 path_boot_rasp="/media/${USER}/boot"
 path_boot=""
 
-read -p "\n=> We are ready to burn the Image in your SD Card. Continue? [y/n]" _CONTINUE
+echo "=> We are ready to burn the Image in your SD Card. Continue (y/n)?: "
+read _CONTINUE
 if [ "${_CONTINUE}" != "y" ]; then
   echo "=> Process cancelled."
-  exit 0
+  return
 fi
 
 #sudo dd bs=1M if=/path/to/raspberrypi/image of=/dev/sdcardname status=progress conv=fsync
