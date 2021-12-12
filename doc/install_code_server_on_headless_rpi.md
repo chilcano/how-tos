@@ -4,7 +4,7 @@
 
 ### 1. Bootstraping OS image in Raspberry Pi
 
-You can use this bash script to bootstrap an OS (Ubuntu, Raspbian, Debian or Raspberry Pi OS) in your Raspberry Pi. 
+You can use this [bash script to bootstrap an OS](https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_rpi_img.sh) (Ubuntu, Raspbian, Debian or Raspberry Pi OS) in your Raspberry Pi. 
 The next bash script will enable SSH and WIFI when burning the OS image in your SD card. Only follow the next steps:
 
 ```sh
