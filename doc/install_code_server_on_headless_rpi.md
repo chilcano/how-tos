@@ -9,18 +9,29 @@ The next bash script will enable SSH and WIFI when burning the OS image in your 
 
 ```sh
 $ wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_rpi_img.sh
-
 $ chmod +x bootstrap_rpi_img.sh
-
 $ . bootstrap_rpi_img.sh \
  --if=/media/roger/Transcend/isos-images/rpi/2021-10-30-raspios-bullseye-armhf.zip \
  --of=/dev/sdc \
- --ssh=enable \
+ --wifi=enable
+```
+
+Or this single command:
+```sh
+$ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_rpi_img.sh) \
+ --if=/media/roger/Transcend/isos-images/rpi/2021-10-30-raspios-bullseye-armhf.zip \
+ --of=/dev/sdc \
  --wifi=enable
 ```
 
 ### 2. Insert SD Card and boot your RPi
 
+You can connect your Raspberry Pi to:
+1. To computer directly. I've tested this in an Ubuntu Laptop using USB to Ethernet adaptor. Ubuntu detects inmediatelly and assigns an insternal IP Address.
+2. To your Network LAN using a Ethernet cable directly.
+3. To your Wireless LAN. You need to pre-configure your WIFI when burning the Image into your Raspberry Pi.
+
+The next steps help you how to do any scenario.
 
 ### 3. RPi connected directly to Ubuntu Laptop
 
