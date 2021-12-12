@@ -59,7 +59,7 @@ else
   _SSID=$(iwgetid -r)
   echo "=> The same WIFI (${_SSID}) LAN to which it is connected will be used."
   read -s -p "=> Enter the password to connect to WIFI (${_SSID}) LAN: " _PSK
-  read "=> Insert 2 letters ISO 3166-1 country code here (i.e. ES, GB, US, ...): "
+  read -p "=> Insert 2 letters ISO 3166-1 country code here (i.e. ES, GB, US, ...): " _COUNTRY
 fi
 
 path_boot_ubu="/media/${USER}/system-boot"
