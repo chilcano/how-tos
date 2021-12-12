@@ -93,31 +93,31 @@ echo "=> SSH enabled on ${path_boot}/ssh"
 # Enable and config WIFI
 if [ -d "${path_boot_ubu}" ]; then
   ## Ubuntu
-  echo "wifis:" | tee -a ${path_boot}/network-config
-  echo "  wlan0:" | tee -a ${path_boot}/network-config
-  echo "    dhcp4: true" | tee -a ${path_boot}/network-config
-  echo "    optional: true" | tee -a ${path_boot}/network-config
-  echo "    access-points:" | tee -a ${path_boot}/network-config
-  echo '      "${_SSID}":' | tee -a ${path_boot}/network-config
-  echo '        password: "${_PSK}"' | tee -a ${path_boot}/network-config
+  echo "wifis:" | tee -a ${path_boot}/network-config >/dev/null
+  echo "  wlan0:" | tee -a ${path_boot}/network-config >/dev/null
+  echo "    dhcp4: true" | tee -a ${path_boot}/network-config >/dev/null
+  echo "    optional: true" | tee -a ${path_boot}/network-config >/dev/null
+  echo "    access-points:" | tee -a ${path_boot}/network-config >/dev/null
+  echo "      '${_SSID}':" | tee -a ${path_boot}/network-config >/dev/null
+  echo "        password: '${_PSK}'" | tee -a ${path_boot}/network-config >/dev/null
   echo "=> WIFI enabled and configured on ${path_boot}/network-config"
 elif [ -d "${path_boot_rasp}" ]; then
   ## Raspbian, RPi OS
   echo "=> WIFI in Raspbian or RPi OS require Country code. Insert 2 letters ISO 3166-1 Country code here (i.e. ES, GB, US, ...): "
   read _COUNTRY
   echo ""
-  echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" | tee -a ${path_boot}/wpa_supplicant.conf
-  echo "country=${_COUNTRY}" | tee -a ${path_boot}/wpa_supplicant.conf
-  echo "update_config=1" | tee -a ${path_boot}/wpa_supplicant.conf
-  echo "" | tee -a ${path_boot}/wpa_supplicant.conf
-  echo "network={" | tee -a ${path_boot}/wpa_supplicant.conf
-  echo '  ssid="${_SSID}"' | tee -a ${path_boot}/wpa_supplicant.conf
-  echo '  psk="${_PSK}"' | tee -a ${path_boot}/wpa_supplicant.conf
-  echo "  proto=RSN" | tee -a ${path_boot}/wpa_supplicant.conf
-  echo "  key_mgmt=WPA-PSK" | tee -a ${path_boot}/wpa_supplicant.conf
-  echo "  pairwise=CCMP" | tee -a ${path_boot}/wpa_supplicant.conf
-  echo "  auth_alg=OPEN" | tee -a ${path_boot}/wpa_supplicant.conf
-  echo "}" | tee -a ${path_boot}/wpa_supplicant.conf
+  echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
+  echo "country=${_COUNTRY}" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
+  echo "update_config=1" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
+  echo "" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
+  echo "network={" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
+  echo "  ssid='${_SSID}'" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
+  echo "  psk='${_PSK}'" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
+  echo "  proto=RSN" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
+  echo "  key_mgmt=WPA-PSK" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
+  echo "  pairwise=CCMP" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
+  echo "  auth_alg=OPEN" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
+  echo "}" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
   echo "=> WIFI enabled and configured on ${path_boot}/wpa_supplicant.conf"
 fi
 
