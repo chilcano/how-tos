@@ -6,7 +6,7 @@
 
 ## Examples:
 # ./bootstrap_rpi_img.sh \
-# --if=/media/roger/Transcend/isos-images/rpi/2021-10-30-raspios-bullseye-armhf.zip \
+# --if=/media/roger/Transcend/isos-images/rpi/2021-10-30-raspios-bullseye-armhf.img \
 # --of=/dev/sdc \
 # --wifi=enable
 

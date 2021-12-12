@@ -11,7 +11,7 @@ The next bash script will enable SSH and WIFI when burning the OS image in your 
 $ wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_rpi_img.sh
 $ chmod +x bootstrap_rpi_img.sh
 $ . bootstrap_rpi_img.sh \
- --if=/media/roger/Transcend/isos-images/rpi/2021-10-30-raspios-bullseye-armhf.zip \
+ --if=/media/roger/Transcend/isos-images/rpi/2021-10-30-raspios-bullseye-armhf.img \
  --of=/dev/sdc \
  --wifi=enable
 ```
@@ -19,10 +19,12 @@ $ . bootstrap_rpi_img.sh \
 Or this single command:
 ```sh
 $ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_rpi_img.sh) \
- --if=/media/roger/Transcend/isos-images/rpi/2021-10-30-raspios-bullseye-armhf.zip \
+ --if=/media/roger/Transcend/isos-images/rpi/2021-10-30-raspios-bullseye-armhf.img \
  --of=/dev/sdc \
  --wifi=enable
 ```
+
+Note that you have to use the Image (.img) rather Zipped version (.zip). If you have the zip version, just extract the image.
 
 ### 2. Insert SD Card and boot your RPi
 
