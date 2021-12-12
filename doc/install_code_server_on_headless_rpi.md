@@ -262,6 +262,7 @@ $ . code_server_remove_rpi.sh
 - https://www.raspberrypi.com/documentation/computers/getting-started.html
 - https://www.raspberrypi.com/documentation/computers/configuration.html
 - https://www.raspberrypi.com/documentation/computers/remote-access.html
+- [Configure Wi-Fi or Ethernet on Ubuntu for Raspberry Pi](https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#3-wifi-or-ethernet)
 - https://github.com/chilcano/how-tos/blob/main/doc/ide_and_devops_tools.md
 - https://raspberrytips.com/ipad-as-raspberry-pi-monitor/
 - https://hrushi-deshmukh.medium.com/getting-started-with-raspberry-pi-using-command-line-only-18aab667f183
