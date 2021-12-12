@@ -52,6 +52,10 @@ _COUNTRY="ES"
 _SSID="test-ssid"
 _PSK="test-pwd"
 
+path_boot_ubu="/media/${USER}/system-boot"
+path_boot_rasp="/media/${USER}/boot"
+path_boot=""
+
 if [ -z ${_WIFI+x} ]; then 
   echo "=> WIFI has not been enabled."
 else 
@@ -60,13 +64,7 @@ else
   echo "=> The same WIFI (${_SSID}) LAN to which it is connected will be used."
   read -s -p "=> Enter the password to connect to WIFI (${_SSID}) LAN: " _PSK
   echo ""
-  echo "=> Insert 2 letters ISO 3166-1 Country code here (i.e. ES, GB, US, ...): "
-  read _COUNTRY
 fi
-
-path_boot_ubu="/media/${USER}/system-boot"
-path_boot_rasp="/media/${USER}/boot"
-path_boot=""
 
 echo "=> We are ready to burn the Image in your SD Card. Continue (y/n)?: "
 read _CONTINUE
@@ -105,6 +103,9 @@ if [ -d "${path_boot_ubu}" ]; then
   echo "=> WIFI enabled and configured on ${path_boot}/network-config"
 elif [ -d "${path_boot_rasp}" ]; then
   ## Raspbian, RPi OS
+  echo "=> WIFI in Raspbian or RPi OS require Country code. Insert 2 letters ISO 3166-1 Country code here (i.e. ES, GB, US, ...): "
+  read _COUNTRY
+  echo ""
   echo "ctrl_interface=DIR=/var/run/wpa_supplicant GROUP=netdev" | tee -a ${path_boot}/wpa_supplicant.conf
   echo "country=${_COUNTRY}" | tee -a ${path_boot}/wpa_supplicant.conf
   echo "update_config=1" | tee -a ${path_boot}/wpa_supplicant.conf
