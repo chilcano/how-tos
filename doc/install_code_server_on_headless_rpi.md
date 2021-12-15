@@ -1,35 +1,57 @@
-# Code-Server on Headless Raspberry Pi with Ubuntu 64bits
+# Code-Server on Headless Raspberry Pi with Ubuntu OS 64bits
 
 ## Install and configure Ubuntu OS in headless RPi 
 
-### 1. Bootstraping OS image in Raspberry Pi
+### 1. Copy an OS image in your SD card
 
-You can use this [bash script to bootstrap an OS](https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_rpi_img.sh) (Ubuntu, Raspbian, Debian or Raspberry Pi OS) in your Raspberry Pi. I've downloaded the next Images:
+Nowadays, you have many mature and very well documented ways to copy many flavours of Linux in your Raspberry Pi.
+You have:
 
-1. `2021-10-30-raspios-bullseye-armhf.zip` - It is Raspberry PI OS image which requires be uncompress to get `2021-10-30-raspios-bullseye-armhf.img`.
-2. `ubuntu-20.04.3-preinstalled-server-arm64+raspi.img.xz` - It is Ubuntu 20.04 image for ARM 64bit architectures which requires be uncompress to get `ubuntu-20.04.3-preinstalled-server-arm64+raspi.img`.
+* 1. The old school `dd` Linux command. Use it if you are confortable using a Linux Terminal.
 
-Since I want to install Code-Server in my Raspberry Pi running Ubuntu 64bits, we need to pass that info to bash script,  enable SSH and WIFI when burning the OS image in your SD card:
+List the SD cards:
 ```sh
-$ wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_rpi_img.sh
-$ chmod +x bootstrap_rpi_img.sh
-$ . bootstrap_rpi_img.sh \
- --if=/media/roger/Transcend/isos-images/rpi/ubuntu-20.04.3-preinstalled-server-arm64+raspi.img \
- --of=/dev/sdc \
- --wifi=enable
+sd_cards_list=$(lsblk --nodeps -n -o name -I8)
+
+echo ${sd_cards_list}
+
+sda
+sdb
+sdc
+```
+
+Run `dd`:
+```sh
+sudo dd bs=1M if=/path/to/raspberrypi/image of=/dev/sdcardname status=progress conv=fsync
+```
+
+* 2. Balena Etcher or Raspberry Pi Imager. Yes, there are many and you can use any of them. Here you have 2 good guides:
+
+- https://www.raspberrypi.com/documentation/computers/getting-started.html
+- https://www.makeuseof.com/tag/install-operating-system-raspberry-pi/
+
+
+Once copied your Raspbian, Raspberry Pi OS or Ubuntu OS image in your SD Card, the next step will explain how to enable remote SSH access, configure the physical or wireless network interface of your Raspberry Pi. 
+
+### 2. Bootstrap an initial configuration
+
+You can use this [bash script to bootstrap an initial configuration](https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh) for your pre-installed Ubuntu, Raspbian, Debian or Raspberry Pi OS. 
+
+Since I want to install [Code-Server](https://github.com/cdr/code-server) in my Raspberry Pi running Ubuntu 64bits, we need to pass that information to the bash script, enable SSH and/or WIFI before booting the SD Card:
+```sh
+$ wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh
+$ chmod +x bootstrap_config_rpi.sh
+$ . bootstrap_config_rpi.sh --wifi=enable
 ```
 
 Or this single command:
 ```sh
-$ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_rpi_img.sh) \
- --if=/media/roger/Transcend/isos-images/rpi/ubuntu-20.04.3-preinstalled-server-arm64+raspi.img \
- --of=/dev/sdc \
- --wifi=enable
+$ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh) --wifi=enable
 ```
 
 Note that you have to use the Image (.img) rather Zipped version (.zip). If you have the zip version, just extract the image.
 
-### 2. Insert SD Card and boot your RPi
+### 3. Insert SD Card and boot your RPi
 
 You can connect your Raspberry Pi to:
 1. To computer directly. I've tested this in an Ubuntu Laptop using USB to Ethernet adaptor. Ubuntu detects inmediatelly and assigns an insternal IP Address.
@@ -38,18 +60,18 @@ You can connect your Raspberry Pi to:
 
 The next steps help you how to do any scenario.
 
-### 3. RPi connected directly to Ubuntu Laptop
+### 4. RPi connected directly to Ubuntu Laptop
 
-* 3.1. Connect Raspberry Pi to Laptop with Ethernet.
+* 4.1. Connect Raspberry Pi to Laptop with Ethernet.
 
-* 3.2. Go to Settings > Network > Wired.
+* 4.2. Go to Settings > Network > Wired.
 
 ![](img/code-server-headless-rpi-ubuntu-64bits-network-connection-01.png)
 ![](img/code-server-headless-rpi-ubuntu-64bits-network-connection-02.png)
 
-* 3.3. Navigate to `IPv4` option and select `Shared to other computers`.
+* 4.4. Navigate to `IPv4` option and select `Shared to other computers`.
 
-* 3.4. Open Terminal and type next command (`$ ip a s`) to get the IP address for the `enx<MAC-ADDRESS>` Network Interface. Also you can see it in `Wired Settings > IPv4`. 
+* 4.4. Open Terminal and type next command (`$ ip a s`) to get the IP address for the `enx<MAC-ADDRESS>` Network Interface. Also you can see it in `Wired Settings > IPv4`. 
 
 ```sh
 $ ip a s
@@ -81,7 +103,7 @@ $ ip a s
        valid_lft forever preferred_lft forever
 ```
 
-* 3.5. Install `nmap` 7.9x (7.8 has a bug).
+* 4.5. Install `nmap` 7.9x (7.8 has a bug).
 
 ```sh
 $ sudo apt install snapd
@@ -90,7 +112,7 @@ $ sudo snap connect nmap:network-control
 ``` 
 Now, you are ready to run `nmap`.
 
-* 3.6. With that IP address (enx8cae4cf9014c with 10.42.0.1/24), run the next command to scan all active IP addresses under the 10.42.0.0/24 network.
+* 4.6. With that IP address (enx8cae4cf9014c with 10.42.0.1/24), run the next command to scan all active IP addresses under the 10.42.0.0/24 network.
 
 ```sh
 $ nmap -sn 10.42.0.0/24
@@ -117,16 +139,16 @@ Host is up.
 Nmap done: 256 IP addresses (2 hosts up) scanned in 9.25 seconds
 ```
 
-* 3.7. SSH to Raspberry Pi from the Laptop Terminal: 
+* 4.7. SSH to Raspberry Pi from the Laptop Terminal: 
 
 ```sh
 $ ssh pi@<ip-of-raspberry-pi>       // Pwd: raspberry
 $ ssh ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
 ```
 
-### 4. RPi connected directly to same Ubuntu Laptop's LAN
+### 5. RPi connected directly to same Ubuntu Laptop's LAN
 
-* 4.1. Getting the Ubuntu Laptop's IP address.
+* 5.1. Getting the Ubuntu Laptop's IP address.
 
 ```sh
 $ hostname -I
@@ -134,7 +156,7 @@ $ hostname -I
 192.168.1.152 172.18.0.1 172.17.0.1
 ```
 
-* 4.2. Getting the Raspberry Pi IP address using `nmap`.
+* 5.2. Getting the Raspberry Pi IP address using `nmap`.
 
 ```sh
 $ sudo nmap -sn 192.168.1.0/24
@@ -148,7 +170,7 @@ Host is up.
 Nmap done: 256 IP addresses (2 hosts up) scanned in 2.46 seconds
 ```
 
-* 4.3. SSH to Raspberry Pi from the Laptop Terminal: 
+* 5.3. SSH to Raspberry Pi from the Laptop Terminal: 
 
 ```sh
 $ ssh pi@<ip-of-raspberry-pi>       // Pwd: raspberry
@@ -259,12 +281,11 @@ $ . code_server_remove_rpi.sh
 ```
 
 ## References
-- https://www.raspberrypi.com/documentation/computers/getting-started.html
+- 
 - https://www.raspberrypi.com/documentation/computers/configuration.html
 - https://www.raspberrypi.com/documentation/computers/remote-access.html
 - [Configure Wi-Fi or Ethernet on Ubuntu for Raspberry Pi](https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#3-wifi-or-ethernet)
 - https://github.com/chilcano/how-tos/blob/main/doc/ide_and_devops_tools.md
 - https://raspberrytips.com/ipad-as-raspberry-pi-monitor/
 - https://hrushi-deshmukh.medium.com/getting-started-with-raspberry-pi-using-command-line-only-18aab667f183
-- https://www.makeuseof.com/tag/install-operating-system-raspberry-pi/
 - [Install nmap 7.9 on Ubuntu 21.04](https://unix.stackexchange.com/questions/662450/nmap-7-8-assertion-failed-htn-toclock-running-true)

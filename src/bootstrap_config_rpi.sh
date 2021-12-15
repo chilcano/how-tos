@@ -5,23 +5,12 @@
 # https://en.wikipedia.org/wiki/ISO_3166-1
 
 ## Examples:
-# ./bootstrap_rpi_img.sh \
-# --if=/media/roger/Transcend/isos-images/rpi/2021-10-30-raspios-bullseye-armhf.img \
-# --of=/dev/sdc \
-# --wifi=enable
+# ./bootstrap_rpi_img.sh --wifi=enable
 
 unset _IF _OF _WIFI _COUNTRY _SSID _PSK 
 
 while [ $# -gt 0 ]; do
   case "$1" in
-    --if*|-i*)
-      if [[ "$1" != *=* ]]; then shift; fi 
-      _IF="${1#*=}"
-      ;;
-    --of*|-o*)
-      if [[ "$1" != *=* ]]; then shift; fi 
-      _OF="${1#*=}"
-      ;;
     --wifi*|-w*)
       if [[ "$1" != *=* ]]; then shift; fi 
       _WIFI="${1#*=}"
@@ -42,11 +31,6 @@ echo "##########################################################"
 echo "#    Bootstrap OS Image on Raspberry Pi from Ubuntu      #"
 echo "##########################################################"
 
-# TODO: to be used to validate the source sd
-sd_cards_list=$(lsblk --nodeps -n -o name -I8)
-# sda
-# sdb
-# sdc
 
 _COUNTRY="ES"
 _SSID="test-ssid"
@@ -72,10 +56,6 @@ if [ "${_CONTINUE}" != "y" ]; then
   echo "=> Process cancelled."
   return
 fi
-
-#sudo dd bs=1M if=/path/to/raspberrypi/image of=/dev/sdcardname status=progress conv=fsync
-sudo dd bs=1M if=${_IF} of=${_OF} status=progress conv=fsync
-echo "=> The ${_IF} copied into ${_OF} sucessfully."
 
 if [ -d "${path_boot_ubu}" ]; then
   path_boot="${path_boot_ubu}"
