@@ -281,7 +281,7 @@ $ . code_server_remove_rpi.sh
 ```
 
 ## References
-- 
+
 - https://www.raspberrypi.com/documentation/computers/configuration.html
 - https://www.raspberrypi.com/documentation/computers/remote-access.html
 - [Configure Wi-Fi or Ethernet on Ubuntu for Raspberry Pi](https://ubuntu.com/tutorials/how-to-install-ubuntu-on-your-raspberry-pi#3-wifi-or-ethernet)
