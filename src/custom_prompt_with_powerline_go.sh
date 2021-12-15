@@ -41,8 +41,11 @@ wget -q $PL_FONTS_URL
 unzip -oq $PL_FONTS_NAME -d $HOME/.fonts/powerline/$PL_FONTS_NAME
 fc-cache -f $HOME/.fonts  
 
-printf "==> 5) Reload the init bash script to apply the new styled Ubuntu prompt \n"
+printf "==> 5) Deleting dowloaded MS Cascadia fonts \n"
+rm -rf ${PL_FONTS_FILENAME}
+
+printf "==> 6) Reload the init bash script to apply the new styled Ubuntu prompt \n"
 . ~/.bashrc
 printf "\t. ~/.bashrc \n"
 
-printf "==> 6) Installation and configuration completed \n\n"
+printf "==> 7) Installation and configuration completed \n\n"

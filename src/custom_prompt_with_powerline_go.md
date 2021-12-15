@@ -18,11 +18,19 @@ $ sudo apt install -y golang-go
 $ go get -u github.com/justjanne/powerline-go
 ```
 
+You will have this warning message:
+```sh
+...
+go get: installing executables with 'go get' in module mode is deprecated.
+	Use 'go install pkg@version' instead.
+	For more information, see https://golang.org/doc/go-get-install-deprecation
+	or run 'go help get' or 'go help install'.
+```
+
 ### 3) Set the Ubuntu prompt configuration
 
 The delimiting identifier is quoted (`'EOF'`) to avoid the shell substitutes all variables, commands and special characters before passing the here-document lines to the command.   
-We are not appending a minus sign to the redirection operator `<<-` to all leading tab characters to be consudered.   
-Ref: https://linuxize.com/post/bash-heredoc/
+We are not appending a minus sign to the redirection operator `<<-` to all leading tab characters to be considered (Info: https://linuxize.com/post/bash-heredoc/).  
 
 ```sh
 $ cat << 'EOF' > powerline-go-loader.sh
