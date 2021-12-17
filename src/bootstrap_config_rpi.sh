@@ -32,7 +32,6 @@ echo "##########################################################"
 echo "#    Bootstrap OS Image on Raspberry Pi from Ubuntu      #"
 echo "##########################################################"
 
-
 _COUNTRY="ES"
 _SSID="test-ssid"
 _PSK="test-pwd"
@@ -46,9 +45,18 @@ if [ -z ${_WIFI+x} ]; then
 else 
   echo "=> WIFI has been enabled."
   _SSID=$(iwgetid -r)
-  echo "=> The same WIFI (${_SSID}) LAN to which it is connected will be used."
+  echo "=> This WIFI (${_SSID}) LAN will be used."
   read -s -p "=> Enter the password to connect to WIFI (${_SSID}) LAN: " _PSK
   echo ""
+fi
+
+if [ -d "${path_boot_ubu}" ]; then
+  path_boot="${path_boot_ubu}"
+elif [ -d "${path_boot_rasp}" ]; then
+  path_boot="${path_boot_rasp}"
+else
+  printf "=> Error: Invalid Path to Boot partition in SD Card. \n"
+  return
 fi
 
 # Enable SSH
