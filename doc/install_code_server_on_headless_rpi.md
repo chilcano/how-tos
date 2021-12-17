@@ -140,7 +140,7 @@ $ ssh pi@<ip-of-raspberry-pi>       // Pwd: raspberry
 $ ssh ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
 ```
 
-### 5. RPi connected directly to same Ubuntu Laptop's LAN or WLAN
+### 5. RPi connected directly to same Ubuntu Laptop's LAN 
 
 * 5.1. Getting the Ubuntu Laptop's IP address.
 
@@ -167,6 +167,31 @@ Nmap done: 256 IP addresses (2 hosts up) scanned in 2.46 seconds
 ```
 
 * 5.3. SSH to Raspberry Pi from the Laptop Terminal: 
+
+```sh
+$ ssh pi@<ip-of-raspberry-pi>       // Pwd: raspberry
+$ ssh ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
+```
+
+### 6. RPi connected directly to same Ubuntu Laptop's Wireless LAN
+
+* 6.1. Plug the already configured SD card into the Raspberry Pi, turn on. After 2 to 3 minutes, turn off and turn on. This process will force your Raspberry Pi connects to your pre-configured WIFI configuration.
+
+* 6.2. Getting the IP address. The process is similar to above.
+
+```sh
+$ sudo nmap -sn 192.168.1.0/24
+
+Starting Nmap 7.92 ( https://nmap.org ) at 2021-12-17 20:09 CET
+Nmap scan report for 192.168.1.162
+Host is up (0.026s latency).
+MAC Address: B8:27:EB:33:B7:BE (Raspberry Pi Foundation)
+Nmap scan report for kipu (192.168.1.152)
+Host is up.
+Nmap done: 256 IP addresses (8 hosts up) scanned in 2.07 seconds
+```
+
+* 6.3. SSH to Raspberry Pi from the Laptop Terminal: 
 
 ```sh
 $ ssh pi@<ip-of-raspberry-pi>       // Pwd: raspberry
