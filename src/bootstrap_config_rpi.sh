@@ -51,22 +51,6 @@ else
   echo ""
 fi
 
-echo "=> We are ready to burn the Image in your SD Card. Continue (y/n)?: "
-read _CONTINUE
-if [ "${_CONTINUE}" != "y" ]; then
-  echo "=> Process cancelled."
-  return
-fi
-
-if [ -d "${path_boot_ubu}" ]; then
-  path_boot="${path_boot_ubu}"
-elif [ -d "${path_boot_rasp}" ]; then
-  path_boot="${path_boot_rasp}"
-else
-  printf "=> Error: Invalid Path to Boot partition in SD Card. \n"
-  exit 1
-fi
-
 # Enable SSH
 touch ${path_boot}/ssh
 echo "=> SSH enabled on ${path_boot}/ssh"
