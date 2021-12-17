@@ -140,7 +140,7 @@ $ ssh pi@<ip-of-raspberry-pi>       // Pwd: raspberry
 $ ssh ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
 ```
 
-### 5. RPi connected directly to same Ubuntu Laptop's LAN
+### 5. RPi connected directly to same Ubuntu Laptop's LAN or WLAN
 
 * 5.1. Getting the Ubuntu Laptop's IP address.
 
@@ -150,7 +150,9 @@ $ hostname -I
 192.168.1.152 172.18.0.1 172.17.0.1
 ```
 
-* 5.2. Getting the Raspberry Pi IP address using `nmap`.
+* 5.2. Getting the Raspberry Pi IP address using `nmap` (version 7.9.x).
+
+The `nmap` version 7.8 doesn't work, we recommend install fixed version (above 7.9.x). [Here we explain how to do that](nmap_commands.md).
 
 ```sh
 $ sudo nmap -sn 192.168.1.0/24
@@ -282,4 +284,3 @@ $ . code_server_remove_rpi.sh
 - https://github.com/chilcano/how-tos/blob/main/doc/ide_and_devops_tools.md
 - https://raspberrytips.com/ipad-as-raspberry-pi-monitor/
 - https://hrushi-deshmukh.medium.com/getting-started-with-raspberry-pi-using-command-line-only-18aab667f183
-- [Install nmap 7.9 on Ubuntu 21.04](https://unix.stackexchange.com/questions/662450/nmap-7-8-assertion-failed-htn-toclock-running-true)

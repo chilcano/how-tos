@@ -38,3 +38,4 @@ Repository with technical indications to install, configure any interesting stuf
 32. [Issue Certificates with MKCert](doc/issue_certs_with_mkcert.md)
 33. [Migrate of GitHub Page site from Jekyll to Hugo](doc/migrate_jekyll_to_hugo.md)
 34. [Building static website with Jekyll and Hugo and hosted on GiHub Pages](doc/static_website_on_ghpages.md)
+35. [Installing and using NMAP](doc/nmap_commands.md)
