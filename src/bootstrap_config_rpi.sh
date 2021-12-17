@@ -6,6 +6,7 @@
 
 ## Examples:
 # ./bootstrap_rpi_img.sh --wifi=enable
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh) --wifi=enable
 
 unset _IF _OF _WIFI _COUNTRY _SSID _PSK 
 
@@ -78,8 +79,8 @@ if [ -d "${path_boot_ubu}" ]; then
   echo "    dhcp4: true" | tee -a ${path_boot}/network-config >/dev/null
   echo "    optional: true" | tee -a ${path_boot}/network-config >/dev/null
   echo "    access-points:" | tee -a ${path_boot}/network-config >/dev/null
-  echo "      '${_SSID}':" | tee -a ${path_boot}/network-config >/dev/null
-  echo "        password: '${_PSK}'" | tee -a ${path_boot}/network-config >/dev/null
+  echo "      \"${_SSID}\":" | tee -a ${path_boot}/network-config >/dev/null
+  echo "        password: \"${_PSK}\"" | tee -a ${path_boot}/network-config >/dev/null
   echo "=> WIFI enabled and configured on ${path_boot}/network-config"
 elif [ -d "${path_boot_rasp}" ]; then
   ## Raspbian, RPi OS
@@ -91,8 +92,8 @@ elif [ -d "${path_boot_rasp}" ]; then
   echo "update_config=1" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
   echo "" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
   echo "network={" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
-  echo "  ssid='${_SSID}'" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
-  echo "  psk='${_PSK}'" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
+  echo "  ssid=\"${_SSID}\"" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
+  echo "  psk=\"${_PSK}\"" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
   echo "  proto=RSN" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
   echo "  key_mgmt=WPA-PSK" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null
   echo "  pairwise=CCMP" | tee -a ${path_boot}/wpa_supplicant.conf >/dev/null

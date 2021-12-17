@@ -7,7 +7,7 @@
 Nowadays, you have many mature and very well documented ways to copy many flavours of Linux in your Raspberry Pi.
 You have:
 
-* 1. The old school `dd` Linux command. Use it if you are confortable using a Linux Terminal.
+1. The old school `dd` Linux command. Use it if you are confortable using a Linux Terminal.
 
 List the SD cards:
 ```sh
@@ -15,9 +15,7 @@ sd_cards_list=$(lsblk --nodeps -n -o name -I8)
 
 echo ${sd_cards_list}
 
-sda
-sdb
-sdc
+sda sdb sdc
 ```
 
 Run `dd`:
@@ -25,19 +23,17 @@ Run `dd`:
 sudo dd bs=1M if=/path/to/raspberrypi/image of=/dev/sdcardname status=progress conv=fsync
 ```
 
-* 2. Balena Etcher or Raspberry Pi Imager. Yes, there are many and you can use any of them. Here you have 2 good guides:
+2. Balena Etcher or Raspberry Pi Imager. Yes, there are many and you can use any of them. 
 
+Here you have 2 good guides:
 - https://www.raspberrypi.com/documentation/computers/getting-started.html
 - https://www.makeuseof.com/tag/install-operating-system-raspberry-pi/
-
 
 Once copied your Raspbian, Raspberry Pi OS or Ubuntu OS image in your SD Card, the next step will explain how to enable remote SSH access, configure the physical or wireless network interface of your Raspberry Pi. 
 
 ### 2. Bootstrap an initial configuration
 
-You can use this [bash script to bootstrap an initial configuration](https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh) for your pre-installed Ubuntu, Raspbian, Debian or Raspberry Pi OS. 
-
-Since I want to install [Code-Server](https://github.com/cdr/code-server) in my Raspberry Pi running Ubuntu 64bits, we need to pass that information to the bash script, enable SSH and/or WIFI before booting the SD Card:
+You can use this [bash script to bootstrap an initial configuration](../src/bootstrap_config_rpi.sh) for your pre-installed Ubuntu, Raspbian, Debian or Raspberry Pi OS. Specifically, the bash script will enable SSH and will enable and configure WIFI before using to boot the SD Card:
 ```sh
 $ wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh
 $ chmod +x bootstrap_config_rpi.sh
@@ -48,8 +44,6 @@ Or this single command:
 ```sh
 $ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh) --wifi=enable
 ```
-
-Note that you have to use the Image (.img) rather Zipped version (.zip). If you have the zip version, just extract the image.
 
 ### 3. Insert SD Card and boot your RPi
 
