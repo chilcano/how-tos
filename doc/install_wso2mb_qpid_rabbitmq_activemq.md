@@ -4,7 +4,7 @@ This document explains the installation of the most used foss Message Brokers (W
 
 ## Updating CentOS and Java
 
-```
+```sh
 # yum -y update
 ```
 
@@ -17,11 +17,11 @@ OpenJDK 64-Bit Server VM (build 23.25-b01, mixed mode)
 ```
 
 Updating to Java 7:
-```
+```sh
 # yum install java-1.7.0-openjdk.x86_64 java-1.7.0-openjdk-devel.x86_64
 ```
 
-```
+```sh
 # alternatives --config java
 
 There are 2 programs which provide 'java'.
@@ -35,12 +35,12 @@ Enter to keep the current selection[+], or type selection number: 2
 ```
 
 Remove older Java version:
-```
+```sh
 # yum remove java-1.6.0-openjdk.x86_64
 ```
 
 Check Java:
-```
+```sh
 # java -version
 java version "1.7.0_75"
 OpenJDK Runtime Environment (rhel-2.5.4.0.el6_6-x86_64 u75-b13)
@@ -49,70 +49,72 @@ OpenJDK 64-Bit Server VM (build 24.75-b04, mixed mode)
 
 ## Install WSO2 MB 2.2.0
 
-__1) Download WSO2 MB__
+### 1) Download WSO2 MB
 
-<pre>
+```sh
 # wget --user-agent="testuser" --referer="http://connect.wso2.com/wso2/getform/reg/new_product_download" http://dist.wso2.org/products/message-broker/2.2.0/wso2mb-2.2.0.zip
-</pre>
+```
 
-__2) Change offset (+3)__
+### 2) Change offset (+3)
 
-<pre>
+```sh
 # nano /opt/wso2mb-2.2.0/repository/conf/carbon.xml
-</pre>
+```
 
-__3) Check `JAVA_HOME` in `/root/.bash_profile`__
+### 3) Check 'JAVA_HOME' in '/root/.bash_profile'
 
-<pre>
+```sh
 export JAVA_HOME=/usr/lib/jvm/java-1.7.0-openjdk.x86_64
-</pre>
+```
 
 After of updating, execute the shell script:
-<pre>
+```sh
 # bash /root/.bash_profile
+```
 or
+```sh
 # cd /root
 # . .bash_profile
-</pre>
-
-__4) Start WSO2 MB__
-
 ```
+
+### 4) Start WSO2 MB
+
+```sh
 # nohup /opt/wso2mb-2.2.0/bin/wso2server.sh > /opt/wso2mb-220.log &
 # tail -f /opt/wso2mb-220.log
 ```
 
-__5) Check WSO2 MB with this URL `https://localhost:9446`, by default the user/pwd is `admin/admin`__
+### 5) Check WSO2 MB with this URL `https://localhost:9446`, by default the user/pwd is `admin/admin`
 
-```
+```sh
 https://wso2mb.bizlife.org
 ```
 
-__6) Change the default password__
+### 6) Change the default password
 
 If you change the default admin password, then you should also change it in `/opt/wso2mb-2.2.0/repository/conf/advanced/andes-virtualhosts.xml`
 
-```
+```sh
 <class>org.wso2.andes.server.store.CassandraMessageStore</class>
 <username>admin</username>
 <password>admin</password>
 ```
 
-__7) Restart WSO2MB__
+### 7) Restart WSO2MB
 
 
 ## Install RabbitMQ 3.4.4-1
 
 
-Refs:
+### Refs:
+
 * http://www.rabbitmq.com/install-rpm.html
 * https://www.digitalocean.com/community/tutorials/how-to-install-and-manage-rabbitmq
 
 
-__1) For CentOS 6 only, it is my case, install the EPEL-6 yum repo which contains Erlang R14B:__
+### 1) For CentOS 6 only, it is my case, install the EPEL-6 yum repo which contains Erlang R14B
 
-
-```
+```sh
 # rpm -Uvh http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 Retrieving http://dl.fedoraproject.org/pub/epel/6/i386/epel-release-6-8.noarch.rpm
 warning: /var/tmp/rpm-tmp.UGFkeO: Header V3 RSA/SHA256 Signature, key ID 0608b895: NOKEY
@@ -120,9 +122,9 @@ Preparing...                ########################################### [100%]
    1:epel-release           ########################################### [100%]
 ```
 
-__2) We are also enabling third party remi package repositories__
+### 2) We are also enabling third party remi package repositories
 
-```
+```sh
 # rpm -Uvh http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
 Retrieving http://rpms.famillecollet.com/enterprise/remi-release-6.rpm
 warning: remi-release-6.rpm: Header V3 DSA/SHA1 Signature, key ID 00f97f56: NOKEY
@@ -130,25 +132,24 @@ Preparing...                ########################################### [100%]
    1:remi-release           ########################################### [100%]
 ```
 
-__3) Download and install Erlang:__
+### 3) Download and install Erlang:
 
-```
+```sh
 # yum install -y erlang
 ```
 
+### 4) Download and install the latest RPM version of RabbitMQ available here `http://www.rabbitmq.com/install-rpm.html`
 
-__4) Download and install the latest RPM version of RabbitMQ available here `http://www.rabbitmq.com/install-rpm.html`__
-
-```
+```sh
 # cd /root/tempo-files
 # wget http://www.rabbitmq.com/releases/rabbitmq-server/v3.4.4/rabbitmq-server-3.4.4-1.noarch.rpm
 # rpm --import http://www.rabbitmq.com/rabbitmq-signing-key-public.asc
 # yum install rabbitmq-server-3.4.4-1.noarch.rpm 
 ```
 
-__5) Enabling the RabbitMQ plugin Management Console.__
+### 5) Enabling the RabbitMQ plugin Management Console
 
-```
+```sh
 # rabbitmq-plugins enable rabbitmq_management
 The following plugins have been enabled:
   mochiweb
@@ -165,17 +166,16 @@ Applying plugin configuration to rabbit@chk-bigdata1... failed.
             --offline - do not try to contact broker.
 ```
 
-__6) Set RabbitMQ to start on boot, after this, restart the server.__
+### 6) Set RabbitMQ to start on boot, after this, restart the server.
 
-```
+```sh
 # chkconfig rabbitmq-server on
 # reboot
 ```
 
+### 7) Check if RabbitMQ is running.
 
-__7) Check if RabbitMQ is running.__
-
-```
+```sh
 # service rabbitmq-server status
 Status of node 'rabbit@chk-bigdata1' ...
 Error: unable to connect to node 'rabbit@chk-bigdata1': nodedown
@@ -197,9 +197,9 @@ current node details:
 - cookie hash: 8u9IMKuHJe/4xUaw3FiTAw==
 ```
 
-__8) Start RabbitMQ and check the open ports.__
+### 8) Start RabbitMQ and check the open ports.
 
-```
+```sh
 # service rabbitmq-server start
 
 # netstat -tulp
@@ -221,9 +221,9 @@ Where the open ports are:
 - 25672
 - amqp
 
-__9) Add a new Administrator user to get access remotely.__
+### 9) Add a new Administrator user to get access remotely.
 
-```
+```sh
 # rabbitmqctl add_user admin admin
 Creating user "admin" ...
 # rabbitmqctl set_user_tags admin administrator
@@ -232,9 +232,9 @@ Setting tags for user "admin" to [administrator] ...
 Setting permissions for user "admin" in vhost "/" ...
 ```
 
-__10) Do not forget to open the port to get remotely access to RabbitMQ Management Console (port 15672)__
+### 10) Do not forget to open the port to get remotely access to RabbitMQ Management Console (port 15672)
 
-```
+```sh
 # nano /etc/sysconfig/iptables
 
 ...
@@ -242,7 +242,7 @@ __10) Do not forget to open the port to get remotely access to RabbitMQ Manageme
 ...
 ```
 
-```
+```sh
 # /etc/init.d/iptables restart
 iptables: Setting chains to policy ACCEPT: filter          [  OK  ]
 iptables: Flushing firewall rules:                         [  OK  ]
@@ -250,10 +250,10 @@ iptables: Unloading modules:                               [  OK  ]
 iptables: Applying firewall rules:                         [  OK  ]
 ```
 
-__11) Now open the RabbitMQ Management Console using this URL http://localhost:15672, where the administrator user and password are admin/admin.__
+### 11) Now open the RabbitMQ Management Console using this URL http://localhost:15672, where the administrator user and password are admin/admin.
 
 
-__12) Check again the RabbitMQ status__
+__12) Check again the RabbitMQ status
 
 
 ```
@@ -309,7 +309,7 @@ Status of node 'rabbit@chk-bigdata1' ...
  {uptime,72172}]
 ```
 
-__13) If you are running RabbitMQ behind of Apache HTTP Proxy, I recommend to use this configuration:__
+### 13) If you are running RabbitMQ behind of Apache HTTP Proxy, I recommend to use this configuration:
 
 
 ```
@@ -565,7 +565,7 @@ Refs:
 * http://activemq.apache.org/activemq-5111-release.html
 * http://tecadmin.net/install-apache-activemq-on-centos-redhat-and-fedora/
 
-__1. Download and install it__
+### 1. Download and install it
 
 ```
 # cd /opt
@@ -579,7 +579,7 @@ or
 # tar -zxvf apache-activemq-5.11.1-bin.tar.gz  -C /opt/activemq
 ```
 
-__2. Change ports to avoid conflicts with Qpid or RabbitMQ (just for AMQP port)__
+### 2. Change ports to avoid conflicts with Qpid or RabbitMQ (just for AMQP port)
 
 ```
 # nano /opt/apache-activemq-5.11.1/conf/activemq.xml 
@@ -607,14 +607,14 @@ and change the default port for the amqp transportConnector (5672)
 [...]
 ```
 
-__3. Start ActiveMQ__
+### 3. Start ActiveMQ
 
 ```
 # cd /opt/apache-activemq-5.11.1/bin
 # ./activemq start
 ```
 
-__4. Verify if ActiveMQ is running__
+### 4. Verify if ActiveMQ is running
 
 ```
 # netstat -tulpn 
@@ -660,7 +660,7 @@ Where the ports are:
 - 8161 is the ActiveMQ Web Admin Panel (http://localhost:8161/admin, with admin/admin as usr/pwd by default)
 
 
-__5. Open the port to get remotely access to ActiveMQ Web Admin Panel (port 8161)__
+### 5. Open the port to get remotely access to ActiveMQ Web Admin Panel (port 8161)
 
 ```
 # nano /etc/sysconfig/iptables
@@ -674,7 +674,7 @@ __5. Open the port to get remotely access to ActiveMQ Web Admin Panel (port 8161
 # /etc/init.d/iptables restart
 ```
 
-__6. If you have in the front of ActiveMQ Web Admin Panel a Web Proxy such as Apache HTTP, then you should have a configuration similar to following:__
+### 6. If you have in the front of ActiveMQ Web Admin Panel a Web Proxy such as Apache HTTP, then you should have a configuration similar to following:
 
 ```
 ### activemq.bizlife.org
@@ -703,10 +703,10 @@ __6. If you have in the front of ActiveMQ Web Admin Panel a Web Proxy such as Ap
 ```
 
 
-__7. Access remotely to ActiveMQ Web Admin Console__
+### 7. Access remotely to ActiveMQ Web Admin Console
 
 
-__8. If ypu want change the default user/password, just update the jetty-realm.properties file:__
+### 8. If ypu want change the default user/password, just update the jetty-realm.properties file:
 
 
 ```
@@ -718,14 +718,11 @@ admin: YOUR-NEW-PASSWORD, admin
 user: user, user
 ```
 
-__9. Check the log file if you want check the activity on ActiveMQ:__
+### 9. Check the log file if you want check the activity on ActiveMQ:
 
 ```
 # tail -1000f /opt/apache-activemq-5.11.1/data/activemq.log 
 ```
 
 
-__= FIN =__
-
-
-
+### = FIN =

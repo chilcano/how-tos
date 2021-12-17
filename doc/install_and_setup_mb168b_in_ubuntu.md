@@ -1,4 +1,4 @@
-# MB168b in Ubuntu
+# Asus USB Portable Monitor (MB168b) in Ubuntu
 
 1. Download (https://www.displaylink.com/downloads/ubuntu)[https://www.displaylink.com/downloads/ubuntu] the MB168b DisplayLink drivers and unzip it:
 

@@ -1,14 +1,14 @@
-# Linux on USB
+# Creating a Booteable Linux on USB
 
-## 1. Using Etcher Application
+## 1. Using Bakena Etcher Application
 
 Download [Etcher](https://www.balena.io/etcher/).
 
-### Etcher GUI
+### Balena Etcher GUI
 
 Open Etcher App and follow the steps.
 
-### Etcher from Terminal
+### Balena Etcher from Terminal
 
 1. Open Etcher from a Terminal.  
 ```sh

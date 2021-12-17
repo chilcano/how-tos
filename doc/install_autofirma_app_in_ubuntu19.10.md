@@ -3,20 +3,25 @@
 In order to work with it, you need a proper X.509 Certificate provided by Gencat CATCert (IdCAT), FNMT or Spanish e-DNI, and a Browser configured to work with Java App.
 
 1. Download AutoFirma and unzip it:
+
 https://firmaelectronica.gob.es/Home/Descargas.html
 
 2. Try to install it:
 
+```sh
 $ sudo dpkg -i AutoFirma_1_6_5.deb
+```
 
 3. Fix broken install:
-
+```sh
 $ sudo apt --fix-broken install
+```
 
 4. Install Java as AutoFirma's dependencies:
 
 - https://linuxconfig.org/how-to-install-java-on-ubuntu-19-10-eoan-ermine-linux
 
+```sh
 $ sudo apt install openjdk-14-jre-headless
 
 $ java --version
@@ -36,10 +41,11 @@ There are 2 choices for the alternative java (providing /usr/bin/java).
 
 Press <enter> to keep the current choice[*], or type selection number: 2
 update-alternatives: using /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java to provide /usr/bin/java (java) in manual mode
-
+```
 
 5. Try to intall it again:
 
+```sh
 $ sudo dpkg -i AutoFirma_1_6_5.deb 
 (Reading database ... 218055 files and directories currently installed.)
 Preparing to unpack AutoFirma_1_6_5.deb ...
@@ -90,8 +96,4 @@ Instalacion del certificado CA en el almacenamiento del sistema
 Processing triggers for gnome-menus (3.32.0-1ubuntu1) ...
 Processing triggers for desktop-file-utils (0.24-1ubuntu1) ...
 Processing triggers for mime-support (3.63ubuntu1) ...
-
-
-
-
-
+```
