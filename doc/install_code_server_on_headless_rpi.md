@@ -29,20 +29,23 @@ Here you have 2 good guides:
 - https://www.raspberrypi.com/documentation/computers/getting-started.html
 - https://www.makeuseof.com/tag/install-operating-system-raspberry-pi/
 
-Once copied your Raspbian, Raspberry Pi OS or Ubuntu OS image in your SD Card, the next step will explain how to enable remote SSH access, configure the physical or wireless network interface of your Raspberry Pi. 
+Once copied your Raspbian, Raspberry Pi OS or Ubuntu OS image in your SD Card, the next steps will explain how to enable remote SSH access, configure the physical or wireless network interface of your Raspberry Pi. 
 
 ### 2. Bootstrap an initial configuration
 
-You can use this [bash script to bootstrap an initial configuration](../src/bootstrap_config_rpi.sh) for your pre-installed Ubuntu, Raspbian, Debian or Raspberry Pi OS. Specifically, the bash script will enable SSH and will enable and configure WIFI before using to boot the SD Card:
+You can use this [bash script to bootstrap an initial configuration](../src/bootstrap_config_rpi.sh) for your pre-installed Ubuntu, Raspbian, Debian or Raspberry Pi OS. Specifically, the bash script will enable SSH and will enable and configure WIFI before using to boot the SD Card. Download it, set it up as executable:
 ```sh
-$ wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh
-$ chmod +x bootstrap_config_rpi.sh
-$ . bootstrap_config_rpi.sh --wifi=enable
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh
+chmod +x bootstrap_config_rpi.sh
+```
+and run it.
+```sh
+. bootstrap_config_rpi.sh --wifi=enable
 ```
 
 Or this single command:
 ```sh
-$ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh) --wifi=enable
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh) --wifi=enable
 ```
 
 ### 3. Insert SD Card and boot your RPi
@@ -68,7 +71,11 @@ The next steps help you how to do any scenario.
 * 4.4. Open Terminal and type next command (`$ ip a s`) to get the IP address for the `enx<MAC-ADDRESS>` Network Interface. Also you can see it in `Wired Settings > IPv4`. 
 
 ```sh
-$ ip a s
+ip a s
+```
+
+You will see all network interfaces listed:
+```sh
 1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1000
     link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
     inet 127.0.0.1/8 scope host lo
@@ -100,17 +107,20 @@ $ ip a s
 * 4.5. Install `nmap` 7.9x (7.8 has a bug).
 
 ```sh
-$ sudo apt install snapd
-$ sudo snap install nmap
-$ sudo snap connect nmap:network-control
+sudo apt install snapd
+sudo snap install nmap
+sudo snap connect nmap:network-control
 ``` 
 Now, you are ready to run `nmap`.
 
-* 4.6. With that IP address (enx8cae4cf9014c with 10.42.0.1/24), run the next command to scan all active IP addresses under the 10.42.0.0/24 network.
+* 4.6. With that IP address (`enx8cae4cf9014c with 10.42.0.1/24`), run the next command to scan all active IP addresses under the `10.42.0.0/24` network.
 
 ```sh
-$ nmap -sn 10.42.0.0/24
+nmap -sn 10.42.0.0/24
+```
 
+You should see something like this:
+```sh
 Starting Nmap 7.92 ( https://nmap.org ) at 2021-12-04 00:28 CET
 Nmap scan report for inti (10.42.0.1)
 Host is up (0.00027s latency).
@@ -120,10 +130,12 @@ Nmap done: 256 IP addresses (2 hosts up) scanned in 2.40 seconds
 ```
 
 Run it with `sudo` to get hostnames:
-
 ```sh
-$ sudo nmap -sn 10.42.0.0/24
+sudo nmap -sn 10.42.0.0/24
+```
 
+You will see hostnames now:
+```sh
 Starting Nmap 7.92 ( https://nmap.org ) at 2021-12-09 17:57 CET
 Nmap scan report for 10.42.0.159
 Host is up (0.00068s latency).
@@ -136,8 +148,8 @@ Nmap done: 256 IP addresses (2 hosts up) scanned in 9.25 seconds
 * 4.7. SSH to Raspberry Pi from the Laptop Terminal: 
 
 ```sh
-$ ssh pi@<ip-of-raspberry-pi>       // Pwd: raspberry
-$ ssh ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
+ssh pi@<ip-of-raspberry-pi>       ## Pwd: raspberry, if you used Raspbian or Raspberry OS
+ssh ubuntu@<ip-of-raspberry-pi>   ## Pwd: ubuntu, if you used Ubuntu OS
 ```
 
 ### 5. RPi connected directly to same Ubuntu Laptop's LAN 
@@ -145,8 +157,10 @@ $ ssh ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
 * 5.1. Getting the Ubuntu Laptop's IP address.
 
 ```sh
-$ hostname -I
+hostname -I
+```
 
+```sh
 192.168.1.152 172.18.0.1 172.17.0.1
 ```
 
@@ -155,8 +169,10 @@ $ hostname -I
 The `nmap` version 7.8 doesn't work, we recommend install fixed version (above 7.9.x). [Here we explain how to do that](nmap_commands.md).
 
 ```sh
-$ sudo nmap -sn 192.168.1.0/24
+sudo nmap -sn 192.168.1.0/24
+```
 
+```sh
 Starting Nmap 7.92 ( https://nmap.org ) at 2021-12-09 22:56 CET
 Nmap scan report for 192.168.1.160
 Host is up (0.0040s latency).
@@ -169,8 +185,8 @@ Nmap done: 256 IP addresses (2 hosts up) scanned in 2.46 seconds
 * 5.3. SSH to Raspberry Pi from the Laptop Terminal: 
 
 ```sh
-$ ssh pi@<ip-of-raspberry-pi>       // Pwd: raspberry
-$ ssh ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
+ssh pi@<ip-of-raspberry-pi>       ## Pwd: raspberry, if you used Raspbian or Raspberry OS
+ssh ubuntu@<ip-of-raspberry-pi>   ## Pwd: ubuntu, if you used Ubuntu OS
 ```
 
 ### 6. RPi connected directly to same Ubuntu Laptop's Wireless LAN
@@ -180,8 +196,10 @@ $ ssh ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
 * 6.2. Getting the IP address. The process is similar to above.
 
 ```sh
-$ sudo nmap -sn 192.168.1.0/24
+sudo nmap -sn 192.168.1.0/24
+```
 
+```sh
 Starting Nmap 7.92 ( https://nmap.org ) at 2021-12-17 20:09 CET
 Nmap scan report for 192.168.1.162
 Host is up (0.026s latency).
@@ -194,8 +212,8 @@ Nmap done: 256 IP addresses (8 hosts up) scanned in 2.07 seconds
 * 6.3. SSH to Raspberry Pi from the Laptop Terminal: 
 
 ```sh
-$ ssh pi@<ip-of-raspberry-pi>       // Pwd: raspberry
-$ ssh ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
+ssh pi@<ip-of-raspberry-pi>       ## Pwd: raspberry, if you used Raspbian or Raspberry OS
+ssh ubuntu@<ip-of-raspberry-pi>   ## Pwd: ubuntu, if you used Ubuntu OS
 ```
 
 ## Install Code-Server
@@ -203,17 +221,19 @@ $ ssh ubuntu@<ip-of-raspberry-pi>   // Pwd: ubuntu
 ### 1. Install Code-Server on RPi with Ubuntu 64bits
 
 ```sh
-$ wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_install.sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_install.sh
 
-$ wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_remove.sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_remove.sh
 
-$ sudo apt -y install jq
+sudo apt -y install jq
 
-$ chmod +x code_server_*.sh
+chmod +x code_server_*.sh
 ```
+
 As we are going to install Code-Server in our Home LAN, TLS will not be necessary and `--arch=arm` means the bash script will download the Code-Server version for ARM Architectures (Raspberry Pi). 
+
 ```sh
-$ . code_server_install.sh --arch=arm --tls=no
+. code_server_install.sh --arch=arm --tls=no
 ```
 
 You will see this:
@@ -269,19 +289,21 @@ Extension 'aws-toolkit-vscode-1.34.0.vsix' was successfully installed.
 * 2.1. Copy the certificate from RPi to Laptop.
 
 If you have connected the RPi directly to your Laptop, in your Laptop execute this:
+
 ```sh
-$ scp ubuntu@10.42.0.159:/home/ubuntu/.local/share/mkcert/rootCA.pem rootCA.pem
+scp ubuntu@10.42.0.159:/home/ubuntu/.local/share/mkcert/rootCA.pem rootCA.pem
 ```
 But if you have connected the RPi to your LAN, then execute this:
+
 ```sh
-$ scp ubuntu@192.168.1.160:/home/ubuntu/.local/share/mkcert/rootCA.pem rootCA.pem
+scp ubuntu@192.168.1.160:/home/ubuntu/.local/share/mkcert/rootCA.pem rootCA.pem
 ```
 
 * 2.2. Add RPi IP address to Hosts file in Laptop.
 
 ```sh
-$ echo "10.42.0.159	vscs.ubuntu" | sudo tee -a /etc/hosts
-$ echo "192.168.1.160	vscs.ubuntu" | sudo tee -a /etc/hosts
+echo "10.42.0.159	vscs.ubuntu" | sudo tee -a /etc/hosts
+echo "192.168.1.160	vscs.ubuntu" | sudo tee -a /etc/hosts
 ```
 
 * 2.3. Install above Code-Server rootCA into Laptop's browser
@@ -298,7 +320,7 @@ Now, you should see this:
 ### Remove Code-Server
 
 ```sh
-$ . code_server_remove_rpi.sh
+. code_server_remove_rpi.sh
 ```
 
 ## References
