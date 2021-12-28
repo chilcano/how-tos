@@ -1,19 +1,33 @@
 # Custom Prompt in Ubuntu with Powerline Go
 
-If you don't want go through below steps, I've created a bash script to automate the process and get the same results. 
+
+## The short path.
+
+If you don't want go through below steps, I've created a [bash script to automate the process and get the same results](https://raw.githubusercontent.com/chilcano/how-tos/master/src/custom_prompt_with_powerline_go.sh). 
+
 ```sh
-sudo apt -yqq install golang-go curl jq git unzip wget
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/custom_prompt_with_powerline_go.sh | bash
+$ sudo apt -yqq install golang-go curl jq git unzip wget
+$ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/custom_prompt_with_powerline_go.sh | bash
 ```
 
-## Steps
+The above script will:
 
-### 1) Install Go
+1. Install Golang.
+2. Install [Powerline-Go](github.com/justjanne/powerline-go).
+3. Create the `powerline-go-loader.sh` to configure the Linux Prompt.
+4. Install The Microsoft [Cascadia Code Fonts includes the Powerline glyphs](https://github.com/microsoft/cascadia-code)
+5. Apply all configuration.
+
+## The long path - Steps
+
+### 1) Install Go.
+
 ```sh
 $ sudo apt install -y golang-go
 ```
 
-### 2) Install Powerline-Go
+### 2) Install Powerline-Go.
+
 ```sh
 $ go get -u github.com/justjanne/powerline-go
 ```
@@ -27,7 +41,7 @@ go get: installing executables with 'go get' in module mode is deprecated.
 	or run 'go help get' or 'go help install'.
 ```
 
-### 3) Set the Ubuntu prompt configuration
+### 3) Set the Ubuntu prompt configuration.
 
 The delimiting identifier is quoted (`'EOF'`) to avoid the shell substitutes all variables, commands and special characters before passing the here-document lines to the command.   
 We are not appending a minus sign to the redirection operator `<<-` to all leading tab characters to be considered (Info: https://linuxize.com/post/bash-heredoc/).  
@@ -52,11 +66,10 @@ $ echo '# Loading Powerline-Go' >> ~/.bashrc
 $ echo '. $HOME/powerline-go-loader.sh' >> ~/.bashrc
 ```
 
-### 4) Load configured Ubuntu prompt
+### 4) Installing Fonts with Powerline glyphs.  
 
-#### Installing Fonts with Powerline glyphs.  
 The Microsoft Cascadia Code Fonts includes the Powerline glyphs [here](https://github.com/microsoft/cascadia-code), we need to download and install it in your O.S.  
-The Powerline-Go might work with any Fonts with already Powerline glyphs embeded. In [Nerd Fonts](https://www.nerdfonts.com) you have more fonts. 
+The Powerline-Go will work with any fonts with already embeded Powerline glyphs. In [Nerd Fonts](https://www.nerdfonts.com) you can get some fonts. 
 ```sh
 $ PL_FONTS_URL=$(curl -s https://api.github.com/repos/microsoft/cascadia-code/releases/latest | jq -r -M '.assets[].browser_download_url')
 $ PL_FONTS_FILENAME="${PL_FONTS_URL##*/}"
@@ -71,7 +84,8 @@ $ unzip -oq $PL_FONTS_NAME -d $HOME/.fonts/powerline/$PL_FONTS_NAME
 $ fc-cache -f $HOME/.fonts
 ```   
 
-#### Reload the init bash script to apply the new styled Ubuntu prompt.
+### 5) Reload the init bash script to apply the new styled Ubuntu prompt.
+
 ```sh
 $ . ~/.bashrc
 ```
@@ -97,6 +111,7 @@ if [ "$TERM" != "linux" ] && [ -f "$GOPATH/bin/powerline-go" ]; then
     PROMPT_COMMAND="_update_ps1; $PROMPT_COMMAND"
 fi
 ```
+
 Once changed, reload the init bash script.
 ```sh
 $ . ~/.bashrc
@@ -111,6 +126,26 @@ In [Fluent Terminal](https://github.com/felixse/FluentTerminal):
 
 In [Windows Terminal](https://github.com/microsoft/terminal):
 ![](imgs/custom_prompt_ubuntu_powerline_go_2_lines_windows_terminal.png)  
+
+## Load custom Fonts in your Terminal
+
+### 1. VS Code integrated Terminal
+
+
+### 2. Code-Server integrated Terminal
+
+Like point 1.
+
+### Gnome Terminal
+
+The Gnome Terminal doesn't require any special configuration, the default configuration `Font: Monospace` will work, however if you want change the fonts, you can do it.  
+First of all, install `gnome-tweaks`, it will allow you force the load of fonts in your system.
+```sh
+$ sudo apt -y install gnome-tweaks
+```
+Now, go to `Gnome Terminal > Preferences` and select the installed Fonts.
+![](img/select-custom-font-gnome-terminal.png)
+
 
 ### Reference:
 - [Microsoft Tutorial: Set up Powerline in Windows Terminal](https://docs.microsoft.com/en-us/windows/terminal/tutorials/powerline-setup)
