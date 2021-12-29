@@ -129,14 +129,45 @@ In [Windows Terminal](https://github.com/microsoft/terminal):
 
 ## Load custom Fonts in your Terminal
 
-### 1. VS Code integrated Terminal
+### 1. VS Code or Code-Server integrated Terminal
 
+Edit the `settings.json` and make sure you load the `Cascadia Mono PL` font already installed in your O.S.:
+```json
+    "terminal.integrated.fontFamily": "'Cascadia Mono PL'"
+```
+Here, a sample `settings.json` you can use in your VS Code or Code-Server:
+```json
+{
+    "explorer.confirmDelete": false,
+    "workbench.colorTheme": "Default Light+",
+    "workbench.colorCustomizations": {
+        "terminal.selectionBackground": "#0088ff",
+        "terminal.foreground":"#ffffff",
+        "terminal.border": "#ff0000",
+        "terminalCursor.background":"#605852",
+        "terminalCursor.foreground":"#f30be7",        
+        "terminal.background":"#000000",
+        "editor.background": "#ffffff",
+        "editor.foreground": "#000000",
+        "editor.lineHighlightBorder": "#0088ff",
+        "editor.lineHighlightBackground": "#ffffff",
+        "editor.rangeHighlightBackground": "#55ca55",
+        "panel.background": "#dedede",
+        "tab.hoverBackground": "#dedede"
+    },
+    "window.zoomLevel": 0,
+    "editor.fontSize": 14,
+    "editor.suggestFontSize": 10,
+    "debug.console.fontSize": 12,
+    "markdown.preview.fontSize": 14,
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.cursorBlinking": true,
+    //"terminal.integrated.fontFamily": "Consolas, 'SauceCodePro NF', 'SourceCodePro+Powerline+Awesome Regular', 'MesloLGM NF'",
+    "terminal.integrated.fontFamily": "'Cascadia Mono PL'",
+}
+```
 
-### 2. Code-Server integrated Terminal
-
-Like point 1.
-
-### Gnome Terminal
+### 2. Gnome Terminal
 
 The Gnome Terminal doesn't require any special configuration, the default configuration `Font: Monospace` will work, however if you want change the fonts, you can do it.  
 First of all, install `gnome-tweaks`, it will allow you force the load of fonts in your system.
