@@ -1,5 +1,31 @@
 # Docker useful commands
- 
+
+## Official Docker for Ubuntu 20.04 in WSL2
+
+* Ref: https://dev.to/_nicolas_louis_/how-to-run-docker-on-windows-without-docker-desktop-hik
+
+Remove previous Docker installations.
+```sh
+sudo apt -y remove docker docker-engine docker.io containerd runc
+```
+
+## Docker CE for Ubuntu 20.04
+
+```sh
+sudo apt -y install docker.io 
+
+sudo systemctl enable --now docker
+
+sudo apt-mark hold docker.io
+
+sudo usermod -aG docker $USER
+
+DOCKER_VER=$(curl -s --unix-socket /var/run/docker.sock http://latest/version | jq -r -M '.Version')
+
+echo ">> Docker ${DOCKER_VER} installed."
+```
+
+
 ## For Mac OS X El Capitan ( v 10.11.1 )
 
 ### Docker Machine
