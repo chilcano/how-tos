@@ -2,7 +2,7 @@ import xml.etree.ElementTree as ET
 import sys, getopt
 import re
 
-def getTotalItemsMatchingCriteria(xml_file, tag_name, attr_name): 
+def getTotalItemsMatchingCriteria2(xml_file, tag_name, attr_name): 
     total_children = 0
     total_children_matches = 0
     total_children_matches_sum = 0
@@ -26,7 +26,7 @@ def getTotalItemsMatchingCriteria(xml_file, tag_name, attr_name):
     return  str(total_children) + "/" + str(total_children_matches) + "/" + str(total_children_matches_sum) 
 
 if __name__ == "__main__":
-    print("\n=> Total vulnerable components: " + str(getTotalItemsMatchingCriteria( sys.argv[1], sys.argv[2], sys.argv[3] )) )
-    # python3 xml_parser_simple3.py xml_summaryreport.xml component vulnerabilities
+    print("\n=> Total vulnerable components: " + str(getTotalItemsMatchingCriteria2( sys.argv[1], sys.argv[2], sys.argv[3] )) )
+    # python3 get_total_items_matching_criteria2.py summaryreport.xml component vulnerabilities
 
     

@@ -1,5 +1,6 @@
 import xml.etree.ElementTree as ET
 import sys, getopt
+import re
 
 def getAttrValueByTagName(argv): 
     xml_file = ""
@@ -25,9 +26,10 @@ def getAttrValueByTagName(argv):
             attr_value = arg
 
     myroot = ET.parse(xml_file).getroot()
+    root_tag_regex = re.search("(\\{.+\\})(.*)", myroot.tag)
+    ns = root_tag_regex.group(1)
     return_value = ""
-
-    for child in myroot.iter(tag_name):
+    for child in myroot.iter(ns + tag_name):
         print(" -> " + child.tag, ": " + child.text)
         for attribute in child.attrib:
             aname = attribute
@@ -39,7 +41,8 @@ def getAttrValueByTagName(argv):
     return return_value    
 
 if __name__ == "__main__":
-    print("\n ====>>> " + getAttrValueByTagName(sys.argv[1:]) + " <<<==== ")
+    print("\n => " + getAttrValueByTagName(sys.argv[1:]) + " <= ")
 
-    #end_value = getAttrValueByTagName("xml_sample.xml", "food", "color", "yellow")
+    #end_value = getAttrValueByTagName("sample.xml", "food", "color", "yellow")
     #print("\n ==>> " + end_value + " <<== \n" )
+    # python3 get_attrvalue_by_tagname.py -x sample.xml -t food -n color -v yellow

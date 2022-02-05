@@ -27,4 +27,4 @@ def getTotalItemsMatchingCriteria(xml_file, tag_name, attr_name):
 
 if __name__ == "__main__":
     print("\n=> Total vulnerable components: " + getTotalItemsMatchingCriteria( sys.argv[1], sys.argv[2], sys.argv[3] ) )
-    # python3 xml_parser_simple2.py xml_summaryreport.xml component vulnerabilities
+    # python3 get_total_items_matching_criteria.py summaryreport.xml component vulnerabilities
