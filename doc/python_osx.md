@@ -1,4 +1,4 @@
-# Preparing the Python development environment in Mac OSX
+# Setup the Python in Mac OSX
 
 
 __References:__
