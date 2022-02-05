@@ -15,7 +15,7 @@ Python 3.9.7
 cd src/xml_parser/
 ```
 
-### 1) xml_parser_simple.py 
+### 1) get_attrvalue_by_tagname
 
 ```sh
 $ python3 get_attrvalue_by_tagname.py -x sample.xml -t food -n color -v yellow
@@ -45,7 +45,7 @@ $ python3 get_attrvalue_by_tagname.py -x sample.xml -t food -n color -v yellow
  => yellow <=
 ```
 
-### 2) xml_parser_simple.py 
+### 2) get_total_items_matching_criteria
 
 ```sh
 $ python3 get_total_items_matching_criteria.py summaryreport.xml component vulnerabilities
@@ -55,7 +55,7 @@ $ python3 get_total_items_matching_criteria.py summaryreport.xml component vulne
 => Total vulnerable components: 63/2/2
 ```
 
-### 3) xml_parser_simple.py 
+### 3) get_total_items_matching_criteria2 (accumulative)
 
 ```sh
 $ python3 get_total_items_matching_criteria2.py summaryreport.xml component vulnerabilities
