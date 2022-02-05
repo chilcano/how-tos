@@ -18,11 +18,25 @@ sudo systemctl enable --now docker
 
 sudo apt-mark hold docker.io
 
-sudo usermod -aG docker $USER
+sudo usermod -aG docker ${USER}
+```
 
+Check if you are in Docker group.
+```sh
+su - ${USER}
+
+groups
+
+chilcano adm cdrom sudo dip plugdev lpadmin lxd sambashare docker
+```
+
+Re-start your computer. You will not need run the Docker commands prefixing `sudo`.
+```sh
 DOCKER_VER=$(curl -s --unix-socket /var/run/docker.sock http://latest/version | jq -r -M '.Version')
 
 echo ">> Docker ${DOCKER_VER} installed."
+
+sudo systemctl status docker
 ```
 
 
