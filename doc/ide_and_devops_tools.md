@@ -55,9 +55,18 @@ chmod +x code_server_*.sh
 5. [Install](../src/devops_tools_install_v3.sh) and [remove](../src/devops_tools_remove_v3.sh) DevOps tools v3. It works in Ubuntu (amd64), Raspberry Pi (arm) and WSL2 (Ubuntu/amd64).
 
 ```sh
+. devops_tools_install_v3.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
+```
+
+This example will install on AMD with latest versions of Terraform, Packer, Go, Python, Docker and Java available in on Ubuntu 21.10:
+```sh
 wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_install_v3.sh \
         https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_remove_v3.sh
 
 chmod +x devops_tools_*.sh  
-. devops_tools_install_v3.sh --arch=[amd|arm] [--tf-ver=0.11.15-oci] [--packer-ver=1.5.5]
+. devops_tools_install_v3.sh 
+```
+Or using explicit versions and without download the scripts:
+```sh
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_install_v3.sh) -a=arm -t=0.11.15-oci -p=1.5.5
 ```
