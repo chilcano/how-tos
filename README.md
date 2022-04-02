@@ -20,7 +20,7 @@ Repository with technical indications to install, configure any interesting stuf
 14. [File sharing through Samba(SMB)](doc/install_and_config_samba.md)
 15. Cloud and Infrastructure as Code (IaC) examples:
    - [Terraforms examples](doc/iac_terraform_examples.md)
-   - [CloudFormation examples](doc/iac_loudformation_examples.md)
+   - [CloudFormation examples](doc/iac_cloudformation_examples.md)
 16. [Install TightVNC - VNC remote access on Ubuntu 20.04](doc/install_tightvnc.md)
 17. [Install Apache Guacamole - Remote access Gateway on Ubuntu 20.04](doc/install_apache_guacamole.md)
 18. [Create booteable USB Ubuntu](doc/booteable_usb_on_ubuntu.md)  

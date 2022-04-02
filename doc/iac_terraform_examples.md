@@ -2,7 +2,7 @@
 
 ## Guides
 
-1. [Where is the issue?](aws-terraform-where-is-the-issue/) 
+1. [Where is the issue?](../aws-terraform-where-is-the-issue/) 
 
 2. [Creating an Affordable Remote DevOps Desktop on AWS using Terraform](https://github.com/chilcano/affordable-remote-desktop/tree/main/resources/cloudformation)
 
