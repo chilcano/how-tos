@@ -10,6 +10,6 @@
 
 4. DevOpsPlayground - Hands-on with MTLS Authentication for Microservices
   - [MTLS Applications](https://github.com/chilcano/mtls-apps-examples)
-  - [Terraform Infrastructure](https://github.com/DevOpsPlayground/Hands-on-with-TLS-Authentication-for-Microservices-Infra)
+  - [Terraform Infrastructure](https://github.com/chilcano/Hands-on-with-TLS-Authentication-for-Microservices-Infra)
 
 5. [Deploying BPM ProcessMaker 4 on AWS using Terraform](https://github.com/chilcano/bpm-processmaker-aws)
