@@ -1,10 +1,8 @@
 # Setup the Python in Mac OSX
 
-
 __References:__
 
 - [Python Development Environment on Mac OS X Yosemite 10.10](https://hackercodex.com/guide/python-development-environment-on-mac-osx)
-
 
 __1) Pre-installed Python in Mac OSX__
 
