@@ -5,17 +5,18 @@ This guide will work on Ubuntu > 20.x
 ## 1. Install Python3, Pip and dev tools
 
 
-If you want to installa minimum packages and dependencies, then install python and pip.
+If you want to install a minimum packages and dependencies, then install python and pip only.
 ```sh
 $ sudo apt -yqq install python3 python3-pip 
 ```
 
-
+But if you want full python installation, then run this:
 ```sh
 $ sudo apt -yqq install python3 python3-pip build-essential libssl-dev libffi-dev python3-dev python3-venv 
 ```
 
-Check installed packages and modules.
+
+Let's check packages and modules in a minimum python installation.
 ```sh
 $ python3 -V
 Python 3.9.7
@@ -26,8 +27,6 @@ pip 20.3.4 from /usr/lib/python3/dist-packages/pip (python 3.9)
 $ pip list | wc -l
 13
 ```
-
-
 
 ## 2. Working with Pip and virtual environments
 
@@ -103,7 +102,7 @@ $ source .venv/bin/activate
 ```
 And if you want to disable, just run `deactivate`.   
 
-Now, install a specific module in the project directory.
+Now, install any module you want in the project directory.
 ```sh
 $ pip install flask
 ```
@@ -160,6 +159,43 @@ Werkzeug==2.1.2
 zipp==3.8.0
 ```
 
+### 2.6. Installing the modules from requirements file
+
+```sh
+$  pip -q install -r requirements.txt
+```
+
+### 2.7. List and update outdated modules 
+
+```sh
+$  pip list --outdated
+``` 
+In this example, you will see:
+```sh
+Package    Version Latest Type
+---------- ------- ------ -----
+setuptools 62.3.4  62.6.0 wheel
+```
+
+Now, you can update those modules:
+```sh
+$ pip install -U setuptools
+```
+Or using the `requirements.txt` file:
+```sh
+$ pip install -U -r requirements.txt
+```
+Once updated, generate an updated `requirements.txt` file.
+```sh
+$ pip freeze > requirements.txt
+```
+
+### 2.8. Check for missing dependencies
+
+```sh
+$ python -m pip check
+``` 
+
 ## 3. Configuring VS Code to work with Python
 
 Recommended extensions:
@@ -168,4 +204,5 @@ Recommended extensions:
 2. yyy
 3. zzzz
 
-
+ssh -L [LOCAL_IP:]LOCAL_PORT:DESTINATION:DESTINATION_PORT [USER@]SSH_SERVER
+ssh -L 8000:3.8.236.219:80 bitnami@3.8.236.219 -i ~/.ssh/tmpkey2

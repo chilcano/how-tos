@@ -6,9 +6,9 @@ Repository with technical indications to install, configure any interesting stuf
 
 1. [Install Ardour in Ubuntu 20.04](doc/ardour_in_ubuntu20.04.md)
 2. [NewPassword Generator Java test](src/NewPasswordGenerator.java)
-3. [Setup Python in OSX](doc/python_osx.md)
-4. [Setup Python in Linux](doc/python_linux.md)
-5. [Simple XML Parser in Python](doc/python_xml_parser.md)
+3. [Python guides and samples](doc/python_docs_samples.md)
+4. xyz
+5. pqr
 6. [Customizing/styling a Windows and Linux Prompt](doc/styled_win_linux_prompt.md) 
 7. [Install patched fonts (with glyphs) required for styled Win/Linux Prompts and modern Terminals](doc/patched_fonts.md)
 8. [Working with TMux](doc/working_with_tmux.md)
