@@ -4,7 +4,7 @@
 
 The current source repo is `repo_source` and contains:
 
-´´´sh
+```sh
 repo_source
 ├── .gitignore
 ├── file_1
@@ -19,19 +19,20 @@ repo_source
 └── subfolder_2
     ├── file_5
     └── file_6
-´´´
+```
 
 We do want to move all `subfolder_1`'s content in a new repository called `repo_target` preserving and updating the Git history according changes done in paths.  
 The new target repository `repo_target` will contain the next files and directories:
-´´´sh
+
+```sh
 repo_target
-  file_3
-  file_4
-  subfolder_1a
-      file_p
-      file_q
-      file_r
-´´´
+├── file_3
+├── file_4
+└── subfolder_1a
+    ├── file_p
+    ├── file_q
+    └── file_r
+```
 
 ## Steps
 
