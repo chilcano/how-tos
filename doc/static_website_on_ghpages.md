@@ -38,7 +38,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_creat
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_publish_site.sh | bash
 ```  
 
-And these steps are more detailed:
+And these next steps are more detailed:
 
 #### 3.1. Run a local Hugo site
 
