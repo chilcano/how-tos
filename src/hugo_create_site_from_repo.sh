@@ -4,7 +4,7 @@
 
 printf "\n"
 echo "###############################################################"
-echo "#   Creating a website with Hugo from existing GitHub repo    #"
+echo "#   Create a website with Hugo from existing GitHub repo      #"
 echo "###############################################################"
 
 # Ref: 

@@ -23,18 +23,22 @@ RUBYOPT=-W0 JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch
 
 ### 3. Host a site on GitHub Pages and Hugo.  
 
-Install Hugo and GitHub tools:    
+The general steps are:
+
+1. Install Hugo and GitHub tools:    
 ```sh
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_setting_in_linux.sh | bash
 ```   
-Host an existing GitHub Pages repo using Hugo:   
+2. Create a site from an existing GitHub Pages repo using Hugo (script bootstrap a fresh Hugo site from a Git repo, dirs such as `ghp-content` and `ghp-scripts` will be created):   
 ```sh
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_dpio_create.sh | bash
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_create_site_from_repo.sh | bash
 ```  
-Publish generated Hugo content in a specific GitHub Pages branch:   
+3. Publish generated Hugo content in a specific GitHub Pages branch (script must be executed in root dir):   
 ```sh
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_dpio_update.sh | bash
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_publish_site.sh | bash
 ```  
+
+And these steps are more detailed:
 
 #### 3.1. Run a local Hugo site
 
@@ -45,7 +49,7 @@ cd $HOME/gitrepos/ghpages-dpio/
 git checkout main
 ``` 
 
-##### Step 2: Deploy in memory the downloaded Hugo static website.
+##### Step 2: Run locally the downloaded Hugo static website.
 ```sh
 cd ghp-scripts
 // replace the IP address with yours
@@ -57,6 +61,8 @@ Then, the recommended way to serve locally the website is running `hugo` without
 ```sh
 hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/
 ```
+
+Other option is place the [hugo_run_locally.sh](src/hugo_run_locally.sh) in your root dir and run it.
 
 ##### Step 3: Regenerate the Hugo content.
 
@@ -141,9 +147,9 @@ drwxr-xr-x 8 rogerc rogerc 4096 Jun  4 15:17 .git/
 -rw-r--r-- 1 rogerc rogerc  186 Jun  4 14:49 README.md
 drwxr-xr-x 3 rogerc rogerc 4096 Jun  4 17:30 ghp-content/
 drwxr-xr-x 6 rogerc rogerc 4096 Jun  4 15:25 ghp-scripts/
--rwxr-xr-x 1 rogerc rogerc 2119 Jun  4 14:49 hugo_publish_holosec.sh*
+-rwxr-xr-x 1 rogerc rogerc 2119 Jun  4 14:49 hugo_publish_site.sh*
 
-./hugo_publish_holosec.sh 
+./hugo_publish_site.sh 
 ```
 
 ### Other topics

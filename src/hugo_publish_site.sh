@@ -71,3 +71,4 @@ git push --all
 
 printf "==> Returning to current dir. \n"
 cd ../
+
