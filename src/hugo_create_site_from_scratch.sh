@@ -1,6 +1,6 @@
 #!/bin/bash
 
-unset _GHUSER _GHSOURCE _GHDESTINATION _HUGOTHEME
+unset _GHUSER _GHDESTINATION _HUGOTHEME
 
 declare -a ARRAY_THEMES_REPO=(
 "https://github.com/calintat/minimal.git"
