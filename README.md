@@ -35,6 +35,6 @@ Repository with technical indications to install, configure any interesting stuf
 27. [Install AutoFirma Java App in Ubuntu 19.10](doc/install_autofirma_app_in_ubuntu19.10.md)
 28. [Installation of WSO2 MB, Apache Qpid, RabbitMQ and Apache ActiveMQ on CentOS](doc/install_wso2mb_qpid_rabbitmq_activemq.md)
 29. [Issue Certificates with MKCert](doc/issue_certs_with_mkcert.md)
-30. [Building static website with Jekyll or Hugo and hosted it on GitHub Pages](doc/ghpage_host_static_website.md)
+30. [Building static website with Jekyll or Hugo and hosted it on GitHub Pages](doc/ghpages_host_a_static_website.md)
 31. [Installing and using NMAP](doc/nmap_commands.md)
 32. [Installing and uninstalling IDE and DevOps Tools for multiple platforms](doc/ide_and_devops_tools.md)

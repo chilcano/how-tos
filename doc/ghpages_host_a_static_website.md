@@ -2,7 +2,6 @@
 
 ## Jekyll - Guides and scripts
 
-
 ### 1. [Install Jekyll in Linux](src/jekyll_setting_in_linux.sh). Tested in Ubuntu 18.04, above and Raspbian/Raspberry Pi OS.  
 
 It will install also Ruby, Ruby-dev, build-essential, zlib1g-dev, Gem, Bundler, etc.  
@@ -20,9 +19,7 @@ RUBYOPT=-W0 JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch
 
 ### 2. [Migration of GitHub Page site from Jekyll to Hugo](migrate_jekyll_to_hugo.md)  
 
-
 ## Hugo - Guides and scripts
-
 
 ### 1. Install Hugo and GitHub tools. 
 
@@ -49,7 +46,7 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_creat
 
 Use this script:
 ```sh
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_create_site_scratch.sh) -u=chilcano -d=ghpages-waskhar -t=hugo-theme-cactus
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_create_site_from_scratch.sh) -u=chilcano -d=ghpages-waskhar -t=hugo-theme-cactus
 ```
 
 ### 3. Run Hugo Site locally.
@@ -76,7 +73,10 @@ Then, the recommended way to serve locally the website is running `hugo` without
 hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/
 ```
 
-Other option is place the [hugo_run_locally.sh](src/hugo_run_locally.sh) in your root dir and run it.
+Other option is place the [hugo_run_locally.sh](../src/hugo_run_locally.sh) in your root dir and run it.
+```sh
+./hugo_publish_site.sh 
+```
 
 ### 4. Regenerate the Hugo content.
 
