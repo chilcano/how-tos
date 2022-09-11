@@ -11,11 +11,11 @@ declare -a ARRAY_THEMES_REPO=(
 "https://github.com/rhazdon/hugo-theme-hello-friend-ng.git"
 "https://github.com/panr/hugo-theme-terminal.git"
 "https://github.com/athul/archie.git"
-"https://github.com/colorchestra/smol"
 )
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_create_site_scratch.sh)
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_create_site_scratch.sh) -u=chilcano -d=ghpages-waskhar -t=hugo-theme-cactus
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_create_site_from_scratch.sh)
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_create_site_from_scratch.sh) -u=chilcano -d=ghpages-waskhar -t=hugo-theme-cactus
+# ./hugo_create_site_from_scratch.sh -u=chilcano -d=ghpages-waskhar -t=hugo-theme-cactus
 
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -76,6 +76,7 @@ rm -rf ${DIR_REPO}
 printf "==> Creating a fresh '${GH_REPO_TARGET}' GitHub repo with 'hub' using current dir as repo's name. \n"
 mkdir -p ${DIR_REPO}
 cd ${DIR_REPO}
+git config --global init.defaultBranch main
 git init
 hub create -d "GitHub Pages Site to host ${GH_REPO_TARGET}" ${GH_USER_OR_ORG}/${GH_REPO_TARGET}
 
@@ -100,8 +101,12 @@ EOF
 printf "==> Adding 'README.md' file. \n"
 cat << EOF > README.md
 * Website: [https://__${GH_USER_OR_ORG}__.github.io/__${GH_REPO_TARGET}__/](https://${GH_USER_OR_ORG}.github.io/${GH_REPO_TARGET}/) !  
-* This '${GH_USER_OR_ORG}/${GH_REPO_TARGET}' __main__ branch hosts the Hugo scripts.
+* The folder __${HUGO_SCRIPTS_DIR}/__ in __main__ branch of __${GH_REPO_TARGET}__ contains the Hugo scripts, themes and configurations.
 EOF
+
+printf "==> Adding hugo_run_locally.sh and hugo_publish_site.sh to main branch. \n"
+wget -q https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_publish_site.sh
+wget -q https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_run_locally.sh
 
 printf "==> Adding a new Hugo configuration file (config.toml) into '${GH_REPO_TARGET}/${HUGO_SCRIPTS_DIR}/'. \n"
 
@@ -110,7 +115,7 @@ rm -rf config.yaml config.yaml.bak config.toml
 cat << EOF > config.toml
 baseURL = "https://${GH_USER_OR_ORG}.github.io/${GH_REPO_TARGET}/"
 languageCode = "en-us"
-title = "Holistic Security"
+title = "Waskhar Project"
 theme = "hugo-theme-cactus"
 publishDir = "../${HUGO_CONTENT_DIR}/docs"
 #copyright = "Roger Carhuatocto"
@@ -183,7 +188,6 @@ paginate = 10
   name = "fab fa-linkedin"
   weight = 3
 EOF
-
 
 printf "\n"
 echo "---------------------------------------------------------------"
@@ -285,20 +289,17 @@ printf "\n"
 echo "---------------------------------------------------------------"
 echo " Serving the Hugo site over the LAN"
 echo "---------------------------------------------------------------"
-printf "==> Changing to '${HUGO_SCRIPTS_DIR}/' dir. \n"
-cd ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/
-
-printf "==> Serving the Hugo site over the LAN from '${DIR_REPO}' directory with different pre-installed Themes: \n"
-
-INSTALLED_THEMES_STRING="$(ls -d ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/*)"
-INSTALLED_THEMES_ARRAY=(${INSTALLED_THEMES_STRING})
-for theme in "${INSTALLED_THEMES_ARRAY[@]}"; do
-  themename="${theme##*/}"
-  printf "hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ -t=${themename} \n"
-done 
-
-printf "==> Serving the Hugo site using default 'hugo-theme-cactus' Theme: \n"
-printf "hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/ \n"
+ echo "==> In the root ${DIR_REPO}/ of your repo for main branch, run any of the next commands:"
+printf "hugo server --source ghp-scripts --bind=0.0.0.0 --baseURL=http://<Your-IP-Address>:1313/ -D \n"
+printf "./hugo_run_locally.sh \n"
 
 printf "==> Getting back to initial directory. \n"
 printf "cd ${DIR_CURRENT} \n\n"
+
+printf "\n"
+echo "---------------------------------------------------------------"
+echo " Enable GitHub Page to serve the Hugo Site"
+echo "---------------------------------------------------------------"
+
+printf "==> Enable this Site in GitHub Pages configuration page. Once configurated, wait 5 minutes to refresh changes: \n"
+printf "https://github.com/${GH_USER_OR_ORG}/${GH_REPO_TARGET}/settings/pages \n\n"

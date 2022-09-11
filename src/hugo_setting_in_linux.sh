@@ -4,7 +4,7 @@ echo "##########################################################"
 echo "#    Installing Hugo binary cross-platform on Ubuntu     #"
 echo "##########################################################"
 
-# curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_setting_in_linux.sh | bash
+# curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_setting_in_linux.sh | bash
 
 printf ">> Installing tools. \n\n"
 sudo apt -yqq install curl wget jq unzip git

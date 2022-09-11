@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_publish_site.sh)
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_publish_site.sh)
 
 # Ref: https://gohugo.io/hosting-and-deployment/hosting-on-github/
 

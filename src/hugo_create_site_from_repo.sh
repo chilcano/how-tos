@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_create_site_from_repo.sh)
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_create_site_from_repo.sh)
 
 printf "\n"
 echo "###############################################################"
