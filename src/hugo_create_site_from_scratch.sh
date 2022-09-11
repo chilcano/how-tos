@@ -125,29 +125,26 @@ paginate = 10
 #summaryLength = 2
 
 [params]
-  colortheme = "classic"          # dark, light, white, or classic
-  rss = true                      # generate rss feed. default value is false
-  googleAnalyticsAsync = true     # use asynchronous tracking. Synchronous tracking by default
+  colortheme = "classic"                      # dark, light, white, or classic
+  rss = true                                  # generate rss feed. default value is false
+  googleAnalyticsAsync = true                 # use asynchronous tracking. Synchronous tracking by default
   description = "Proyecto de digitalización y mejora de la trazabilidad a lo largo de la cadena de suministro de la Madera."
-  #mainSection = "posts"          # your main section
-  showAllPostsOnHomePage = false  # default
-  postsOnHomePage = 10            # this option will be ignored if showAllPostsOnHomePage is set to true
-  tagsOverview = true             # show tags overview by default.
-  showProjectsList = false        # show projects list by default (if projects data file exists).
+  #mainSection = "posts"                      # your main section
+  showAllPostsOnHomePage = false              # default
+  postsOnHomePage = 10                        # this option will be ignored if showAllPostsOnHomePage is set to true
+  tagsOverview = true                         # show tags overview by default.
+  showProjectsList = false                    # show projects list by default (if projects data file exists).
   projectsUrl = "https://github.com/chilcano" # title link for projects list
   dateFormat = "2006-01-02"
   # Post page settings
   show_updated = false 
   [params.comments]
     enabled = true 
-    engine = "disqus"             # more supported engines will be added.
+    engine = "disqus"                         # more supported engines will be added.
 
 [[params.social]]
   name = "github"
-  link = "https://github.com/chilcano"
-[[params.social]]
-  name = "linkedin"
-  link = "https://www.linkedin.com/in/chilcano/"
+  link = "https://github.com/waskhar-project"
 [[params.social]]
   name = "twitter"
   ink = "https://twitter.com/chilcano"  
@@ -176,17 +173,13 @@ paginate = 10
   weight = 4
 
 [[menu.icon]]
-  url = "https://github.com/chilcano/"
+  url = "https://github.com/waskhar-project/"
   name = "fab fa-github"
   weight = 1
 [[menu.icon]]
   url = "https://twitter.com/chilcano/"
   name = "fab fa-twitter"
   weight = 2
-[[menu.icon]]
-  url = "https://www.linkedin.com/in/chilcano/"
-  name = "fab fa-linkedin"
-  weight = 3
 EOF
 
 printf "\n"
@@ -199,14 +192,10 @@ printf "==> Pre-loading ${#ARRAY_THEMES_REPO[@]} Hugo Themes. \n"
 for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
   tr_fullname="${tr_url##*/}"
   tr_name="${tr_fullname%.*}"
-  printf "> Cloning the '${tr_name}' Hugo Theme. \n"
   git clone ${tr_url} ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name} --quiet
-  printf "> Removing '.git/', '.github/' and '.gitignore' of '${tr_name}'. \n"
   rm -rf ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/.git
-  printf "> Copying existing configuration of '${tr_name}' included in the theme. \n"
   cp ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/exampleSite/config.toml config.toml.${tr_name}
 done
-
 
 printf "\n"
 echo "---------------------------------------------------------------"
@@ -226,7 +215,7 @@ printf "==> Creating the 'main' branch. \n"
 git branch -M main
 
 printf "==> Pushing to remote repo in 'main' branch. \n"
-git push -u origin main
+git push -u origin main --quiet
 
 printf "\n"
 echo "---------------------------------------------------------------"
@@ -280,18 +269,18 @@ git commit -m "Publishing Hugo content to ${HUGO_CONTENT_BRANCH}" --quiet; cd ..
 
 # If the changes in your local '${HUGO_CONTENT_BRANCH}' branch look alright, push them to the remote repo.
 printf "==> Pushing to remote repo in '${HUGO_CONTENT_BRANCH}' branch. \n"
-git push origin ${HUGO_CONTENT_BRANCH}
+git push origin ${HUGO_CONTENT_BRANCH} --quiet
 
 printf "==> Switching to 'main' branch. \n"
 git checkout main --quiet
 
 printf "\n"
 echo "---------------------------------------------------------------"
-echo " Generate new content"
+echo " Generate new content (post)"
 echo "---------------------------------------------------------------"
-printf "==> Adding a new post to the Hugo site. \n"
-cd ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/
-hugo new posts/hello-waskhar-project.md
+echo "* Switch to main branch: git checkout main --quiet"
+echo "* Goto Hugo Scripts folder: ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/"
+echo "* Run hugo to generate new content: hugo new posts/hello-waskhar-project.md"
 
 printf "\n"
 echo "---------------------------------------------------------------"
