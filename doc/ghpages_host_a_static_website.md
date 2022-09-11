@@ -38,18 +38,25 @@ Installing GitHub Hub:
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_create_site_from_repo.sh | bash
 ```
 
-#### 2.2. From scratch.
+#### 2.2. From scratch and initial pages.
 
-1. Create an empty GitHub repo.
-2. Clone it, switch to `main` branch and inside to create `ghp_scripts` folder, `README.md` and `.gitignore` files. The `ghp_scripts` folder will have the Hugo scripts and configuration files.
-3. Create a new branch that will contain the Hugo content.
-3. Create an initial Hugo Site
-4. ...
+The next script, will:
+1. Create empty GitHub repo. 
+2. Bootstrap an initial Hugo Site, it will load a Hugo Theme and will create a first post.
+3. Create `ghp-script` folder where all Hugo scripts, configuration and theme will be generated.
+4. Create `ghp-content` Git branch where all Hugo static content will be generated.
+5. Push the code and publish the site to remote GitHub repo.
 
-Use this script:
+Two bash util scripts will be added to `main` branch, first one to run and serve the Hugo Site in your local computer and the second one to publish content to GitHub remote repo.
+
+Use this script only one time:
 ```sh
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_create_site_from_scratch.sh) -u=chilcano -d=ghpages-waskhar -t=hugo-theme-cactus
 ```
+
+The above two bash scripts added should be used as many time as you need it:
+* Run your local Hugo server.
+* Publish new content to your Hugo Site.
 
 ### 3. Run Hugo Site locally.
 

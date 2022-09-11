@@ -100,7 +100,7 @@ EOF
 
 printf "==> Adding 'README.md' file. \n"
 cat << EOF > README.md
-* Website: [https://__${GH_USER_OR_ORG}__.github.io/__${GH_REPO_TARGET}__/](https://${GH_USER_OR_ORG}.github.io/${GH_REPO_TARGET}/) !  
+* Website: [https://__${GH_USER_OR_ORG}__.github.io/__${GH_REPO_TARGET}__/](https://${GH_USER_OR_ORG}.github.io/${GH_REPO_TARGET}/) 
 * The folder __${HUGO_SCRIPTS_DIR}/__ in __main__ branch of __${GH_REPO_TARGET}__ contains the Hugo scripts, themes and configurations.
 EOF
 
@@ -254,7 +254,7 @@ echo " ${HUGO_CONTENT_BRANCH} branch - First push into branch"
 echo "---------------------------------------------------------------"
 
 printf "==> Delete existing Hugo content dir. \n"
-rm -rf ${DIR_REPO}/${HUGO_CONTENT_BRANCH}
+rm -rf ${DIR_REPO}/${HUGO_CONTENT_DIR}
 
 printf "==> Worktree allows you to have multiple branches of the same local repo to be checked out in different dirs. \n"
 git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
@@ -262,17 +262,17 @@ git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CON
 printf "==> Changing to '${HUGO_SCRIPTS_DIR}/' dir. \n"
 cd ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/
 
-printf "==> Generating Hugo content in <root>/${HUGO_CONTENT_DIR}/docs dir according to 'config.toml'. \n"
+printf "==> Generating Hugo content in ${HUGO_CONTENT_DIR}/docs dir according to 'config.toml'. \n"
 hugo
 
 printf "==> Adding 'README.md' file to 'HUGO_CONTENT_BRANCH'. \n"
 cat << EOF > README.md
-* Website: [https://__${GH_USER_OR_ORG}__.github.io/__${GH_REPO_TARGET}__/](https://${GH_USER_OR_ORG}.github.io/${GH_REPO_TARGET}/) !   
+* Website: [https://__${GH_USER_OR_ORG}__.github.io/__${GH_REPO_TARGET}__/](https://${GH_USER_OR_ORG}.github.io/${GH_REPO_TARGET}/) 
 * This __${HUGO_CONTENT_BRANCH}__ branch hosts the Hugo content.
 EOF
 mv -f README.md ${DIR_REPO}/${HUGO_CONTENT_DIR}/.
 
-printf "==> Adding Hugo content only to local repo. \n"
+printf "==> Adding initial Hugo content only to local repo. \n"
 cd ../${HUGO_CONTENT_DIR}; git add .
 
 printf "==> Commit Hugo content to local repo. \n"
@@ -287,19 +287,32 @@ git checkout main --quiet
 
 printf "\n"
 echo "---------------------------------------------------------------"
+echo " Generate new content"
+echo "---------------------------------------------------------------"
+printf "==> Adding a new post to the Hugo site. \n"
+cd ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/
+hugo new posts/hello-waskhar-project.md
+
+printf "\n"
+echo "---------------------------------------------------------------"
 echo " Serving the Hugo site over the LAN"
 echo "---------------------------------------------------------------"
- echo "==> In the root ${DIR_REPO}/ of your repo for main branch, run any of the next commands:"
-printf "hugo server --source ghp-scripts --bind=0.0.0.0 --baseURL=http://<Your-IP-Address>:1313/ -D \n"
-printf "./hugo_run_locally.sh \n"
+echo "==> In the root ${DIR_REPO}/ of your repo for main branch, run any of the next commands:"
+echo "* hugo server --source ghp-scripts --bind=0.0.0.0 --baseURL=http://<Your-IP-Address>:1313/ -D"
+echo "* ./hugo_run_locally.sh"
 
-printf "==> Getting back to initial directory. \n"
-printf "cd ${DIR_CURRENT} \n\n"
+printf "\n"
+echo "---------------------------------------------------------------"
+echo " Publish the new generated content to GitHub Pages repo"
+echo "---------------------------------------------------------------"
+echo '* Run the script: ./hugo_publish_site.sh -m "New content published"'
 
 printf "\n"
 echo "---------------------------------------------------------------"
 echo " Enable GitHub Page to serve the Hugo Site"
 echo "---------------------------------------------------------------"
-
 printf "==> Enable this Site in GitHub Pages configuration page. Once configurated, wait 5 minutes to refresh changes: \n"
-printf "https://github.com/${GH_USER_OR_ORG}/${GH_REPO_TARGET}/settings/pages \n\n"
+echo "* https://github.com/${GH_USER_OR_ORG}/${GH_REPO_TARGET}/settings/pages \n\n"
+
+printf "==> Getting back to initial directory. \n"
+printf "cd ${DIR_CURRENT} \n"
