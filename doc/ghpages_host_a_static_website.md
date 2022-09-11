@@ -23,9 +23,12 @@ RUBYOPT=-W0 JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch
 
 ### 1. Install Hugo and GitHub tools. 
 
+Installing Hugo extended version:
 ```sh
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_setting_in_linux.sh | bash
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_setting_in_linux.sh) -a=ARM64|64bit -b=tar.gz|deb -d=extended
 ```   
+Installing GitHub Hub:
+
 
 ### 2. Create a Hugo site in GitHub Pages.
 
@@ -39,7 +42,6 @@ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_creat
 
 1. Create an empty GitHub repo.
 2. Clone it, switch to `main` branch and inside to create `ghp_scripts` folder, `README.md` and `.gitignore` files. The `ghp_scripts` folder will have the Hugo scripts and configuration files.
-3. 
 3. Create a new branch that will contain the Hugo content.
 3. Create an initial Hugo Site
 4. ...
