@@ -1,6 +1,6 @@
 # Static website with Jekyll and Hugo and hosted on GiHub Pages
 
-## Guides and scripts
+## Jekyll - Guides and scripts
 
 
 ### 1. [Install Jekyll in Linux](src/jekyll_setting_in_linux.sh). Tested in Ubuntu 18.04, above and Raspbian/Raspberry Pi OS.  
@@ -21,35 +21,49 @@ RUBYOPT=-W0 JEKYLL_ENV=production bundle exec jekyll serve --incremental --watch
 ### 2. [Migration of GitHub Page site from Jekyll to Hugo](migrate_jekyll_to_hugo.md)  
 
 
-### 3. Host a site on GitHub Pages and Hugo.  
+## Hugo - Guides and scripts
 
-The general steps are:
 
-1. Install Hugo and GitHub tools:    
+### 1. Install Hugo and GitHub tools. 
+
 ```sh
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_setting_in_linux.sh | bash
 ```   
-2. Create a site from an existing GitHub Pages repo using Hugo (script bootstrap a fresh Hugo site from a Git repo, dirs such as `ghp-content` and `ghp-scripts` will be created):   
+
+### 2. Create a Hugo site in GitHub Pages.
+
+#### 2.1. From another existing GitHub Pages repo.
+
 ```sh
 curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_create_site_from_repo.sh | bash
-```  
-3. Publish generated Hugo content in a specific GitHub Pages branch (script must be executed in root dir):   
+```
+
+#### 2.2. From scratch.
+
+1. Create an empty GitHub repo.
+2. Clone it, switch to `main` branch and inside to create `ghp_scripts` folder, `README.md` and `.gitignore` files. The `ghp_scripts` folder will have the Hugo scripts and configuration files.
+3. 
+3. Create a new branch that will contain the Hugo content.
+3. Create an initial Hugo Site
+4. ...
+
+Use this script:
 ```sh
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_publish_site.sh | bash
-```  
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_create_site_scratch.sh) -u=chilcano -d=ghpages-waskhar -t=hugo-theme-cactus
+```
 
-And these next steps are more detailed:
+### 3. Run Hugo Site locally.
 
-#### 3.1. Run a local Hugo site
+These steps work for any Hugo site hosted in a GitHub repo, only change the `data-plane/ghpages-dpio` for your repository.
 
-##### Step 1: Download an existing Hugo static website.
+1. Download an existing Hugo static website.
 ```sh
 git clone https://github.com/data-plane/ghpages-dpio $HOME/gitrepos/ghpages-dpio/
 cd $HOME/gitrepos/ghpages-dpio/
 git checkout main
 ``` 
 
-##### Step 2: Run locally the downloaded Hugo static website.
+2. Run locally the downloaded Hugo static website.
 ```sh
 cd ghp-scripts
 // replace the IP address with yours
@@ -64,7 +78,7 @@ hugo server -D --bind=0.0.0.0 --baseURL=http://192.168.1.59:1313/
 
 Other option is place the [hugo_run_locally.sh](src/hugo_run_locally.sh) in your root dir and run it.
 
-##### Step 3: Regenerate the Hugo content.
+### 4. Regenerate the Hugo content.
 
 Generally, the Hugo content is generated executing the `hugo` command from `ghp-scripts` or from directory containing `config.toml`.   
 To view or publish a website, the new content should be generated. If you change the Hugo config, also you should re-generated again, to do that, from `ghp-scripts/` you should execute `hugo` command to re-generate the static content under `ghp-content`.
@@ -91,7 +105,7 @@ Start building sites …
 Total in 633 ms
 ``` 
 
-##### Step 4: Create new content.
+### 5. Create new content.
 
 All new content must be created under `ghp-scripts/content/` manually or using `hugo` command. Under `ghp-scripts/content/` we will be able to create pages and post and upload its static content such as images, css, javascript etc.
 
@@ -128,10 +142,8 @@ hugo new post/my-test-post.md
 
 /home/rogerc/repos/ghpages-holosecio/ghp-scripts/content/post/my-test-post.md created
 ```
-Repeat __Step 3__.
 
-
-##### Step 5: Publish the new content.
+### 6. Publish the new generated content.
 
 Only commit all changes to GitHub pages repository. In this case we have to commit changes to `ghp-scripts` branch to back up changes and commit `ghp-content` to reflect changes in the website. To do that, I've created a bash script to automate this process, feel free to use it:
 
@@ -152,7 +164,12 @@ drwxr-xr-x 6 rogerc rogerc 4096 Jun  4 15:25 ghp-scripts/
 ./hugo_publish_site.sh 
 ```
 
-### Other topics
+You can download the script and execute it in root dir of your repo once generated Hugo content in a specific GitHub Pages branch.    
+```sh
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_publish_site.sh | bash
+```  
+
+## Other topics
 
 1. Tags - https://www.chuxinhuang.com/blog/noobs-guide-to-hugo/
 2. New Laytour and Type - https://discourse.gohugo.io/t/how-does-hugo-know-which-layout-to-use/14069/2
