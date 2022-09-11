@@ -288,13 +288,13 @@ echo " Serving the Hugo site over the LAN"
 echo "---------------------------------------------------------------"
 echo "==> In the root ${DIR_REPO}/ of your repo for main branch, run any of the next commands:"
 echo "* hugo server --source ghp-scripts --bind=0.0.0.0 --baseURL=http://<Your-IP-Address>:1313/ -D"
-echo "* ./hugo_run_locally.sh"
+echo "* source hugo_run_locally.sh"
 
 printf "\n"
 echo "---------------------------------------------------------------"
 echo " Publish the new generated content to GitHub Pages repo"
 echo "---------------------------------------------------------------"
-echo '* Run the script: ./hugo_publish_site.sh -m "New content published"'
+echo '* Run the script: source hugo_publish_site.sh -m "New post published"'
 
 printf "\n"
 echo "---------------------------------------------------------------"
@@ -304,4 +304,4 @@ printf "==> Enable this Site in GitHub Pages configuration page. Once configurat
 echo "* https://github.com/${GH_USER_OR_ORG}/${GH_REPO_TARGET}/settings/pages \n\n"
 
 printf "==> Getting back to initial directory. \n"
-printf "cd ${DIR_CURRENT} \n"
+cd ${DIR_CURRENT}
