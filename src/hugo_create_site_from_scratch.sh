@@ -32,7 +32,7 @@ while [ $# -gt 0 ]; do
       _HUGOTHEME="${1#*=}"
       ;;
     --help|-h)
-      printf "Migrate Jekyll GitHub Pages site to Hugo."
+      printf "Create an initial GitHub Pages site with Hugo."
       exit 0
       ;;
     *)
@@ -80,16 +80,8 @@ git config --global init.defaultBranch main
 git init
 hub create -d "GitHub Pages Site to host ${GH_REPO_TARGET}" ${GH_USER_OR_ORG}/${GH_REPO_TARGET}
 
-#mkdir -p ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/
-#mkdir -p ${DIR_REPO}/${HUGO_CONTENT_DIR}/
-
 printf "==> Creating a new Hugo Site locally. \n"
 hugo new site ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/
-
-printf "\n"
-echo "---------------------------------------------------------------"
-echo " Main branch - Configuring GitHub Pages repo"
-echo "---------------------------------------------------------------"
 
 printf "==> Adding '.gitignore' file. \n"
 cat << EOF > .gitignore
@@ -107,7 +99,7 @@ EOF
 printf "==> Adding hugo_run_locally.sh and hugo_publish_site.sh to main branch. \n"
 wget -q https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_publish_site.sh
 wget -q https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_run_locally.sh
-
+chmod +x hugo_*.sh
 printf "==> Adding a new Hugo configuration file (config.toml) into '${GH_REPO_TARGET}/${HUGO_SCRIPTS_DIR}/'. \n"
 
 cd ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/
@@ -214,7 +206,7 @@ git commit -m "First commit. Updating Hugo scripts folder." --quiet
 printf "==> Creating the 'main' branch. \n"
 git branch -M main
 
-printf "==> Pushing to remote repo in 'main' branch. \n"
+printf "==> Pushing to remote repo into 'main' branch. \n"
 git push -u origin main --quiet
 
 printf "\n"
@@ -229,12 +221,12 @@ printf "==> Removes everything to its initial state. \n"
 git reset --hard
 
 printf "==> Commit an empty orphan branch. \n"
-git commit --allow-empty -m "Second commit. Initializing ${HUGO_CONTENT_BRANCH} folder."
+git commit --allow-empty -m "Initializing ${HUGO_CONTENT_BRANCH} folder."
 
 printf "==> Push to remote origin from '${HUGO_CONTENT_BRANCH}' folder. \n"
-git push origin ${HUGO_CONTENT_BRANCH}
+git push -u origin ${HUGO_CONTENT_BRANCH} --quiet
 
-printf "==> Switching to 'main' branch. \n"
+printf "==> Switching back to 'main' branch. \n"
 git checkout main --quiet
 
 printf "\n"
@@ -248,11 +240,8 @@ rm -rf ${DIR_REPO}/${HUGO_CONTENT_DIR}
 printf "==> Worktree allows you to have multiple branches of the same local repo to be checked out in different dirs. \n"
 git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
 
-printf "==> Changing to '${HUGO_SCRIPTS_DIR}/' dir. \n"
-cd ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/
-
 printf "==> Generating Hugo content in ${HUGO_CONTENT_DIR}/docs dir according to 'config.toml'. \n"
-hugo
+cd ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/; hugo 
 
 printf "==> Adding 'README.md' file to 'HUGO_CONTENT_BRANCH'. \n"
 cat << EOF > README.md
@@ -294,7 +283,7 @@ printf "\n"
 echo "---------------------------------------------------------------"
 echo " Publish the new generated content to GitHub Pages repo"
 echo "---------------------------------------------------------------"
-echo '* Run the script: source hugo_publish_site.sh -m "New post published"'
+echo '* Run the script: source hugo_publish_site.sh -m="New post published"'
 
 printf "\n"
 echo "---------------------------------------------------------------"
