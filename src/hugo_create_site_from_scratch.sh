@@ -152,7 +152,7 @@ paginate = 10
   name = "Home"
   weight = 1
 [[menu.main]]
-  url = "/post/"
+  url = "/posts/"
   name = "Posts"
   weight = 2
 [[menu.main]]
@@ -269,7 +269,8 @@ echo " Generate new content (post)"
 echo "---------------------------------------------------------------"
 echo "* Switch to main branch: git checkout main --quiet"
 echo "* Goto Hugo Scripts folder: ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/"
-echo "* Run hugo to generate new content: hugo new posts/hello-waskhar-project.md"
+echo "* Run hugo to create a new post: hugo new posts/post-01.md"
+echo "* Run hugo to create a new page: hugo new about.md"
 
 printf "\n"
 echo "---------------------------------------------------------------"
