@@ -36,8 +36,9 @@ Repository with technical indications to install, configure any interesting stuf
 28. [Installation of WSO2 MB, Apache Qpid, RabbitMQ and Apache ActiveMQ on CentOS](doc/install_wso2mb_qpid_rabbitmq_activemq.md)
 29. [Issue Certificates with MKCert](doc/issue_certs_with_mkcert.md)
 30. GitHub Pages - Building static website with Jekyll and Hugo:
-  - [Host static web with Jekyll](doc/github_pages_host_a_static_web_with_jekyll.md)
-  - [Host static web with Hugo](doc/github_pages_host_a_static_web_with_hugo.md)
-  - [Publish new content with Hugo](doc/github_pages_publish_content_with_hugo.md)
+  - [Create static web with Jekyll](doc/github_pages_jekyll_create_a_static_web.md)
+  - [Create static web with Hugo](doc/github_pages_hugo_create_a_static_web.md)
+  - [Publish new content with Hugo](doc/github_pages_hugo_publish_content.md)
+  - [Publish new content to Waskhar Project](doc/github_pages_hugo_publish_content_waskhar.md)
 31. [Installing and using NMAP](doc/nmap_commands.md)
 32. [Installing and uninstalling IDE and DevOps Tools for multiple platforms](doc/ide_and_devops_tools.md)
