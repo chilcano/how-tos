@@ -48,6 +48,13 @@ In Windows, download `hugo_extended_<version>_windows-amd64.zip` from [https://g
 ```
 git clone https://github.com/<github-user-org>/<hugo-repo-name>.git
 ```
+Example:
+```sh
+git clone https://github.com/waskhar-project/waskhar-web.git
+```
+Where:
+* `<github-user-org>` = `waskhar-project`
+* `<hugo-repo-name>` = `waskhar-web`
 
 ### 2. Add new content in your local copy
 
@@ -55,11 +62,14 @@ git clone https://github.com/<github-user-org>/<hugo-repo-name>.git
 cd <hugo-repo-name>/ghp-scripts/
 
 # Run hugo to create a new post
-hugo new posts/post-01.md
+hugo new posts/articulo-01-evaluacion-bpms.md
 
 # Run hugo to create a new page
 hugo new about.md
 ```
+__2.1. Updating the pages__  
+
+Only open the pages (`posts/articulo-01-evaluacion-bpms.md` or `about.md`) with your favorite editor (notepad++, notepadqq, VSCode, etc.) and add the content.
 
 ### 3. Check added content in your computer by running Hugo server
 
@@ -73,5 +83,3 @@ source hugo_run_locally.sh
 ```
 source hugo_publish_site.sh -m="New content added"
 ```
-
-
