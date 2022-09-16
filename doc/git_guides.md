@@ -13,3 +13,11 @@ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/g
 ```
 
 4. [Create new Git repo from sub-folder of existing repo preserving history](git_subfolder_to_repository.md)
+
+5. Install Git and Bash emulator in Windows.
+  - [Git for Windows](https://gitforwindows.org/)
+  - Download `Git-<version>-64-bit.exe`  from [https://github.com/git-for-windows/git/releases/](https://github.com/git-for-windows/git/releases/) or [https://git-scm.com/download/win](https://git-scm.com/download/win), execute it and follow all instructions.
+
+6. Install GitHub Hub for Windows.  
+  - [GitHub Hub](https://hub.github.com/) is a extension to Git CLI that helps to manage GitHub from your Terminal.
+  - Download `hub-windows-amd64-<version>.zip` from [https://github.com/github/hub/releases](https://github.com/github/hub/releases), unzip it and install it in your system.

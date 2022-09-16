@@ -18,17 +18,30 @@ This is the single task to be performed only one time. The next points 2 and 3 a
 
 3. A computer with:
 
-- Internet access.
-- A Text Editor: Notepad++ (Windows), Notepadqq (Linux), or VSCode (Windows/Linux).
-- A Terminal (Windows or Linux Terminal) where we can execute Git commands and Bash scripts. If you are going to use VSCode, then you don't need a Terminal.
-- Git and GitHub Hub if you are going to create Web sites from scratch.
-- Hugo. Install Hugo in Linux using this script:
+- A Text Editor.  
+Notepad++ (Windows), Notepadqq (Linux), or VSCode (Windows/Linux).
+
+- A Terminal (Windows or Linux Terminal) where we can execute Git commands and Bash scripts.  
+In Linux a Terminal is always available, however in Windows the existing one has limitations. My recommendation is to install [Git Bash](https://gitforwindows.org/) which already includes Git CLI, a Bash emulator (Terminal) and has smoothly integration with Windows. Download `Git-<version>-64-bit.exe`  from [https://github.com/git-for-windows/git/releases/](https://github.com/git-for-windows/git/releases/), execute it and follow all instructions.
+
+- Git and GitHub Hub if you are going to create Web sites from scratch.  
+In Linux, use this script:
+```sh
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_and_hub_setting_in_linux.sh)
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_and_hub_setting_in_linux.sh) -u=<your-git-account-name> -e=<your-git-account-email>
+```  
+Install Git Windows using [Git Bash](https://gitforwindows.org/), installation process already explained above.  
+To install GitHub Hub in Windows, download `hub-windows-amd64-<version>.zip` from [https://github.com/github/hub/releases](https://github.com/github/hub/releases), unzip it and install it in your system. 
+
+- Hugo (extended version).  
+In Linux, install Hugo using this script:
 ```
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_setting_in_linux.sh) -a=64bit -b=deb -d=extended
 ```
+In Windows, download `hugo_extended_<version>_windows-amd64.zip` from [https://github.com/gohugoio/hugo/releases](https://github.com/gohugoio/hugo/releases), unzip it and install it in your system.
+
 
 ## Tasks
-
 
 ### 1. Download existing Waskhar Web
 
