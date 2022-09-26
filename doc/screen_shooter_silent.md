@@ -7,9 +7,11 @@ I've created a simple bash script to take screenshots of active windows silently
 > __Note:__  
 > __Ubuntu 22.04__ already takes screenshots silently by default. Below you can see the keyboard shortcuts to trigger different actions.
 
-
- ![](img/ubuntu-22.04-keyboard-shortcuts-1.png) | ![](img/ubuntu-22.04-keyboard-shortcuts-2.png) 
-
+<table><tr><td>
+ ![](img/ubuntu-22.04-keyboard-shortcuts-1.png) 
+</td><td>
+ ![](img/ubuntu-22.04-keyboard-shortcuts-2.png) 
+</td></tr></table>
 
 ## Steps
 
