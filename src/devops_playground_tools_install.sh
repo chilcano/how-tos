@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_playground_tools_install.sh) 
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/devops_playground_tools_install.sh) 
 
 echo "##########################################################"
 echo "####         Install DevOps Playground tools          ####"

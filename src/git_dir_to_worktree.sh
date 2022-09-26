@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_dir_to_worktree.sh) code-server-ec2
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/git_dir_to_worktree.sh) code-server-ec2
 
 if [[ "$1" == *\/* ]] || [[ "$1" == *\\* ]]
 then

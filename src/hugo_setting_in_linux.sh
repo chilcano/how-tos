@@ -8,7 +8,7 @@ echo "##########################################################"
 
 # source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_setting_in_linux.sh) -a=ARM64|64bit -b=tar.gz|deb -d=extended
 # ./hugo_setting_in_linux.sh -a=64bit -b=tar.gz -d=extended
-# curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_setting_in_linux.sh | bash
+# curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_setting_in_linux.sh | bash
 
 while [ $# -gt 0 ]; do
   case "$1" in

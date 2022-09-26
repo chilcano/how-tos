@@ -4,5 +4,5 @@
 * Script: [src/guacamole_install.sh](src/guacamole_install.sh)
 
 ```sh
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/guacamole_install.sh | bash
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/guacamole_install.sh | bash
 ```

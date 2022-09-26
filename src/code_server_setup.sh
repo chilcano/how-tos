@@ -9,7 +9,7 @@ VSCS_USER_DIR="${HOME}/.local/share/code-server/User"
 printf "\n==> Look&Feel and config \n"
 
 echo ">> Getting 'settings.json' and copying to '$VSCS_USER_DIR/settings.json'"
-wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/src/vscode/dot_config/Code/User/settings.json
+wget -q https://raw.githubusercontent.com/chilcano/how-tos/main/src/vscode/dot_config/Code/User/settings.json
 if [ -f "${VSCS_USER_DIR}/settings.json" ]; then
     printf ">> Making a backup of '${VSCS_USER_DIR}/settings.json'\n"
     mv ${VSCS_USER_DIR}/settings.json ${VSCS_USER_DIR}/settings.json.bak.${NOW} 

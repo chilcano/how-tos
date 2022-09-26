@@ -10,7 +10,7 @@ This script will install 3 patched fonts including glyphs to be used in custom T
 - [Droid Sans Mono Nerd Font Complete](https://github.com/ryanoasis/nerd-fonts/raw/master/patched-fonts/DroidSansMono/complete/Droid%20Sans%20Mono%20Nerd%20Font%20Complete.otf)
 
 ```sh
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/install_fonts_in_ubuntu.sh | bash
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/install_fonts_in_ubuntu.sh | bash
 ```  
 
 2. Patching Fonts for Code-Server in Raspberry Pi   

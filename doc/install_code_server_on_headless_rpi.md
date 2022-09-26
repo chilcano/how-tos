@@ -35,7 +35,7 @@ Once copied your Raspbian, Raspberry Pi OS or Ubuntu OS image in your SD Card, t
 
 You can use this [bash script to bootstrap an initial configuration](../src/bootstrap_config_rpi.sh) for your pre-installed Ubuntu, Raspbian, Debian or Raspberry Pi OS. Specifically, the bash script will enable SSH and will enable and configure WIFI before using to boot the SD Card. Download it, set it up as executable:
 ```sh
-wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/main/src/bootstrap_config_rpi.sh
 chmod +x bootstrap_config_rpi.sh
 ```
 and run it.
@@ -45,7 +45,7 @@ and run it.
 
 Or this single command:
 ```sh
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh) --wifi=enable
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/bootstrap_config_rpi.sh) --wifi=enable
 ```
 
 ### 3. Insert SD Card and boot your RPi
@@ -221,9 +221,9 @@ ssh ubuntu@<ip-of-raspberry-pi>   ## Pwd: ubuntu, if you used Ubuntu OS
 ### 1. Install Code-Server on RPi with Ubuntu 64bits
 
 ```sh
-wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_install.sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/main/src/code_server_install.sh
 
-wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_remove.sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/main/src/code_server_remove.sh
 
 sudo apt -y install jq
 

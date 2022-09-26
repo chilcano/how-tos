@@ -4,5 +4,5 @@
 * Script: [src/vnc_install.sh](src/vnc_install.sh)
 
 ```sh
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/vnc_install.sh | bash 
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/vnc_install.sh | bash 
 ```

@@ -4,7 +4,7 @@
 ## AWS_ACCESS_KEY_ID
 ## AWS_SECRET_ACCESS_KEY
 ## AWS_DEFAULT_REGION
-## source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/import_ssh_pub_key_to_aws_regions.sh) 
+## source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/import_ssh_pub_key_to_aws_regions.sh) 
 
 #####################################################
 

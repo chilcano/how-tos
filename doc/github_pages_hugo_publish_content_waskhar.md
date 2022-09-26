@@ -27,8 +27,8 @@ In Linux a Terminal is always available, however in Windows the existing one has
 - Git and GitHub Hub if you are going to create Web sites from scratch.  
 In Linux, use this script:
 ```sh
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_and_hub_setting_in_linux.sh)
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_and_hub_setting_in_linux.sh) -u=<your-git-account-name> -e=<your-git-account-email>
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/git_and_hub_setting_in_linux.sh)
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/git_and_hub_setting_in_linux.sh) -u=<your-git-account-name> -e=<your-git-account-email>
 ```  
 Install Git Windows using [Git Bash](https://gitforwindows.org/), installation process already explained above.  
 To install GitHub Hub in Windows, download `hub-windows-amd64-<version>.zip` from [https://github.com/github/hub/releases](https://github.com/github/hub/releases), unzip it and install it in your system. 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_install_v3.sh) -a=arm -t=0.11.15-oci -p=1.5.5
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/devops_tools_install_v3.sh) -a=arm -t=0.11.15-oci -p=1.5.5
 
 echo "##########################################################"
 echo "####         Install and setup DevOps tools v3        ####"

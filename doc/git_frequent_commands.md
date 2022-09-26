@@ -244,7 +244,7 @@ git push origin ${BRANCH_NAME}
 ``` 
 I've created a [script](src/git_dir_to_worktree.sh) to automate this process and you can use the scrips without download it:
 ```sh
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_dir_to_worktree.sh) code-server-ec2
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/git_dir_to_worktree.sh) code-server-ec2
 ```
 
 ### 3. Creating an empty worktree branch

@@ -7,8 +7,8 @@ I've created a simple bash script to take screenshots of active windows silently
 > __Note:__  
 > __Ubuntu 22.04__ already takes screenshots silently by default. Below you can see the keyboard shortcuts to trigger different actions.
 
-![](img/ubuntu-22.04-keyboard-shortcuts-1.png)
-![](img/ubuntu-22.04-keyboard-shortcuts-2.png)
+| -- | -- |
+| ![](img/ubuntu-22.04-keyboard-shortcuts-1.png) | ![](img/ubuntu-22.04-keyboard-shortcuts-2.png) |
 
 ## Steps
 
@@ -19,7 +19,6 @@ sudo apt -yqq xfce4-screenshooter
 ```
 
 2. Create your executable bash script into `/usr/local/sbin/`
-
 
 ```sh
 cat << EOF > silent_screenshooter.sh
@@ -37,7 +36,13 @@ DESTINATION=$TARGET/$FILENAME
 # o: launch external app
 xfce4-screenshooter -w -o cat > $DESTINATION  
 EOF
-
+```
+Or download it from here: 
+```sh
+wget https://raw.githubusercontent.com/chilcano/how-tos/main/src/silent_screenshooter.sh
+```
+Set it as executable script:
+```sh
 sudo mv silent_screenshooter.sh /usr/local/sbin/.
 sudo chmod +x /usr/local/sbin/silent_screenshooter.sh
 ```

@@ -53,14 +53,14 @@ mvn -version
 printf "\n\n"
 
 echo "==> Installing VS Code"
-wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/src/vscode_install.sh
+wget -q https://raw.githubusercontent.com/chilcano/how-tos/main/src/vscode_install.sh
 chmod +x vscode_install.sh
 . vscode_install.sh
 rm -f vscode_install.sh
 printf ">> VS Code installed.\n\n"
 
 echo "==> Configuring VS Code and installing Extensions"
-wget -q https://raw.githubusercontent.com/chilcano/how-tos/master/src/vscode_setup.sh
+wget -q https://raw.githubusercontent.com/chilcano/how-tos/main/src/vscode_setup.sh
 chmod +x vscode_setup.sh
 . vscode_setup.sh
 rm -f vscode_setup.sh

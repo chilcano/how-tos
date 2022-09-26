@@ -5,7 +5,7 @@
 Tested in Ubuntu 18.04, above and Raspbian/Raspberry Pi OS.  
 It will install also Ruby, Ruby-dev, build-essential, zlib1g-dev, Gem, Bundler, etc.  
 ```sh
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/jekyll_setting_in_linux.sh | bash
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/jekyll_setting_in_linux.sh | bash
 ```   
 
 Running Jekyll:   

@@ -6,7 +6,7 @@
 
 ## Examples:
 # ./bootstrap_rpi_img.sh --wifi=enable
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/bootstrap_config_rpi.sh) --wifi=enable
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/bootstrap_config_rpi.sh) --wifi=enable
 
 unset _IF _OF _WIFI _COUNTRY _SSID _PSK 
 

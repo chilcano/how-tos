@@ -5,8 +5,8 @@
 ### Installing Git and GitHub Hub
 
 ```sh
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_and_hub_setting_in_linux.sh)
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_and_hub_setting_in_linux.sh) -u=Chilcano -e=chilcano@intix.info
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/git_and_hub_setting_in_linux.sh)
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/git_and_hub_setting_in_linux.sh) -u=Chilcano -e=chilcano@intix.info
 ```
 
 * The bash script by default will install Git and GitHub Hub tools. Both will allow create repositories and upload changes.

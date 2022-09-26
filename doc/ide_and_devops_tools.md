@@ -8,19 +8,19 @@
 * Used as post installation script after Terraform provisioning.
 
 ```sh
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_install_v1.sh | bash
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/devops_tools_install_v1.sh | bash
 ```  
 
 2. [Install](../src/code_server_install.sh) and [remove](../src/code_server_remove.sh) **Code-Server** in Ubuntu (amd64 and arm64).
 
 ```sh
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_install.sh | bash
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_remove.sh | bash
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/code_server_install.sh | bash
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/code_server_remove.sh | bash
 ```
 2nd method and installation for Ubuntu OS 64 bits on Raspberry Pi 3 b+:
 ```sh
-wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_install.sh
-wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_remove.sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/main/src/code_server_install.sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/main/src/code_server_remove.sh
 
 sudo apt -y install jq
 
@@ -33,8 +33,8 @@ chmod +x code_server_*.sh
 3. [Install](../src/code_server_install_rpi.sh) and [remove](../src/code_server_remove_rpi.sh)  **Code-Server** in Raspberry Pi (arm).
 
 ```sh
-wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_install_rpi.sh
-wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_remove_rpi.sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/main/src/code_server_install_rpi.sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/main/src/code_server_remove_rpi.sh
 
 chmod +x code_server_*.sh
 . code_server_install_rpi.sh
@@ -44,8 +44,8 @@ chmod +x code_server_*.sh
 4. [Install](../src/code_server_install_wsl2.sh) and [remove](../src/code_server_remove_wsl2.sh) **Code-Server** in WLS2 (Ubuntu 20.04).
 
 ```sh
-wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_install_wsl2.sh
-wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/code_server_remove_wsl2.sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/main/src/code_server_install_wsl2.sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/main/src/code_server_remove_wsl2.sh
 
 chmod +x code_server_*.sh
 . code_server_install_wsl2.sh
@@ -60,13 +60,13 @@ chmod +x code_server_*.sh
 
 This example will install on AMD with latest versions of Terraform, Packer, Go, Python, Docker and Java available in on Ubuntu 21.10:
 ```sh
-wget -qN https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_install_v3.sh \
-        https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_remove_v3.sh
+wget -qN https://raw.githubusercontent.com/chilcano/how-tos/main/src/devops_tools_install_v3.sh \
+        https://raw.githubusercontent.com/chilcano/how-tos/main/src/devops_tools_remove_v3.sh
 
 chmod +x devops_tools_*.sh  
 . devops_tools_install_v3.sh 
 ```
 Or using explicit versions and without download the scripts:
 ```sh
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/devops_tools_install_v3.sh) -a=arm -t=0.11.15-oci -p=1.5.5
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/devops_tools_install_v3.sh) -a=arm -t=0.11.15-oci -p=1.5.5
 ```

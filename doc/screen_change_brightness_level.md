@@ -4,5 +4,5 @@
 * Script: [src/set_brightness_level.sh](src/set_brightness_level.sh)
 
 ```sh
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/set_brightness_level.sh) --screen=DP-1 --level=0.90
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/set_brightness_level.sh) --screen=DP-1 --level=0.90
 ```

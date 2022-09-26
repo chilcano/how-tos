@@ -3,11 +3,11 @@
 
 ## The short path.
 
-If you don't want go through below steps, I've created a [bash script to automate the process and get the same results](https://raw.githubusercontent.com/chilcano/how-tos/master/src/custom_prompt_with_powerline_go.sh). 
+If you don't want go through below steps, I've created a [bash script to automate the process and get the same results](https://raw.githubusercontent.com/chilcano/how-tos/main/src/custom_prompt_with_powerline_go.sh). 
 
 ```sh
 $ sudo apt -yqq install golang-go curl jq git unzip wget
-$ curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/custom_prompt_with_powerline_go.sh | bash
+$ curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/custom_prompt_with_powerline_go.sh | bash
 ```
 
 The above script will:

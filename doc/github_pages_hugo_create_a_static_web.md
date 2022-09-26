@@ -5,8 +5,8 @@
 ### Installing Git and GitHub Hub
 
 ```sh
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_and_hub_setting_in_linux.sh)
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/git_and_hub_setting_in_linux.sh) -u=Chilcano -e=chilcano@intix.info
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/git_and_hub_setting_in_linux.sh)
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/git_and_hub_setting_in_linux.sh) -u=Chilcano -e=chilcano@intix.info
 ```
 
 * The bash script by default will install Git and GitHub Hub tools. Both will allow create repositories and upload changes.
@@ -29,7 +29,7 @@ We have 2 ways to build an initial Hugo site and host it on GitHub:
 
 The first one takes existing GitHub Page created with Hugo and publish in another GitHub repository. 
 ```sh
-curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_create_site_from_repo.sh | bash
+curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_create_site_from_repo.sh | bash
 ```
 
 ### 2. From scratch and initial pages.
@@ -45,7 +45,7 @@ The next script, will:
 
 Run this script with these parameters:
 ```sh
-source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_create_site_from_scratch.sh) -u=chilcano -d=ghpages-waskhar -t=hugo-theme-cactus
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_create_site_from_scratch.sh) -u=chilcano -d=ghpages-waskhar -t=hugo-theme-cactus
 ```
 
 * `-u=chilcano`: It represents the GitHub user or Organization name
