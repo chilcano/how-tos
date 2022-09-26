@@ -1,4 +1,4 @@
-# Flameshot and other annotation tools in Linux
+# Screenshot and annotation tools
 
 
 1. [Flameshot](https://github.com/flameshot-org/flameshot)
@@ -10,6 +10,4 @@
 ```sh
 sudo apt -y install flameshot
 ```
-
-
 

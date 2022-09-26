@@ -10,3 +10,5 @@ target/
 .vagrant
 .vscode
 *.deb
+.env
+.venv
