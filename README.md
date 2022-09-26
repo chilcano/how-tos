@@ -17,7 +17,7 @@ Repository with technical indications to install, configure any interesting stuf
   - [Install and configure Asus MB168b portable screen in Ubuntu 18.04](doc/screen_mb168b_install_in_ubuntu.md)
   - [Take screenshots silently in Ubuntu with xfce4-screenshooter](doc/screen_shooter_silent.md)
   - [Change the brightness level of a screen](doc/screen_change_brightness_level.md)
-  - [Screenshot and annotation Tools](doc/screenshot_annotation_tools.md.md) 
+  - [Screenshot and annotation Tools](doc/screenshot_annotation_tools.md) 
 
 11. [Working with Tmux](doc/working_with_tmux.md)
 12. [File sharing through Samba(SMB)](doc/install_and_config_samba.md)
