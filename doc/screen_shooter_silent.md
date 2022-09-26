@@ -4,6 +4,12 @@ When I attend to Webinars, Online Training or Online Demonstrations, several tim
 
 I've created a simple bash script to take screenshots of active windows silently using a simple combination of keys or shortcuts like `Ctrl + Print`. We will need to make sure the `xfce4-screenshooter` be installed, you can use your favorite application if it can be executed from command line.
 
+> __Note:__  
+> __Ubuntu 22.04__ already takes screenshots silently by default. Below you can see the keyboard shortcuts to trigger different actions.
+
+![](img/ubuntu-22.04-keyboard-shortcuts-1.png)
+![](img/ubuntu-22.04-keyboard-shortcuts-2.png)
+
 ## Steps
 
 1. Install the screencapturer application
@@ -19,6 +25,8 @@ sudo apt -yqq xfce4-screenshooter
 cat << EOF > silent_screenshooter.sh
 #!/bin/bash
 set -euo pipefail
+
+## only works with xfce4-screenshooter
 
 TARGET=~/Screenshots
 mkdir -p $TARGET
@@ -36,6 +44,8 @@ sudo chmod +x /usr/local/sbin/silent_screenshooter.sh
 
 3. Set a shortcut to the executable bash script
 
-![](imgs/silent_screenshooter_set_shortcut.png)
+![](img/silent_screenshooter_set_shortcut.png)
+
+Ubuntu 22.04 - Gnome
 
 4. Test it.
