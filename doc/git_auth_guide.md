@@ -29,8 +29,8 @@ __Personal Access Token__
 
 * If you want to add a new token in an already configured Git, then you should reset the previous token in the previous credentials manager, in this case is `git config --global credential.helper store`.
 
-> From [Git FAQ](https://git-scm.com/docs/gitfaq#http-reset-credentials)
-> __How do I change the password or token I’ve saved in my credential manager?_
+> _From [Git FAQ](https://git-scm.com/docs/gitfaq#http-reset-credentials)_  
+> __How do I change the password or token I’ve saved in my credential manager?__  
 >
 >  Usually, if the password or token is invalid, Git will erase it and prompt for a new one. However, there are times when this doesn’t always happen. To change the password or token, you can erase the existing credentials and then Git will prompt for new ones. To erase credentials, use a syntax like the following (substituting your username and the hostname):
 >
@@ -47,7 +47,7 @@ __Troubleshooting__
 1. protocol 'https' is not supported   
 
    ```sh
-   $ git clone https://github.com/chilcano/how-tos
+   $ git clone https://github.com/chilcano/how-tos
    Cloning into 'how-tos'...
    fatal: protocol 'https' is not supported
    ```
