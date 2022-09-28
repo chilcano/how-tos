@@ -1,11 +1,11 @@
 ## Managing authentication in Github
 
 
-### GitHub Authentication
+### GitHub Authentication and Credential Manager
 
 ```sh
 $ git config --global user.email "chilcano@intix.info"
-$ git config --global user.name "Chilcano"
+$ git config --global user.name "Roger Carhuatocto"
 
 // Save the credentials permanently
 $ git config --global credential.helper store
@@ -17,14 +17,30 @@ $ git config --global credential.helper cache
 $ git config --global credential.helper 'cache --timeout=600'
 ```
 
-__Enabling 2FA and Personal Access Token__
+__Enabling 2FA__
 
-1. Accessing GitHub using two-factor authentication:  
-https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/accessing-github-using-two-factor-authentication
-2. Creating a personal access token:  
-https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token
+* Accessing GitHub using two-factor authentication: https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/accessing-github-using-two-factor-authentication
 
-> Only introduce the Personal Access Token you generated instead to enter your GitHub password when prompting during commiting your changes.
+__Personal Access Token__
+
+* Creating a personal access token: https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/creating-a-personal-access-token
+
+* When prompted for the username and password, enter your GitHub username and the previously generated token as the password.
+
+* If you want to add a new token in an already configured Git, then you should reset the previous token in the previous credentials manager, in this case is `git config --global credential.helper store`.
+
+> From [Git FAQ](https://git-scm.com/docs/gitfaq#http-reset-credentials)
+> __How do I change the password or token I’ve saved in my credential manager?_
+>
+>  Usually, if the password or token is invalid, Git will erase it and prompt for a new one. However, there are times when this doesn’t always happen. To change the password or token, you can erase the existing credentials and then Git will prompt for new ones. To erase credentials, use a syntax like the following (substituting your username and the hostname):
+>
+> ```$ echo url=https://author@git.example.org | git credential reject```
+
+```sh
+$ echo url=https://chilcano@github.com | git credential reject
+```
+Now, in the next commit, Git will prompt you for username and password, where you will use the personal access token as the password.
+
 
 __Troubleshooting__   
 
