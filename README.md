@@ -18,7 +18,6 @@ Repository with technical indications to install, configure any interesting stuf
   - [Take screenshots silently in Ubuntu with xfce4-screenshooter](doc/screen_shooter_silent.md)
   - [Change the brightness level of a screen](doc/screen_change_brightness_level.md)
   - [Screenshot and annotation Tools](doc/screenshot_annotation_tools.md) 
-
 11. [Working with Tmux](doc/working_with_tmux.md)
 12. [File sharing through Samba(SMB)](doc/install_and_config_samba.md)
 13. Cloud and Infrastructure as Code (IaC) examples:
@@ -33,7 +32,7 @@ Repository with technical indications to install, configure any interesting stuf
 20. [Disabling sleeping when close laptop lid](doc/disable_sleeping_when_close_laptop_lid.md)
 21. [Docker useful commands](doc/docker_useful_commands.md)
 22. [Install Code-Server on Headless Raspberry Pi 3B+ with Ubuntu 64bit](doc/install_code_server_on_headless_rpi.md)
-23. [Install Flameshot and other annotation tools in Linux](doc/flameshot.md)
+
 24. [Install AutoFirma Java App in Ubuntu 19.10](doc/install_autofirma_app_in_ubuntu19.10.md)
 25. [Installation of WSO2 MB, Apache Qpid, RabbitMQ and Apache ActiveMQ on CentOS](doc/install_wso2mb_qpid_rabbitmq_activemq.md)
 26. [Issue Certificates with MKCert](doc/issue_certs_with_mkcert.md)
