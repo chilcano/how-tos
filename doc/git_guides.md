@@ -4,7 +4,7 @@
 
 1. [Github - Frequent commands](git_frequent_commands.md)
 
-2. [Github - Authentication](git_auth_guide.md)
+2. [Github - Authentication, Tokens and Credential Manager](git_auth_guide.md)
 
 3. [GitHub's Hub wrapper - Install and configure](../src/git_and_hub_setting_in_linux.sh)
 ```sh
