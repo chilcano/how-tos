@@ -129,7 +129,48 @@ $ git tag -v v1.4.2.1
 
 ## FAQ
 
-### How to sign old commits ?
+### How to sign old commit ?
 
-- https://superuser.com/questions/397149/can-you-gpg-sign-old-commits
+__Refs:__   
+* https://superuser.com/questions/397149/can-you-gpg-sign-old-commits
+* https://stackoverflow.com/questions/37737096/signing-an-existing-commit-with-gpg
 
+In your local feature branch:
+```sh
+// get latest changes
+$ git pull
+
+// set the merge strategy
+$ git config pull.rebase false  # merge (the default strategy)
+$ git config pull.rebase true   # rebase
+$ git config pull.ff only       # fast-forward only
+
+$ git commit --amend -S -m "DOPS-351 added toJson to fix marshalling and signing commit"
+
+$ git push
+```
+
+### How to sign or modify older previous commits ?
+
+__Refs:__   
+* https://webdevstudios.com/2020/05/26/retroactively-sign-git-commits/
+
+Using `rebase`, you can pick up the commit you want to modify, even if you want execute a new `git commit` command.
+In this case we are going to add signature to specific commit: `git commit --amend -S -m "DOPS-351 New signature in commit"`
+
+```sh
+// abort previous rebase
+$ git rebase --abort
+
+// we are going to modify 2 last commits
+$ git rebase -i HEAD~2
+
+// this amend the new commit that contains the last 2 previous commits (HEAD~2)
+$ git commit --amend -S -m "DOPS-351 Fixed issue"
+
+// continues rebase
+$ git rebase --continue
+
+// push changes
+$ git push --force-with-lease
+```
