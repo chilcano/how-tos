@@ -5,7 +5,6 @@
 1. https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work
 2. https://calebhearth.com/sign-git-with-ssh
 3. https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent
-4. 
 
 ## 1. Use SSH keys for signing
 
