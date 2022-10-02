@@ -129,9 +129,9 @@ done
 printf "==> Adding a new Hugo config file and updating initial '${HUGO_THEME_NAME}' Hugo Theme. \n"
 
 if [[ "$GH_REPO_TARGET" == *.github.io* ]]; then
-  HUGO_BASE_URL = ""
+  HUGO_BASE_URL=""
 else 
-  HUGO_BASE_URL = "${GH_REPO_TARGET}/"
+  HUGO_BASE_URL="${GH_REPO_TARGET}/"
 fi 
 
 sed -i.bak "s|^baseURL = .*$|baseURL = \"https://${GH_USER_OR_ORG}.github.io/${HUGO_BASE_URL}\"|" ${DIR_REPO}/config.toml
