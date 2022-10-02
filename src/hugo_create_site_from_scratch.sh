@@ -75,9 +75,8 @@ echo "####################################################################"
 printf "==> Setting HTTPS instead of SSH for GitHub clone URLs. \n"
 git config --global hub.protocol https
 
-
 printf "==> Removing existing remote GitHub repo with 'hub'. \n"
-echo "yes" | hub delete ${GH_REPO_URL_TARGET}
+hub delete -y ${GH_REPO_URL_TARGET}
 
 printf "==> Removing local '${GH_REPO_TARGET}' GitHub repo. \n"
 rm -rf ${DIR_REPO}
