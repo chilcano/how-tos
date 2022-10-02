@@ -24,6 +24,7 @@ declare -a ARRAY_THEMES_REPO=(
 # source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_create_site_from_scratch.sh)
 # source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_create_site_from_scratch.sh) -u=chilcano -d=ghpages-waskhar -t=hugo-theme-cactus
 # ./hugo_create_site_from_scratch.sh -u=chilcano -d=ghpages-waskhar -t=hugo-theme-cactus
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_create_site_from_scratch.sh) -u=waskhar-project -d=waskhar-project.github.io -t=hugo-theme-cactus
 
 while [ $# -gt 0 ]; do
   case "$1" in
