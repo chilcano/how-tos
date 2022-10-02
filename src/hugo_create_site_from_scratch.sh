@@ -122,23 +122,22 @@ for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
   if [[ "$HUGO_THEME_NAME" =  "$tr_name" ]]; then 
     git clone ${tr_url} ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name} --quiet
     rm -rf ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/.git
-    cp ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/exampleSite/config.toml ${DIR_REPO}/config.toml
+    cp ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/exampleSite/config.toml ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/config.toml
   fi 
 done
 
 printf "==> Adding a new Hugo config file and updating initial '${HUGO_THEME_NAME}' Hugo Theme. \n"
-
+cd ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/
 HUGO_BASE_URL=""
 if [[ "$GH_REPO_TARGET" != *.github.io* ]]; then
   HUGO_BASE_URL="${GH_REPO_TARGET}/"
 fi 
-
-sed -i.bak "s|^baseURL = .*$|baseURL = \"https://${GH_USER_OR_ORG}.github.io/${HUGO_BASE_URL}\"|" ${DIR_REPO}/config.toml
-sed -i.bak "s|^title = .*$|title = \"${HUGO_THEME_NAME} site\"|" ${DIR_REPO}/config.toml
-sed -i.bak "s|^theme = .*$|theme = \"${HUGO_THEME_NAME}\"|" ${DIR_REPO}/config.toml
+sed -i.bak "s|^baseURL = .*$|baseURL = \"https://${GH_USER_OR_ORG}.github.io/${HUGO_BASE_URL}\"|" config.toml
+sed -i.bak "s|^title = .*$|title = \"${HUGO_THEME_NAME} site\"|" config.toml
+sed -i.bak "s|^theme = .*$|theme = \"${HUGO_THEME_NAME}\"|" config.toml
 ## grep: 0 if str is found, 1 if str is not found, -q doesn't display the string whenit was found
 ## if str exits in file, then update, else append in top of file
-grep -q "publishDir" ${DIR_REPO}/config.toml && sed -i.bak "s|^publishDir = .*$|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" ${DIR_REPO}/config.toml || sed -i.bak "1s|^|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"\n|" ${DIR_REPO}/config.toml
+grep -q "publishDir" config.toml && sed -i.bak "s|^publishDir = .*$|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" config.toml || sed -i.bak "1s|^|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"\n|" config.toml
 
 printf "\n"
 echo "---------------------------------------------------------------"
