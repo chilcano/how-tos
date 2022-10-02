@@ -136,9 +136,9 @@ else
   HUGO_BASE_URL = "${GH_REPO_TARGET}/"
 fi 
 
-sed -i.bak "s|^baseURL = .*$|baseURL = \"https://${GH_USER_OR_ORG}.github.io/${HUGO_BASE_URL}\"|" config.toml
-sed -i.bak "s|^title = .*$|title = \"${HUGO_THEME_NAME} site\"|" config.toml
-sed -i.bak "s|^theme = .*$|theme = \"${HUGO_THEME_NAME}\"|" config.toml
+sed -i.bak "s|^baseURL = .*$|baseURL = \"https://${GH_USER_OR_ORG}.github.io/${HUGO_BASE_URL}\"|" ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/config.toml
+sed -i.bak "s|^title = .*$|title = \"${HUGO_THEME_NAME} site\"|" ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/config.toml
+sed -i.bak "s|^theme = .*$|theme = \"${HUGO_THEME_NAME}\"|" ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/config.toml
 
 printf "\n"
 echo "---------------------------------------------------------------"
