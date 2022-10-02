@@ -44,7 +44,7 @@ Now, in the next commit, Git will prompt you for username and password, where yo
 
 __Troubleshooting__   
 
-1. protocol 'https' is not supported   
+1. Protocol `https` is not supported.   
 
    ```sh
    $ git clone https://github.com/chilcano/how-tos
@@ -52,6 +52,33 @@ __Troubleshooting__
    fatal: protocol 'https' is not supported
    ```
    * Ref: https://stackoverflow.com/questions/53988638/git-fatal-protocol-https-is-not-supported
+
+
+2. Bad credentials when running GitHub Hub.   
+
+If you are having this error, that means that something happened with your credentials. 
+```sh
+Error creating repository: Unauthorized (HTTP 401)
+Bad credentials
+```
+You have to check your `OAuth Token` in `$HOME/.config/hub`, if you have updated your `Personal Access Token` in GitHub and in your Git CLI, then you should update it in Hub CLI as well or if you don't want to update it, only remove it and in the next Hub command, Hub will prompt for introducing your credentials.
+
+```sh
+## view hub config
+$cat $HOME/.config/hub
+
+github.com:
+- user: chilcano
+  oauth_token: 1a71c7886e254f138cda5b8f65f56bbae10a856c
+  protocol: https
+
+## update the token
+
+## test the configuration
+$ mkdir -p testsite1 && cd testsite1
+$ hub create -d "test site 1" chilcano/testsite1
+$ hub delete -y chilcano/testsite1
+```
 
 ### Working with HUB
 
