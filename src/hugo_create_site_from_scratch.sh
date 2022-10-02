@@ -127,7 +127,7 @@ for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
 done
 
 printf "==> Adding a new Hugo config file and updating initial '${HUGO_THEME_NAME}' Hugo Theme. \n"
-cd ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/
+cd ${DIR_REPO}/
 rm -rf config.yaml config.yaml.bak config.toml
 
 if [[ "$GH_REPO_TARGET" == *.github.io* ]]; then
@@ -136,19 +136,17 @@ else
   HUGO_BASE_URL = "${GH_REPO_TARGET}/"
 fi 
 
-sed -i.bak "s|^baseURL = .*$|baseURL = \"https://${GH_USER_OR_ORG}.github.io/${HUGO_BASE_URL}\"|" ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/config.toml
-sed -i.bak "s|^title = .*$|title = \"${HUGO_THEME_NAME} site\"|" ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/config.toml
-sed -i.bak "s|^theme = .*$|theme = \"${HUGO_THEME_NAME}\"|" ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/config.toml
+sed -i.bak "s|^baseURL = .*$|baseURL = \"https://${GH_USER_OR_ORG}.github.io/${HUGO_BASE_URL}\"|" ${DIR_REPO}/config.toml
+sed -i.bak "s|^title = .*$|title = \"${HUGO_THEME_NAME} site\"|" ${DIR_REPO}/config.toml
+sed -i.bak "s|^theme = .*$|theme = \"${HUGO_THEME_NAME}\"|" ${DIR_REPO}/config.toml
 
 printf "\n"
 echo "---------------------------------------------------------------"
 echo " Main branch - First push into GitHub Pages repo"
 echo "---------------------------------------------------------------"
 
-printf "==> Changing to '${DIR_REPO}/' as working directory. \n"
-cd ${DIR_REPO}/
-
 printf "==> Adding resources to local repo. \n"
+cd ${DIR_REPO}/
 git add . 
 
 printf "==> Commit Hugo scripts to local repo. \n"
