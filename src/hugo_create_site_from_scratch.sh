@@ -126,7 +126,7 @@ for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
   fi 
 done
 
-printf "==> Adding a new Hugo config file and loading initial '${HUGO_THEME_NAME}' Hugo Theme. \n"
+printf "==> Adding a new Hugo config file and updating initial '${HUGO_THEME_NAME}' Hugo Theme. \n"
 cd ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/
 rm -rf config.yaml config.yaml.bak config.toml
 
@@ -136,10 +136,9 @@ else
   HUGO_BASE_URL = "${GH_REPO_TARGET}/"
 fi 
 
-cat << EOF > config.toml
-baseURL = "https://${GH_USER_OR_ORG}.github.io/${HUGO_BASE_URL}"
-theme = "${HUGO_THEME_NAME}"
-EOF
+sed -i.bak "s|^baseURL = .*$|baseURL = \"https://${GH_USER_OR_ORG}.github.io/${HUGO_BASE_URL}\"|" config.toml
+sed -i.bak "s|^title = .*$|title = \"${HUGO_THEME_NAME} site\"|" config.toml
+sed -i.bak "s|^theme = .*$|theme = \"${HUGO_THEME_NAME}\"|" config.toml
 
 printf "\n"
 echo "---------------------------------------------------------------"
