@@ -120,7 +120,7 @@ for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
   tr_fullname="${tr_url##*/}"
   tr_name="${tr_fullname%.*}"
   if [[ "$HUGO_THEME_NAME" =  "$tr_name" ]]; then 
-    git --quiet clone ${tr_url} ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}
+    git clone ${tr_url} ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name} --quiet
     rm -rf ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/.git
     cp ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/exampleSite/config.toml ${DIR_REPO}/config.toml
   fi 
