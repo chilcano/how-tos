@@ -129,9 +129,7 @@ done
 printf "==> Adding a new Hugo config file and updating initial '${HUGO_THEME_NAME}' Hugo Theme. \n"
 
 HUGO_BASE_URL=""
-if [[ "$GH_REPO_TARGET" == *.github.io* ]]; then
-  echo "==========>>> siiiiii"  
-else 
+if [[ "$GH_REPO_TARGET" != *.github.io* ]]; then
   HUGO_BASE_URL="${GH_REPO_TARGET}/"
 fi 
 
