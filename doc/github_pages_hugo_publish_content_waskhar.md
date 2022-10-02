@@ -2,7 +2,7 @@
 
 ## Requirements
 
-1. A Hugo site already created and hosted in GitHub using `hugo_create_site_from_scratch.sh` script. Below an example:
+1. A Hugo site already created and hosted in GitHub using [`hugo_create_site_from_scratch.sh`](../src/hugo_create_site_from_scratch.sh) script. Below an example:
 
 ```
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_create_site_from_scratch.sh) -u=chilcano -d=ghpages-waskhar1 -t=hugo-theme-cactus
@@ -10,7 +10,7 @@ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hug
 
 * `-u=chilcano`: It represents the GitHub user or Organization
 * `-d=ghpages-waskhar1`: It represents the GitHub repository what will host the Hugo site and all content.
-* `-t=hugo-theme-cactus`: It is the Hugo Theme to be downloaded and applied to Hugo site.
+* `-t=hugo-theme-cactus`: It is the Hugo Theme to be downloaded and applied to Hugo site. See [more themes here](https://themes.gohugo.io/).
 
 This is the single task to be performed only one time. The next points 2 and 3 and all Tasks must be accomplished by the content publishers as many times as the contents are published.
 
