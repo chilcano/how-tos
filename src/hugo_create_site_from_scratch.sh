@@ -115,7 +115,7 @@ echo " Main branch - Loading a Hugo Theme."
 echo "---------------------------------------------------------------"
 
 printf "==> Pre-loading ${#ARRAY_THEMES_REPO[@]} Hugo Themes. \n"
-
+rm -rf config.yaml config.yaml.bak config.toml
 for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
   tr_fullname="${tr_url##*/}"
   tr_name="${tr_fullname%.*}"
@@ -127,8 +127,6 @@ for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
 done
 
 printf "==> Adding a new Hugo config file and updating initial '${HUGO_THEME_NAME}' Hugo Theme. \n"
-cd ${DIR_REPO}/
-rm -rf config.yaml config.yaml.bak config.toml
 
 if [[ "$GH_REPO_TARGET" == *.github.io* ]]; then
   HUGO_BASE_URL = ""
@@ -139,6 +137,9 @@ fi
 sed -i.bak "s|^baseURL = .*$|baseURL = \"https://${GH_USER_OR_ORG}.github.io/${HUGO_BASE_URL}\"|" ${DIR_REPO}/config.toml
 sed -i.bak "s|^title = .*$|title = \"${HUGO_THEME_NAME} site\"|" ${DIR_REPO}/config.toml
 sed -i.bak "s|^theme = .*$|theme = \"${HUGO_THEME_NAME}\"|" ${DIR_REPO}/config.toml
+## grep: 0 if str is found, 1 if str is not found, -q doesn't display the string whenit was found
+## if str exits in file, then update, else append in top of file
+grep -q "publishDir" ${DIR_REPO}/config.toml && sed -i.bak "s|^publishDir = .*$|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" ${DIR_REPO}/config.toml || sed -i.bak "1s|^|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" ${DIR_REPO}/config.toml
 
 printf "\n"
 echo "---------------------------------------------------------------"
