@@ -140,7 +140,7 @@ sed -i.bak "s|^title = .*$|title = \"${HUGO_THEME_NAME} site\"|" ${DIR_REPO}/con
 sed -i.bak "s|^theme = .*$|theme = \"${HUGO_THEME_NAME}\"|" ${DIR_REPO}/config.toml
 ## grep: 0 if str is found, 1 if str is not found, -q doesn't display the string whenit was found
 ## if str exits in file, then update, else append in top of file
-grep -q "publishDir" ${DIR_REPO}/config.toml && sed -i.bak "s|^publishDir = .*$|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" ${DIR_REPO}/config.toml || sed -i.bak "1s|^|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" ${DIR_REPO}/config.toml
+grep -q "publishDir" ${DIR_REPO}/config.toml && sed -i.bak "s|^publishDir = .*$|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"|" ${DIR_REPO}/config.toml || sed -i.bak "1s|^|publishDir = \"../${HUGO_CONTENT_DIR}/docs\"\n|" ${DIR_REPO}/config.toml
 
 printf "\n"
 echo "---------------------------------------------------------------"
