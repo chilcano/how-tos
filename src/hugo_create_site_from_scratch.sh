@@ -108,79 +108,6 @@ printf "==> Adding hugo_run_locally.sh and hugo_publish_site.sh to main branch. 
 wget -q https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_publish_site.sh
 wget -q https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_run_locally.sh
 chmod +x hugo_*.sh
-printf "==> Adding a new Hugo configuration file (config.toml) into '${GH_REPO_TARGET}/${HUGO_SCRIPTS_DIR}/'. \n"
-
-cd ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/
-rm -rf config.yaml config.yaml.bak config.toml
-cat << EOF > config.toml
-baseURL = "https://${GH_USER_OR_ORG}.github.io/${GH_REPO_TARGET}/"
-languageCode = "en-us"
-title = "Waskhar Project"
-theme = "hugo-theme-cactus"
-publishDir = "../${HUGO_CONTENT_DIR}/docs"
-#copyright = "Roger Carhuatocto"
-#disqusShortname = "username"
-#googleAnalytics = ""
-paginate = 10
-#summaryLength = 2
-
-[params]
-  colortheme = "classic"                      # dark, light, white, or classic
-  rss = true                                  # generate rss feed. default value is false
-  googleAnalyticsAsync = true                 # use asynchronous tracking. Synchronous tracking by default
-  description = "Proyecto de digitalización y mejora de la trazabilidad a lo largo de la cadena de suministro de la Madera."
-  #mainSection = "posts"                      # your main section
-  showAllPostsOnHomePage = false              # default
-  postsOnHomePage = 10                        # this option will be ignored if showAllPostsOnHomePage is set to true
-  tagsOverview = true                         # show tags overview by default.
-  showProjectsList = false                    # show projects list by default (if projects data file exists).
-  projectsUrl = "https://github.com/chilcano" # title link for projects list
-  dateFormat = "2006-01-02"
-  # Post page settings
-  show_updated = false 
-  [params.comments]
-    enabled = true 
-    engine = "disqus"                         # more supported engines will be added.
-
-[[params.social]]
-  name = "github"
-  link = "https://github.com/waskhar-project"
-[[params.social]]
-  name = "twitter"
-  ink = "https://twitter.com/chilcano"  
-
-[markup]
-  [markup.tableOfContents]
-    endLevel = 4
-    ordered = false
-    startLevel = 2
-
-[[menu.main]]
-  url = "/"
-  name = "Home"
-  weight = 1
-[[menu.main]]
-  url = "/posts/"
-  name = "Posts"
-  weight = 2
-[[menu.main]]
-  url = "/tags"
-  name = "Tags"
-  weight = 3
-[[menu.main]]
-  url = "/about/"
-  name = "About"
-  weight = 4
-
-[[menu.icon]]
-  url = "https://github.com/waskhar-project/"
-  name = "fab fa-github"
-  weight = 1
-[[menu.icon]]
-  url = "https://twitter.com/chilcano/"
-  name = "fab fa-twitter"
-  weight = 2
-EOF
 
 printf "\n"
 echo "---------------------------------------------------------------"
@@ -192,10 +119,27 @@ printf "==> Pre-loading ${#ARRAY_THEMES_REPO[@]} Hugo Themes. \n"
 for tr_url in "${ARRAY_THEMES_REPO[@]}"; do
   tr_fullname="${tr_url##*/}"
   tr_name="${tr_fullname%.*}"
-  git clone ${tr_url} ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name} --quiet
-  rm -rf ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/.git
-  cp ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/exampleSite/config.toml config.toml.${tr_name}
+  if [[ "$HUGO_THEME_NAME" =  "$tr_name" ]]; then 
+    git --quiet clone ${tr_url} ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}
+    rm -rf ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/.git
+    cp ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/themes/${tr_name}/exampleSite/config.toml ${DIR_REPO}/config.toml
+  fi 
 done
+
+printf "==> Adding a new Hugo config file and loading initial '${HUGO_THEME_NAME}' Hugo Theme. \n"
+cd ${DIR_REPO}/${HUGO_SCRIPTS_DIR}/
+rm -rf config.yaml config.yaml.bak config.toml
+
+if [[ "$GH_REPO_TARGET" == *.github.io* ]]; then
+  HUGO_BASE_URL = ""
+else 
+  HUGO_BASE_URL = "${GH_REPO_TARGET}/"
+fi 
+
+cat << EOF > config.toml
+baseURL = "https://${GH_USER_OR_ORG}.github.io/${HUGO_BASE_URL}"
+theme = "${HUGO_THEME_NAME}"
+EOF
 
 printf "\n"
 echo "---------------------------------------------------------------"
