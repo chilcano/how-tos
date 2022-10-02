@@ -11,6 +11,14 @@ declare -a ARRAY_THEMES_REPO=(
 "https://github.com/rhazdon/hugo-theme-hello-friend-ng.git"
 "https://github.com/panr/hugo-theme-terminal.git"
 "https://github.com/athul/archie.git"
+"https://github.com/nunocoracao/blowfish.git"
+"https://github.com/httpsecure/kembang.git"
+"https://github.com/canstand/compost.git"
+"https://github.com/h-enk/doks.git"
+"https://github.com/jpanther/congo.git"
+"https://github.com/cyevgeniy/monday-theme.git"
+"https://github.com/zerostaticthemes/hugo-whisper-theme.git"
+"https://github.com/kimcc/hugo-theme-noteworthy.git"
 )
 
 # source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_create_site_from_scratch.sh)
