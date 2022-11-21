@@ -53,3 +53,4 @@ Repository with technical indications to install, configure any interesting stuf
   - [Publish new content on Waskhar Project](doc/github_pages_hugo_publish_content_waskhar.md)
 27. [Installing and using NMAP](doc/nmap_commands.md)
 28. [Installing and uninstalling IDE and DevOps Tools for multiple platforms](doc/ide_and_devops_tools.md)
+29. [CI/CD GitHub workflows for NodeJS and TypeScript applications](doc/github-workflow-for-nodejs-typescript-apps.md)
