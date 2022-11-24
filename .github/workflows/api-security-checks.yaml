@@ -58,7 +58,7 @@ jobs:
         run: |
           #echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .openapirc.yml
           #echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
-          #echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
+          echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
 
       # pull docker image taked too much time (~2 mins), can it be cached?:
       # https://stackoverflow.com/questions/71180135/github-actions-how-can-i-cache-the-docker-images-for-testcontainers
@@ -106,6 +106,7 @@ jobs:
           ls -la
           echo home_path: $(pwd)
           cat .spectral.yaml
+          ls -la /github/workspace/ 
           cat /github/workspace/.openapirc.yml
 
       # Create pull request if applicable (for now works only on PR from same repository, not from forks)
