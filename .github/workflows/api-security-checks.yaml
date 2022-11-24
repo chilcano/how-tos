@@ -75,7 +75,6 @@ jobs:
 
       - name: Browse workspace
         run: |
-          echo CurrentDir: $(pwd)
           ls -la src/api_specs/
           ls -la megalinter-reports/
           ls -la 
