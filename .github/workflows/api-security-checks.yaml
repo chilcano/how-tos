@@ -69,7 +69,7 @@ jobs:
           ENABLE_LINTERS: OPENAPI_SPECTRAL
           FILTER_REGEX_INCLUDE: (src/api_specs/)
           OPENAPI_SPECTRAL_CONFIG_FILE: .spectral.yaml
-          OPENAPI_SPECTRAL_RULES_PATH: ~/.
+          #OPENAPI_SPECTRAL_RULES_PATH: ~/.
           #EMAIL_REPORTER_EMAIL: roger@intix.info
 
       - name: Archive MegaLinter reports
@@ -97,7 +97,7 @@ jobs:
           ls -la megalinter-reports/
           ls -la
           echo home: $(pwd)
-          cat .spectral.yml
+          cat .spectral.yaml
           cat /tmp/lint/.openapirc.yml
 
       # Create pull request if applicable (for now works only on PR from same repository, not from forks)
