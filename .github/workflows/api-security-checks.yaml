@@ -75,11 +75,22 @@ jobs:
             megalinter-reports
             mega-linter.log
 
+      - name: Get short commit sha and branch name
+        id: vars
+        run: |
+          echo "git_hash_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "branch_name=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )" >> $GITHUB_OUTPUT
+
+      - name: Echo vars
+        run: |
+          echo git_hash_short: ${{ steps.vars.outputs.git_hash_short }}
+          echo branch_name: ${{ steps.vars.outputs.branch_name }}
+
       - name: Browse workspace
         run: |
           ls -la src/api_specs/
           ls -la megalinter-reports/
-          ls -la 
+          ls -la
 
       # # Create pull request if applicable (for now works only on PR from same repository, not from forks)
       # - name: Create GH PR with applied fixes
