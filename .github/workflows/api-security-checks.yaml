@@ -56,7 +56,7 @@ jobs:
 
       - name: Download Spectral Rulesets
         run: |
-          echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .openapirc.yml
+          #echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .openapirc.yml
           #echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
           #echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
 
@@ -70,9 +70,15 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENABLE_LINTERS: OPENAPI_SPECTRAL
           FILTER_REGEX_INCLUDE: (src/api_specs/)
-          #OPENAPI_SPECTRAL_CONFIG_FILE: .spectral.yaml
-          #OPENAPI_SPECTRAL_RULES_PATH: ~/.
+          OPENAPI_SPECTRAL_CONFIG_FILE: .spectral.yaml
+          OPENAPI_SPECTRAL_RULES_PATH: .
           #EMAIL_REPORTER_EMAIL: roger@intix.info
+
+      # - name: Run Spectral Action
+      #   uses: stoplightio/spectral-action@latest
+      #   with:
+      #     file_glob: 'src/api_specs/*.yaml'
+      #     spectral_ruleset: .spectral.yml
 
       - name: Archive MegaLinter reports
         if: ${{ success() }} || ${{ failure() }}
