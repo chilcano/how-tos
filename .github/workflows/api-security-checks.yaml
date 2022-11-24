@@ -56,9 +56,9 @@ jobs:
 
       - name: Download Spectral Rulesets
         run: |
-          echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .spectral.yaml
+          #echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .spectral.yaml
           #echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
-          #echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
+          echo 'extends: ["spectral:oas"]' > .spectral.yaml
 
       # pull docker image taked too much time (~2 mins), can it be cached?:
       # https://stackoverflow.com/questions/71180135/github-actions-how-can-i-cache-the-docker-images-for-testcontainers
