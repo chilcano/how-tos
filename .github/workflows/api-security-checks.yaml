@@ -76,17 +76,20 @@ jobs:
             mega-linter.log
 
       - name: Get short commit sha and branch name
+        if: ${{ success() }} || ${{ failure() }}
         id: vars
         run: |
           echo "git_hash_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
           echo "branch_name=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )" >> $GITHUB_OUTPUT
 
       - name: Echo vars
+        if: ${{ success() }} || ${{ failure() }}
         run: |
           echo git_hash_short: ${{ steps.vars.outputs.git_hash_short }}
           echo branch_name: ${{ steps.vars.outputs.branch_name }}
 
       - name: Browse workspace
+        if: ${{ success() }} || ${{ failure() }}
         run: |
           ls -la src/api_specs/
           ls -la megalinter-reports/
