@@ -54,6 +54,10 @@ jobs:
           mkdir -p src/api_specs/
           mv vocdoni-api.yaml src/api_specs/.
 
+      - name: Download Spectral Rulesets
+        run: |
+          echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.1.1/dist/ruleset.js"]' > .spectral.yaml
+
       # pull docker image taked too much time (~2 mins), can it be cached?:
       # https://stackoverflow.com/questions/71180135/github-actions-how-can-i-cache-the-docker-images-for-testcontainers
       - name: Run MegaLinter
@@ -64,9 +68,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENABLE_LINTERS: OPENAPI_SPECTRAL
           FILTER_REGEX_INCLUDE: (src/api_specs/)
-          #OPENAPI_SPECTRAL_RULES_PATH: https://unpkg.com/@stoplight/spectral-owasp-ruleset
-          #OPENAPI_SPECTRAL_RULES_PATH: https://unpkg.com/@apisyouwonthate/style-guide@1.3.2/dist/ruleset.js
-          OPENAPI_SPECTRAL_RULES_PATH: https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.1.1/dist/ruleset.js
+          OPENAPI_SPECTRAL_RULES_PATH: .spectral.yaml
           #EMAIL_REPORTER_EMAIL: roger@intix.info
 
       - name: Archive MegaLinter reports
