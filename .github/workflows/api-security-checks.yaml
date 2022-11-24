@@ -64,9 +64,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENABLE_LINTERS: OPENAPI_SPECTRAL
           FILTER_REGEX_INCLUDE: (src/api_specs/)
-          OPENAPI_SPECTRAL_RULES_PATH: https://unpkg.com/@stoplight/spectral-owasp-ruleset
+          #OPENAPI_SPECTRAL_RULES_PATH: https://unpkg.com/@stoplight/spectral-owasp-ruleset
           #OPENAPI_SPECTRAL_RULES_PATH: https://unpkg.com/@apisyouwonthate/style-guide@1.3.2/dist/ruleset.js
-          #OPENAPI_SPECTRAL_RULES_PATH: https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.1.1/dist/ruleset.js
+          OPENAPI_SPECTRAL_RULES_PATH: https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.1.1/dist/ruleset.js
           #EMAIL_REPORTER_EMAIL: roger@intix.info
 
       - name: Archive MegaLinter reports
