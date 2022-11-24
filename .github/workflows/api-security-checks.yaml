@@ -19,7 +19,7 @@ concurrency:
 
 jobs:
   build:
-    name: MegaLinter
+    name: Setup and run MegaLinter
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -34,16 +34,17 @@ jobs:
           mkdir -p api_specs/
           mv vocdoni-api.yaml api_specs/.
 
-      - name: MegaLinter
+      - name: Run MegaLinter
         id: ml
         uses: oxsecurity/megalinter@v6
         env:
-          VALIDATE_ALL_CODEBASE: false
+          VALIDATE_ALL_CODEBASE: true       # false: ML doesn't pick the files inside of api_specs/ 
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # ADD YOUR CUSTOM ENV VARIABLES HERE OR DEFINE THEM IN A FILE .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
           # DISABLE: COPYPASTE,SPELL # Uncomment to disable copy-paste and spell checks
           ENABLE_LINTERS: OPENAPI_SPECTRAL
           FILTER_REGEX_INCLUDE: (api_specs/)
+          EMAIL_REPORTER_EMAIL: roger@intix.info
 
       - name: Archive production artifacts
         if: ${{ success() }} || ${{ failure() }}
@@ -54,8 +55,9 @@ jobs:
             megalinter-reports
             mega-linter.log
 
-      - name: List files
+      - name: Browse workspace
         run: |
+          echo CurrentDir: $(pwd)
           ls -la api_specs/
           ls -la megalinter-reports/
           ls -la 
