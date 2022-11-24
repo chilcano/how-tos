@@ -1,0 +1,61 @@
+name: API security checks
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: false
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug 
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: MegaLinter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+          fetch-depth: 0 # If you use VALIDATE_ALL_CODEBASE = true, you can remove this line to improve performances
+
+      - name: Download API specs
+        run: |
+          curl -s -o vocdoni-api.yaml https://raw.githubusercontent.com/vocdoni/developer-portal/main/swaggers/vocdoni-api.yaml
+          mkdir -p api_specs/
+          mv vocdoni-api.yaml api_specs/.
+
+      - name: MegaLinter
+        id: ml
+        uses: oxsecurity/megalinter@v6
+        env:
+          VALIDATE_ALL_CODEBASE: false
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # ADD YOUR CUSTOM ENV VARIABLES HERE OR DEFINE THEM IN A FILE .mega-linter.yml AT THE ROOT OF YOUR REPOSITORY
+          # DISABLE: COPYPASTE,SPELL # Uncomment to disable copy-paste and spell checks
+          ENABLE_LINTERS: OPENAPI_SPECTRAL
+          FILTER_REGEX_INCLUDE: (api_specs/)
+
+      - name: Archive production artifacts
+        if: ${{ success() }} || ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: MegaLinter reports
+          path: |
+            megalinter-reports
+            mega-linter.log
+
+      - name: List files
+        run: |
+          ls -la api_specs/
+          ls -la megalinter-reports/
+          ls -la 
