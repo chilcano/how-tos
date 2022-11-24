@@ -68,7 +68,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENABLE_LINTERS: OPENAPI_SPECTRAL
           FILTER_REGEX_INCLUDE: (src/api_specs/)
-          OPENAPI_SPECTRAL_RULES_PATH: .spectral.yaml
+          OPENAPI_SPECTRAL_CONFIG_FILE: .spectral.yaml
+          OPENAPI_SPECTRAL_RULES_PATH: ~/
           #EMAIL_REPORTER_EMAIL: roger@intix.info
 
       - name: Archive MegaLinter reports
@@ -95,6 +96,8 @@ jobs:
           ls -la src/api_specs/
           ls -la megalinter-reports/
           ls -la
+          cat .openapirc.yml
+          cat .spectral.yml
 
       # Create pull request if applicable (for now works only on PR from same repository, not from forks)
       - name: Create GH PR with applied fixes
