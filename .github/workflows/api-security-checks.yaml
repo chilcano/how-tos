@@ -17,7 +17,7 @@ on:
       - main
       - api    
     paths:
-      - 'api_specs/**.yaml'
+      - 'src/api_specs/**.yaml'
       - '.github/workflows/**.yaml'
   pull_request:
     types:
@@ -26,7 +26,7 @@ on:
       - main
       - api
     paths:
-      - 'api_specs/**.yaml'
+      - 'src/api_specs/**.yaml'
 
 env:
   APPLY_FIXES: all # When active, APPLY_FIXES must also be defined as environment variable (in github/workflows/mega-linter.yml or other CI tool)
@@ -51,17 +51,17 @@ jobs:
       - name: Download API specs
         run: |
           curl -s -o vocdoni-api.yaml https://raw.githubusercontent.com/vocdoni/developer-portal/main/swaggers/vocdoni-api.yaml
-          mkdir -p api_specs/
-          mv vocdoni-api.yaml api_specs/.
+          mkdir -p src/api_specs/
+          mv vocdoni-api.yaml src/api_specs/.
 
       - name: Run MegaLinter
         id: ml
         uses: oxsecurity/megalinter@v6
         env:
-          VALIDATE_ALL_CODEBASE: true       # false: ML doesn't pick the files inside of api_specs/, only "git diff"
+          VALIDATE_ALL_CODEBASE: true       # false: ML doesn't pick the files inside of src/api_specs/, only "git diff"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENABLE_LINTERS: OPENAPI_SPECTRAL
-          FILTER_REGEX_INCLUDE: (api_specs/)
+          FILTER_REGEX_INCLUDE: (src/api_specs/)
           #EMAIL_REPORTER_EMAIL: roger@intix.info
 
       - name: Archive MegaLinter reports
@@ -76,7 +76,7 @@ jobs:
       - name: Browse workspace
         run: |
           echo CurrentDir: $(pwd)
-          ls -la api_specs/
+          ls -la src/api_specs/
           ls -la megalinter-reports/
           ls -la 
 
