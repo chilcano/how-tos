@@ -32,7 +32,7 @@ jobs:
           echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
 
       - name: Run Spectral CLI
-        run: spectral lint src/api_specs
+        run: spectral lint ./src/api_specs/**/*.oas*.{json,yml,yaml} --output reports/spectral_out.log
 
       - name: Archive Spectral reports
         if: ${{ success() }} || ${{ failure() }}
@@ -40,8 +40,8 @@ jobs:
         with:
           name: Reports
           path: |
-            megalinter-reports
-            mega-linter.log
+            reports
+            spectral_out.log
 
       - name: Explore workdir and echo vars
         if: ${{ success() }} || ${{ failure() }}
