@@ -32,9 +32,9 @@ jobs:
 
       - name: Setup Spectral rulesets
         run: |
-          echo 'extends: ["spectral:oas"]' > .spectral.oas.yaml
-          echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.oas_owasp.yaml
-          echo 'extends: ["https://unpkg.com/@apisyouwonthate/style-guide@1.3.2/dist/ruleset.js"] > .spectral.style_guide.yaml
+          echo 'extends: ["spectral:oas"]' > .spectral.oas.yaml   # ruleset was already installed when the linter was installed
+          echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.oas_owasp.yaml  # ruleset had to be installed before (npm install xyz)
+          echo 'extends: ["https://unpkg.com/@apisyouwonthate/style-guide@1.3.2/dist/ruleset.js"]' > .spectral.style_guide.yaml   # ruleset is downloaded in runtime
 
       - name: Run Spectral
         run: |
@@ -48,8 +48,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: Spectral reports
-          path: |
-            _out/*.log
+          path: _out/*.log
 
   # spectral_action:
   #   name: Spectral GH Action
