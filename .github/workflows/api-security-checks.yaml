@@ -114,7 +114,7 @@ jobs:
           ls -la
           echo home_path: $(pwd)
           cat myspectral.yaml
-          cat .openapirc.yml
+          ls -la node_modules/@stoplight/spectral-owasp-ruleset/
 
       # Create pull request if applicable (for now works only on PR from same repository, not from forks)
       - name: Create GH PR with applied fixes
