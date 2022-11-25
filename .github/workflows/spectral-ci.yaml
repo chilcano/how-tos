@@ -34,12 +34,13 @@ jobs:
           #echo 'extends: ["spectral:oas", "https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .spectral.yaml
           npm install @stoplight/spectral-cli
           npm install @stoplight/spectral-owasp-ruleset
-          echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
+          #echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
+          echo 'extends: ["spectral:oas"]' > .spectral.yaml
 
       - name: Run Spectral CLI
         #run: spectral lint ./src/api_specs/**/*.oas*.{json,yml,yaml} -r https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js
         #run: spectral lint ./src/api_specs/openapi01.yaml -r https://unpkg.com/@apisyouwonthate/style-guide@1.3.2/dist/ruleset.js -o spectral_out -f["html","stylish,"junit"] -v
-        run: npx spectral lint ./src/api_specs/openapi01.yaml -v
+        run: npx spectral lint ./src/api_specs/openapi01.yaml -r https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js -v
 
       - name: Archive Spectral reports
         if: ${{ success() }} || ${{ failure() }}
