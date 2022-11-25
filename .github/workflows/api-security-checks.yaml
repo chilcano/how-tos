@@ -56,9 +56,9 @@ jobs:
 
       - name: Download Spectral Rulesets
         run: |
-          #echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .spectral.yaml
-          #echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
-          echo 'extends: ["spectral:oas"]' > .spectral.yaml
+          #echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > my_spectral.yaml
+          #echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset"]' > my_spectral.yaml
+          echo 'extends: ["spectral:oas"]' > my_spectral.yaml
 
       # pull docker image taked too much time (~2 mins), can it be cached?:
       # https://stackoverflow.com/questions/71180135/github-actions-how-can-i-cache-the-docker-images-for-testcontainers
@@ -70,7 +70,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENABLE_LINTERS: OPENAPI_SPECTRAL
           FILTER_REGEX_INCLUDE: (src/api_specs/)
-          OPENAPI_SPECTRAL_CONFIG_FILE: .spectral.yaml
+          OPENAPI_SPECTRAL_CONFIG_FILE: my_spectral.yaml
           OPENAPI_SPECTRAL_RULES_PATH: .
           #EMAIL_REPORTER_EMAIL: roger@intix.info
 
@@ -78,7 +78,7 @@ jobs:
       #   uses: stoplightio/spectral-action@latest
       #   with:
       #     file_glob: 'src/api_specs/*.yaml'
-      #     spectral_ruleset: .spectral.yml
+      #     spectral_ruleset: my_spectral.yml
 
       - name: Archive MegaLinter reports
         if: ${{ success() }} || ${{ failure() }}
@@ -105,9 +105,8 @@ jobs:
           ls -la megalinter-reports/
           ls -la
           echo home_path: $(pwd)
-          cat .spectral.yaml
-          ls -la /github/workspace/ 
-          cat /github/workspace/.openapirc.yml
+          cat my_spectral.yaml
+          cat .openapirc.yml
 
       # Create pull request if applicable (for now works only on PR from same repository, not from forks)
       - name: Create GH PR with applied fixes
