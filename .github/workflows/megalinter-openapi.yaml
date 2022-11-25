@@ -34,7 +34,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENABLE_LINTERS: OPENAPI_SPECTRAL
           FILTER_REGEX_INCLUDE: (src/api_specs/)
-          #OPENAPI_SPECTRAL_CONFIG_FILE: myspectral.yaml
+          OPENAPI_SPECTRAL_CONFIG_FILE: myspectral.yaml
           #OPENAPI_SPECTRAL_RULES_PATH: .
           # error: Provided ruleset is not an object
           #OPENAPI_SPECTRAL_ARGUMENTS: '-r https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js'
