@@ -27,6 +27,11 @@ jobs:
 
       - name: Download and setup Spectral Rulesets
         run: |
+          #npm install -g @stoplight/spectral-cli
+          #npm install --save -D @stoplight/spectral-owasp-ruleset
+          #npm install --save -D @stoplight/spectral-cli
+          #echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
+          #echo 'extends: ["spectral:oas", "https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .spectral.yaml
           npm install @stoplight/spectral-cli
           npm install @stoplight/spectral-owasp-ruleset
           echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
