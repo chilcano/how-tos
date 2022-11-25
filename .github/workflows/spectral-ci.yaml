@@ -14,7 +14,7 @@ concurrency:
 
 jobs:
   spectral_cli:
-    name: Setup and run Spectral CLI
+    name: Spectral CLI
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -31,10 +31,11 @@ jobs:
           #npm install --save -D @stoplight/spectral-owasp-ruleset
           #npm install --save -D @stoplight/spectral-cli
           #echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
-          echo 'extends: ["spectral:oas", "https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .spectral.yaml
+          #echo 'extends: ["spectral:oas", "https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .spectral.yaml
+          echo 'extends: ["spectral:oas"]' > .spectral.yaml
 
       - name: Run Spectral CLI
-        run: spectral lint ./src/api_specs/**/*.oas*.{json,yml,yaml} --output spectral_out.log
+        run: spectral lint ./src/api_specs/**/*.oas*.{json,yml,yaml} -r https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js
 
       - name: Archive Spectral reports
         if: ${{ success() }} || ${{ failure() }}
@@ -52,18 +53,18 @@ jobs:
           cat .spectral.yaml
           ls -la node_modules/@stoplight/spectral-owasp-ruleset/
 
-  spectral_action:
-    name: Setup and run Github Spectral Action
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+  # spectral_action:
+  #   name: Spectral GH Action
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout Code
+  #       uses: actions/checkout@v3
 
-      - name: Download and setup Spectral Rulesets
-        run: |
-          echo 'extends: ["spectral:oas", "https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .spectral.yaml
+  #     - name: Download and setup Spectral Rulesets
+  #       run: |
+  #         echo 'extends: ["spectral:oas", "https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .spectral.yaml
 
-      - name: Run Spectral Actions
-        uses: stoplightio/spectral-action@latest
-        with:
-          file_glob: './src/api_specs/**/*.oas*.{json,yml,yaml}'
+  #     - name: Run Spectral Actions
+  #       uses: stoplightio/spectral-action@latest
+  #       with:
+  #         file_glob: './src/api_specs/**/*.oas*.{json,yml,yaml}'
