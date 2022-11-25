@@ -32,16 +32,19 @@ jobs:
 
       - name: Setup Spectral rulesets
         run: |
-          echo 'extends: ["spectral:oas"]' > .spectral.oas.yaml   # ruleset was already installed when the linter was installed
-          echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.oas_owasp.yaml  # ruleset had to be installed before (npm install xyz)
-          echo 'extends: ["https://unpkg.com/@apisyouwonthate/style-guide@1.3.2/dist/ruleset.js"]' > .spectral.style_guide.yaml   # ruleset is downloaded in runtime
+          # ruleset was already installed when the linter was installed
+          echo 'extends: ["spectral:oas"]' > .spectral_oas.yaml
+          # ruleset had to be installed before (npm install xyz)
+          echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral_oas_owasp.yaml
+          # ruleset is downloaded in runtime
+          echo 'extends: ["https://unpkg.com/@apisyouwonthate/style-guide@1.3.2/dist/ruleset.js"]' > .spectral_style_guide.yaml
 
       - name: Run Spectral
         run: |
           mkdir -p _out/
-          npx spectral lint ./src/api_specs/openapi01.yaml -r .spectral.oas.yaml -v > _out/spectral.oas.log
-          npx spectral lint ./src/api_specs/openapi01.yaml -r .spectral.oas_owasp.yaml -v > _out/spectral.oas_owasp.log
-          npx spectral lint ./src/api_specs/openapi01.yaml -r .spectral.style_guide.yaml -v > _out/spectral.style_guide.log
+          npx spectral lint ./src/api_specs/openapi01.yaml -r .spectral_oas.yaml -v > _out/spectral_oas.log
+          npx spectral lint ./src/api_specs/openapi01.yaml -r .spectral_oas_owasp.yaml -v > _out/spectral_oas_owasp.log
+          npx spectral lint ./src/api_specs/openapi01.yaml -r .spectral_style_guide.yaml -v > _out/spectral_style_guide.log
 
       - name: Archive Spectral reports
         if: ${{ success() }} || ${{ failure() }}
