@@ -12,3 +12,5 @@ target/
 *.deb
 .env
 .venv
+node_modules/
+src/**/*.log

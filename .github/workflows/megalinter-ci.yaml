@@ -1,4 +1,4 @@
-name: API security checks
+name: MegaLinter CI
 
 on:
   workflow_dispatch:
@@ -8,29 +8,23 @@ on:
         required: false
         default: 'warning'
         type: choice
-        options:
-        - info
-        - warning
-        - debug 
-  push:
-    branches:
-      - main
-      - api    
-    paths:
-      - 'api_specs/**.yaml'
-      - '.github/workflows/**.yaml'
-  pull_request:
-    types:
-      - opened
-    branches:
-      - main
-      - api
-    paths:
-      - 'api_specs/**.yaml'
+        options: [info, warning, debug] 
+  # push:
+  #   branches: [main, api]
+  #   paths:
+  #     - 'src/api_specs/**.yaml'
+  #     - '.github/workflows/megalinter-ci.yaml'
+  # pull_request:
+  #   types:
+  #     - opened
+  #   branches: [main, api]
+  #   paths:
+  #     - 'src/api_specs/**.yaml'
+  #     - '.github/workflows/megalinter-ci.yaml'
 
 env:
   APPLY_FIXES: all # When active, APPLY_FIXES must also be defined as environment variable (in github/workflows/mega-linter.yml or other CI tool)
-  APPLY_FIXES_EVENT: pull_request # Decide which event triggers application of fixes in a commit or a PR (pull_request, push, all)
+  APPLY_FIXES_EVENT: push # Decide which event triggers application of fixes in a commit or a PR (pull_request, push, all)
   APPLY_FIXES_MODE: commit # If APPLY_FIXES is used, defines if the fixes are directly committed (commit) or posted in a PR (pull_request)
 
 concurrency:
@@ -44,25 +38,48 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
-          fetch-depth: 0 # If you use VALIDATE_ALL_CODEBASE = true, you can remove this line to improve performances
+        # with:
+        #   token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+        #   fetch-depth: 0 # If you use VALIDATE_ALL_CODEBASE = true, you can remove this line to improve performances
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          #cache: 'npm'
+      
       - name: Download API specs
         run: |
           curl -s -o vocdoni-api.yaml https://raw.githubusercontent.com/vocdoni/developer-portal/main/swaggers/vocdoni-api.yaml
-          mkdir -p api_specs/
-          mv vocdoni-api.yaml api_specs/.
+          mkdir -p src/api_specs/
+          mv vocdoni-api.yaml src/api_specs/.
 
+      - name: Download Spectral Rulesets
+        run: |
+          npm install --save -D @stoplight/spectral-owasp-ruleset
+          #echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > myspectral.yaml
+          #echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset"]' > myspectral.yaml
+          echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > myspectral.yaml
+
+      # pull docker image taked too much time (~2 mins), can it be cached?:
+      # https://stackoverflow.com/questions/71180135/github-actions-how-can-i-cache-the-docker-images-for-testcontainers
       - name: Run MegaLinter
         id: ml
         uses: oxsecurity/megalinter@v6
         env:
-          VALIDATE_ALL_CODEBASE: true       # false: ML doesn't pick the files inside of api_specs/, only "git diff"
+          VALIDATE_ALL_CODEBASE: true       # false: ML doesn't pick the files inside of src/api_specs/, only "git diff"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENABLE_LINTERS: OPENAPI_SPECTRAL
-          FILTER_REGEX_INCLUDE: (api_specs/)
-          #EMAIL_REPORTER_EMAIL: roger@intix.info
+          FILTER_REGEX_INCLUDE: (src/api_specs/)
+          OPENAPI_SPECTRAL_CONFIG_FILE: myspectral.yaml
+          OPENAPI_SPECTRAL_RULES_PATH: .
+          LOG_LEVEL: DEBUG
+
+      # - name: Run Spectral Action
+      #   uses: stoplightio/spectral-action@latest
+      #   with:
+      #     file_glob: 'src/api_specs/*.yaml'
+      #     spectral_ruleset: myspectral.yml
 
       - name: Archive MegaLinter reports
         if: ${{ success() }} || ${{ failure() }}
@@ -73,17 +90,30 @@ jobs:
             megalinter-reports
             mega-linter.log
 
-      - name: Browse workspace
+      - name: Get short commit sha and branch name
+        if: ${{ success() }} || ${{ failure() }}
+        id: vars
         run: |
-          echo CurrentDir: $(pwd)
-          ls -la api_specs/
+          echo "git_hash_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+          echo "branch_name=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )" >> $GITHUB_OUTPUT
+
+      - name: Explore workdir and echo vars
+        if: ${{ success() }} || ${{ failure() }}
+        run: |
+          echo git_hash_short: ${{ steps.vars.outputs.git_hash_short }}
+          echo branch_name: ${{ steps.vars.outputs.branch_name }}
+          ls -la src/api_specs/
           ls -la megalinter-reports/
-          ls -la 
+          ls -la
+          echo home_path: $(pwd)
+          cat myspectral.yaml
+          ls -la node_modules/@stoplight/spectral-owasp-ruleset/
 
       # Create pull request if applicable (for now works only on PR from same repository, not from forks)
       - name: Create GH PR with applied fixes
         id: cpr
         if: |
+          (success() || failure()) &&  
           steps.ml.outputs.has_updated_sources == 1 && 
           (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && 
           env.APPLY_FIXES_MODE == 'pull_request' && 
@@ -98,6 +128,7 @@ jobs:
 
       - name: Print GH PR output
         if: |
+          (success() || failure()) && 
           steps.ml.outputs.has_updated_sources == 1 && 
           (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && 
           env.APPLY_FIXES_MODE == 'pull_request' && 
@@ -110,6 +141,7 @@ jobs:
       # Push new commit if applicable (for now works only on PR from same repository, not from forks)
       - name: Prepare GH commit
         if: |
+          (success() || failure()) && 
           steps.ml.outputs.has_updated_sources == 1 && 
           (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && 
           env.APPLY_FIXES_MODE == 'commit' && 
@@ -120,6 +152,7 @@ jobs:
 
       - name: Commit and push applied linter fixes
         if: |
+          (success() || failure()) && 
           steps.ml.outputs.has_updated_sources == 1 && 
           (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && 
           env.APPLY_FIXES_MODE == 'commit' && 

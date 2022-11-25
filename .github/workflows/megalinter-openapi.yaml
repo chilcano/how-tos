@@ -1,0 +1,75 @@
+name: megalinter-openapi
+
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: false
+        default: 'warning'
+        type: choice
+        options: [info, warning, debug] 
+  # push:
+  #   branches: [api]
+  # pull_request:
+  #   types:
+  #     - opened
+  #   branches: [api]
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Setup and run MegaLinter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: Download Spectral Rulesets
+        run: |
+          npm install --save -D @stoplight/spectral-owasp-ruleset
+          #echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > myspectral.yaml
+          echo 'extends: ["spectral:oas"]' > myspectral.yaml
+
+      - name: Run MegaLinter
+        id: ml
+        uses: oxsecurity/megalinter@v6
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ENABLE_LINTERS: OPENAPI_SPECTRAL
+          FILTER_REGEX_INCLUDE: (src/api_specs/)
+          OPENAPI_SPECTRAL_CONFIG_FILE: myspectral.yaml
+          #OPENAPI_SPECTRAL_RULES_PATH: .
+          # error: Provided ruleset is not an object
+          #OPENAPI_SPECTRAL_ARGUMENTS: '-r https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js'
+          #OPENAPI_SPECTRAL_ARGUMENTS: '-r https://unpkg.com/@stoplight/spectral-owasp-ruleset'
+          #OPENAPI_SPECTRAL_ARGUMENTS: '-r @stoplight/spectral-owasp-ruleset'
+          OPENAPI_SPECTRAL_ARGUMENTS: '-r node_modules/@stoplight/spectral-owasp-ruleset'
+          #OPENAPI_SPECTRAL_ARGUMENTS: '-r https://unpkg.com/@apisyouwonthate/style-guide@1.3.2/dist/ruleset.js'
+          #LOG_LEVEL: DEBUG
+
+      - name: Archive MegaLinter reports
+        if: ${{ success() }} || ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: MegaLinter reports
+          path: |
+            megalinter-reports
+            mega-linter.log
+
+      - name: Explore workdir and echo vars
+        if: ${{ success() }} || ${{ failure() }}
+        run: |
+          ls -la
+          echo home_path: $(pwd)
+          cat myspectral.yaml
+          ls -la node_modules/@stoplight/spectral-owasp-ruleset/
