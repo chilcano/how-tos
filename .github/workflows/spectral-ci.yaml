@@ -25,38 +25,31 @@ jobs:
         with:
           node-version: 16.x
 
-      - name: Download and setup Spectral Rulesets
+      - name: Install Spectral
         run: |
-          #npm install -g @stoplight/spectral-cli
-          #npm install --save -D @stoplight/spectral-owasp-ruleset
-          #npm install --save -D @stoplight/spectral-cli
-          #echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
-          #echo 'extends: ["spectral:oas", "https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .spectral.yaml
           npm install @stoplight/spectral-cli
           npm install @stoplight/spectral-owasp-ruleset
-          #echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
-          echo 'extends: ["spectral:oas"]' > .spectral.yaml
 
-      - name: Run Spectral CLI
-        #run: spectral lint ./src/api_specs/**/*.oas*.{json,yml,yaml} -r https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js
-        #run: spectral lint ./src/api_specs/openapi01.yaml -r https://unpkg.com/@apisyouwonthate/style-guide@1.3.2/dist/ruleset.js -o spectral_out -f["html","stylish,"junit"] -v
-        run: npx spectral lint ./src/api_specs/openapi01.yaml -r https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js -v
+      - name: Setup Spectral rulesets
+        run: |
+          echo 'extends: ["spectral:oas"]' > .spectral.oas.yaml
+          echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.oas_owasp.yaml
+          echo 'extends: ["https://unpkg.com/@apisyouwonthate/style-guide@1.3.2/dist/ruleset.js"] > .spectral.style_guide.yaml
+
+      - name: Run Spectral
+        run: |
+          mkdir -p _out/
+          npx spectral lint ./src/api_specs/openapi01.yaml -r .spectral.oas.yaml -v > _out/spectral.oas.log
+          npx spectral lint ./src/api_specs/openapi01.yaml -r .spectral.oas_owasp.yaml -v > _out/spectral.oas_owasp.log
+          npx spectral lint ./src/api_specs/openapi01.yaml -r .spectral.style_guide.yaml -v > _out/spectral.style_guide.log
 
       - name: Archive Spectral reports
         if: ${{ success() }} || ${{ failure() }}
         uses: actions/upload-artifact@v3
         with:
-          name: Reports
+          name: Spectral reports
           path: |
-            spectral_out.*
-
-      - name: Explore workdir and echo vars
-        if: ${{ success() }} || ${{ failure() }}
-        run: |
-          ls -la
-          echo home_path: $(pwd)
-          cat .spectral.yaml
-          #ls -la node_modules/@stoplight/spectral-owasp-ruleset/
+            _out/*.log
 
   # spectral_action:
   #   name: Spectral GH Action
