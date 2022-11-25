@@ -12,18 +12,18 @@ on:
         - info
         - warning
         - debug 
-  push:
-    branches: [main, api]
-    paths:
-      - 'src/api_specs/**.yaml'
-      - '.github/workflows/megalinter-ci.yaml'
-  pull_request:
-    types:
-      - opened
-    branches: [main, api]
-    paths:
-      - 'src/api_specs/**.yaml'
-      - '.github/workflows/megalinter-ci.yaml'
+  # push:
+  #   branches: [main, api]
+  #   paths:
+  #     - 'src/api_specs/**.yaml'
+  #     - '.github/workflows/megalinter-ci.yaml'
+  # pull_request:
+  #   types:
+  #     - opened
+  #   branches: [main, api]
+  #   paths:
+  #     - 'src/api_specs/**.yaml'
+  #     - '.github/workflows/megalinter-ci.yaml'
 
 env:
   APPLY_FIXES: all # When active, APPLY_FIXES must also be defined as environment variable (in github/workflows/mega-linter.yml or other CI tool)

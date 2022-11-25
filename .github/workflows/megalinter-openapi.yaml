@@ -36,7 +36,9 @@ jobs:
           FILTER_REGEX_INCLUDE: (src/api_specs/)
           OPENAPI_SPECTRAL_CONFIG_FILE: myspectral.yaml
           OPENAPI_SPECTRAL_RULES_PATH: .
-          OPENAPI_SPECTRAL_ARGUMENTS: '-r https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js'
+          # error: Provided ruleset is not an object
+          #OPENAPI_SPECTRAL_ARGUMENTS: '-r https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js'
+          OPENAPI_SPECTRAL_ARGUMENTS: '-r https://unpkg.com/@stoplight/spectral-owasp-ruleset'
           #LOG_LEVEL: DEBUG
 
       - name: Archive MegaLinter reports
