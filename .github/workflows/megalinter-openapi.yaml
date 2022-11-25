@@ -22,7 +22,9 @@ jobs:
 
       - name: Download Spectral Rulesets
         run: |
-          echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > myspectral.yaml
+          # error:   Could not parse https://unpkg.com/@stoplight/spectral@5.9.2-owasp-ruleset: Not Found
+          #echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > myspectral.yaml
+          echo 'extends: ["spectral:oas"]' > myspectral.yaml
 
       - name: Run MegaLinter
         id: ml
@@ -34,6 +36,7 @@ jobs:
           FILTER_REGEX_INCLUDE: (src/api_specs/)
           OPENAPI_SPECTRAL_CONFIG_FILE: myspectral.yaml
           OPENAPI_SPECTRAL_RULES_PATH: .
+          OPENAPI_SPECTRAL_ARGUMENTS: '-r https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js'
           #LOG_LEVEL: DEBUG
 
       - name: Archive MegaLinter reports
