@@ -41,9 +41,11 @@ jobs:
         run: set -o pipefail; npx spectral lint src/api_specs/openapi01.yaml -r .spectral_oas.yaml -v | tee _out/spectral_oas.log
 
       - name: Run Spectral - ruleset OWASP
+        if: ${{ success() }} || ${{ failure() }}
         run: set -o pipefail; npx spectral lint src/api_specs/openapi01.yaml -r .spectral_owasp.yaml -v | tee _out/spectral_owasp.log
-        
+
       - name: Run Spectral - ruleset Style-Guide downloaded in runtime
+        if: ${{ success() }} || ${{ failure() }}
         run: |
           set -o pipefail; npx spectral lint src/api_specs/openapi01.yaml -r .spectral_style_guide.yaml -v | tee _out/spectral_style_guide.log
           set +o pipefail
