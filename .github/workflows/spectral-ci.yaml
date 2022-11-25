@@ -28,9 +28,10 @@ jobs:
       - name: Download and setup Spectral Rulesets
         run: |
           npm install -g @stoplight/spectral-cli
-          npm install --save -D @stoplight/spectral-owasp-ruleset
+          #npm install --save -D @stoplight/spectral-owasp-ruleset
           #npm install --save -D @stoplight/spectral-cli
-          echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
+          #echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
+          echo 'extends: ["spectral:oas", "https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .spectral.yaml
 
       - name: Run Spectral CLI
         run: spectral lint ./src/api_specs/**/*.oas*.{json,yml,yaml} --output spectral_out.log
@@ -60,7 +61,7 @@ jobs:
 
       - name: Download and setup Spectral Rulesets
         run: |
-          echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
+          echo 'extends: ["spectral:oas", "https://unpkg.com/@stoplight/spectral-owasp-ruleset@1.2.0/dist/ruleset.js"]' > .spectral.yaml
 
       - name: Run Spectral Actions
         uses: stoplightio/spectral-action@latest
