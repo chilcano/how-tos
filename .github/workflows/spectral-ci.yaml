@@ -1,0 +1,52 @@
+name: spectral-ci
+
+on:
+  push:
+    branches: [api]
+  pull_request:
+    types:
+      - opened
+    branches: [api]
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Setup and run Spectral
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+
+      - name: Download and setup Spectral Rulesets
+        run: |
+          npm install --save -D @stoplight/spectral-owasp-ruleset
+          npm install --save -D @stoplight/spectral-cli
+          echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
+
+      - name: Run Spectral CLI
+        run: spectral lint src/api_specs
+
+      - name: Archive Spectral reports
+        if: ${{ success() }} || ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: Reports
+          path: |
+            megalinter-reports
+            mega-linter.log
+
+      - name: Explore workdir and echo vars
+        if: ${{ success() }} || ${{ failure() }}
+        run: |
+          ls -la
+          echo home_path: $(pwd)
+          cat .spectral.yaml
+          ls -la node_modules/@stoplight/spectral-owasp-ruleset/

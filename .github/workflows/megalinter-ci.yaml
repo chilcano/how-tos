@@ -8,10 +8,7 @@ on:
         required: false
         default: 'warning'
         type: choice
-        options:
-        - info
-        - warning
-        - debug 
+        options: [info, warning, debug] 
   # push:
   #   branches: [main, api]
   #   paths:
