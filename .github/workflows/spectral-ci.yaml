@@ -27,12 +27,13 @@ jobs:
 
       - name: Download and setup Spectral Rulesets
         run: |
+          npm install -g @stoplight/spectral-cli
           npm install --save -D @stoplight/spectral-owasp-ruleset
-          npm install --save -D @stoplight/spectral-cli
+          #npm install --save -D @stoplight/spectral-cli
           echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
 
       - name: Run Spectral CLI
-        run: spectral lint ./src/api_specs/**/*.oas*.{json,yml,yaml} --output reports/spectral_out.log
+        run: spectral lint ./src/api_specs/**/*.oas*.{json,yml,yaml} --output spectral_out.log
 
       - name: Archive Spectral reports
         if: ${{ success() }} || ${{ failure() }}
@@ -40,7 +41,6 @@ jobs:
         with:
           name: Reports
           path: |
-            reports
             spectral_out.log
 
       - name: Explore workdir and echo vars
