@@ -1,0 +1,46 @@
+name: megalinter-openapi
+
+on:
+  push:
+    branches: [api]
+  pull_request:
+    types:
+      - opened
+    branches: [api]
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Setup and run MegaLinter
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Download Spectral Rulesets
+        run: |
+          echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > myspectral.yaml
+
+      - name: Run MegaLinter
+        id: ml
+        uses: oxsecurity/megalinter@v6
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ENABLE_LINTERS: OPENAPI_SPECTRAL
+          FILTER_REGEX_INCLUDE: (src/api_specs/)
+          OPENAPI_SPECTRAL_CONFIG_FILE: myspectral.yaml
+          OPENAPI_SPECTRAL_RULES_PATH: .
+          #LOG_LEVEL: DEBUG
+
+      - name: Archive MegaLinter reports
+        if: ${{ success() }} || ${{ failure() }}
+        uses: actions/upload-artifact@v3
+        with:
+          name: MegaLinter reports
+          path: |
+            megalinter-reports
+            mega-linter.log

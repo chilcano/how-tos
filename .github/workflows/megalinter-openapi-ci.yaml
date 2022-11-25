@@ -1,4 +1,4 @@
-name: api-security-checks
+name: MegaLinter OpenAPI CI
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ on:
       - api    
     paths:
       - 'src/api_specs/**.yaml'
-      - '.github/workflows/**.yaml'
+      - '.github/workflows/megalinter-workflow.yaml'
   pull_request:
     types:
       - opened
@@ -27,6 +27,7 @@ on:
       - api
     paths:
       - 'src/api_specs/**.yaml'
+      - '.github/workflows/megalinter-workflow.yaml'
 
 env:
   APPLY_FIXES: all # When active, APPLY_FIXES must also be defined as environment variable (in github/workflows/mega-linter.yml or other CI tool)
@@ -79,7 +80,6 @@ jobs:
           FILTER_REGEX_INCLUDE: (src/api_specs/)
           OPENAPI_SPECTRAL_CONFIG_FILE: myspectral.yaml
           OPENAPI_SPECTRAL_RULES_PATH: .
-          #EMAIL_REPORTER_EMAIL: roger@intix.info
           LOG_LEVEL: DEBUG
 
       # - name: Run Spectral Action
