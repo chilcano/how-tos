@@ -55,3 +55,4 @@ Repository with technical indications to install, configure any interesting stuf
 28. [Installing and uninstalling IDE and DevOps Tools for multiple platforms](doc/ide_and_devops_tools.md)
 29. [CI/CD GitHub workflows for NodeJS and TypeScript applications](doc/github-workflow-for-nodejs-typescript-apps.md)
 30. [API security checking using Spectral Linter](doc/api_security_checks.md)
+31. [Installing IPFS Cluster CLI](doc/ipfs_cluster_ctl_commands.md)
