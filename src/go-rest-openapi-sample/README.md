@@ -2,6 +2,7 @@
 
 ## References
 
+- https://stackoverflow.com/questions/66171424/how-to-generate-openapi-v3-specification-from-go-source-code
 - https://dev.to/vearutop/tutorial-developing-a-restful-api-with-go-json-schema-validation-and-openapi-docs-2490
 
 ## Steps
