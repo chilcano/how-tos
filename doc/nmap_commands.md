@@ -1,4 +1,4 @@
-# Wotking with NMAP
+# Working with NMAP
 
 ## Install from Ubuntu repositories
 
