@@ -41,7 +41,9 @@ Repository with technical indications to install, configure any interesting stuf
 18. [Regex examples in VSCode](doc/regex_examples.md)
 19. [Generate and import SSH Pub Key to all AWS Regions](doc/import_ssh_keys_to_aws_regions.md)
 20. [Disabling sleeping when close laptop lid](doc/disable_sleeping_when_close_laptop_lid.md)
-21. [Docker useful commands](doc/docker_useful_commands.md)
+21. Docker & Docker Compose
+  - [Docker install and commands](doc/docker_useful_commands.md)
+  - [Docker Compose install and example](doc/docker-compose-install/)
 22. [Install Code-Server on Headless Raspberry Pi 3B+ with Ubuntu 64bit](doc/install_code_server_on_headless_rpi.md)
 23. [Install AutoFirma Java App in Ubuntu 19.10](doc/install_autofirma_app_in_ubuntu19.10.md)
 24. [Installation of WSO2 MB, Apache Qpid, RabbitMQ and Apache ActiveMQ on CentOS](doc/install_wso2mb_qpid_rabbitmq_activemq.md)
