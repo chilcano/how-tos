@@ -23,7 +23,7 @@ Repository with technical indications to install, configure any interesting stuf
     - Download `hub-windows-amd64-<version>.zip` from [https://github.com/github/hub/releases](https://github.com/github/hub/releases), unzip it and install it in your system.
   * [Signing Git commits and tags with GPG and SSH keys](doc/git_signing.md) 
 8. [Getting CPU and GPU temperature in Ubuntu 19.04](doc/getting_temperature_cpu_gpu_hd_in_ubuntu.md)
-9. [Installing Logitech Unifying (Keyboard adn mice) in Ubuntu 19.04](doc/installing_logitech_unifying_in_ubuntu_19_04.md)
+9. [Install Logitech Unifying (Keyboard adn mice) in Ubuntu 19.04](doc/install_logi_unifying_in_ubuntu_19_04.md)
 10. Screen Tools:
   - [Install and configure Asus MB168b portable screen in Ubuntu 18.04](doc/screen_mb168b_install_in_ubuntu.md)
   - [Take screenshots silently in Ubuntu with xfce4-screenshooter](doc/screen_shooter_silent.md)
