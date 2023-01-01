@@ -12,7 +12,7 @@
 $ python3 -V
 $ sudo apt install -y python3-pip build-essential libssl-dev libffi-dev python-dev python3-venv
 $ sudo pip3 install solaar
-```sh
+```
 
 To remove:
 ```sh
@@ -26,13 +26,18 @@ $ sudo apt install -y solaar
 ```
 
 It will install its dependencies:
-```
-python-dbus python-gi python-pyudev
+```sh
+$ python-dbus python-gi python-pyudev
 ```
 
 If you want to remove it
 ```sh
 $ sudo apt remove -y solaar 
+```
+
+Run `Solaar` to connect the Logitech device:
+```sh
+$ sudo solaar 
 ```
 
 ### 3. Install from source code
