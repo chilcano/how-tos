@@ -1,4 +1,4 @@
-## Installing Logitech Device Manager (Keyboard adn mice) in Ubuntu with Unifying
+## Installing Logitech Device Manager (Keyboard and mice) in Ubuntu with Unifying
 
 
 ### Ref:
