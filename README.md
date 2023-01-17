@@ -44,7 +44,10 @@ Repository with technical indications to install, configure any interesting stuf
 21. Docker & Docker Compose
   - [Docker install and commands](doc/docker_useful_commands.md)
   - [Docker Compose install and example](doc/docker-compose-install/)
-22. [Install Code-Server on Headless Raspberry Pi 3B+ with Ubuntu 64bit](doc/install_code_server_on_headless_rpi.md)
+22. [Raspberry Pi - Guides]
+  - [Install Raspbian OS and Ubuntu 64bits on Raspberry Pi 3B+ in headless mode](doc/raspberry_pi_getting_started.md)
+  - [Install Code-Server on RPi](doc/install_code_server_on_headless_rpi.md)
+  - [Install Pi-Hole on RPi](pi_hole_guide.md)
 23. [Install AutoFirma Java App in Ubuntu 19.10](doc/install_autofirma_app_in_ubuntu19.10.md)
 24. [Installation of WSO2 MB, Apache Qpid, RabbitMQ and Apache ActiveMQ on CentOS](doc/install_wso2mb_qpid_rabbitmq_activemq.md)
 25. [Issue Certificates with MKCert](doc/issue_certs_with_mkcert.md)
@@ -59,3 +62,4 @@ Repository with technical indications to install, configure any interesting stuf
 30. [Installing IPFS Cluster CLI](doc/ipfs_cluster_ctl_commands.md)
 31. [RESTful API - Generating Documentation and OpenAPI specs from Golang API](src/go-rest-openapi-sample/)
 32. [RESTful API - Security checking using Spectral Linter](doc/api_security_checks.md)
+33. [Bitnami Sealed Secrets on Google Kubernetes Engine](doc/bitnami_sealed_secrets_on_gke_guide.md)
