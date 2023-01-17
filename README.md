@@ -63,3 +63,4 @@ Repository with technical indications to install, configure any interesting stuf
 31. [RESTful API - Generating Documentation and OpenAPI specs from Golang API](src/go-rest-openapi-sample/)
 32. [RESTful API - Security checking using Spectral Linter](doc/api_security_checks.md)
 33. [Bitnami Sealed Secrets on Google Kubernetes Engine](doc/bitnami_sealed_secrets_on_gke_guide.md)
+34. [Setting iMac (24" early 2009) fan control for Ubuntu](doc/imac_early_2009_fan_control_on_ubuntu.md)
