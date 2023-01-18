@@ -64,3 +64,4 @@ Repository with technical indications to install, configure any interesting stuf
 32. [RESTful API - Security checking using Spectral Linter](doc/api_security_checks.md)
 33. [Bitnami Sealed Secrets on Google Kubernetes Engine](doc/bitnami_sealed_secrets_on_gke_guide.md)
 34. [Setting iMac (24" early 2009) fan control for Ubuntu](doc/imac_early_2009_fan_control_on_ubuntu.md)
+34. [Turn off Macbook/iMac startup sound on Ubuntu](doc/turn_off_mac_startup_sound_on_ubuntu.md)
