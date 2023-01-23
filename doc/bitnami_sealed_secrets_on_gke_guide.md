@@ -98,11 +98,10 @@ zone = europe-west6-a
 account = chilcano@holisticsecurity.io
 disable_usage_reporting = True
 project = aragon-prod
-
 ```
 
 
-Update the kubectl configuration to use the plugin:
+Fetch the credentials for the cluster:
 ```
 $ gcloud container clusters get-credentials aragon-prod
 Fetching cluster endpoint and auth data.
@@ -129,8 +128,6 @@ $ kubectl get namespaces
 
 ### 3. Install kubeseal
 
-
-
 ```
 wget https://github.com/bitnami-labs/sealed-secrets/releases/download/<release-tag>/kubeseal-<version>-linux-amd64.tar.gz
 tar -xvzf kubeseal-<version>-linux-amd64.tar.gz kubeseal
@@ -141,14 +138,24 @@ tar -xvzf kubeseal-0.19.3-linux-amd64.tar.gz
 sudo install -m 755 kubeseal /usr/local/bin/kubeseal
 ```
 
-### 4. Create a yaml secret
+### 4. Create a secret in yaml format
 
-```
-$ echo -n bar | kubectl create secret generic mysecret --dry-run=client --from-file=foo=/dev/stdin -o json >mysecret.json
 
-$ echo -n bar | kubectl create secret generic mysecret --dry-run=client --from-file=foo=/dev/stdin -o yaml >mysecret.yaml
+We are going to create a secret in yaml format.
+
+* `bar` is the secret value in plain text
+* `YmFy` is the secret value encoded in base64 
+* `foo` is the secret key name
+* `mysecret` is the secret name what K8s will use
+* `mynamespace` is namespace that will contain the secret
+* Use `-o json` if you want generate a json file instead of yaml.
+
+```sh
+$ echo -n bar | kubectl create secret generic mysecret -n mynamespace --dry-run=client --from-file=foo=/dev/stdin -o yaml > mysecret.yaml
 
 $ cat mysecret.yaml 
+```
+```yaml
 apiVersion: v1
 data:
   foo: YmFy
@@ -156,13 +163,21 @@ kind: Secret
 metadata:
   creationTimestamp: null
   name: mysecret
+  namespace: mynamespace 
 ```
 
-Creating another secret:
+You are able to create a secret manifest file using your favorite text editor, if so, you could edit the entire yaml file from the editor and update only the secret with the base64 encoded value. 
+In Linux generate you can encode and decode in base64 using these commands:
+
+```sh
+$ echo -n mysecretinplaintext | base64
+bXlzZWNyZXRpbnBsYWludGV4dA==
+
+$ echo bXlzZWNyZXRpbnBsYWludGV4dA== | base64 --decode
+mysecretinplaintext
 ```
-$ echo -n myscret2inplaintext | kubectl create secret generic mysecret2 -n mynamespace2 \
---dry-run=client --from-file=mykey2=/dev/stdin -o yaml > mysecret2.yaml
-```
+
+The `-n` flag means `remove break line`.
 
 __Important:__ 
 * Once generated a secret yaml file, you _must_ to update the file with all `annotations` under `metadata`, `namespace` and the name of the key under `data`.
@@ -172,18 +187,18 @@ __Important:__
 ### 5. Create a yaml sealed-secret
 
 ```
-$ kubeseal <mysecret.json >mysealedsecret.json
 $ kubeseal <mysecret.yaml >mysealedsecret.yaml
+
 error: invalid configuration: no configuration has been provided, try setting KUBERNETES_MASTER environment variable
-
 ```
 
-Once configured the K8s cluster, run again the command:
-```
+Once configured the K8s cluster to avoid the above error, run again the command:
+```sh
 $ kubeseal <mysecret.yaml -o yaml >mysealedsecret.yaml
 
 $ cat mysealedsecret.yaml 
-
+```
+```yaml
 apiVersion: bitnami.com/v1alpha1
 kind: SealedSecret
 metadata:
@@ -198,10 +213,4 @@ spec:
       creationTimestamp: null
       name: mysecret
       namespace: default
-
-
-
-
-$ kubeseal < mysecret2.yaml -o yaml > mysealedsecret2.yaml 
 ```
-
