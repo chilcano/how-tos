@@ -25,7 +25,7 @@ Repository with technical indications to install, configure any interesting stuf
 8. [Getting CPU and GPU temperature in Ubuntu 19.04](doc/getting_temperature_cpu_gpu_hd_in_ubuntu.md)
 9. [Install Logitech Unifying (Keyboard and mice) in Ubuntu 19.04](doc/install_logi_unifying_in_ubuntu_19_04.md)
 10. Screen Tools:
-  - [Install and configure Asus MB168b portable screen in Ubuntu 18.04](doc/screen_mb168b_install_in_ubuntu.md)
+  - [Install Asus MB168b portable DisplayLink compatible screen in Ubuntu 18.04](doc/screen_mb168b_install_in_ubuntu.md)
   - [Take screenshots silently in Ubuntu with xfce4-screenshooter](doc/screen_shooter_silent.md)
   - [Change the brightness level of a screen](doc/screen_change_brightness_level.md)
   - [Screenshot and annotation Tools](doc/screenshot_annotation_tools.md) 

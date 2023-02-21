@@ -1,6 +1,8 @@
 # Asus USB Portable Monitor (MB168b) in Ubuntu
 
-1. Download (https://www.displaylink.com/downloads/ubuntu)[https://www.displaylink.com/downloads/ubuntu] the MB168b DisplayLink drivers and unzip it:
+
+
+1. Download [https://www.displaylink.com/downloads/ubuntu](https://www.displaylink.com/downloads/ubuntu) the MB168b DisplayLink drivers and unzip it:
 
 ```sh
 $ unzip "DisplayLink USB Graphics Software for Ubuntu 5.2.zip"
@@ -21,7 +23,11 @@ This is a fatal error, cannot install DisplayLink Linux Software.
 
 ```
 
-3. Install required packages:
+3. Install required packages (optional).
+
+If you have the previous error `Unsatisfied dependencies. Missing component: DKMS.` and 
+`This is a fatal error, cannot install DisplayLink Linux Software.`, then you should install required packages:
+
 
 ```sh
 chilcano@tayta:~/Downloads/$ sudo apt-get install -y dkms
@@ -56,6 +62,7 @@ Installation complete!
 5. Reboot the system;
     
 6. In the Setting menu, You can set your new display now, and it works well.
+
 
 ## Troubleshooting
 
