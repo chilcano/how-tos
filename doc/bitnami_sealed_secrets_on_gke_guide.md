@@ -117,7 +117,7 @@ vocdoni-external-dns     Active   409d
 
 Swithching, updating to other configuration and fetching kubectl config:
 ```
-$ gcloud config configurations activate
+$ gcloud config configurations activate <project>
 $ gcloud config set project aragon-staging
 $ gcloud config set compute/zone europe-west6-a 
 $ gcloud config set compute/region europe-west6
@@ -125,6 +125,43 @@ $ gcloud config set compute/region europe-west6
 $ gcloud container clusters get-credentials aragon-staging
 $ kubectl get namespaces
 ```
+
+
+__Note__
+
+A quick way to configure your connection to GKE is copying the connection configuration details from GKE. You should have a valid user and be authenticated.
+
+Example: https://www.bitpoke.io/docs/app-for-wordpress/basic-usage/connect-to-cluster-and-access-k8s-pods/
+
+```sh
+$ gcloud container clusters get-credentials aragon-devops --zone europe-west6-a --project aragon-devops-319312
+```
+Once fetched the config, you will be able to run `kubectl`
+```sh
+$ kubectl get nodes
+NAME                                            STATUS   ROLES    AGE   VERSION
+gke-aragon-devops-n2-standard-2f168a49-02ih     Ready    <none>   18d   v1.24.9-gke.3200
+gke-aragon-devops-n2-standard-2f168a49-qubg     Ready    <none>   18d   v1.24.9-gke.3200
+gke-aragon-devops-smaller-nodes-63cd004d-4iaw   Ready    <none>   18d   v1.24.9-gke.3200
+gke-aragon-devops-smaller-nodes-63cd004d-zgjm   Ready    <none>   18d   v1.24.9-gke.3200
+```
+Finally, check the kubeconfig generated in your local computer. You should view all cluster config you already connected to.
+As well, you can rename contexts, users, etc.
+
+```sh
+$ kubectl config view
+```
+
+Connecting with `k9s`.
+
+```sh
+$ k9s --context gke_aragon_devops
+$ k9s --context gke_aragon_stg
+$ k9s --context gke_aragon_prods
+
+```
+
+
 
 ### 3. Install kubeseal
 
