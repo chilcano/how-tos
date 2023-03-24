@@ -162,7 +162,6 @@ $ k9s --context gke_aragon_prods
 ```
 
 
-
 ### 3. Install kubeseal
 
 ```
