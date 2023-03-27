@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="r-hssegChHwMBUFeodyW" name="Offboarding">
-        <mxGraphModel dx="1176" dy="723" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+        <mxGraphModel dx="1386" dy="647" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -63,22 +63,24 @@
                 <mxCell id="hDukkaT7l1Hp4GkBRoLi-4" value="DevOps" style="swimlane;startSize=20;horizontal=0;html=1;rounded=1;" parent="hDukkaT7l1Hp4GkBRoLi-1" vertex="1">
                     <mxGeometry x="20" y="130" width="1050" height="120" as="geometry"/>
                 </mxCell>
-                <mxCell id="hDukkaT7l1Hp4GkBRoLi-59" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="hDukkaT7l1Hp4GkBRoLi-4" source="hDukkaT7l1Hp4GkBRoLi-53" target="hDukkaT7l1Hp4GkBRoLi-61" edge="1">
+                <mxCell id="hDukkaT7l1Hp4GkBRoLi-59" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;" parent="hDukkaT7l1Hp4GkBRoLi-4" source="hDukkaT7l1Hp4GkBRoLi-53" target="LDwRzjpOLMUeK4j8077h-1" edge="1">
                     <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="740" y="48" as="targetPoint"/>
+                        <mxPoint x="640" y="48" as="targetPoint"/>
                     </mxGeometry>
                 </mxCell>
                 <mxCell id="hDukkaT7l1Hp4GkBRoLi-53" value="Receive removal systems access notification" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=abstract;rounded=1;" parent="hDukkaT7l1Hp4GkBRoLi-4" vertex="1">
                     <mxGeometry x="410" y="18" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="hDukkaT7l1Hp4GkBRoLi-65" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;" parent="hDukkaT7l1Hp4GkBRoLi-4" source="hDukkaT7l1Hp4GkBRoLi-61" target="hDukkaT7l1Hp4GkBRoLi-64" edge="1">
-                    <mxGeometry relative="1" as="geometry"/>
-                </mxCell>
-                <mxCell id="hDukkaT7l1Hp4GkBRoLi-61" value="Run manual off boarding process" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=manual;rounded=1;" parent="hDukkaT7l1Hp4GkBRoLi-4" vertex="1">
-                    <mxGeometry x="640" y="17" width="120" height="62" as="geometry"/>
+                <mxCell id="hDukkaT7l1Hp4GkBRoLi-65" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;exitPerimeter=0;" parent="hDukkaT7l1Hp4GkBRoLi-4" source="LDwRzjpOLMUeK4j8077h-1" target="hDukkaT7l1Hp4GkBRoLi-64" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="760" y="48" as="sourcePoint"/>
+                    </mxGeometry>
                 </mxCell>
                 <mxCell id="hDukkaT7l1Hp4GkBRoLi-64" value="Close Jira ticket to notify process completion" style="whiteSpace=wrap;html=1;rounded=1;" parent="hDukkaT7l1Hp4GkBRoLi-4" vertex="1">
                     <mxGeometry x="840" y="18" width="170" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="LDwRzjpOLMUeK4j8077h-1" value="Run tool access removal process" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;taskMarker=manual;isLoopSub=1;" vertex="1" parent="hDukkaT7l1Hp4GkBRoLi-4">
+                    <mxGeometry x="620" y="8" width="120" height="80" as="geometry"/>
                 </mxCell>
                 <mxCell id="hDukkaT7l1Hp4GkBRoLi-54" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;endArrow=block;endFill=0;" parent="hDukkaT7l1Hp4GkBRoLi-1" source="hDukkaT7l1Hp4GkBRoLi-35" target="hDukkaT7l1Hp4GkBRoLi-53" edge="1">
                     <mxGeometry relative="1" as="geometry">
@@ -441,7 +443,7 @@
         </mxGraphModel>
     </diagram>
     <diagram name="Request access to an IT service" id="FCsPbFIwRK9KC47_u4Ol">
-        <mxGraphModel dx="1386" dy="723" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+        <mxGraphModel dx="1386" dy="547" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
             <root>
                 <mxCell id="51iS07tQRozPkl2rctjO-0"/>
                 <mxCell id="51iS07tQRozPkl2rctjO-1" parent="51iS07tQRozPkl2rctjO-0"/>
@@ -584,6 +586,138 @@
                 </mxCell>
                 <mxCell id="5EXGLdaYHChK2MeQXX_1-16" value="An &lt;b&gt;IT service&lt;/b&gt; can be:&lt;br&gt;1. Software as a Service: Google Calendar, Figma, ...&lt;br&gt;2. Engineering Tool: GitHub repo, Jira board, ...&lt;br&gt;3. Communication Tool: Discord, Discourse, ...&lt;br&gt;4. Cloud Infrastructure: Google Cloud, Hetzner, ..." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#82b366;fillColor=#d5e8d4;" vertex="1" parent="51iS07tQRozPkl2rctjO-1">
                     <mxGeometry x="40" y="110" width="310" height="90" as="geometry"/>
+                </mxCell>
+            </root>
+        </mxGraphModel>
+    </diagram>
+    <diagram name="Remove access to an IT service" id="L2cBwfH576BKTajewY1E">
+        <mxGraphModel dx="1386" dy="547" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+            <root>
+                <mxCell id="skANhm0GrGiO8IPpH63l-0"/>
+                <mxCell id="skANhm0GrGiO8IPpH63l-1" parent="skANhm0GrGiO8IPpH63l-0"/>
+                <mxCell id="skANhm0GrGiO8IPpH63l-2" value="Remove access to an IT service (Tool)" style="text;strokeColor=none;fillColor=none;html=1;fontSize=24;fontStyle=1;verticalAlign=middle;align=left;" vertex="1" parent="skANhm0GrGiO8IPpH63l-1">
+                    <mxGeometry x="40" y="40" width="420" height="40" as="geometry"/>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-3" value="v1.0.0" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="skANhm0GrGiO8IPpH63l-1">
+                    <mxGeometry x="40" y="80" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-4" value="Eagle Ops" style="swimlane;childLayout=stackLayout;resizeParent=1;resizeParentMax=0;horizontal=0;startSize=20;horizontalStack=0;html=1;rounded=1;" vertex="1" parent="skANhm0GrGiO8IPpH63l-1">
+                    <mxGeometry x="40" y="263" width="1110" height="260" as="geometry"/>
+                </mxCell>
+                <mxCell id="y5oU_dKVdZaJTqCpDQ2u-0" value="People Ops" style="swimlane;startSize=20;horizontal=0;html=1;rounded=1;" vertex="1" parent="skANhm0GrGiO8IPpH63l-4">
+                    <mxGeometry x="20" width="1090" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="y5oU_dKVdZaJTqCpDQ2u-9" style="edgeStyle=orthogonalEdgeStyle;rounded=1;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="y5oU_dKVdZaJTqCpDQ2u-0" source="y5oU_dKVdZaJTqCpDQ2u-10" target="y5oU_dKVdZaJTqCpDQ2u-12">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="y5oU_dKVdZaJTqCpDQ2u-10" value="Notify request individual's removal systems access" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=abstract;rounded=1;" vertex="1" parent="y5oU_dKVdZaJTqCpDQ2u-0">
+                    <mxGeometry x="250" y="30" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="y5oU_dKVdZaJTqCpDQ2u-12" value="Receive process removal completed" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=abstract;rounded=1;" vertex="1" parent="y5oU_dKVdZaJTqCpDQ2u-0">
+                    <mxGeometry x="700" y="30" width="128.62" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="y5oU_dKVdZaJTqCpDQ2u-23" style="edgeStyle=orthogonalEdgeStyle;html=1;fontFamily=Helvetica;fontSize=12;fontColor=default;" edge="1" parent="y5oU_dKVdZaJTqCpDQ2u-0" source="skANhm0GrGiO8IPpH63l-19" target="y5oU_dKVdZaJTqCpDQ2u-10">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-19" value="Start" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=standard;symbol=general;rounded=1;" vertex="1" parent="y5oU_dKVdZaJTqCpDQ2u-0">
+                    <mxGeometry x="60" y="35" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-28" value="End" style="points=[[0.145,0.145,0],[0.5,0,0],[0.855,0.145,0],[1,0.5,0],[0.855,0.855,0],[0.5,1,0],[0.145,0.855,0],[0,0.5,0]];shape=mxgraph.bpmn.event;html=1;verticalLabelPosition=bottom;labelBackgroundColor=#ffffff;verticalAlign=top;align=center;perimeter=ellipsePerimeter;outlineConnect=0;aspect=fixed;outline=end;symbol=terminate2;rounded=1;" vertex="1" parent="y5oU_dKVdZaJTqCpDQ2u-0">
+                    <mxGeometry x="930" y="35" width="50" height="50" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-15" style="edgeStyle=orthogonalEdgeStyle;html=1;fontFamily=Helvetica;fontSize=12;fontColor=default;" edge="1" parent="y5oU_dKVdZaJTqCpDQ2u-0" source="y5oU_dKVdZaJTqCpDQ2u-12" target="skANhm0GrGiO8IPpH63l-28">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="890" y="60" as="targetPoint"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-41" value="" style="shape=message;html=1;html=1;outlineConnect=0;labelPosition=center;verticalLabelPosition=bottom;align=center;verticalAlign=top;" vertex="1" parent="y5oU_dKVdZaJTqCpDQ2u-0">
+                    <mxGeometry x="730" y="101" width="20" height="10" as="geometry"/>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-5" value="DevOps" style="swimlane;startSize=20;horizontal=0;html=1;rounded=1;" vertex="1" parent="skANhm0GrGiO8IPpH63l-4">
+                    <mxGeometry x="20" y="130" width="1090" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-6" style="edgeStyle=orthogonalEdgeStyle;html=1;fontFamily=Helvetica;fontSize=12;fontColor=default;" edge="1" parent="skANhm0GrGiO8IPpH63l-5" source="skANhm0GrGiO8IPpH63l-7" target="IFv3RHAwgai954pIq1Md-0">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-7" value="Disable Google Account" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=abstract;rounded=1;" vertex="1" parent="skANhm0GrGiO8IPpH63l-5">
+                    <mxGeometry x="181" y="37" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-8" style="edgeStyle=none;html=1;" edge="1" parent="skANhm0GrGiO8IPpH63l-5" source="skANhm0GrGiO8IPpH63l-9" target="skANhm0GrGiO8IPpH63l-7">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-9" value="Verify Jira ticket details, user details, role and services" style="whiteSpace=wrap;html=1;verticalAlign=top;labelBackgroundColor=#ffffff;rounded=1;" vertex="1" parent="skANhm0GrGiO8IPpH63l-5">
+                    <mxGeometry x="42" y="37" width="110" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-13" value="" style="edgeStyle=none;html=1;" edge="1" parent="skANhm0GrGiO8IPpH63l-5" source="skANhm0GrGiO8IPpH63l-14" target="skANhm0GrGiO8IPpH63l-15">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-14" value="Remove access to 1Password&amp;nbsp;" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="skANhm0GrGiO8IPpH63l-5">
+                    <mxGeometry x="678" y="37" width="80" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-11" value="" style="edgeStyle=orthogonalEdgeStyle;html=1;fontFamily=Helvetica;fontSize=12;fontColor=default;" edge="1" parent="skANhm0GrGiO8IPpH63l-5" source="skANhm0GrGiO8IPpH63l-15" target="IFv3RHAwgai954pIq1Md-10">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-15" value="Remove access to others (KnowBe4, ...)" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="skANhm0GrGiO8IPpH63l-5">
+                    <mxGeometry x="781" y="37" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="y5oU_dKVdZaJTqCpDQ2u-13" value="" style="image;html=1;image=img/lib/atlassian/Jira_Logo.svg;rounded=1;aspect=fixed;" vertex="1" parent="skANhm0GrGiO8IPpH63l-5">
+                    <mxGeometry x="60" y="8.379999999999995" width="23.622" height="23.62" as="geometry"/>
+                </mxCell>
+                <mxCell id="y5oU_dKVdZaJTqCpDQ2u-14" value="Jira ticket" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="skANhm0GrGiO8IPpH63l-5">
+                    <mxGeometry x="103" y="3.1899999999999977" width="60" height="30" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-7" style="edgeStyle=orthogonalEdgeStyle;html=1;fontFamily=Helvetica;fontSize=12;fontColor=default;" edge="1" parent="skANhm0GrGiO8IPpH63l-5" source="IFv3RHAwgai954pIq1Md-0" target="IFv3RHAwgai954pIq1Md-2">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-0" value="Remove all Discord and Forum Roles" style="points=[[0.25,0,0],[0.5,0,0],[0.75,0,0],[1,0.25,0],[1,0.5,0],[1,0.75,0],[0.75,1,0],[0.5,1,0],[0.25,1,0],[0,0.75,0],[0,0.5,0],[0,0.25,0]];shape=mxgraph.bpmn.task;whiteSpace=wrap;rectStyle=rounded;size=10;html=1;container=1;expand=0;collapsible=0;taskMarker=abstract;rounded=1;" vertex="1" parent="skANhm0GrGiO8IPpH63l-5">
+                    <mxGeometry x="290" y="37" width="90" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-8" style="edgeStyle=orthogonalEdgeStyle;html=1;fontFamily=Helvetica;fontSize=12;fontColor=default;" edge="1" parent="skANhm0GrGiO8IPpH63l-5" source="IFv3RHAwgai954pIq1Md-2" target="IFv3RHAwgai954pIq1Md-5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-2" value="Remove Notion (transfer content to Lead Manager) and Miro access" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="skANhm0GrGiO8IPpH63l-5">
+                    <mxGeometry x="412" y="37" width="120" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-9" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontFamily=Helvetica;fontSize=12;fontColor=default;" edge="1" parent="skANhm0GrGiO8IPpH63l-5" source="IFv3RHAwgai954pIq1Md-5" target="skANhm0GrGiO8IPpH63l-14">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-5" value="Remove access to Atlassian and GitHub Org&amp;nbsp;" style="whiteSpace=wrap;html=1;rounded=1;strokeColor=default;fontFamily=Helvetica;fontSize=12;fontColor=default;fillColor=default;" vertex="1" parent="skANhm0GrGiO8IPpH63l-5">
+                    <mxGeometry x="555" y="37" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-10" value="Close Jira ticket" style="whiteSpace=wrap;html=1;rounded=1;" vertex="1" parent="skANhm0GrGiO8IPpH63l-5">
+                    <mxGeometry x="911" y="37" width="61" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-37" style="edgeStyle=orthogonalEdgeStyle;html=1;dashed=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="skANhm0GrGiO8IPpH63l-4" source="y5oU_dKVdZaJTqCpDQ2u-10" target="skANhm0GrGiO8IPpH63l-9">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="216.99" y="88.98000000000002" as="sourcePoint"/>
+                        <Array as="points">
+                            <mxPoint x="330" y="111"/>
+                            <mxPoint x="117" y="111"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-14" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=1;entryDx=0;entryDy=0;entryPerimeter=0;fontFamily=Helvetica;fontSize=12;fontColor=default;dashed=1;" edge="1" parent="skANhm0GrGiO8IPpH63l-4" source="IFv3RHAwgai954pIq1Md-10" target="y5oU_dKVdZaJTqCpDQ2u-12">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="962" y="111"/>
+                            <mxPoint x="784" y="111"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="skANhm0GrGiO8IPpH63l-42" value="An &lt;b&gt;IT service&lt;/b&gt;&amp;nbsp;&lt;b&gt;(Tool)&lt;/b&gt; can be:&lt;br&gt;1. Software as a Service: Google Calendar, Figma, ...&lt;br&gt;2. Engineering Tool: GitHub repo, Jira board, ...&lt;br&gt;3. Communication Tool: Discord, Discourse, ...&lt;br&gt;4. Cloud Infrastructure: Google Cloud, Hetzner, ..." style="text;html=1;align=left;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#b85450;fillColor=#f8cecc;" vertex="1" parent="skANhm0GrGiO8IPpH63l-1">
+                    <mxGeometry x="40" y="110" width="310" height="90" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-18" value="This task will remove the &lt;br&gt;access of tools are being managed &lt;br&gt;through 1Password only" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#666666;fillColor=#f5f5f5;fontSize=12;fontFamily=Helvetica;fontColor=#333333;" vertex="1" parent="skANhm0GrGiO8IPpH63l-1">
+                    <mxGeometry x="590" y="540" width="210" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-19" style="html=1;fontFamily=Helvetica;fontSize=12;fontColor=default;dashed=1;dashPattern=1 4;endArrow=none;endFill=0;" edge="1" parent="skANhm0GrGiO8IPpH63l-1" source="skANhm0GrGiO8IPpH63l-14" target="IFv3RHAwgai954pIq1Md-18">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-20" value="This other task should remove the access of other &lt;br&gt;tools are not being managed through 1Password, &lt;br&gt;this means that Line Manager or People Ops should &lt;br&gt;provide info about these tools" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=#666666;fillColor=#f5f5f5;fontSize=12;fontFamily=Helvetica;fontColor=#333333;" vertex="1" parent="skANhm0GrGiO8IPpH63l-1">
+                    <mxGeometry x="820" y="535" width="300" height="70" as="geometry"/>
+                </mxCell>
+                <mxCell id="IFv3RHAwgai954pIq1Md-21" style="edgeStyle=none;html=1;dashed=1;dashPattern=1 4;fontFamily=Helvetica;fontSize=12;fontColor=default;endArrow=none;endFill=0;" edge="1" parent="skANhm0GrGiO8IPpH63l-1" source="skANhm0GrGiO8IPpH63l-15" target="IFv3RHAwgai954pIq1Md-20">
+                    <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>
