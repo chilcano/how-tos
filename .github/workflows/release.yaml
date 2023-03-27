@@ -1,0 +1,36 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      dummyLogLevel:
+        description: 'Dummy Log Level'
+        required: false
+        default: 'warning'
+        type: choice
+        options: [info, warning, debug] 
+
+jobs:
+  release:
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+
+      # -D, --save-dev: Package will appear in your devDependencies
+      - name: Install Semantic-Relase devDependencies
+        run: npm install -D semantic-release @semantic-release/git @semantic-release/github
+
+      - name: Run Semantic-Release
+        run: npx semantic-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
