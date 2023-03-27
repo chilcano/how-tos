@@ -2,13 +2,6 @@ name: Release
 
 on:
   workflow_dispatch:
-    inputs:
-      dummyLogLevel:
-        description: 'Dummy Log Level'
-        required: false
-        default: 'warning'
-        type: choice
-        options: [info, warning, debug] 
 
 jobs:
   release:
