@@ -1,8 +1,8 @@
-# Sealed Secrets in Google Kubernetes Engine
+# Sealed Secrets with Bitnami Sealed Secrets Controller
 
 ## Requeriments
 
-1. `gcloud` CLI - https://cloud.google.com/sdk/docs/install
+1. `gcloud` CLI (only for Google Kubernetes Engine) - https://cloud.google.com/sdk/docs/install
 2. `kubectl` CLI - https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl
 3. Bitnami Sealed Secrets Controller and `kubeseal` CLI - https://github.com/bitnami-labs/sealed-secrets#linux
 4. A Kubernetes cluster already working in Google Cloud. If you don't have one, all part related to create a secret and sealing are the same.
@@ -50,6 +50,15 @@ clientVersion:
 kustomizeVersion: v4.5.7
 ```
 
+### 3. Connecting to Kubernetes (GKE)
+
+> All steps in this **Section 3** only are needed if you want stablish connection to existing Kubernetes Cluster through Google Cloud CLI.
+> Once configured and you are able to use `kubectl` to connect to your K8s instance, then you will have a proper `kubeconfig` file already created automatically in your home directory.
+> This `kubeconfig` file is the only thing you need to use `kubeseal`.
+
+
+__Installing to Google Cloud CLI__
+
 The `kubectl` and other Kubernetes clients require be authenticated against Google Cloud and they can be installed through `gcloud` CLI or using `apt-get`.
 ```sh
 $ gcloud components install gke-gcloud-auth-plugin     ## this cmd didn't work in Ubuntu 22.04
@@ -60,7 +69,7 @@ $ gke-gcloud-auth-plugin --version
 Kubernetes v1.25.2-alpha+ae91c1fc0c443c464a4c878ffa2a4544483c6d1f
 ```
 
-__Setting a GKE configuration__
+__Connecting to Google Kubernetes Engine__
 
 We are going to follow this guide [https://cloud.google.com/sdk/docs/configurations](https://cloud.google.com/sdk/docs/configurations) and you should have a proper credentials (email address) and the right permissions to install a Kubernetes Controller. 
 In this case I'm going to use as example this email address `chilcano@holisticsecurity.io`.
@@ -126,7 +135,6 @@ $ gcloud container clusters get-credentials aragon-staging
 $ kubectl get namespaces
 ```
 
-
 __Note__
 
 A quick way to configure your connection to GKE is copying the connection configuration details from GKE. You should have a valid user and be authenticated.
@@ -158,24 +166,21 @@ Connecting with `k9s`.
 $ k9s --context gke_aragon_devops
 $ k9s --context gke_aragon_stg
 $ k9s --context gke_aragon_prods
-
 ```
 
+### 4. Install kubeseal
 
-### 3. Install kubeseal
+```sh
+$ wget https://github.com/bitnami-labs/sealed-secrets/releases/download/<release-tag>/kubeseal-<version>-linux-amd64.tar.gz
+$ tar -xvzf kubeseal-<version>-linux-amd64.tar.gz kubeseal
+$ sudo install -m 755 kubeseal /usr/local/bin/kubeseal
 
+$ wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.19.3/kubeseal-0.19.3-linux-amd64.tar.gz
+$ tar -xvzf kubeseal-0.19.3-linux-amd64.tar.gz 
+$ sudo install -m 755 kubeseal /usr/local/bin/kubeseal
 ```
-wget https://github.com/bitnami-labs/sealed-secrets/releases/download/<release-tag>/kubeseal-<version>-linux-amd64.tar.gz
-tar -xvzf kubeseal-<version>-linux-amd64.tar.gz kubeseal
-sudo install -m 755 kubeseal /usr/local/bin/kubeseal
 
-wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.19.3/kubeseal-0.19.3-linux-amd64.tar.gz
-tar -xvzf kubeseal-0.19.3-linux-amd64.tar.gz 
-sudo install -m 755 kubeseal /usr/local/bin/kubeseal
-```
-
-### 4. Create a secret in yaml format
-
+### 5. Create a secret in yaml format
 
 We are going to create a secret in yaml format.
 
@@ -209,20 +214,23 @@ In Linux generate you can encode and decode in base64 using these commands:
 $ echo -n mysecretinplaintext | base64
 bXlzZWNyZXRpbnBsYWludGV4dA==
 
-$ echo bXlzZWNyZXRpbnBsYWludGV4dA== | base64 --decode
+$ echo bXlzZWNyZXRpbnBsYWludGV4dA== | base64 --decode
 mysecretinplaintext
+
+$ echo -n "generating longer super secret encoded in base64 in only one line" | base64 -w 0
+Z2VuZXJhdGluZyBsb25nZXIgc3VwZXIgc2VjcmV0IGVuY29kZWQgaW4gYmFzZTY0IGluIG9ubHkgb25lIGxpbmU=
 ```
 
-The `-n` flag means `remove break line`.
+The `-n` flag means `remove break line` and `-w 0` generate the base64 string in one single line. 
 
 __Important:__ 
 * Once generated a secret yaml file, you _must_ to update the file with all `annotations` under `metadata`, `namespace` and the name of the key under `data`.
 * Once updated, when sealing with `kubeseal` the generated sealed secret yaml file only will be able to be deployed successfully in the already specified `namespace` using the original `annotations` and key name in `data`. Then, make sure using the right values while editing the secret, because once sealed, the sealed secret only will be able unsealed if these values have not been changed.
 
 
-### 5. Create a yaml sealed-secret
+### 6. Create a yaml sealed-secret
 
-```
+```sh
 $ kubeseal <mysecret.yaml >mysealedsecret.yaml
 
 error: invalid configuration: no configuration has been provided, try setting KUBERNETES_MASTER environment variable
@@ -249,4 +257,103 @@ spec:
       creationTimestamp: null
       name: mysecret
       namespace: default
+```
+
+### 7. Create a yaml sealed-secret in automated way
+
+I've created a script that seal your K8s secret file using any K8s context available in your `kubeconfig` file.
+
+__The seal_k8s_secrerts.sh bash script__
+
+```sh
+#!/bin/bash
+
+if [ $# -eq 2 ]; then
+  arg_ctx="$1"
+  arg_secfile="$2"
+  sealed_secfile="${arg_secfile%.*}-sealed.yaml"
+
+  ctx_values=$(kubectl config get-contexts --no-headers | grep $arg_ctx | awk {'print $1"*"$2'})
+  if [[ "$ctx_values" != "" ]]; then
+    if [[ -f "${arg_secfile}" ]]; then
+      IFS="*"
+      read -ra ctx_items <<<"$ctx_values"
+      printf "> K8s context found: ${ctx_items[0]}\n"
+      seal_cmd="kubeseal --context ${ctx_items[0]} --scope cluster-wide --format=yaml"
+      eval "${seal_cmd} < ${arg_secfile} > ${sealed_secfile}"
+      printf "> K8s sealed secret file created: ${sealed_secfile} \n\n"
+      exit 0
+    else
+      printf "> Error: K8s secret file not found: '${arg_secfile}' \n\n"
+      exit 1      
+    fi
+  else
+    printf "> Error: K8s context not found: '${arg_ctx}' \n\n"
+    exit 1
+  fi 
+else
+  printf "> Error: Two arguments are needed.\n"
+  printf "\tseal_k8s_secrets.sh <devops|staging|prod> <SecretFile>\n\n"
+  exit 1
+fi
+```
+
+__Using the seal_k8s_secrerts.sh bash script__
+
+We are going to seal this K8s secret file that contains a base64 encoded secret:
+```sh
+$ echo -n "generating longer super secret encoded in base64 in only one line" | base64 -w 0
+Z2VuZXJhdGluZyBsb25nZXIgc3VwZXIgc2VjcmV0IGVuY29kZWQgaW4gYmFzZTY0IGluIG9ubHkgb25lIGxpbmU=
+```
+
+The K8s secret file is `myk8ssecret.yaml` and contains:
+```yaml
+apiVersion: v1
+data:
+  key-longer-secret: Z2VuZXJhdGluZyBsb25nZXIgc3VwZXIgc2VjcmV0IGVuY29kZWQgaW4gYmFzZTY0IGluIG9ubHkgb25lIGxpbmU=
+kind: Secret
+metadata:
+  creationTimestamp: null
+  name: mysecret
+  namespace: mynamespace 
+```
+
+Checking the available K8s contexts configured:
+```sh
+$ kubectl config get-contexts --no-headers | awk {'print $1" - "$2'}
+
+aragon_devops_gke - gke_aragon-devops-319312_europe-west6-a_aragon-devops
+aragon_prod_gke - gke_aragon-prod_europe-west6-a_aragon-prod
+aragon_stg_gke - gke_aragon-staging_europe-west6-a_aragon-staging
+```
+
+Now we are going to seal using the `devops` K8s cluster:
+```sh
+$ ./seal_k8s_secrets.sh devops myk8ssecret.yaml 
+
+> K8s context found: aragon_devops_gke
+> K8s sealed secret file created: myk8ssecret-sealed.yaml 
+```
+
+And finally, we have a sealed secret file in `myk8ssecret-sealed.yaml`:
+
+```yaml
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  annotations:
+    sealedsecrets.bitnami.com/cluster-wide: "true"
+  creationTimestamp: null
+  name: mysecret
+  namespace: mynamespace
+spec:
+  encryptedData:
+    key-longer-secret: AgB0MBWCL2fVxgug1YpcA5m7Ual7eY/zwmKcsNT2epMCUl8xcwjq2sBx9sovF6MRaFhlKFOBR4URnUdVfCDZNm/l/p1O/nVb8E1Rbs01NhRWmYDCCI2RpKmIpuro2J+78KB97YOoMbuozH1BRbPY9a2R9MJYj3NweEa7q7rEGua4Fci1TGECt2/L+wbLnDiy2pgBJEd0Z7ljdFU3Py2wpcFIxPeqdHfACDZHzpu6zCh0HqiRJ8ejgHNh6Lg9qV4h+qLC2F/vw631ALgc06AiL0w2y225NbqdJhG87isE4Cxt5kbOD7ZRNL3uwi/B5j5rblU+rgTQGp6xD2FDc7HW+b38eNH+7tBu90LetUosLQMbhukuyH+/d1whMEkg0JG4z70ky/mWX96z51cmMezS+dvv3baxNUo8cFLEk1NFnD4dt9fFU/RUHeqMqHZiClrUevSnrldxRVwFFKstJvLFQBsyEpX3l0tY1T9A02LleHZ+2IOD/sV9eChh7HYHvmSAYi1t1qXXmbaJew/OecEW4lJks9ny0O2AAKMwkBk7H/jyD4WjLvBJEztQojMQ48egDn+3DN4IDIDUUld8WWRMUx9+6agx6gJydbV4zC4c4GyIQCecbkrxY97xkDYoTT3NMZZB7fhxWe6quta1sFfO+RuKE+6S46QZYSt6U8hsLPA3qkYlCW9wmxtps6Eo97vfQK+x5OApU4RRDIgb7jcurR6Mn+8qLTzikjwT/j7hJSZeNKdHtpMGsjwld9fNuin3OqKc8ltkqJAa5DEEcTFEvzdxUQ==
+  template:
+    metadata:
+      annotations:
+        sealedsecrets.bitnami.com/cluster-wide: "true"
+      creationTimestamp: null
+      name: mysecret
+      namespace: mynamespace
 ```
