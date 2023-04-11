@@ -3,15 +3,27 @@ const config = {
   plugins: [
     '@semantic-release/commit-analyzer',
     '@semantic-release/release-notes-generator',
-    ["@semantic-release/git", {
+    [
+      "@semantic-release/changelog",
+      {
+        "changelogFile": "CHANGELOG.md",
+        "changelogTitle": "How-To's changelog"
+      }
+    ],
+    [
+      "@semantic-release/git", 
+      {
         "assets": 
         [
-          "doc/*.*", 
-          "src/*.*", 
+          "CHANGELOG.md",
+          "doc", 
+          "src", 
+          "README.md",
           "diagrams/*.*"
         ],
-        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n{nextRelease.notes}"
-    }],
+        "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      }
+    ],
     '@semantic-release/github'
   ]
 };

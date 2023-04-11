@@ -45,7 +45,7 @@ jobs:
           
           RELEASE_RUN_TYPE=${{ github.event.inputs.type-of-release-run }}
           echo "RELEASE_RUN_TYPE: $RELEASE_RUN_TYPE"
-          if [ "$RELEASE_RUN_TYPE" != "regular-release" ]; then
+          if [ "$RELEASE_RUN_TYPE" == "regular-release" ]; then
             npx semantic-release
           else
             npx semantic-release --dry-run
