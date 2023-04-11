@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       type-of-release-run:
-        type: string
+        type: choice
         description: 'Do you run Release as?'
         required: true
         default: 'dry-run'
