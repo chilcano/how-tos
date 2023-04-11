@@ -38,7 +38,7 @@ jobs:
 
       # -D, --save-dev: Package will appear in your devDependencies
       - name: Install Semantic-Relase devDependencies
-        run: npm install -D semantic-release @semantic-release/git @semantic-release/github
+        run: npm install -D semantic-release @semantic-release/changelog @semantic-release/git @semantic-release/github
 
       - name: Run Semantic-Release (${{ github.event.inputs.type-of-release-run }} mode)
         run: |
