@@ -2,6 +2,19 @@ name: Release
 
 on:
   workflow_dispatch:
+    inputs:
+      type-of-release-run:
+        type: string
+        description: 'Do you run Release as?'
+        required: true
+        default: 'dry-run'
+        options:
+          - 'dry-run'
+          - 'regular-release'
+        
+      proposed-release-tag:
+        type: string
+        description: 'Tag version to use (i.e. v1.2.3)'
 
 jobs:
 
@@ -27,7 +40,16 @@ jobs:
       - name: Install Semantic-Relase devDependencies
         run: npm install -D semantic-release @semantic-release/git @semantic-release/github
 
-      - name: Run Semantic-Release
-        run: npx semantic-release
+      - name: Run Semantic-Release (${{ github.event.inputs.type-of-release-run }} mode)
+        run: |
+          
+          RELEASE_RUN_TYPE=${{ github.event.inputs.type-of-release-run }}
+          echo "RELEASE_RUN_TYPE: $RELEASE_RUN_TYPE"
+          if [ "$RELEASE_RUN_TYPE" != "regular-release" ]; then
+            npx semantic-release
+          else
+            npx semantic-release --dry-run
+          fi
+            
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
