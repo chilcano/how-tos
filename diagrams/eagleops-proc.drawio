@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="r-hssegChHwMBUFeodyW" name="Offboarding">
-        <mxGraphModel dx="1066" dy="539" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+        <mxGraphModel dx="1066" dy="620" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -449,7 +449,7 @@
         </mxGraphModel>
     </diagram>
     <diagram name="Request access to an IT service" id="FCsPbFIwRK9KC47_u4Ol">
-        <mxGraphModel dx="1976" dy="953" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+        <mxGraphModel dx="1066" dy="620" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
             <root>
                 <mxCell id="51iS07tQRozPkl2rctjO-0"/>
                 <mxCell id="51iS07tQRozPkl2rctjO-1" parent="51iS07tQRozPkl2rctjO-0"/>
@@ -597,7 +597,7 @@
         </mxGraphModel>
     </diagram>
     <diagram name="Remove access to an IT service" id="L2cBwfH576BKTajewY1E">
-        <mxGraphModel dx="1386" dy="665" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+        <mxGraphModel dx="1066" dy="620" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
             <root>
                 <mxCell id="skANhm0GrGiO8IPpH63l-0"/>
                 <mxCell id="skANhm0GrGiO8IPpH63l-1" parent="skANhm0GrGiO8IPpH63l-0"/>
