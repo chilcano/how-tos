@@ -1,0 +1,31 @@
+name: 01-set-tag
+
+on:
+  workflow_dispatch:        
+      proposed-release-tag:
+        type: string
+        description: 'Tag version to use (i.e. v1.2.3)'
+
+jobs:
+
+  set-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Set Tag using Git CLI (${{ github.event.inputs.proposed-release-tag }})
+        run: |
+          PROPOSED_TAG=${{ github.event.inputs.proposed-release-tag }}
+          PROPOSED_TAG=$(echo $PROPOSED_TAG | sed 's/\s//g )
+          if [[ "$PROPOSED_TAG" !=~ ^v(.*)$ ]]; then
+            PROPOSED_TAG=$(echo v${BASH_REMATCH[1]})
+          fi
+          echo "PROPOSED_TAG: $PROPOSED_TAG"
+          git tag -a $PROPOSED_TAG -m "Tagged from Github workflow"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
