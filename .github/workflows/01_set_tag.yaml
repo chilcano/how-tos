@@ -6,7 +6,7 @@ on:
       proposed-release-tag:
         type: string
         description: 'Tag version to use (i.e. v1.2.3)'
-        required: false
+        required: true
 
 jobs:
 
@@ -16,8 +16,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.PAT_TEST_API }}
+        # with:
+        #   token: ${{ secrets.PAT_TEST_API }}
 
       - name: Get Tag
         id: gettag
@@ -25,7 +25,7 @@ jobs:
         run: |
           PROPOSED_TAG=$(echo '${{ github.event.inputs.proposed-release-tag }}' | sed 's/\s//g' | sed 's/^\(v\|V\)*\(.*\)/v\2/g')
           echo "PROPOSED_TAG: $PROPOSED_TAG"
-          echo "my_version=$PROPOSED_TAG" >> $GITHUB_OUTPUT
+          echo "VERSION=$PROPOSED_TAG" >> $GITHUB_OUTPUT
 
       - name: Set Github Tag via API
         uses: actions/github-script@v6
@@ -35,7 +35,7 @@ jobs:
             github.rest.git.createRef({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              ref: `refs/tags/${{ steps.gettag.outputs.my_version }}-test`,
+              ref: `refs/tags/${{ steps.gettag.outputs.VERSION }}-test`,
               sha: "${{ github.sha }}"
             })
         
