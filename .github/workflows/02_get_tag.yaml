@@ -1,0 +1,28 @@
+name: 02-get-tag
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, api]
+
+jobs:
+
+  set-tag:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get version from Github Tag
+        id: tag-info
+        run: |
+          GITHUB_REF="${{ github.ref }}"
+          TAG=${GITHUB_REF##*/}
+          VERSION=$(echo "$TAG" | grep -woP "v([0-9]+\.[0-9]+\.[0-9]+)-\w+" | sed 's/-test//g')
+          if [ -z "$VERSION" ]; then
+            echo "my_version=$VERSION" >> $GITHUB_OUTPUT
+          fi
+          echo "VERSION: $VERSION"
