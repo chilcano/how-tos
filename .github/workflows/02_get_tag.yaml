@@ -3,7 +3,8 @@ name: 02-get-tag
 on:
   workflow_dispatch:
   push:
-    branches: [main, api]
+    tags:
+      - "*"
 
 jobs:
 
@@ -14,7 +15,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.PAT_TEST_API }}
 
       - name: Get version from Github Tag
         id: tag-info
