@@ -138,6 +138,50 @@ $ git merge <source-branch>
 $ git push
 ``` 
 
+### 8. Showing git logs
+
+```sh
+$ git log --oneline -n 18
+
+0d956e5 (HEAD -> develop, origin/develop, origin/HEAD) fix(ci): adds condition to release job (#238)
+fc93c12 (tag: 1.9.2-javascript-client, tag: 1.0.2-javascript-client-common) fix/OS-538-module-path (#236)
+8803530 (tag: 1.9.1-javascript-client, tag: 1.5.0-javascript-common, tag: 1.0.1-javascript-client-common) Forces bump 1.9.1 (#235)
+2594adb Version bump 1.9.1 (#234)
+b06b77e GH workflow updated and forces version bump 1.9.1 (#233)
+2f8a1d4 Forces version bump 1.9.1 (#232)
+f88f7d8 Version bump (#231)
+f5108a2 Feature: updates all github actions, python scripts and legacy syntax (#230)
+05e4fc2 Feature: Add generic errors (#227)
+...
+
+```
+
+### 9. Working with git tags
+
+```sh
+$ git tag -a <tag_name> -m "message"
+
+
+// Create Git Tag for Commit
+$ git tag <tag_name> <commit_sha>
+$ git tag -a <tag_name> <commit_sha> -m "message"
+
+$ git push --tags
+
+$ git log --oneline -n 3
+
+9127753 (HEAD -> master) Commit 3
+f2fcb99 (feature) Commit 2
+cab6e1b (tag: v1.0, origin/master) master : initial commit
+
+$ git tag -n
+
+v1.0
+v2.0
+v3.0
+```
+
+
 ## Using Worktrees
 
 ### 1. Create worktree (or switch to existing worktree)

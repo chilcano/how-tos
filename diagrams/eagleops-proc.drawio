@@ -1,6 +1,6 @@
 <mxfile host="65bd71144e">
     <diagram id="r-hssegChHwMBUFeodyW" name="Offboarding">
-        <mxGraphModel dx="1066" dy="620" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+        <mxGraphModel dx="728" dy="620" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
@@ -231,7 +231,7 @@
         </mxGraphModel>
     </diagram>
     <diagram name="Onboarding: 1 - Prior first day" id="3lkF5vliwZrt1aq8uy8R">
-        <mxGraphModel dx="1386" dy="665" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+        <mxGraphModel dx="1627" dy="1133" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
             <root>
                 <mxCell id="TQgzKQtOKjQi2imn_hHr-0"/>
                 <mxCell id="TQgzKQtOKjQi2imn_hHr-1" parent="TQgzKQtOKjQi2imn_hHr-0"/>
@@ -364,7 +364,7 @@
         </mxGraphModel>
     </diagram>
     <diagram name="Onboarding: 2 - New Hire's first day" id="3CPYBdYEiyOSvkBpQVBV">
-        <mxGraphModel dx="1001" dy="429" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+        <mxGraphModel dx="1627" dy="1133" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
             <root>
                 <mxCell id="bwyTvduJhFPGtZ_ca0Rb-0"/>
                 <mxCell id="bwyTvduJhFPGtZ_ca0Rb-1" parent="bwyTvduJhFPGtZ_ca0Rb-0"/>
@@ -449,7 +449,7 @@
         </mxGraphModel>
     </diagram>
     <diagram name="Request access to an IT service" id="FCsPbFIwRK9KC47_u4Ol">
-        <mxGraphModel dx="1066" dy="620" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+        <mxGraphModel dx="1627" dy="1133" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
             <root>
                 <mxCell id="51iS07tQRozPkl2rctjO-0"/>
                 <mxCell id="51iS07tQRozPkl2rctjO-1" parent="51iS07tQRozPkl2rctjO-0"/>
