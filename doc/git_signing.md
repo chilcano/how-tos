@@ -49,13 +49,12 @@ $ echo "email1@example.com ssh-rsa <user1-pub-rsa-key>" >> ~/.ssh/allowed_signer
 $ echo "email2@example.com ssh-ed25519 <user2-pub-ed-key>" >> ~/.ssh/allowed_signers
 ```
 
-Add your own ssk pub key:
+Add your own ssh pub key:
 ```sh
 $ SSH_PUB_KEY=$(cat ~/.ssh/<ssh-key-id>.pub)
 $ ARRAY_SSH_PUB_KEY=(${SSH_PUB_KEY// / })
 $ echo "your-email@example.com ${ARRAY_SSH_PUB_KEY[0]} ${ARRAY_SSH_PUB_KEY[1]}" >> ~/.ssh/allowed_signers
 ```
-
 
 __6. Add trusted GPG public keys__   
 You should use the GPG/PGP framework to specify keys to trust and be able to verify others keys.
