@@ -13,7 +13,7 @@ $ curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/custom_pro
 The above script will:
 
 1. Install Golang.
-2. Install [Powerline-Go](github.com/justjanne/powerline-go).
+2. Install [Powerline-Go](https://github.com/justjanne/powerline-go).
 3. Create the `powerline-go-loader.sh` to configure the Linux Prompt.
 4. Install The Microsoft [Cascadia Code Fonts includes the Powerline glyphs](https://github.com/microsoft/cascadia-code)
 5. Apply all configuration.
