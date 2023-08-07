@@ -90,10 +90,10 @@ $ fc-cache -f $HOME/.fonts
 $ . ~/.bashrc
 ```
 You should see below image with full prompt in 1 line:
-![](imgs/custom_prompt_ubuntu_powerline_go_1_line.png)
+![](img/customprompt/custom_prompt_ubuntu_powerline_go_1_line.png)
 
 
-### 5) Customize the Ubuntu prompt
+### 6) Customize the Ubuntu prompt
 
 I'd like to show the prompt in a two lines, first line for the full path and second line only with cursor. Then, to do that let's modify the `powerline-go-loader.sh`.  
 The `powerline-go -help` command will show all parameters to customize your prompt. In this specific case I'll use `-newline`.
@@ -119,13 +119,13 @@ $ . ~/.bashrc
 You should see below images with a prompt in 2 lines.  
 
 In [Code-Server Terminal](https://github.com/cdr/code-server):
-![](imgs/custom_prompt_ubuntu_powerline_go_2_lines_code_server.png)  
+![](img/customprompt/custom_prompt_ubuntu_powerline_go_2_lines_code_server.png)  
 
 In [Fluent Terminal](https://github.com/felixse/FluentTerminal):
-![](imgs/custom_prompt_ubuntu_powerline_go_2_lines_fluent_terminal.png)  
+![](img/customprompt/custom_prompt_ubuntu_powerline_go_2_lines_fluent_terminal.png)  
 
 In [Windows Terminal](https://github.com/microsoft/terminal):
-![](imgs/custom_prompt_ubuntu_powerline_go_2_lines_windows_terminal.png)  
+![](img/customprompt/custom_prompt_ubuntu_powerline_go_2_lines_windows_terminal.png)  
 
 ## Load custom Fonts in your Terminal
 
