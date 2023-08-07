@@ -35,6 +35,10 @@ Docker Compose version v2.3.3
 
 ## Running a simple application
 
+You can get the docker-compose and other files here:
+
+- [https://github.com/chilcano/how-tos/tree/main/doc/docker-compose-example](https://github.com/chilcano/how-tos/tree/main/doc/docker-compose-example/)
+
 ```sh
 $ mkdir app
 
