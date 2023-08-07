@@ -1,6 +1,6 @@
-# Docker useful commands
+# Docker guide
 
-## Official Docker for Ubuntu 20.04 in WSL2
+## 1. Official Docker for Ubuntu 20.04 in WSL2
 
 * Ref: https://dev.to/_nicolas_louis_/how-to-run-docker-on-windows-without-docker-desktop-hik
 
@@ -9,7 +9,66 @@ Remove previous Docker installations.
 $ sudo apt -y remove docker docker-engine docker.io containerd runc
 ```
 
-## Docker CE for Ubuntu 20.04
+## 2. Install Docker on Ubuntu
+
+These are the unofficial packages related to Docker. If you want install the official Docker, then you should remove them:
+
+1. docker.io
+2. docker-compose
+3. docker-doc
+4. podman-docker
+
+
+### 2.1. Official Docker on Ubuntu
+
+These commands are valid for Ubuntu 20.x, 22.x and 23.x.
+
+1. Install apt packages required by Docker
+```sh
+sudo apt-get update
+sudo apt-get install ca-certificates curl gnupg
+```
+
+2. Add Docker's pgp keys
+```sh
+sudo install -m 0755 -d /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+sudo chmod a+r /etc/apt/keyrings/docker.gpg
+```
+
+3. Setup the apt repo
+```sh
+echo \
+  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
+  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+```
+
+4. Update apt index
+```sh
+sudo apt-get update
+```
+
+5. Install latest version.
+```sh
+sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+```
+This will install:
+1. docker-ce 
+2. docker-ce-cli 
+3. containerd.io 
+4. docker-buildx-plugin 
+5. docker-compose-plugin
+
+6. Checking
+```sh
+$ docker -v
+
+Docker version 24.0.5, build ced0996
+```
+
+
+### 2.2. Docker.io (unofficial) on Ubuntu
 
 ```sh
 $ sudo apt -y install docker.io 
@@ -48,6 +107,8 @@ $ echo ">> Docker ${DOCKER_VER} installed."
 // showing docker status
 $ sudo systemctl status docker
 ```
+
+
 
 ## Commands
 
