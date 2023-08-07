@@ -6,7 +6,8 @@ sudo apt -yqq install golang-go  # (18.04: go1.10.4, 20.04: go1.13.8)
 # sudo snap install go --classic     # (18.04: go1.15.8) 
 
 printf "==> 2) Install Powerline-Go \n"
-go get -u github.com/justjanne/powerline-go
+#go get -u github.com/justjanne/powerline-go ## 'go get' not working anymore
+go install github.com/justjanne/powerline-go@latest
 
 printf "==> 3) Set the Ubuntu prompt configuration ('-newline' param sets prompt in 2 lines) \n"
 ## The delimiting identifier is quoted to avoid the shell substitutes all variables, commands 
