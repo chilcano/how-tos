@@ -11,9 +11,10 @@
 __1. Generate SSH keys__  
 
 ```sh
-$ ssh-keygen -t ed25519 -C "youremail@example.com" -f ~/.ssh/aa_id_rsa_4096_enc
-$ ssh-keygen -t rsa -b 4096 -C "your_email@example.com" -f ~/.ssh/aa_id_rsa_4096_enc
+$ ssh-keygen -t ed25519 -C "youremail@example.com" -f ~/.ssh/<ssh-key-id>
 ```
+You can replace `-t ed25519` for `-t rsa -b 4096` and set a proper name to `<ssh-key-id>`.
+
 
 __2. Upload the ssh public key to GitHub account__  
 
@@ -35,8 +36,11 @@ $ cat ~/.ssh/<ssh-key-id>.pub
 // Set the ssh pub key
 $ git config --global user.signingkey "ssh-rsa <your-pub-rsa-key>"
 $ git config --global user.signingkey "ssh-ed25519 <your-pub-ed-key>"
+```
+You can change `ssh-ed25519 <your-pub-ed-key>` for `ssh-rsa <your-pub-rsa-key>`.
 
-// In our case, follow this
+In our case, follow this
+```sh
 $ SSH_PUB_KEY=$(cat ~/.ssh/<ssh-key-id>.pub)
 $ git config --global user.signingkey "${SSH_PUB_KEY}"
 ```
@@ -45,16 +49,20 @@ __5. Add trusted SSH public keys__
 ```sh
 $ git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
 $ touch ~/.ssh/allowed_signers
-$ echo "email1@example.com ssh-rsa <user1-pub-rsa-key>" >> ~/.ssh/allowed_signers
-$ echo "email2@example.com ssh-ed25519 <user2-pub-ed-key>" >> ~/.ssh/allowed_signers
+$ echo "youremail@example.com ssh-ed25519 <your-pub-ed-key>" >> ~/.ssh/allowed_signers
 ```
 
 Add your own ssh pub key:
 ```sh
 $ SSH_PUB_KEY=$(cat ~/.ssh/<ssh-key-id>.pub)
 $ ARRAY_SSH_PUB_KEY=(${SSH_PUB_KEY// / })
-$ echo "your-email@example.com ${ARRAY_SSH_PUB_KEY[0]} ${ARRAY_SSH_PUB_KEY[1]}" >> ~/.ssh/allowed_signers
+$ echo "${ARRAY_SSH_PUB_KEY[2]} ${ARRAY_SSH_PUB_KEY[0]} ${ARRAY_SSH_PUB_KEY[1]}" >> ~/.ssh/allowed_signers
 ```
+
+Where:
+- `${ARRAY_SSH_PUB_KEY[2]}` is the email address.
+- `${ARRAY_SSH_PUB_KEY[0]}` is the crypto suite used.
+- `${ARRAY_SSH_PUB_KEY[1]}` is the pub key value generated
 
 __6. Add trusted GPG public keys__   
 You should use the GPG/PGP framework to specify keys to trust and be able to verify others keys.

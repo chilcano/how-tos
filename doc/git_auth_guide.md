@@ -69,7 +69,7 @@ $cat $HOME/.config/hub
 
 github.com:
 - user: chilcano
-  oauth_token: 1a71c7886e254f138cda5b8f65f56bbae10a856c
+  oauth_token: 2a71c...6e2...10a856c
   protocol: https
 
 ## update the token
