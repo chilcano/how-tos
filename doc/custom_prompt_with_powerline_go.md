@@ -17,6 +17,7 @@ The above script will:
 3. Create the `powerline-go-loader.sh` to configure the Linux Prompt.
 4. Install The Microsoft [Cascadia Code Fonts includes the Powerline glyphs](https://github.com/microsoft/cascadia-code)
 5. Apply all configuration.
+6. Once completed, tweak the configuration in your OS Terminal (step 2) and VS Code integrated terminal (step 1).
 
 ## The long path - Steps
 
