@@ -6,58 +6,30 @@
 - https://askubuntu.com/questions/608298/logitech-k400r-wireless-keyboard-trackpad-settings-for-ubuntu-14-04
 
 
-### 1. Install from Python 3 repository
+### Install from Linux repo
 
+
+These steps have been tested on Ubuntu 20.x, 22.x and 23.x.
+
+1. Add the repo.
 ```sh
-$ python3 -V
-$ sudo apt install -y python3-pip build-essential libssl-dev libffi-dev python-dev python3-venv
-$ sudo pip3 install solaar
+sudo add-apt-repository ppa:solaar-unifying/stable
+sudo apt -y update
+
+sudo apt -y install solaar
 ```
 
-To remove:
+2. Plug the USB receiver. Solaar will launch automatically or run manually.
 ```sh
-$ sudo pip3 uninstall solaar
+sudo solaar
+```
+3. Turn on the keyboard and from Solaar pair a new device.
+
+4. If you want to remove it
+```sh
+sudo apt remove -y solaar 
 ```
 
-### 2. Install from Ubuntu 
+More info: 
+- https://pwr-solaar.github.io/Solaar/
 
-```sh
-$ sudo apt install -y solaar
-```
-
-It will install its dependencies:
-```sh
-$ python-dbus python-gi python-pyudev
-```
-
-If you want to remove it
-```sh
-$ sudo apt remove -y solaar 
-```
-
-Run `Solaar` to connect the Logitech device:
-```sh
-$ sudo solaar 
-```
-
-### 3. Install from source code
-
-Clone the repository
-```sh
-$ git clone https://github.com/pwr-Solaar/Solaar.git
-$ cd Solaar/
-$ sudo bin/solaar
-```
-
-Installing Solaar's udev Rule
-```sh
-$ sudo cp rules.d/42-logitech-unify-permissions.rules /etc/udev/rules.d
-
-// if you want to remove it
-$ sudo rm -rf /etc/udev/rules.d
-```
-
-Installing Solaar
-```sh
-$ pip3 install solaar --user solaar
-```
