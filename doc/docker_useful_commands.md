@@ -46,12 +46,12 @@ echo \
 
 4. Update apt index
 ```sh
-sudo apt-get update
+sudo apt -y update
 ```
 
 5. Install latest version.
 ```sh
-sudo apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+sudo apt -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 This will install:
 1. docker-ce 
