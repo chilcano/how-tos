@@ -77,13 +77,18 @@ $ sudo systemctl enable --now docker
 
 // marked docker as on-hold avoiding be reinstalled or removed
 $ sudo apt-mark hold docker.io
+```
 
+### 2.3. Adding user to Docker group
+
+
+Add current user to Docker group.
+```sh
 $ sudo usermod -aG docker ${USER}
 ```
 
 Check if you are in Docker group.
 ```sh
-// login $USER session
 $ su - ${USER}
 
 // list groups
