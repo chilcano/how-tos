@@ -138,7 +138,52 @@ $ git merge <source-branch>
 $ git push
 ``` 
 
-### 8. Showing git logs
+### 8. Pruning remote tracking branches
+
+We have to execute this command inside of local reporsitory folder `git fetch --prune origin`.
+
+Example:
+
+```sh
+$ git branch -a
+
+  DOPS-567-remove-unused-file-at-devops-repo
+* development
+  remotes/origin/DOPS-443-document-devops-sec-artifacts
+  remotes/origin/DOPS-445-helm-charts-for-dao-ui-webapp
+  remotes/origin/DOPS-464-update-rudderstack-proxy-cfg
+  remotes/origin/DOPS-491-update-dns-redirections-to-legacy-docs
+  remotes/origin/DOPS-567-remove-unused-file-at-devops-repo
+  remotes/origin/HEAD -> origin/development
+  remotes/origin/development
+  remotes/origin/f/app-backend
+  remotes/origin/fix/fetch-obj-through-ipfs-rpc-api
+  remotes/origin/master
+
+$ git fetch --prune origin
+
+From https://github.com/aragonone/devops
+ - [deleted]         (none)     -> origin/DOPS-445-helm-charts-for-dao-ui-webapp
+ - [deleted]         (none)     -> origin/DOPS-464-update-rudderstack-proxy-cfg
+ - [deleted]         (none)     -> origin/DOPS-491-update-dns-redirections-to-legacy-docs
+ - [deleted]         (none)     -> origin/DOPS-567-remove-unused-file-at-devops-repo
+ - [deleted]         (none)     -> origin/fix/fetch-obj-through-ipfs-rpc-api
+
+$ git branch -a
+
+  DOPS-567-remove-unused-file-at-devops-repo
+* development
+  remotes/origin/DOPS-443-document-devops-sec-artifacts
+  remotes/origin/HEAD -> origin/development
+  remotes/origin/development
+  remotes/origin/f/app-backend
+  remotes/origin/master
+
+```
+
+## Working with Logs
+
+### 1. Showing git logs
 
 ```sh
 $ git log --oneline -n 18
@@ -156,7 +201,9 @@ f5108a2 Feature: updates all github actions, python scripts and legacy syntax (#
 
 ```
 
-### 9. Working with git tags
+## Working with Tags
+
+### 1. Working with git tags
 
 ```sh
 $ git tag -a <tag_name> -m "message"
@@ -309,8 +356,6 @@ git checkout main
 
 
 
-
-
 ## Github Pull Request Guide
 
 1. Fork from Github.com an existing repo
@@ -356,6 +401,7 @@ git checkout master
 git branch -d v0.1
 ```
 11. END
+
 
 ## Troubleshooting
 
