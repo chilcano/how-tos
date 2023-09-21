@@ -38,7 +38,7 @@ Repository with technical indications to install, configure any interesting stuf
 15. [Install Apache Guacamole - Remote access Gateway on Ubuntu 20.04](doc/install_apache_guacamole.md)
 16. [Create booteable USB Ubuntu](doc/booteable_usb_on_ubuntu.md)  
 17. [Google Drive on Ubuntu with XFCE](doc/google_drive_on_linux.md)  
-18. [Regex examples in VSCode](doc/regex_examples.md)
+18. [Regex examples in VSCode and Bash](doc/regex_examples.md)
 19. [Generate and import SSH Pub Key to all AWS Regions](doc/import_ssh_keys_to_aws_regions.md)
 20. [Disabling sleeping when close laptop lid](doc/disable_sleeping_when_close_laptop_lid.md)
 21. Docker & Docker Compose
@@ -59,7 +59,7 @@ Repository with technical indications to install, configure any interesting stuf
 27. [Installing and using NMAP](doc/nmap_commands.md)
 28. [Installing and uninstalling IDE and DevOps Tools for multiple platforms](doc/ide_and_devops_tools.md)
 29. [CI/CD GitHub workflows for NodeJS and TypeScript applications](doc/github-workflow-for-nodejs-typescript-apps.md)
-30. [Installing IPFS Cluster CLI](doc/ipfs_cluster_ctl_commands.md)
+30. [Installing and running IPFS Cluster CLI](doc/ipfs_cluster_ctl_commands.md)
 31. [RESTful API - Generating Documentation and OpenAPI specs from Golang API](src/go-rest-openapi-sample/)
 32. [RESTful API - Security checking using Spectral Linter](doc/api_security_checks.md)
 33. [Bitnami Sealed Secrets on Google Kubernetes Engine](doc/bitnami_sealed_secrets_on_gke_guide.md)
