@@ -42,7 +42,7 @@ $ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/t
 $ nano ~/.zshrc
 ```
 
-Below are simples 2 lines themes which don't require install powerline, nerd or any special fonts or glyphs:
+Below are simples 2 lines themes which don't require install powerline, nerd or any special fonts or glyphs. I've used this [list](https://github.com/ohmyzsh/ohmyzsh/wiki/Themes#theme-description-format).
 
 Comment the existing one and uncomment you want it:
 ```
