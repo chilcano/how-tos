@@ -4,10 +4,9 @@
 
 1. `kubectl` CLI - https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl
 2. Bitnami Sealed Secrets Controller and `kubeseal` CLI - https://github.com/bitnami-labs/sealed-secrets#linux
-4. A Kubernetes cluster already working in Google Cloud. If you don't have one, all part related to create a secret and sealing are the same.
+3. A Kubernetes cluster already working in Google Cloud. If you don't have one, all part related to create a secret and sealing are the same.
 
 ## Steps
-
 
 - https://stackoverflow.com/questions/75812591/how-can-i-locally-decrypt-already-sealed-secrets
 - https://github.com/bitnami-labs/sealed-secrets#will-you-still-be-able-to-decrypt-if-you-no-longer-have-access-to-your-cluster
@@ -41,9 +40,9 @@ kube-system       metricbeat-elastic-certificate-pem   637d
 kube-system       metricbeat-elastic-credentials       637d
 
 
-kubectl get secret -n sealed-secrets -l sealedsecrets.bitnami.com/sealed-secrets-key -o yaml > sealed-secrets-key.yaml
+$ kubectl get secret -n sealed-secrets -l sealedsecrets.bitnami.com/sealed-secrets-key -o yaml > sealed-secrets-key.yaml
 
-kubeseal --controller-name=sealed-secrets --controller-namespace=sealed-secrets < /tmp/sealed-secret.yaml --recovery-unseal --recovery-private-key sealed-secrets-key.yaml -o yaml
+$ kubeseal --controller-name=sealed-secrets --controller-namespace=sealed-secrets < /tmp/sealed-secret.yaml --recovery-unseal --recovery-private-key sealed-secrets-key.yaml -o yaml
 
 
 ## once identified the sealedsecret to decrypt, download the sealedsecret keys
@@ -60,7 +59,7 @@ $ kubeseal --controller-name=sealed-secrets --controller-namespace=sealed-secret
 
 I've created a script that seal your K8s secret file using any K8s context available in your `kubeconfig` file.
 
-__The seal_k8s_secrerts.sh bash script__
+__The seal_k8s_secrets.sh bash script__
 
 ```sh
 #!/bin/bash
@@ -95,7 +94,7 @@ else
 fi
 ```
 
-__Using the seal_k8s_secrerts.sh bash script__
+__Using the seal_k8s_secrets.sh bash script__
 
 We are going to seal this K8s secret file that contains a base64 encoded secret:
 ```sh

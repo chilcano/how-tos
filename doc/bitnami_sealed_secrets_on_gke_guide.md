@@ -163,9 +163,10 @@ $ kubectl config view
 Connecting with `k9s`.
 
 ```sh
-$ k9s --context gke_aragon_devops
-$ k9s --context gke_aragon_stg
-$ k9s --context gke_aragon_prods
+$ k9s --context aragon_devops_gke
+$ k9s --context aragon_stg_gke
+$ k9s --context aragon_prod_gke
+$ k9s --context aragon_hetzner
 ```
 
 ### 4. Install kubeseal
@@ -263,7 +264,7 @@ spec:
 
 I've created a script that seal your K8s secret file using any K8s context available in your `kubeconfig` file.
 
-__The seal_k8s_secrerts.sh bash script__
+__The seal_k8s_secrets.sh bash script__
 
 ```sh
 #!/bin/bash
@@ -298,7 +299,7 @@ else
 fi
 ```
 
-__Using the seal_k8s_secrerts.sh bash script__
+__Using the seal_k8s_secrets.sh bash script__
 
 We are going to seal this K8s secret file that contains a base64 encoded secret:
 ```sh
