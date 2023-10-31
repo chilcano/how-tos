@@ -3,7 +3,9 @@
 ## Requeriments
 
 1. `gcloud` CLI (only for Google Kubernetes Engine) - https://cloud.google.com/sdk/docs/install
-2. `kubectl` CLI - https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl
+2. `kubectl` CLI:
+  - Installation: https://kubernetes.io/docs/tasks/tools/install-kubectl-linux/
+  - Config to access to GKE: https://cloud.google.com/kubernetes-engine/docs/how-to/cluster-access-for-kubectl
 3. Bitnami Sealed Secrets Controller and `kubeseal` CLI - https://github.com/bitnami-labs/sealed-secrets#linux
 4. A Kubernetes cluster already working in Google Cloud. If you don't have one, all part related to create a secret and sealing are the same.
 
@@ -14,7 +16,7 @@
 ```sh
 $ sudo apt-get -y install apt-transport-https ca-certificates gnupg
 $ echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
-$curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+$ curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
 
 $ sudo apt-get -y update && sudo apt-get -y install google-cloud-cli
 
@@ -33,7 +35,12 @@ gsutil 5.17
 ### 2. Install kubectl
 
 ```sh
-$ sudo apt-get install -y kubectl
+$ sudo apt-get -y install apt-transport-https ca-certificates curl
+$ curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+$ echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
+$ sudo apt-get -y update
+
+$ sudo apt-get -y install kubectl
 
 $ kubectl version --client -o yaml
 
@@ -57,19 +64,61 @@ kustomizeVersion: v4.5.7
 > This `kubeconfig` file is the only thing you need to use `kubeseal`.
 
 
-__Installing to Google Cloud CLI__
+__Installing Google Cloud Authentication Plugin__
 
 The `kubectl` and other Kubernetes clients require be authenticated against Google Cloud and they can be installed through `gcloud` CLI or using `apt-get`.
 ```sh
 $ gcloud components install gke-gcloud-auth-plugin     ## this cmd didn't work in Ubuntu 22.04
 
 $ sudo apt-get -y install google-cloud-sdk-gke-gcloud-auth-plugin
+
 $ gke-gcloud-auth-plugin --version
 
 Kubernetes v1.25.2-alpha+ae91c1fc0c443c464a4c878ffa2a4544483c6d1f
 ```
 
-__Connecting to Google Kubernetes Engine__
+__Login__
+
+
+Before running any `gcloud` CLI command, you should be authenticated using proper Google credentials, in this case I'll use my emails address, not a google system account:
+```sh
+$ gcloud auth login
+
+Your browser has been opened to visit:
+
+    https://accounts.google.com/o/oauth2/auth?response_type=code&client_id=32555940.............256
+
+
+You are now logged in as [roger...@my-domain.info].
+Your current project is [None].  You can change this setting by running:
+  $ gcloud config set project PROJECT_ID
+```
+
+__Connect to existing GKE cluster__
+
+Once authenticated successfully, fetch the Kubernetes Cluster configuration using this command `gcloud container clusters get-credentials CLUSTER_NAME --region=COMPUTE_REGION|--zone=COMPUTE_ZONE --project=PROJECT_ID`:
+
+```sh
+$ gcloud container clusters get-credentials aragon-devops --zone europe-west6-a --project aragon-devops-319312
+$ gcloud container clusters get-credentials aragon-staging --zone europe-west6-a --project aragon-staging
+$ gcloud container clusters get-credentials aragon-prod --zone europe-west6-a --project aragon-prod
+```
+
+Now, you will be able to view the `kubeconfig` and the current context and so on:
+```sh
+$ kubectl config view
+$ cat ~/.kube/config
+$ kubectl config current-context
+$ kubectl config get-context
+$ kubectl cluster-info
+```
+
+If you execute any `kubectl` command, this will use the default context of last `gcloud container clusters get-credentials <CLUSTER_NAME>` command. For example, next command will show all namespaces in the `aragon-prod` cluster:
+```sh
+$ kubectl get namespaces
+```
+
+__Setup a new connection to GKE cluster (optional)__
 
 We are going to follow this guide [https://cloud.google.com/sdk/docs/configurations](https://cloud.google.com/sdk/docs/configurations) and you should have a proper credentials (email address) and the right permissions to install a Kubernetes Controller. 
 In this case I'm going to use as example this email address `chilcano@holisticsecurity.io`.
@@ -111,7 +160,7 @@ project = aragon-prod
 
 
 Fetch the credentials for the cluster:
-```
+```sh
 $ gcloud container clusters get-credentials aragon-prod
 Fetching cluster endpoint and auth data.
 kubeconfig entry generated for aragon-prod.
@@ -125,7 +174,7 @@ vocdoni-external-dns     Active   409d
 ```
 
 Swithching, updating to other configuration and fetching kubectl config:
-```
+```sh
 $ gcloud config configurations activate <project>
 $ gcloud config set project aragon-staging
 $ gcloud config set compute/zone europe-west6-a 
@@ -160,7 +209,8 @@ As well, you can rename contexts, users, etc.
 $ kubectl config view
 ```
 
-Connecting with `k9s`.
+
+__Connecting with `k9s`__
 
 ```sh
 $ k9s --context aragon_devops_gke
@@ -172,13 +222,16 @@ $ k9s --context aragon_hetzner
 ### 4. Install kubeseal
 
 ```sh
-$ wget https://github.com/bitnami-labs/sealed-secrets/releases/download/<release-tag>/kubeseal-<version>-linux-amd64.tar.gz
-$ tar -xvzf kubeseal-<version>-linux-amd64.tar.gz kubeseal
+# Get last version and remove first character to have the semver value. i.e. 0.24.2
+$ KUBESEAL_VERSION=$(curl -s https://api.github.com/repos/bitnami-labs/sealed-secrets/releases/latest | jq -r -M '.tag_name' | cut -c 2-)
+$ wget "https://github.com/bitnami-labs/sealed-secrets/releases/download/v${KUBESEAL_VERSION:?}/kubeseal-${KUBESEAL_VERSION:?}-linux-amd64.tar.gz"
+$ tar -xvzf kubeseal-${KUBESEAL_VERSION:?}-linux-amd64.tar.gz kubeseal
 $ sudo install -m 755 kubeseal /usr/local/bin/kubeseal
 
-$ wget https://github.com/bitnami-labs/sealed-secrets/releases/download/v0.19.3/kubeseal-0.19.3-linux-amd64.tar.gz
-$ tar -xvzf kubeseal-0.19.3-linux-amd64.tar.gz 
-$ sudo install -m 755 kubeseal /usr/local/bin/kubeseal
+# Get version installed
+$ kubeseal --version
+
+kubeseal version: 0.24.2
 ```
 
 ### 5. Create a secret in yaml format

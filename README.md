@@ -29,7 +29,7 @@ Repository with technical indications to install, configure any interesting stuf
   - [Take screenshots silently in Ubuntu with xfce4-screenshooter](doc/screen_shooter_silent.md)
   - [Change the brightness level of a screen](doc/screen_change_brightness_level.md)
   - [Screenshot and annotation Tools](doc/screenshot_annotation_tools.md) 
-11. [Working with Tmux](doc/working_with_tmux.md)
+11. [xxxxxx](doc/)
 12. [File sharing through Samba(SMB)](doc/install_and_config_samba.md)
 13. Cloud and Infrastructure as Code (IaC) examples:
   - [Terraforms examples](doc/iac_terraform_examples.md)

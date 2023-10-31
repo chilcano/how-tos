@@ -9,7 +9,7 @@
 > You can download it from [https://dist.ipfs.tech/#ipfs-cluster-ctl](https://dist.ipfs.tech/#ipfs-cluster-ctl)
 
 ```sh
-$ cd ~/Download
+$ cd ~/Downloads/
 
 $ wget https://dist.ipfs.tech/ipfs-cluster-ctl/v1.0.6/ipfs-cluster-ctl_v1.0.6_linux-amd64.tar.gz
 
@@ -83,7 +83,7 @@ $ ipfs-cluster-ctl --basic-auth $IPFS_CRED --host $IPFS_HOST -s pin rm <cid>
 
 ```sh
 // create a local file
-$ echo "Hello $USER (`od -vN 6 -An -tx1 /dev/urandom | tr -d ' \n'`)!" > hello.txt
+$ echo "Hello $USER $(od -vN 6 -An -tx1 /dev/urandom | tr -d ' \n')!" > hello.txt
 $ cat hello.txt
 
 Hello chilcano (110ba121de47)!

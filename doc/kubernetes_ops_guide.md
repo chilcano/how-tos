@@ -46,6 +46,12 @@ $ gcloud container clusters get-credentials aragon-prod --zone europe-west6-a --
 ### 2. From local Terminal
 
 
+
+
+
+
+## -----------------------------------------------
+
 ```yaml
 el:
   image:
