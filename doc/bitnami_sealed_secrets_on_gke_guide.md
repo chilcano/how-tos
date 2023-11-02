@@ -327,11 +327,12 @@ if [ $# -eq 2 ]; then
   arg_secfile="$2"
   sealed_secfile="${arg_secfile%.*}-sealed.yaml"
 
-  ctx_values=$(kubectl config get-contexts --no-headers | grep $arg_ctx | awk {'print $1"*"$2'})
+  ctx_values=$(kubectl config get-contexts --no-headers | grep $arg_ctx | awk {'print $1"+"$2'})
   if [[ "$ctx_values" != "" ]]; then
     if [[ -f "${arg_secfile}" ]]; then
-      IFS="*"
-      read -ra ctx_items <<<"$ctx_values"
+      ctx_values=$(echo $ctx_values | sed "s/[ \t*+]//g")
+      IFS="+"
+      read -ra ctx_items <<< "$ctx_values"
       printf "> K8s context found: ${ctx_items[0]}\n"
       seal_cmd="kubeseal --context ${ctx_items[0]} --scope cluster-wide --format=yaml"
       eval "${seal_cmd} < ${arg_secfile} > ${sealed_secfile}"
