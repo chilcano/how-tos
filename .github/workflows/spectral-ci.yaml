@@ -9,18 +9,18 @@ on:
         default: 'warning'
         type: choice
         options: [info, warning, debug] 
-  push:
-    branches: [main,api]
-    paths:
-      - 'src/api_specs/**.yaml'
-      - '.github/workflows/spectral-ci.yaml'
-  pull_request:
-    types:
-      - opened
-    branches: [main,api]
-    paths:
-      - 'src/api_specs/**.yaml'
-      - '.github/workflows/spectral-ci.yaml'
+  # push:
+  #   branches: [main,api]
+  #   paths:
+  #     - 'src/api_specs/**.yaml'
+  #     - '.github/workflows/spectral-ci.yaml'
+  # pull_request:
+  #   types:
+  #     - opened
+  #   branches: [main,api]
+  #   paths:
+  #     - 'src/api_specs/**.yaml'
+  #     - '.github/workflows/spectral-ci.yaml'
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -30,7 +30,7 @@ jobs:
   spectral-cli:
     name: Spectral CLI
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
