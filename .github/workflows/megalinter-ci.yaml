@@ -99,7 +99,7 @@ jobs:
         if: ${{ success() }} || ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: megalinter-reports-${{ steps.myvars.outputs.DATE_IN_SECS }}
+          name: megalinter-reports-ci-${{ steps.myvars.outputs.DATE_IN_SECS }}
           path: |
             megalinter-reports
             mega-linter.log

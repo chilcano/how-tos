@@ -21,15 +21,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Setup and run MegaLinter
+  megalinter:
+    name: MegaLinter
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v3
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
         with:
           node-version: 18
 
@@ -39,7 +39,7 @@ jobs:
           #echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > myspectral.yaml
           echo 'extends: ["spectral:oas"]' > myspectral.yaml
 
-      - name: Run MegaLinter
+      - name: Run
         id: ml
         uses: oxsecurity/megalinter@v7
         env:
@@ -61,12 +61,12 @@ jobs:
         if: ${{ success() }} || ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: MegaLinter reports
+          name: megalinter-reports-oas-${{ steps.myvars.outputs.DATE_IN_SECS }}
           path: |
             megalinter-reports
             mega-linter.log
 
-      - name: Explore workdir and echo vars
+      - name: Explore workdir
         if: ${{ success() }} || ${{ failure() }}
         run: |
           ls -la
