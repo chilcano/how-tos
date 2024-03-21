@@ -15,8 +15,6 @@ on:
   #     - 'src/api_specs/**.yaml'
   #     - '.github/workflows/megalinter-ci.yaml'
   # pull_request:
-  #   types:
-  #     - opened
   #   branches: [main, api]
   #   paths:
   #     - 'src/api_specs/**.yaml'
@@ -32,21 +30,42 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
-    name: Setup and run MegaLinter
+  megalinter:
+    name: MegaLinter
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout Code
+      - name: Checkout code
         uses: actions/checkout@v4
         # with:
         #   token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
         #   fetch-depth: 0 # If you use VALIDATE_ALL_CODEBASE = true, you can remove this line to improve performances
 
-      - name: Set up Node.js
+      - name: Set myvars
+        id: myvars
+        run: |
+          branchname=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )
+          dateinsecs=$(date +%s)
+          githashshort=$(git rev-parse --short HEAD)
+          echo "GIT_HASH_SHORT=$githashshort" >> $GITHUB_OUTPUT
+          echo "DATE_IN_SECS=$dateinsecs" >> $GITHUB_OUTPUT
+          if [ "$branchname" = "develop" ]; then
+            echo "CURRENT_ENVIRONMENT=development" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=DEV" >> $GITHUB_OUTPUT
+          elif [ "$branchname" = "main" ] || [ "$branchname" = "master" ]; then
+            echo "CURRENT_ENVIRONMENT=production" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=PROD" >> $GITHUB_OUTPUT
+          else
+            branchname='test'
+            echo "CURRENT_ENVIRONMENT=testing" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=TEST" >> $GITHUB_OUTPUT
+          fi
+          echo "BRANCH_NAME=$branchname" >> $GITHUB_OUTPUT
+
+      - name: Setup NodeJS
         uses: actions/setup-node@v4
         with:
           node-version: 18
-          #cache: 'npm'
       
       - name: Download API specs example
         run: |
@@ -63,45 +82,31 @@ jobs:
 
       # pull docker image took too much time (~2 mins), can it be cached?:
       # https://stackoverflow.com/questions/71180135/github-actions-how-can-i-cache-the-docker-images-for-testcontainers
-      - name: Run MegaLinter
+      - name: Run
         id: ml
         uses: oxsecurity/megalinter@v7
         env:
-          VALIDATE_ALL_CODEBASE: true       # false: ML doesn't pick the files inside of src/api_specs/, only "git diff"
+          #VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }} # Validates all source when push on main, else just the git diff with main. Override with true if you always want to lint all sources
+          VALIDATE_ALL_CODEBASE: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          ENABLE_LINTERS: OPENAPI_SPECTRAL
-          FILTER_REGEX_INCLUDE: (src/api_specs/)
-          OPENAPI_SPECTRAL_CONFIG_FILE: myspectral.yaml
-          OPENAPI_SPECTRAL_RULES_PATH: .
           LOG_LEVEL: DEBUG
+          ENABLE_LINTERS: OPENAPI_SPECTRAL                # Only OpenAPI Linter (Spectral) will be enabled
+          FILTER_REGEX_INCLUDE: (src/api_specs/)          # Only this folder will be considered
+          OPENAPI_SPECTRAL_CONFIG_FILE: myspectral.yaml   # This is the Spectral config to be used. It includes the Spectral Rulesets (OWASP, OAS, etc.)
+          OPENAPI_SPECTRAL_RULES_PATH: .                  # Spectral Rulesets previously downloaded
 
-      # - name: Run Spectral Action
-      #   uses: stoplightio/spectral-action@latest
-      #   with:
-      #     file_glob: 'src/api_specs/*.yaml'
-      #     spectral_ruleset: myspectral.yml
-
-      - name: Upload MegaLinter reports as Github Artifacts
+      - name: Upload reports as Github Artifacts
         if: ${{ success() }} || ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: MegaLinter reports
+          name: megalinter-reports-${{ steps.myvars.outputs.DATE_IN_SECS }}
           path: |
             megalinter-reports
             mega-linter.log
 
-      - name: Get short commit sha and branch name
-        if: ${{ success() }} || ${{ failure() }}
-        id: vars
-        run: |
-          echo "git_hash_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
-          echo "branch_name=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )" >> $GITHUB_OUTPUT
-
-      - name: Explore workdir and echo vars
+      - name: Explore workdir
         if: ${{ success() }} || ${{ failure() }}
         run: |
-          echo git_hash_short: ${{ steps.vars.outputs.git_hash_short }}
-          echo branch_name: ${{ steps.vars.outputs.branch_name }}
           ls -la src/api_specs/
           ls -la megalinter-reports/
           ls -la
@@ -113,7 +118,6 @@ jobs:
       - name: Create GH PR with applied fixes
         id: cpr
         if: |
-          (success() || failure()) &&  
           steps.ml.outputs.has_updated_sources == 1 && 
           (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && 
           env.APPLY_FIXES_MODE == 'pull_request' && 
@@ -127,9 +131,7 @@ jobs:
           labels: bot
 
       - name: Print GH PR output
-        if: |
-          (success() || failure()) && 
-          steps.ml.outputs.has_updated_sources == 1 && 
+        if: steps.ml.outputs.has_updated_sources == 1 && 
           (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && 
           env.APPLY_FIXES_MODE == 'pull_request' && 
           (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository) && 
@@ -141,7 +143,6 @@ jobs:
       # Push new commit if applicable (for now works only on PR from same repository, not from forks)
       - name: Prepare GH commit
         if: |
-          (success() || failure()) && 
           steps.ml.outputs.has_updated_sources == 1 && 
           (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && 
           env.APPLY_FIXES_MODE == 'commit' && 
@@ -152,7 +153,6 @@ jobs:
 
       - name: Commit and push applied linter fixes
         if: |
-          (success() || failure()) && 
           steps.ml.outputs.has_updated_sources == 1 && 
           (env.APPLY_FIXES_EVENT == 'all' || env.APPLY_FIXES_EVENT == github.event_name) && 
           env.APPLY_FIXES_MODE == 'commit' && 
@@ -163,3 +163,5 @@ jobs:
         with:
           branch: ${{ github.event.pull_request.head.ref || github.head_ref || github.ref }}
           commit_message: "[MegaLinter] Apply linters fixes"
+          commit_user_name: megalinter-bot
+          commit_user_email: megalinter-bot@holisticsecurity.io
