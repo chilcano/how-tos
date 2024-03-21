@@ -30,6 +30,7 @@ jobs:
   spectral-cli:
     name: Spectral CLI
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
