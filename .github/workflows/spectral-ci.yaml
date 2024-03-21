@@ -38,23 +38,23 @@ jobs:
       - name: Set myvars
         id: myvars
         run: |
-        branchname=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )
-        dateinsecs=$(date +%s)
-        githashshort=$(git rev-parse --short HEAD)
-        echo "GIT_HASH_SHORT=$githashshort" >> $GITHUB_OUTPUT
-        echo "DATE_IN_SECS=$dateinsecs" >> $GITHUB_OUTPUT
-        if [ "$branchname" = "develop" ]; then
-          echo "CURRENT_ENVIRONMENT=development" >> $GITHUB_OUTPUT
-          echo "SHORT_ENV_OUT=DEV" >> $GITHUB_OUTPUT
-        elif [ "$branchname" = "main" ] || [ "$branchname" = "master" ]; then
-          echo "CURRENT_ENVIRONMENT=production" >> $GITHUB_OUTPUT
-          echo "SHORT_ENV_OUT=PROD" >> $GITHUB_OUTPUT
-        else
-          branchname='test'
-          echo "CURRENT_ENVIRONMENT=testing" >> $GITHUB_OUTPUT
-          echo "SHORT_ENV_OUT=TEST" >> $GITHUB_OUTPUT
-        fi
-        echo "BRANCH_NAME=$branchname" >> $GITHUB_OUTPUT
+          branchname=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )
+          dateinsecs=$(date +%s)
+          githashshort=$(git rev-parse --short HEAD)
+          echo "GIT_HASH_SHORT=$githashshort" >> $GITHUB_OUTPUT
+          echo "DATE_IN_SECS=$dateinsecs" >> $GITHUB_OUTPUT
+          if [ "$branchname" = "develop" ]; then
+            echo "CURRENT_ENVIRONMENT=development" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=DEV" >> $GITHUB_OUTPUT
+          elif [ "$branchname" = "main" ] || [ "$branchname" = "master" ]; then
+            echo "CURRENT_ENVIRONMENT=production" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=PROD" >> $GITHUB_OUTPUT
+          else
+            branchname='test'
+            echo "CURRENT_ENVIRONMENT=testing" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=TEST" >> $GITHUB_OUTPUT
+          fi
+          echo "BRANCH_NAME=$branchname" >> $GITHUB_OUTPUT
 
       - name: Setup NodeJS
         uses: actions/setup-node@v4
