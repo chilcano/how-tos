@@ -1,4 +1,4 @@
-name: MegaLinter CI
+name: megalinter-ci
 
 on:
   workflow_dispatch:
@@ -37,18 +37,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         # with:
         #   token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
         #   fetch-depth: 0 # If you use VALIDATE_ALL_CODEBASE = true, you can remove this line to improve performances
 
       - name: Set up Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
-          node-version: 16.x
+          node-version: 18
           #cache: 'npm'
       
-      - name: Download API specs
+      - name: Download API specs example
         run: |
           curl -s -o vocdoni-api.yaml https://raw.githubusercontent.com/vocdoni/developer-portal/main/swaggers/vocdoni-api.yaml
           mkdir -p src/api_specs/
@@ -61,11 +61,11 @@ jobs:
           #echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset"]' > myspectral.yaml
           echo 'extends: ["spectral:oas", "@stoplight/spectral-owasp-ruleset"]' > myspectral.yaml
 
-      # pull docker image taked too much time (~2 mins), can it be cached?:
+      # pull docker image took too much time (~2 mins), can it be cached?:
       # https://stackoverflow.com/questions/71180135/github-actions-how-can-i-cache-the-docker-images-for-testcontainers
       - name: Run MegaLinter
         id: ml
-        uses: oxsecurity/megalinter@v6
+        uses: oxsecurity/megalinter@v7
         env:
           VALIDATE_ALL_CODEBASE: true       # false: ML doesn't pick the files inside of src/api_specs/, only "git diff"
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -81,9 +81,9 @@ jobs:
       #     file_glob: 'src/api_specs/*.yaml'
       #     spectral_ruleset: myspectral.yml
 
-      - name: Archive MegaLinter reports
+      - name: Upload MegaLinter reports as Github Artifacts
         if: ${{ success() }} || ${{ failure() }}
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: MegaLinter reports
           path: |
@@ -119,7 +119,7 @@ jobs:
           env.APPLY_FIXES_MODE == 'pull_request' && 
           (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository) && 
           !contains(github.event.head_commit.message, 'skip fix')
-        uses: peter-evans/create-pull-request@v4
+        uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
           commit-message: "[MegaLinter] Apply linters automatic fixes"
@@ -159,7 +159,7 @@ jobs:
           github.ref != 'refs/heads/main' && 
           (github.event_name == 'push' || github.event.pull_request.head.repo.full_name == github.repository) && 
           !contains(github.event.head_commit.message, 'skip fix')
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           branch: ${{ github.event.pull_request.head.ref || github.head_ref || github.ref }}
           commit_message: "[MegaLinter] Apply linters fixes"

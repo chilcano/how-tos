@@ -1,10 +1,6 @@
 # Kubernetes Ops guide
 
 
-Tags:
-- k8s
-- k9s
-
 ## K9s
 
 * Ref: https://k9scli.io/topics/commands/
@@ -45,65 +41,33 @@ $ gcloud container clusters get-credentials aragon-prod --zone europe-west6-a --
 
 ### 2. From local Terminal
 
-
-
-
-
-
-## -----------------------------------------------
-
-```yaml
-el:
-  image:
-    repository: nethermind/nethermind
-    tag: 1.19.3
-
-cl:
-  image:
-    repository: sigp/lighthouse
-    tag: v4.2.0
-```
+Once configured K8s in your local computer, select the context and run the `kubectl` to establish a connection.
 
 ```sh
-argocd-image-updater.argoproj.io/consensus.helm.image-tag = cl.image.tag
-argocd-image-updater.argoproj.io/consensus.update-strategy = semver
-argocd-image-updater.argoproj.io/execution.helm.image-tag = el.image.tag
-argocd-image-updater.argoproj.io/execution.update-strategy = semver
+$ kubectl config get-contexts                                                                                                                           
+CURRENT   NAME           CLUSTER                                                 AUTHINFO                                                NAMESPACE
+          gke_ara_dops   gke_aragon-devops-319312_europe-west6-a_aragon-devops   gke_aragon-devops-319312_europe-west6-a_aragon-devops   
+*         gke_ara_prod   gke_aragon-prod_europe-west6-a_aragon-prod              gke_aragon-prod_europe-west6-a_aragon-prod              
+          gke_ara_stg    gke_aragon-staging_europe-west6-a_aragon-staging        gke_aragon-staging_europe-west6-a_aragon-staging  
 
-argocd-image-updater.argoproj.io/image-list = execution=nethermind/nethermind:1.x, consensus=sigp/lighthouse:v4.x
-argocd-image-updater.argoproj.io/image-list = execution=nethermind/nethermind:1.19.x, consensus=sigp/lighthouse:v4.2.x
+$ kubectl config use-context gke_ara_dops
 
+$ kubectl exec <pod-name> -n <namespace> -c <container-name> -- ls
+
+
+$ kubectl get pods -n apisix             
+NAME                                      READY   STATUS    RESTARTS   AGE
+devops-apisix-8696769d48-2xmrp            1/1     Running   0          18m
+devops-apisix-8696769d48-dktjp            1/1     Running   0          19m
+devops-apisix-8696769d48-xl8ck            1/1     Running   0          20m
+devops-apisix-dashboard-9854b546c-zpl72   1/1     Running   0          6d18h
+devops-apisix-etcd-0                      1/1     Running   0          17m
+devops-apisix-etcd-1                      1/1     Running   0          18m
+devops-apisix-etcd-2                      1/1     Running   0          19m
+
+
+$ kubectl exec devops-apisix-8696769d48-2xmrp -n apisix -- ls
+$ kubectl exec --stdin --tty devops-apisix-8696769d48-2xmrp -n apisix -- /bin/bash
 ```
 
-
-## Monitoring through ELK
-
-* URL: https://kibana-monitoring.aragon.org/app/logs/stream
-* Queries: 
-  - kubernetes.labels.app_kubernetes_io/name : "gnosischain-node"
-  - kubernetes.labels.aragon_org/node-layer-type : "execution" 
-
-  In order to prepare queries, we need to know the `matchLabels` configured in the `kind: Deployment`.
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  labels:
-    app.kubernetes.io/instance: gnosischain-xdai
-    app.kubernetes.io/managed-by: Helm
-    app.kubernetes.io/name: gnosischain-node
-    helm.sh/chart: gnosischain-node-1.0.0
-  name: gnosischain-consensus
-  namespace: gnosischain-xdai
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app.kubernetes.io/instance: gnosischain-xdai
-      app.kubernetes.io/name: gnosischain-node
-      aragon.org/node-layer-cli: lighthouse
-      aragon.org/node-layer-net: gnosis
-      aragon.org/node-layer-type: consensus
-  strategy:
-...
-```
+Using `/bin/bash` instead of `/bin/sh` will allow activate arrow up/down and other features available in `bash`.

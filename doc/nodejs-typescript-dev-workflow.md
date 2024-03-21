@@ -1,4 +1,4 @@
-# CI/CD GitHub Workflow for NodeJS and TypeScript 
+# NodeJS and TypeScript - Development Workflow
 
 - NodeJS v16.x on Ubuntu 22.04
 - TypeScript guide: https://www.typescriptlang.org/docs/handbook/typescript-tooling-in-5-minutes.html
@@ -142,3 +142,47 @@ $ ts-node index.ts
 
 TBC
 
+### 5. Troubleshooting
+
+#### 1. Use nvm
+
+
+```sh
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+
+
+...
+* (HEAD detached at FETCH_HEAD)
+  master
+=> Compressing and cleaning up git repository
+
+=> Appending nvm source string to /home/chilcano/.zshrc
+=> Appending bash_completion source string to /home/chilcano/.zshrc
+=> You currently have modules installed globally with `npm`. These will no
+=> longer be linked to the active version of Node when you install a new node
+=> with `nvm`; and they may (depending on how you construct your `$PATH`)
+=> override the binaries of modules installed with `nvm`:
+
+/usr/local/lib
+├── @fleekhq/fleek-cli@0.1.8
+├── ts-node@10.9.2
+└── typescript@5.3.3
+=> If you wish to uninstall them at a later point (or re-install them under your
+=> `nvm` Nodes), you can remove them from the system Node as follows:
+
+     $ nvm use system
+     $ npm uninstall -g a_module
+
+=> Close and reopen your terminal to start using nvm or run the following to use it now:
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+```
+
+
+
+#### 2. Incompatibles packages
+
+tbc

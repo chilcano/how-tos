@@ -1,8 +1,10 @@
-## How-To's  
+# How-To's  
 
 Repository with technical indications to install, configure any interesting stuff. 
 
-### Resources
+## Resources
+
+### General guides
 
 1. [Install Ardour in Ubuntu 20.04](doc/ardour_in_ubuntu_20.04.md)
 2. [NewPassword Generator Java test](src/NewPasswordGenerator.java)
@@ -29,7 +31,7 @@ Repository with technical indications to install, configure any interesting stuf
   - [Take screenshots silently in Ubuntu with xfce4-screenshooter](doc/screen_shooter_silent.md)
   - [Change the brightness level of a screen](doc/screen_change_brightness_level.md)
   - [Screenshot and annotation Tools](doc/screenshot_annotation_tools.md) 
-11. [xxxxxx](doc/)
+11. [Configure Printers in Ubuntu](doc/install_printer_ubuntu.md)
 12. [File sharing through Samba(SMB)](doc/install_and_config_samba.md)
 13. Cloud and Infrastructure as Code (IaC) examples:
   - [Terraforms examples](doc/iac_terraform_examples.md)
@@ -58,10 +60,19 @@ Repository with technical indications to install, configure any interesting stuf
   - [Publish new content on Waskhar Project](doc/github_pages_hugo_publish_content_waskhar.md)
 27. [Installing and using NMAP](doc/nmap_commands.md)
 28. [Installing and uninstalling IDE and DevOps Tools for multiple platforms](doc/ide_and_devops_tools.md)
-29. [CI/CD GitHub workflows for NodeJS and TypeScript applications](doc/github-workflow-for-nodejs-typescript-apps.md)
-30. [Installing and running IPFS Cluster CLI](doc/ipfs_cluster_ctl_commands.md)
-31. [RESTful API - Generating Documentation and OpenAPI specs from Golang API](src/go-rest-openapi-sample/)
-32. [RESTful API - Security checking using Spectral Linter](doc/api_security_checks.md)
-33. [Bitnami Sealed Secrets on Google Kubernetes Engine](doc/bitnami_sealed_secrets_on_gke_guide.md)
-34. [Setting iMac (24" early 2009) fan control for Ubuntu](doc/imac_early_2009_fan_control_on_ubuntu.md)
-34. [Turn off Macbook/iMac startup sound on Ubuntu](doc/turn_off_mac_startup_sound_on_ubuntu.md)
+29. [Installing and running IPFS Cluster CLI](doc/ipfs_cluster_ctl_commands.md)
+30. [Setting iMac (24" early 2009) fan control for Ubuntu](doc/imac_early_2009_fan_control_on_ubuntu.md)
+31. [Turn off Macbook/iMac startup sound on Ubuntu](doc/turn_off_mac_startup_sound_on_ubuntu.md)
+32. [Kubernetes Ops guide](doc/kubernetes_ops_guide.md)
+33. [CI/CD GitHub workflows for NodeJS and TypeScript applications](doc/github-workflow-for-nodejs-typescript-apps.md)
+33. [Getting a NodeJS development setup](doc/nodejs-typescript-dev-workflow.md) - tbc
+
+
+### Security guides
+
+1. [RESTful API - Generating Documentation and OpenAPI specs from Golang API](doc/api_rest_in_golang_generate_oas_and_docs.md)
+2. [RESTful API - Security checking using Spectral Linter](doc/api_security_checks.md)
+3. [Bitnami Sealed Secrets on Google Kubernetes Engine](doc/bitnami_sealed_secrets_on_gke_guide.md)
+4. [Bitnami Decrypt Sealed Secrets](doc/bitnami_sealed_secrets_decrypt.md)
+5. [Trivy - Security Dependencies Checking](doc/trivy_security_dependencies_checking.md)
+

@@ -1,4 +1,4 @@
-# Getting OpenAPI specs and documentation from existing RESTful API in Golang
+# Getting OpenAPI specs and docs from existing RESTful API in Golang
 
 ## References
 
@@ -244,4 +244,6 @@ And the `oas3.json` contains:
 
 ### 3. Assessing OWASP Top 10 API
 
-1. We are going to use Spectra to check the security of RESTful API using its OpenAPI specs.
+We are going to use Spectra to check the security of RESTful API using its OpenAPI specs.
+
+* [api_security_checks.md](api_security_checks.md)

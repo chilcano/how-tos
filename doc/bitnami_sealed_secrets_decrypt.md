@@ -11,13 +11,26 @@
 - https://stackoverflow.com/questions/75812591/how-can-i-locally-decrypt-already-sealed-secrets
 - https://github.com/bitnami-labs/sealed-secrets#will-you-still-be-able-to-decrypt-if-you-no-longer-have-access-to-your-cluster
 
+
+### Step 01. Select the K8s context and check if exist sealed secrets
+
 ```sh
-## check the context
+## list all k8s contexts
+$ kubectl config get-contexts --no-headers                                            
+      gke_ara_dops      gke_aragon-devops-319312_europe-west6-a_aragon-devops   gke_aragon-devops-319312_europe-west6-a_aragon-devops   
+      gke_ara_prod      gke_aragon-prod_europe-west6-a_aragon-prod              gke_aragon-prod_europe-west6-a_aragon-prod              
+      gke_ara_stg       gke_aragon-staging_europe-west6-a_aragon-staging        gke_aragon-staging_europe-west6-a_aragon-staging        
+      hetzner_cp0_ara   hetzner-cp0                                             hetzner-usr                                             
+*     hetzner_cp2_ara   hetzner-cp2  
+
+## select the right context
+$ kubectl config use-context gke_ara_dops
+Switched to context "gke_ara_dops".
+
 $ kubectl config current-context
+gke_ara_dops
 
-aragon_devops_gke
-
-## get all  sealedsecrets in context
+## get all  sealedsecrets in specified context
 $ kubectl get sealedsecrets -A
 
 NAMESPACE         NAME                                 AGE
@@ -38,17 +51,37 @@ kube-monitoring   grafana-elastic-datasource           92d
 kube-system       fluentd-elastic-secret               660d
 kube-system       metricbeat-elastic-certificate-pem   637d
 kube-system       metricbeat-elastic-credentials       637d
+```
 
+### Step 02. Get a backup of sealed secret keys
 
-$ kubectl get secret -n sealed-secrets -l sealedsecrets.bitnami.com/sealed-secrets-key -o yaml > sealed-secrets-key.yaml
-$ kubeseal --controller-name=sealed-secrets --controller-namespace=sealed-secrets < /tmp/sealed-secret.yaml --recovery-unseal --recovery-private-key sealed-secrets-key.yaml -o yaml
+This will get the controller's public and private keys and should be kept safe!.
 
+```sh
+$ kubectl get secret -n kube-system -l sealedsecrets.bitnami.com/sealed-secrets-key -o yaml > ss-keys.yaml
+```
 
-## once identified the sealedsecret to decrypt, download the sealedsecret keys
-$ kubectl get secret -n devops-server -l sealedsecret.bitnami.com/devops-server-secret -o yaml > ss.yaml
+Where:
+- `kube-system`: namespace where sealed secret lives
+- `sealed-secrets-key`: label used to fetch the controller keys
+- `ss-keys.yaml`: backup file containing the keys 
 
-## decrypt the sealedsecret keys file
-$ kubeseal --controller-name=sealed-secrets --controller-namespace=sealed-secrets < ss-decrypted.yaml --recovery-unseal --recovery-private-key ss.yaml -o yaml
+### Step 03. Decrypt a sealed secret
 
+The `ss-my.json` It is sealed secret that is in your version control system, but if you have not at hand, you can get from K8s using this:
+
+```sh
+$ kubectl get sealedsecrets -n apisix -o jsonpath='{.items[]}' > ss-my.json                                                                                 
+```
+
+Once completed, decrypt it using this:
+```sh
+$ kubeseal --controller-name=sealed-secrets --controller-namespace=sealed-secrets < ss-my.json --recovery-unseal --recovery-private-key ss-keys.yaml -o yaml
+```
+
+Finally, you should base64 decoder:
+
+```sh
+$ echo -n "my-encoded-secret" | base64 -d
 ```
 
