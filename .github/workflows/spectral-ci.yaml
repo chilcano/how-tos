@@ -125,7 +125,7 @@ jobs:
           report_suite_logs: any
           ignore_runs: true                ## false: doesnt publish list of errors in jobs-summary and in actions-annotations
           test_file_prefix: '-/home/runner/work'
-          check_run: false
+          check_run: true
 
   # spectral-gh-action:
   #   runs-on: ubuntu-latest
