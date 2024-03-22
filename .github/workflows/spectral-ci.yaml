@@ -122,7 +122,8 @@ jobs:
           job_summary: true                               ## Published as part of job summary
           compare_to_earlier_commit: true
           report_individual_runs: true 
-          report_suite_logs: any 
+          report_suite_logs: any
+          ignore_runs: true
 
   # spectral-gh-action:
   #   runs-on: ubuntu-latest
