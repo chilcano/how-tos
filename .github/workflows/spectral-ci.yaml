@@ -119,11 +119,13 @@ jobs:
           check_name: 'Report OWASP APISec Top10'         ## Name for the check result
           comment_title: 'Report OWASP APISec Top10'      ## Alternative PR comment title
           comment_mode: always                            ## Posts comments to PR that are associated with the commit
-          job_summary: false                               ## Published as part of job summary
+          job_summary: true                               ## Published as part of job summary
           compare_to_earlier_commit: true
           report_individual_runs: true 
           report_suite_logs: any
-          ignore_runs: false
+          ignore_runs: false                ## false: doesnt publish list of errors in jobs-summary and in actions-annotations
+          test_file_prefix: '-/home/runner/work'
+          check_run: false
 
   # spectral-gh-action:
   #   runs-on: ubuntu-latest
