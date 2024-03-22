@@ -116,16 +116,14 @@ jobs:
           files: |
             _out/spectral_oas.junit
             _out/spectral_owasp.junit
-          check_name: 'Report OWASP APISec Top10'         ## Name for the check result
-          comment_title: 'Report OWASP APISec Top10'      ## Alternative PR comment title
-          comment_mode: always                            ## Posts comments to PR that are associated with the commit
-          job_summary: true                               ## Published as part of job summary
+          check_name: 'Report OWASP APISec Top10'
+          comment_mode: always
+          job_summary: true
           compare_to_earlier_commit: true
           report_individual_runs: true 
           report_suite_logs: any
+          ignore_runs: false
           test_file_prefix: '-/home/runner/work'
-          # ignore_runs: true                ## false: doesnt publish list of errors in jobs-summary and in actions-annotations
-          # check_run: true
 
   # spectral-gh-action:
   #   runs-on: ubuntu-latest
