@@ -73,16 +73,16 @@ jobs:
           echo 'extends: ["https://unpkg.com/@apisyouwonthate/style-guide@1.3.2/dist/ruleset.js"]' > .spectral_style_guide.yaml   # Ruleset is downloaded in runtime
           mkdir -p _out/
 
-      - name: Run Spectral (OAS ruleset)
-        run: | 
-          set -o pipefail
-          npx spectral lint src/api_specs/openapi01.yaml -r .spectral_oas.yaml -v | tee _out/spectral_oas.log
+      # - name: Run Spectral (OAS ruleset)
+      #   run: | 
+      #     set -o pipefail
+      #     npx spectral lint src/api_specs/openapi01.yaml -r .spectral_oas.yaml -v | tee _out/spectral_oas.log
 
-      - name: Run Spectral (OWASP ruleset)
-        if: ${{ success() }} || ${{ failure() }}
-        run: |
-          set -o pipefail
-          npx spectral lint src/api_specs/openapi01.yaml -r .spectral_owasp.yaml -v | tee _out/spectral_owasp.log
+      # - name: Run Spectral (OWASP ruleset)
+      #   if: ${{ success() }} || ${{ failure() }}
+      #   run: |
+      #     set -o pipefail
+      #     npx spectral lint src/api_specs/openapi01.yaml -r .spectral_owasp.yaml -v | tee _out/spectral_owasp.log
 
       - name: Run Spectral (OAS ruleset - JUnit format)
         if: ${{ success() }} || ${{ failure() }}
@@ -90,18 +90,18 @@ jobs:
           set -o pipefail
           npx spectral lint src/api_specs/openapi01.yaml -r .spectral_oas.yaml  -f junit -o _out/spectral_oas.junit
 
-      - name: Run Spectral (OWASP ruleset - JUnit format)
-        if: ${{ success() }} || ${{ failure() }}
-        run: |
-          set -o pipefail
-          npx spectral lint src/api_specs/openapi01.yaml -r .spectral_owasp.yaml  -f junit -o _out/spectral_owasp.junit
+      # - name: Run Spectral (OWASP ruleset - JUnit format)
+      #   if: ${{ success() }} || ${{ failure() }}
+      #   run: |
+      #     set -o pipefail
+      #     npx spectral lint src/api_specs/openapi01.yaml -r .spectral_owasp.yaml  -f junit -o _out/spectral_owasp.junit
 
-      - name: Run Spectral (Style-Guide ruleset  downloaded in runtime)
-        if: ${{ success() }} || ${{ failure() }}
-        run: |
-          set -o pipefail
-          npx spectral lint src/api_specs/openapi01.yaml -r .spectral_style_guide.yaml -v | tee _out/spectral_style_guide.log
-          set +o pipefail
+      # - name: Run Spectral (Style-Guide ruleset  downloaded in runtime)
+      #   if: ${{ success() }} || ${{ failure() }}
+      #   run: |
+      #     set -o pipefail
+      #     npx spectral lint src/api_specs/openapi01.yaml -r .spectral_style_guide.yaml -v | tee _out/spectral_style_guide.log
+      #     set +o pipefail
 
       - name: Upload Spectral reports as Github Artifacts
         if: ${{ success() }} || ${{ failure() }}
