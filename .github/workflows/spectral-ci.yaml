@@ -90,11 +90,11 @@ jobs:
           set -o pipefail
           npx spectral lint src/api_specs/openapi01.yaml -r .spectral_oas.yaml  -f junit -o _out/spectral_oas.junit
 
-      # - name: Run Spectral (OWASP ruleset - JUnit format)
-      #   if: ${{ success() }} || ${{ failure() }}
-      #   run: |
-      #     set -o pipefail
-      #     npx spectral lint src/api_specs/openapi01.yaml -r .spectral_owasp.yaml  -f junit -o _out/spectral_owasp.junit
+      - name: Run Spectral (OWASP ruleset - JUnit format)
+        if: ${{ success() }} || ${{ failure() }}
+        run: |
+          set -o pipefail
+          npx spectral lint src/api_specs/openapi01.yaml -r .spectral_owasp.yaml  -f junit -o _out/spectral_owasp.junit
 
       # - name: Run Spectral (Style-Guide ruleset  downloaded in runtime)
       #   if: ${{ success() }} || ${{ failure() }}
