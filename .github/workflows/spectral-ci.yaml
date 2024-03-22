@@ -28,7 +28,6 @@ concurrency:
 
 jobs:
   spectral-cli:
-    name: Spectral CLI
     runs-on: ubuntu-latest
 
     steps:
@@ -110,22 +109,21 @@ jobs:
           name: spectral-reports-${{ steps.myvars.outputs.DATE_IN_SECS }}
           path: _out/*.*
 
-      # - name: Publish Spectral Results (OWASP)
-      #   uses: EnricoMi/publish-unit-test-result-action@v2
-      #   if: always()    ## if false = bypass (dont exec)
-      #   with:
-      #     files: |
-      #       _out/spectral_oas.junit
-      #       _out/spectral_owasp.junit
-      #     check_name: 'OWASP APISec Top10'
-      #     comment_mode: always 
-      #     job_summary: true 
-      #     compare_to_earlier_commit: true
-      #     report_individual_runs: true 
-      #     report_suite_logs: any 
+      - name: Publish Spectral Results (OWASP)
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()    ## if false = bypass (dont exec)
+        with:
+          files: |
+            _out/spectral_oas.junit
+            _out/spectral_owasp.junit
+          check_name: 'OWASP APISec Top10'
+          comment_mode: always 
+          job_summary: true 
+          compare_to_earlier_commit: true
+          report_individual_runs: true 
+          report_suite_logs: any 
 
-  # spectral-action:
-  #   name: Spectral GH Action
+  # spectral-gh-action:
   #   runs-on: ubuntu-latest
   #   steps:
   #     - name: Checkout code
