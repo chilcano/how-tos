@@ -123,7 +123,7 @@ jobs:
           compare_to_earlier_commit: true
           report_individual_runs: true 
           report_suite_logs: any
-          ignore_runs: false                ## false: doesnt publish list of errors in jobs-summary and in actions-annotations
+          ignore_runs: true                ## false: doesnt publish list of errors in jobs-summary and in actions-annotations
           test_file_prefix: '-/home/runner/work'
           check_run: false
 
