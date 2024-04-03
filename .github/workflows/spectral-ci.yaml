@@ -117,7 +117,7 @@ jobs:
             _out/spectral_oas.junit
             _out/spectral_owasp.junit
           check_name: 'Report OWASP APISec Top10'
-          comment_mode: off
+          comment_mode: always
           job_summary: true
           compare_to_earlier_commit: true
           report_individual_runs: true 
