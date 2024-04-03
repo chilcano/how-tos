@@ -3429,9 +3429,6 @@ components:
           type: integer
       type: object
   securitySchemes:
-    # BasicAuth:
-    #   scheme: basic
-    #   type: http
     API Key:
       name: API Key
       type: apiKey
