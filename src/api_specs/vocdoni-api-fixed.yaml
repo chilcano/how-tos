@@ -1,0 +1,3458 @@
+openapi: 3.0.0
+info:
+  contact: {}
+  description: "The Vocdoni API is a REST API that substitutes the previous RPCs in order to make it easier for  developers/integrators to build on top of the voting protocol. This API facilitates creating votings using Vocdoni, without the hassle of learning a complex blockchain platform, allowing to perform all the features that enable the voting protocol such as creating an account, entity, voting process, census & vote, abstracting as much as possible the complexity and offering simple and straightforward methods to perform those actions. \n\nYou can review the API endpoints documentation in this section, the main entities are:\n\n- [**Chain**](chain): The Vocdoni blockchain is named Vochain. It is a Byzantine fault-tolerant network based on Tendermint that executes the Vocdoni Protocol logic represented as a state machine. Its main purpose is to register votes in a  decentralized and verifiable format. In those endpoints, you can consult the state of the chain, transactions costs,  list organizations and get more Vochain info.\n- [**Accounts**](accounts): Identified by an Ethereum like address. An account can create and manage elections, transfer tokens, give power to other accounts on his behalf (delegates) and manage its metadata.\n- [**Elections**](elections): Is a rule-set of options and requirements for creating a process in which people vote a series of options. To know more about the params of an election and its lifecycle go [here](../get-started/intro#23-elections). In this section you will find all information related to an election as its information, election keys, submitted votes & how to create a new election.\n- [**Censuses**](censuses): The census is a key component of any voting process. It specifies the set of users (identified by a public key or address) eligible for participating in an election. To understand more about the Censuses you can check [here](../get-started/intro#21-the-census). Here you will be able to get censuses information like the Merkle root, total weight & size, import/export the censuses and create new ones.\n- [**Votes**](votes): All the information related to the vote issued by a participant in a vote, you can check the validity of the vote, consult your information and send a vote.\n- [**SIK**](sik): The Secret Identity Key is a user-generated piece of information that proves the user's identity without revealing it. It is the hash of the user's address, the signature of a public message and an optional secret part. It is used to ensure anonymous voting. All registered accounts or anonymous voters must register a SIK, and they are all stored in a Merkle tree. The `/siks` endpoints help to generate a proof of membership, get the current valid SIK roots, or check if an account has a valid SIK.\n\n\n### Errors \n\nBackend error messages list are defined here: https://github.com/vocdoni/vocdoni-node/blob/master/api/errors.go\n\nAbout the **204 no content** error: this message will be returned only if the asset being queried cannot be found but no other errors have occurred. This response is commonly used to prevent Javascript errors that may arise when a client is waiting for a  transaction to be published. During this waiting period, the client can repeatedly query the endpoint until a  successful response with a status code of 200 is received, thereby avoiding any errors that may occur due to the transaction not being published yet."
+  title: Vocdoni API
+  version: 2.0.0
+servers:
+  - url: 'https://api-dev.vocdoni.net/v2'
+    x-internal: false
+paths:
+  /accounts:
+    post:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.AccountSet'
+          description: OK
+      tags:
+        - Accounts
+      description: "It register an account to the blockchain including IPFS metadata upload. \n\n- Requires a signed protobuf transaction on the body to perform the operation.\n- Metadata is not required, but if no metadata is provided the account won't be listed on \n[/chain/organizations](organizations-list) endpoint. Check there to read about differences between an account and a organization."
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                metadata:
+                  type: string
+                txPayload:
+                  type: string
+              type: object
+        description: 'Transaction payload and metadata object encoded using base64 '
+        required: true
+      summary: Set account
+      security:
+        - API Key: []
+  /accounts/count:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    type: integer
+                type: object
+          description: OK
+      tags:
+        - Accounts
+      description: Returns the count of total number of existing accounts
+      summary: Total number of accounts
+  '/accounts/page/{page}':
+    get:
+      parameters:
+        - description: Paginator page
+          in: path
+          name: page
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  accounts:
+                    items:
+                      $ref: '#/components/schemas/indexertypes.Account'
+                    type: array
+                type: object
+          description: OK
+      tags:
+        - Accounts
+      description: >-
+        Returns information (address, balance and nonce) of the existing accounts
+      summary: List of the existing accounts
+  '/accounts/{accountID}/fees/page/{page}':
+    get:
+      parameters:
+        - description: Specific accountID
+          in: path
+          name: accountID
+          required: true
+          schema:
+            type: string
+        - description: Paginator page
+          in: path
+          name: page
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  fees:
+                    items:
+                      $ref: '#/components/schemas/indexertypes.TokenFeeMeta'
+                    type: array
+                type: object
+          description: OK
+      tags:
+        - Accounts
+      description: >-
+        Returns the token fees for an account. A spending is an amount of tokens burnt from one account for executing transactions.
+      summary: List account token fees
+  '/accounts/{accountID}/transfers/count':
+    get:
+      parameters:
+        - description: Specific accountID
+          in: path
+          name: accountID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    type: integer
+                type: object
+          description: Number of transaction sent and received for the account
+      tags:
+        - Accounts
+      description: >-
+        Returns the count of total number of sent and received transactions for an account. A transaction is a token transfer from one account to another existing account
+      summary: Total number of sent and received transactions
+  '/accounts/{accountID}/transfers/page/{page}':
+    get:
+      parameters:
+        - description: Specific accountID
+          in: path
+          name: accountID
+          required: true
+          schema:
+            type: string
+        - description: Paginator page
+          in: path
+          name: page
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  transfers:
+                    $ref: '#/components/schemas/indexertypes.TokenTransfersAccount'
+                type: object
+          description: OK
+      tags:
+        - Accounts
+      description: >-
+        Returns the token transfers for an account. A transfer is a token transference from one account to other (excepting the burn address).
+      summary: List account received and sent token transfers
+  '/accounts/{address}':
+    get:
+      parameters:
+        - description: Account address
+          in: path
+          name: address
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.AccountMetadata'
+          description: OK
+      tags:
+        - Accounts
+      description: >-
+        Get account information by its address or public key. The `infoURI` parameter contain where account metadata is uploaded (like avatar, name...). It return also an already parsed "metadata" object from this infoUri.
+
+        The `meta` object inside the `metadata` property is left to the user to add random information about the account.
+      summary: Get account
+  '/accounts/{address}/metadata':
+    get:
+      parameters:
+        - description: Account address
+          in: path
+          name: address
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.AccountMetadata'
+          description: OK
+      tags:
+        - Accounts
+      description: >-
+        Get account information by its address or public key. The `infoURI` parameter contain where account metadata is uploaded (like avatar, name...). It return also an already parsed "metadata" object from this infoUri.
+
+        The `meta` object inside the `metadata` property is left to the user to add random information about the account.
+      summary: Get account
+  '/accounts/{organizationID}/elections/count':
+    get:
+      parameters:
+        - description: Specific organizationID
+          in: path
+          name: organizationID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    type: number
+                type: object
+          description: OK
+      tags:
+        - Accounts
+      description: Returns the number of elections for an organization
+      summary: Count organization elections
+  '/accounts/{organizationID}/elections/page/{page}':
+    get:
+      parameters:
+        - description: Specific organizationID
+          in: path
+          name: organizationID
+          required: true
+          schema:
+            type: string
+        - description: Define de page number
+          in: path
+          name: page
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  elections:
+                    items:
+                      $ref: '#/components/schemas/api.ElectionSummary'
+                    type: array
+                type: object
+          description: OK
+      tags:
+        - Accounts
+      description: List the elections of an organization
+      summary: List organization elections
+  '/accounts/{organizationID}/elections/status/{status}/page/{page}':
+    get:
+      parameters:
+        - description: Specific organizationID
+          in: path
+          name: organizationID
+          required: true
+          schema:
+            type: string
+        - description: Status of the election
+          in: path
+          name: status
+          required: true
+          schema:
+            enum:
+              - ready
+              - paused
+              - canceled
+              - ended
+              - results
+            type: string
+        - description: Define de page number
+          in: path
+          name: page
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  elections:
+                    items:
+                      $ref: '#/components/schemas/api.ElectionSummary'
+                    type: array
+                type: object
+          description: OK
+      tags:
+        - Accounts
+      description: List the elections of an organization by status
+      summary: List organization elections by status
+  '/censuses/export/{ipfs}':
+    get:
+      parameters:
+        - description: Export to IPFS. Blank to return the JSON file
+          in: path
+          name: ipfs
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  valid:
+                    type: boolean
+                type: object
+          description: OK
+      tags:
+        - Censuses
+      description: >-
+        Export the whole census database to a JSON file. Requires Admin Bearer token.
+      summary: Export census database
+  '/censuses/import/{ipfscid}':
+    post:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  valid:
+                    type: boolean
+                type: object
+          description: OK
+      tags:
+        - Censuses
+      description: Import the whole census database from a JSON file.
+      summary: Import census database
+  /censuses/list/:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  valid:
+                    type: boolean
+                type: object
+          description: OK
+      tags:
+        - Censuses
+      description: List all census references. Requires Admin Bearer token.
+      summary: List all census references
+  '/censuses/{censusID}':
+    delete:
+      parameters:
+        - description: Census id
+          in: path
+          name: censusID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: (empty body)
+      tags:
+        - Censuses
+      description: >-
+        Delete unpublished census (not on the storage yet). See [publish census](census-publish)\n
+
+        - Requires Bearer token
+
+        - Deletes a census from the server storage
+
+        - Published census cannot be deleted
+      summary: Delete census
+  '/censuses/{censusID}/export':
+    get:
+      parameters:
+        - description: Census id
+          in: path
+          name: censusID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/censusdb.CensusDump'
+          description: OK
+      security:
+        - API Key: []
+      tags:
+        - Censuses
+      description: Export census to JSON format. Requires Bearer token
+      summary: Export census
+  '/censuses/{censusID}/import':
+    post:
+      parameters:
+        - description: Census id
+          in: path
+          name: censusID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: (empty body)
+      security:
+        - API Key: []
+      tags:
+        - Censuses
+      description: >-
+        Import census from JSON previously exported using [`/censuses/{censusId}/export`](census-export). Requires Bearer token
+      summary: Import census
+  '/censuses/{censusID}/participants':
+    post:
+      parameters:
+        - description: Census id
+          in: path
+          name: censusID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: (empty body)
+      security:
+        - API Key: []
+      tags:
+        - Censuses
+      description: "Add list of public key/address with its weight to an unpublished census and returns the resulting \n[Merkle Root](https://en.wikipedia.org/wiki/Merkle_tree).  \n\nEach addition will modify the census merkle root creating a new \"snapshot\" of the census at this moment. This root  identifies the census at this point and can be used to publish the census at this specific state.\n\nFor example, supposing a census with id `0x1234` (random hex string generated during census creation), add 10 keys will generate specific root for this state, ex `0xabcd`. \n\nIf we add 5 keys more, the resulting root changes, the keys are added and the new census have the first 10 keys plus the last 5, with a resulting root of `0xffff`. \n\nSo, at [publishing moment](census-publish), you could specify no root to publish census on the last \nstate (`0xffff`), which will publish the first 10 plus the last 5. Or either specify the snapshot point which you want to publish the census, for example `0x1234`, which will publish just the first 10th.\n\n- Requires Bearer token \n- Adds a list of wallet public key or wallet address to a census with a specific weight\n- If the weight parameter is missing, weight=1 is considered"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.CensusParticipants'
+        description: 'PublicKey - weight array '
+        required: true
+      summary: Add participants to census
+  '/censuses/{censusID}/proof/{key}':
+    get:
+      parameters:
+        - description: Census id
+          in: path
+          name: censusID
+          required: true
+          schema:
+            type: string
+        - description: Key to proof
+          in: path
+          name: key
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  proof:
+                    type: string
+                  value:
+                    type: string
+                  weight:
+                    type: number
+                type: object
+          description: >-
+            where proof is Merkle tree siblings and value is Merkle tree leaf value
+      security:
+        - API Key: []
+      tags:
+        - Censuses
+      description: "Prove the key and weight belong to the census root hash.\n\nIf the key exists on the census returns Merkle root information. `Proof` property is referred to the siblings of Merkle tree, the `value` points to the leaf of the Merkle Tree for this key (on this case, the weight), and weight is just the key weight for this census. \n\n[Further reading](/protocol/Census/off-chain-tree)\n\n- Requires Bearer token \n- Returns a merkle proof, proving the key and weight belongs to the census root hash"
+      summary: Prove key to census
+  '/censuses/{censusID}/publish':
+    post:
+      parameters:
+        - description: Census id
+          in: path
+          name: censusID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  census:
+                    properties:
+                      censusID:
+                        type: string
+                      uri:
+                        type: string
+                    type: object
+                type: object
+          description: It return published censusID and the ipfs uri where its uploaded
+      security:
+        - API Key: []
+      tags:
+        - Censuses
+      description: "Register a census to the storage (IPFS in our case). After this, the census can't be edited. \n        \nYou could provide the census Merkle root to specify census publication at specific snapshot. See [censuses/{censusId}/participants](census-add-participants-to-census)\n\n- Requires Bearer token\n- The census is copied to a new census identified by its Merkle Root\n- The new census **cannot be modified**\n- The census is published to the storage provided (IPFS in our case)\n- The new census ID is returned and can be used for querying\n- If a censusID with the same root has been already published, the request will fail\n- If `root` is specified as path parameter, it publish the census at specific  root (append the census to existing one)."
+      summary: Publish census
+  '/censuses/{censusID}/publish/{root}':
+    post:
+      parameters:
+        - description: Census id
+          in: path
+          name: censusID
+          required: true
+          schema:
+            type: string
+        - description: Specific root where to publish the census. Not required
+          in: path
+          name: root
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  census:
+                    properties:
+                      censusID:
+                        type: string
+                      uri:
+                        type: string
+                    type: object
+                type: object
+          description: It return published censusID and the ipfs uri where its uploaded
+      security:
+        - API Key: []
+      tags:
+        - Censuses
+      description: "Register a census to the storage (IPFS in our case). After this, the census can't be edited. \n        \nYou could provide the census Merkle root to specify census publication at specific snapshot. See [censuses/{censusId}/participants](census-add-participants-to-census)\n\n- Requires Bearer token\n- The census is copied to a new census identified by its Merkle Root\n- The new census **cannot be modified**\n- The census is published to the storage provided (IPFS in our case)\n- The new census ID is returned and can be used for querying\n- If a censusID with the same root has been already published, the request will fail\n- If `root` is specified as path parameter, it publish the census at specific  root (append the census to existing one)."
+      summary: Publish census at root
+  '/censuses/{censusID}/root':
+    get:
+      parameters:
+        - description: Census id
+          in: path
+          name: censusID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  root:
+                    type: string
+                type: object
+          description: Merkle root of the census
+      tags:
+        - Censuses
+      description: >-
+        Get census [Merkle Tree root](https://docs.vocdoni.io/architecture/census/off-chain-tree.html) hash, used to identify the census at specific snapshot.\n\n- Bearer token not required
+      summary: Census Merkle Root
+  '/censuses/{censusID}/size':
+    get:
+      parameters:
+        - description: Census id
+          in: path
+          name: censusID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  size:
+                    type: string
+                type: object
+          description: Size as integer
+      tags:
+        - Censuses
+      description: Total number of keys added to the census. Size as integer
+      summary: Census size
+  '/censuses/{censusID}/type':
+    get:
+      parameters:
+        - description: Census id
+          in: path
+          name: censusID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  census:
+                    type: string
+                type: object
+          description: 'Census type "weighted", "zkweighted", "csp'
+      tags:
+        - Censuses
+      description: Get the census type
+      summary: Get type of census
+  '/censuses/{censusID}/verify':
+    post:
+      parameters:
+        - description: Census id
+          in: path
+          name: censusID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  valid:
+                    type: boolean
+                type: object
+          description: OK
+      tags:
+        - Censuses
+      description: >-
+        Verify that a previously obtained Merkle proof for a key, acquired via [/censuses/{censusId}/proof/{publicKey}](prove-key-to-census) is still correct.
+      summary: Verify merkle proof
+  '/censuses/{censusID}/weight':
+    get:
+      parameters:
+        - description: Census id
+          in: path
+          name: censusID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  weight:
+                    type: string
+                type: object
+          description: Sum of weight son a stringfied big int format
+      tags:
+        - Censuses
+      description: It sums all weights added to the census. Weight is a stringified bigInt
+      summary: Census total weight
+  '/censuses/{type}':
+    post:
+      parameters:
+        - description: Census type
+          in: path
+          name: type
+          required: true
+          schema:
+            enum:
+              - weighted
+              - zkweighted
+              - csp
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  censusId:
+                    type: string
+                type: object
+          description: OK
+      security:
+        - API Key: []
+      tags:
+        - Censuses
+      description: "Create a new census on the backend side. The census is still unpublished until [publish](publish-census) is called.  \n\nTo create the census it require a `Bearer token` created on the user side using a [UUID](https://en.wikipedia.org/wiki/Universally_unique_identifier). This token **should we stored for the user to perform operations to this census** such add participants or publish.\n\nIt return a new random censusID (a random 32 bytes hex string), which are used (along with the Bearer token) to [add participant keys](add-participants-to-census) to the census. Once the census is published no more keys can be added.\n\nTo use a census on an election, it **must be published**.\n\n- Available types are: `weighted` and `zkindexed`\n- Require header Bearer token created user side"
+      summary: Create a new census
+  '/chain/blockToDate/{height}':
+    get:
+      parameters:
+        - description: Block height
+          in: path
+          name: height
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  date:
+                    type: string
+                type: object
+          description: OK
+      tags:
+        - Chain
+      description: Returns the estimated timestamp for the block height provided
+      summary: Estimate block to date
+  '/chain/blocks/hash/{hash}':
+    get:
+      parameters:
+        - description: Block hash
+          in: path
+          name: hash
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Block'
+          description: OK
+      tags:
+        - Chain
+      description: Returns the block from the given hash
+      summary: Get block (by hash)
+  '/chain/blocks/{height}':
+    get:
+      parameters:
+        - description: Block height
+          in: path
+          name: height
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Block'
+          description: OK
+      tags:
+        - Chain
+      description: Returns the full block information at the given height
+      summary: Get block (by height)
+  '/chain/blocks/{height}/transactions/page/{page}':
+    get:
+      parameters:
+        - description: Block height
+          in: path
+          name: height
+          required: true
+          schema:
+            type: number
+        - description: Page to paginate
+          in: path
+          name: page
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/api.TransactionMetadata'
+                type: array
+          description: OK
+      tags:
+        - Chain
+      description: Given a block returns the list of transactions for that block
+      summary: Transactions in a block
+  '/chain/dateToBlock/{timestamp}':
+    get:
+      parameters:
+        - description: Timestamp on unix format
+          in: path
+          name: timestamp
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  height:
+                    type: number
+                type: object
+          description: Estimated block height
+      tags:
+        - Chain
+      description: Returns the estimated block height for the timestamp provided
+      summary: Estimate date to block
+  /chain/export/indexer:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+          description: OK
+      tags:
+        - Indexer
+      description: Exports the indexer SQL database in raw format
+      summary: Exports the indexer database
+  '/chain/fees/page/{page}':
+    get:
+      parameters:
+        - description: Paginator page
+          in: path
+          name: page
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  fees:
+                    items:
+                      $ref: '#/components/schemas/indexertypes.TokenFeeMeta'
+                    type: array
+                type: object
+          description: OK
+      tags:
+        - Accounts
+      description: >-
+        Returns the token fees list ordered by date. A spending is an amount of tokens burnt from one account for executing transactions.
+      summary: List all token fees
+  '/chain/fees/reference/{reference}/page/{page}':
+    get:
+      parameters:
+        - description: Reference filter
+          in: path
+          name: reference
+          required: true
+          schema:
+            type: string
+        - description: Paginator page
+          in: path
+          name: page
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  fees:
+                    items:
+                      $ref: '#/components/schemas/indexertypes.TokenFeeMeta'
+                    type: array
+                type: object
+          description: OK
+      tags:
+        - Accounts
+      description: >-
+        Returns the token fees list filtered by reference and ordered by date. A spending is an amount of tokens burnt from one account for executing transactions.
+      summary: List all token fees by reference
+  '/chain/fees/type/{type}/page/{page}':
+    get:
+      parameters:
+        - description: Type filter
+          in: path
+          name: type
+          required: true
+          schema:
+            type: string
+        - description: Paginator page
+          in: path
+          name: page
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  fees:
+                    items:
+                      $ref: '#/components/schemas/indexertypes.TokenFeeMeta'
+                    type: array
+                type: object
+          description: OK
+      tags:
+        - Accounts
+      description: >-
+        Returns the token fees list filtered by type and ordered by date. A spending is an amount of tokens burnt from one account for executing transactions.
+      summary: List all token fees by type
+  /chain/info:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.ChainInfo'
+          description: OK
+      tags:
+        - Chain
+      description: >-
+        Return basic Vocdoni Blockchain (Vochain) information like blockTime, chainId, current height...
+
+
+        `blockTime`: each array position return average time for 1 minute, 10 minutes, 1 hour, 6 hours and 24 hours.
+
+
+        `blockTime`: every array position represents the average for 1 minute, 10m, 1h, 6h, 24h
+
+
+        `MaxCensusSize`: is a new feature introduced in the blockchain that is used to limit the number of  votes that can be registered for an election. This feature helps to prevent any potential overflow of the blockchain when the number of votes goes beyond the maximum limit. This is the maximum value  that an election creation can allow.
+
+
+        In order to create an election, the creator is required to set the `MaxCensusSize` parameter to a proper value. Typically, this value should be equal to the size of the census. If the MaxCensusSize parameter is set to 0, an error will occur and the election cannot be created.
+
+
+        The `MaxCensusSize` parameter determines the maximum number of votes that can be registered by the blockchain.  If the number of votes exceeds this limit, the vote transaction will fail (overwrite votes does not count).
+
+
+        See `MaxCensusSize` attribute on the VocdoniSDK  to add the maximum census size to a single election. Will throw an error if is superior than the allowed on the Vochain: `Max census size for the election is greater than allowed size`.
+
+
+        `networkCapacity`  indicates how many votes per block is the blockchain supposed to achieve. As bigger the capacity as cheaper the elections.
+      summary: Vochain information
+  /chain/info/circuit:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/circuit.Config'
+          description: OK
+      tags:
+        - Chain
+      description: Returns the circuit configuration according to the current circuit
+      summary: Circuit info
+  /chain/info/electionPriceFactors:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/electionprice.Calculator'
+          description: OK
+      tags:
+        - Chain
+      description: >
+        Package electionprice provides a mechanism for calculating the price of an election based on its characteristics.
+
+
+        The formula used to calculate the price for creating an election on the Vocdoni blockchain is designed to take into account various factors that impact the cost and complexity of conducting an election. The price is determined by combining several components, each reflecting a specific aspect of the election process.
+
+
+        1. **Base Price**: This is a fixed cost that serves as a starting point for the price calculation. It represents the minimal price for creating an election, regardless of its size or duration.
+
+        2. **Size Price**: As the number of voters (maxCensusSize) in an election increases, the resources required to manage the election also grow. To account for this, the size price component is directly proportional to the maximum number of votes allowed in the election. Additionally, it takes into consideration the blockchain's maximum capacity (capacity) and the maximum capacity the blockchain administrators can set (maxCapacity). This ensures that the price is adjusted based on the current capacity of the blockchain.
+
+        3. **Duration Price**: The length of the election (electionDuration) also affects the price, as longer elections occupy more resources over time. The duration price component is directly proportional to the election duration and inversely proportional to the maximum number of votes. This means that if the election lasts longer, the price increases, and if there are more votes in a shorter time, the price also increases to reflect the higher demand for resources.
+
+        4. **Encrypted Votes**: If an election requires encryption for maintaining secrecy until the end (encryptedVotes), it demands additional resources and computational effort. Therefore, the encrypted price component is added to the total price when this feature is enabled.
+
+        5. **Anonymous Votes**: Similarly, if an election must be anonymous (anonymousVotes), it requires additional measures to ensure voter privacy. As a result, the anonymous price component is added to the total price when this option is chosen.
+
+        6. **Overwrite Price**: Allowing voters to overwrite their votes (maxVoteOverwrite) can increase the complexity of managing the election, as it requires additional resources to handle vote updates. The overwrite price component accounts for this by being proportional to the maximum number of vote overwrites and the maximum number of votes allowed in the election. It also takes into account the blockchain's capacity to ensure the price reflects the current resource constraints.
+
+
+        The constant factors in the price formula play a crucial role in determining the price of an election based on its characteristics. Each factor is associated with a specific component of the price formula and helps to weigh the importance of that component in the final price calculation. The rationale beind these constant factors is to provide a flexible mechanism to adjust the pricing model based on the system's needs and requirements.
+
+
+        - **k1 (Size price factor)**: This constant factor affects the size price component of the formula. By adjusting k1, you can control the impact of the maximum number of votes (maxCensusSize) on the overall price. A higher k1 value would make the price increase more rapidly as the election size grows, while a lower k1 value would make the price less sensitive to the election size. The rationale behind k1 is to ensure that the pricing model can be adapted to accommodate different election sizes while considering the resource requirements.
+
+        - **k2 (Duration price factor)**: This constant factor influences the duration price component of the formula. By adjusting k2, you can control how the duration of the election (electionDuration) affects the price. A higher k2 value would make the price increase more quickly as the election duration extends, while a lower k2 value would make the price less sensitive to the election duration. The rationale behind k2 is to reflect the resource consumption over time and ensure that longer elections are priced accordingly.
+
+        - **k3 (Encrypted price factor)**: This constant factor affects the encrypted price component of the formula. By adjusting k3, you can control the additional cost associated with encrypted elections (encryptedVotes). A higher k3 value would make the price increase more significantly for elections that require encryption, while a lower k3 value would make the price less sensitive to the encryption requirement. The rationale behind k3 is to account for the extra computational effort and resources needed to ensure secrecy in encrypted elections.
+
+        - **k4 (Anonymous price factor)**: This constant factor influences the anonymous price component of the formula. By adjusting k4, you can control the additional cost associated with anonymous elections (anonymousVotes). A higher k4 value would make the price increase more significantly for elections that require anonymity, while a lower k4 value would make the price less sensitive to the anonymity requirement. The rationale behind k4 is to account for the extra measures and resources needed to ensure voter privacy in anonymous elections.
+
+        - **k5 (Overwrite price factor)**: This constant factor affects the overwrite price component of the formula. By adjusting k5, you can control the additional cost associated with allowing vote overwrites (maxVoteOverwrite). A higher k5 value would make the price increase more significantly for elections that permit vote overwrites, while a lower k5 value would make the price less sensitive to the overwrite allowance. The rationale behind k5 is to account for the increased complexity and resources needed to manage vote overwrites in the election process.
+
+        - **k6 (Non-linear growth factor)**: This constant factor determines the rate of price growth for elections with a maximum number of votes (maxCensusSize) exceeding the k7 threshold. By adjusting k6, you can control the non-linear growth rate of the price for larger elections. A higher k6 value would result in a more rapid increase in the price as the election size grows beyond the k7 threshold, while a lower k6 value would result in a slower increase in the price for larger elections. The rationale behind k6 is to provide a mechanism for controlling the pricing model's sensitivity to large elections. This factor ensures that the price accurately reflects the increased complexity, resource consumption, and management effort associated with larger elections, while maintaining a more affordable price for smaller elections. By fine-tuning k6, the pricing model can be adapted to balance accessibility for smaller elections with the need to cover costs and resource requirements for larger elections.
+
+        - **k7 (Size non-linear trigger)**: This constant factor represents a threshold value for the maximum number of votes (maxCensusSize) in an election. When the election size exceeds k7, the price growth becomes non-linear, increasing more rapidly beyond this point. The rationale behind k7 is to create a pricing model that accommodates a "freemium" approach, where smaller elections (under the k7 threshold) are priced affordably, while larger elections are priced more significantly due to their increased resource requirements and complexity. By adjusting k7, you can control the point at which the price transition from linear to non-linear growth occurs. A higher k7 value would allow for more affordable pricing for a larger range of election sizes, while a lower k7 value would result in more rapid price increases for smaller election sizes. This flexibility enables the pricing model to be tailored to the specific needs and goals of the Vocdoni blockchain, ensuring that small elections remain accessible and affordable,while larger elections are priced to reflect their higher resource demands.
+
+      summary: Price factors information
+  /chain/organizations/count:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    type: integer
+                type: object
+          description: Number of registered organizations
+      tags:
+        - Chain
+      description: Return the number of organizations
+      summary: Count organizations
+  '/chain/organizations/filter/page/{page}':
+    post:
+      parameters:
+        - description: Current page
+          in: path
+          name: page
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  organizations:
+                    items:
+                      $ref: '#/components/schemas/api.OrganizationList'
+                    type: array
+                type: object
+          description: OK
+      tags:
+        - Chain
+      description: >-
+        Returns a list of organizations filtered by its partial id, paginated by the given page
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                organizationId:
+                  type: string
+              type: object
+        description: Partial organizationId to filter by
+        required: true
+      summary: List organizations (filtered)
+  '/chain/organizations/page/{page}':
+    get:
+      parameters:
+        - description: Page number
+          in: path
+          name: page
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.organizationListHandler.response'
+          description: OK
+      tags:
+        - Chain
+      description: "An **Organizations** is an account with `infoUri` that contains organization associated  metadata. \nAn **Account** instead could be a validator, an oracle, a voter or just someone who wants to transfer tokens. \n\nThe `/chain/organizations` endpoints are related only to the Organization account type.\n\n- Return list of organizations ids.\n- If no page is defined, will assume page 0."
+      summary: List organizations
+  /chain/transactions:
+    post:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Transaction'
+          description: >-
+            Return blockchain response. `response` could differ depending of transaction type.
+      tags:
+        - Chain
+      description: >
+        It submit a transaction. Depending of transaction type will return different kinds of responses:
+
+        - For a NewElection transaction, `response` will be the `newElectionId`
+
+        - For a Vote transaction, `response` will be the `voteID`
+
+
+        Once the transaction is mined on the Vochain you can use [`chain/transactions/reference/{hash}`](transaction-by-reference) to find the block height and its index on the block to get the transaction index using [`chain/transactions/{blockHeight}/{txIndex}`](transaction-by-block-index).
+
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                payload:
+                  type: string
+              type: object
+        description: Base64 payload string containing transaction data and signature
+        required: true
+      summary: Submit transaction
+  /chain/transactions/cost:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/genesis.TransactionCosts'
+          description: OK
+      tags:
+        - Chain
+      description: Returns the list of transactions and its cost
+      summary: Transaction costs
+  /chain/transactions/count:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    type: number
+                type: object
+          description: OK
+      tags:
+        - Chain
+      description: Returns the number of transactions
+      summary: Transactions count
+  '/chain/transactions/page/{page}':
+    get:
+      parameters:
+        - description: Page number
+          in: path
+          name: page
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.chainTxListPaginated.response'
+          description: It return a list of transactions references
+      tags:
+        - Chain
+      description: >-
+        To get full transaction information use  [/chain/transaction/{blockHeight}/{txIndex}](transaction-by-block-index).\nWhere transactionIndex is the index of the transaction on the containing block.
+      summary: List Transactions
+  '/chain/transactions/reference/index/{index}':
+    get:
+      parameters:
+        - description: Index of the transaction
+          in: path
+          name: index
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/indexertypes.Transaction'
+          description: OK
+        '204':
+          description: 'See [errors](vocdoni-api#errors) section'
+      tags:
+        - Chain
+      description: >-
+        Get transaction by its index. This is not transaction reference (hash), and neither the block height and block  index. The transaction index is an incremental counter for each transaction.  You could use the transaction `block` and `index` to retrieve full info using [transaction by block and index](transaction-by-block-index).
+      summary: Transaction by index
+  '/chain/transactions/reference/{hash}':
+    get:
+      parameters:
+        - description: Transaction hash
+          in: path
+          name: hash
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/indexertypes.Transaction'
+          description: OK
+        '204':
+          description: 'See [errors](vocdoni-api#errors) section'
+      tags:
+        - Chain
+      description: >-
+        Using transaction hash it return the `block` and `index` containing that contains the transaction. After, you could use this `block` and `index` to retrieve transaction full info using [transaction by block and index](transaction-by-block-index)
+      summary: Transaction by hash
+  '/chain/transactions/{height}/{index}':
+    get:
+      parameters:
+        - description: Block height
+          in: path
+          name: height
+          required: true
+          schema:
+            type: integer
+        - description: Transaction index on block
+          in: path
+          name: index
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.GenericTransactionWithInfo'
+          description: OK
+        '204':
+          description: 'See [errors](vocdoni-api#errors) section'
+      tags:
+        - Chain
+      description: >-
+        Get transaction full information by block height and index. It returns JSON transaction protobuf encoded. Depending of transaction type will return different types of objects. Current transaction types can be found calling `/chain/transactions/cost`
+      summary: Transaction by block height and index
+  /chain/validators:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.ValidatorList'
+          description: OK
+      tags:
+        - Chain
+      description: Returns the list of validators
+      summary: List validators
+  /elections:
+    post:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.ElectionCreate'
+          description: >-
+            It return txId, electionId and the metadataURL for the newly created election. If metadataURL is returned empty, means that there is some issue with the storage provider.
+      tags:
+        - Elections
+      description: "It creates an election on the Vochain. \n\nTo use this endpoint, you will need to provide a signed transaction that has been encoded on the client side using the **Vocdoni SDK**. This transaction, referred to as txPayload, must include the IPFS CID-formatted hash of the metadata for the election.\n\nThe metadata for the election is optional and is provided as a base64-encoded JSON object. This object should follow the Entity metadata specification and includes information about the election, such as the list of candidates and the election's description. This metadata is stored within IPFS so that participants can access it.\n\nThe API endpoint will verify that the hash in the txPayload transaction matches the uploaded metadata. If these do not match, the API will return an error.\n\nExample of election metadata object:\n\n```json\n{\n    \"version\": \"1.0\",\n    \"title\": {\"default\": \"Best pasta!\", \"en\": \"Best pasta!\", \"es\": \"La mejor pasta!\"},\n    \"description\": {\"default\": \"Decide what is the best pasta\", \"en\": \"Decide what is the best pasta\", \"es\": \"Decide cual es la mejor pasta\"},\n    // Following fields are optional\n    \"media\": {\n    \"header\": \"url to an image\"\n    \"streamUri\": \"url to a stream resource\"\n    },\n    \"questions\": [\n    {\n        \"choices\": [ \n        { \n            \"title\": {\"default\": \"Macarroni\", \"en\": \"Macarroni\", \"es\": \"Macarrones\"},\n            \"value\": 0\n        } \n        { \n            \"title\": {\"default\": \"Spaghetti\", \"en\": \"Spaghetti\", \"es\": \"Espaguetis\"},\n            \"value\": 1\n        } \n        ], \n        \"description\": {\"default\": \"Choice one of theme\", \"en\": \"Choice one of theme\", \"es\": \"Elije una de ellas\"},\n        \"title\": {\"default\": \"Macarroni or Spaghetti\", \"en\": \"Macarroni or Spaghetti\", \"es\": \"Macarrones o Espaguetis\"}\n    }\n    ]\n}\n```\n\n[Read more about process creation](https://docs.vocdoni.io/architecture/process-overview.html#process-creation)"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/models.SignedTx'
+        description: >-
+          Uses `txPayload` protobuf signed transaction, and the `metadata` base64-encoded JSON object
+        required: true
+      summary: Create election
+  '/elections/filter/page/{page}':
+    post:
+      parameters:
+        - description: Page to paginate
+          in: path
+          name: page
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.ElectionSummary'
+          description: OK
+      tags:
+        - Elections
+      description: "Return a filtered elections list, the available filters have to be sent on the request body. Available are: \n        \n```json\n{\n    \"organizationId\": \"hexString\",\n    \"electionId\": \"hexString\",\n    \"withResults\": false,\n    \"status\": \"READY\",\n}\n```\n\n`electionId` can be partial. \n\nSee [elections list](elections-list)"
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.ElectionFilter'
+        description: >-
+          Filtered by partial organizationID, partial processID, process status and with results available or not
+        required: true
+      summary: List elections (filtered)
+  /elections/id:
+    post:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  electionID:
+                    type: string
+                type: object
+          description: OK
+      tags:
+        - Elections
+      description: nextElectionIDHandler
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.NextElectionID'
+        description: 'OrganizationID, CensusOrigin and EnvelopeType'
+        required: true
+      summary: Get next election ID
+  '/elections/page/{page}':
+    get:
+      parameters:
+        - description: 'Page '
+          in: path
+          name: page
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.ElectionSummary'
+          description: OK
+      tags:
+        - Elections
+      description: Get a list of elections summaries.
+      summary: List elections
+  /elections/price:
+    post:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  price:
+                    type: number
+                type: object
+          description: OK
+      tags:
+        - Elections
+      description: Helper endpoint to get the election price.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/electionprice.ElectionParameters'
+        description: 5 election parameters that are required for calculating the price
+        required: true
+      summary: Compute election price
+  '/elections/{electionID}':
+    get:
+      parameters:
+        - description: Election id
+          in: path
+          name: electionID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Election'
+          description: OK
+      tags:
+        - Elections
+      description: Get full election information
+      summary: Election information
+  '/elections/{electionID}/keys':
+    get:
+      parameters:
+        - description: Election id
+          in: path
+          name: electionID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.ElectionKeys'
+          description: OK
+      tags:
+        - Elections
+      description: Returns the list of public/private encryption keys
+      summary: List encryption keys
+  '/elections/{electionID}/scrutiny':
+    get:
+      parameters:
+        - description: Election id
+          in: path
+          name: electionID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.ElectionResults'
+          description: OK
+      tags:
+        - Elections
+      description: >-
+        Returns a given election consensus results and useful information about the results. Results represented with BigInt strings.
+
+
+
+        This method can be used by anyone, but it is also used by Chainlink for fetching Vochain results and store it to the Results contract on an EVM network.
+
+
+
+        For discovering more about the on-chain results, please refer to [chainlink-tally](https://github.com/vocdoni/chainlink-tally#chainlink-tally) repository.
+      summary: Election results
+  '/elections/{electionID}/votes/count':
+    get:
+      parameters:
+        - description: Election id
+          in: path
+          name: electionID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  count:
+                    type: number
+                type: object
+          description: OK
+      tags:
+        - Elections
+      description: Get the number of votes for an election
+      summary: Count election votes
+  '/elections/{electionID}/votes/page/{page}':
+    get:
+      parameters:
+        - description: Election id
+          in: path
+          name: electionID
+          required: true
+          schema:
+            type: string
+        - description: 'Page '
+          in: path
+          name: page
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Vote'
+          description: OK
+      tags:
+        - Elections
+      description: Returns the list of voteIDs for an election (paginated)
+      summary: List election votes
+  /files/cid:
+    post:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.File'
+          description: OK
+      tags:
+        - Elections
+      description: Helper endpoint to get the IPFS CIDv1 hash of a file
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                payload:
+                  type: string
+              type: object
+        description: File bytes base64 encoded
+        required: true
+      summary: Compute IPFS CIDv1 of file
+  '/siks/proof/{address}':
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  ' sikroot':
+                    type: string
+                  ' siksiblings':
+                    items:
+                      type: string
+                    type: array
+                  sikproof:
+                    type: string
+                type: object
+          description: OK
+      tags:
+        - SIK
+      description: >-
+        Returns the list of currently valid roots of the merkle tree where the vochain account SIK's are stored.
+      summary: List of valid SIK roots
+  /siks/roots:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  sikroots:
+                    items:
+                      type: string
+                    type: array
+                type: object
+          description: OK
+      tags:
+        - SIK
+      description: >-
+        Returns the list of currently valid roots of the merkle tree where the vochain account SIK's are stored.
+      summary: List of valid SIK roots
+  '/siks/{address}':
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  sik:
+                    type: string
+                type: object
+          description: OK
+      tags:
+        - SIK
+      description: >-
+        Returns if the address provided, associated to an a registered account or not, has a valid SIK already registered or not.
+      summary: Returns if the address provided has a valid SIK
+  /votes:
+    post:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  ' voteID':
+                    type: string
+                  txHash:
+                    type: string
+                type: object
+          description: OK
+      tags:
+        - Votes
+      description: >-
+        Submit a vote using a protobuf signed transaction. The corresponding result are the vote id and transaction hash where the vote is registered.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                txPayload:
+                  type: string
+              type: object
+        description: Requires a protobuf signed transaction
+        required: true
+      summary: Submit a vote
+  '/votes/verify/{electionID}/{voteID}':
+    get:
+      parameters:
+        - description: Election id
+          in: path
+          name: electionID
+          required: true
+          schema:
+            type: string
+        - description: Nullifier of the vote
+          in: path
+          name: voteID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: (empty body)
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/apirest.APIerror'
+          description: Not Found
+      tags:
+        - Votes
+      description: >-
+        Check if vote is registered on the blockchain on specific election. Just return Ok status code
+      summary: Verify vote
+  '/votes/{voteID}':
+    get:
+      parameters:
+        - description: Nullifier of the vote
+          in: path
+          name: voteID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Vote'
+          description: OK
+      tags:
+        - Votes
+      description: >-
+        Get the content of an existing Vote. If is an encrypted election it return the `encryptionKeys` indexes and the package will be codified.
+
+
+
+        The Vote is identified by its `voteId`, also called `nullifier`. The `nullifier` is deterministic and its hash could be computed as following (using `Keccak256`):
+
+
+        - For signature based elections, is the hash of the `voterAddress` + `processId`
+
+        - For anonymous elections, the `privateKey` + `processId`
+
+
+
+        As well, on the response, the `voterId` won't be returned for anonymous elections, and the `encryptionKeyIndexes` only for finished encrypted elections.
+
+
+
+        Height and txIndex refer to the block height and the index of the transaction where vote is registered.
+
+
+
+        The `overwriteCount` refers to the number of vote overwrites already executed by the user. At election creation time, you can specify the `maxVoteOverwrites` parameter, which defines how many times a voter can submit a vote. Only last vote will be taken into election final results.
+      summary: Get vote
+  '/wallet/add/{privateKey}':
+    post:
+      parameters:
+        - description: Private key to add
+          in: path
+          name: privateKey
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  address:
+                    type: string
+                  token:
+                    type: string
+                type: object
+          description: OK
+      tags:
+        - Wallet
+      description: >-
+        Add a new account to the local store. It returns a token used to manage this account on the future.
+      summary: Add account
+  /wallet/bootstrap:
+    get:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Transaction'
+          description: OK
+      security:
+        - API Key: []
+      tags:
+        - Wallet
+      description: Set a new account. Needed the bearer token associated the account.
+      summary: Set wallet account
+  /wallet/election:
+    post:
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Transaction'
+          description: OK
+      security:
+        - API Key: []
+      tags:
+        - Wallet
+      description: >-
+        Creates an election. Requires the bearer token of the account you want to create the election.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/api.ElectionDescription'
+        description: Election description
+        required: true
+      summary: Create election for wallet
+  '/wallet/transfer/{dstAddress}/{amount}':
+    get:
+      parameters:
+        - description: Destination address
+          in: path
+          name: dstAddress
+          required: true
+          schema:
+            type: string
+        - description: Amount of tokens to transfer
+          in: path
+          name: amount
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/api.Transaction'
+          description: OK
+      security:
+        - API Key: []
+      tags:
+        - Wallet
+      description: >-
+        Transfer balance to another account. Needed the bearer token associated the account.
+      summary: Transfer tokens
+components:
+  schemas:
+    api.Account:
+      properties:
+        address:
+          type: string
+        balance:
+          type: integer
+        electionIndex:
+          type: integer
+        infoURL:
+          type: string
+        metadata:
+          $ref: '#/components/schemas/api.AccountMetadata'
+        nonce:
+          type: integer
+        sik:
+          type: string
+      type: object
+    api.AccountMedia:
+      properties:
+        avatar:
+          type: string
+        header:
+          type: string
+        logo:
+          type: string
+      type: object
+    api.AccountMetadata:
+      properties:
+        actions: {}
+        description:
+          $ref: '#/components/schemas/api.LanguageString'
+        languages:
+          items:
+            type: string
+          type: array
+        media:
+          $ref: '#/components/schemas/api.AccountMedia'
+        meta: {}
+        name:
+          $ref: '#/components/schemas/api.LanguageString'
+        newsFeed:
+          $ref: '#/components/schemas/api.LanguageString'
+        version:
+          type: string
+      type: object
+    api.AccountSet:
+      properties:
+        metadataURL:
+          type: string
+        txHash:
+          type: string
+      type: object
+    api.Block:
+      properties:
+        data:
+          $ref: '#/components/schemas/types.Data'
+        evidence:
+          $ref: '#/components/schemas/types.EvidenceData'
+        hash:
+          type: string
+        header:
+          $ref: '#/components/schemas/github_com_cometbft_cometbft_types.Header'
+        last_commit:
+          $ref: '#/components/schemas/types.Commit'
+      type: object
+    api.CensusParticipant:
+      properties:
+        key:
+          type: string
+        weight:
+          $ref: '#/components/schemas/types.BigInt'
+      type: object
+    api.CensusParticipants:
+      properties:
+        participants:
+          items:
+            $ref: '#/components/schemas/api.CensusParticipant'
+          type: array
+      type: object
+    api.CensusTypeDescription:
+      properties:
+        publicKey:
+          type: string
+        rootHash:
+          type: string
+        size:
+          type: integer
+        type:
+          type: string
+        url:
+          type: string
+      type: object
+    api.ChainInfo:
+      properties:
+        blockTime:
+          example:
+            - 12000
+            - 11580
+            - 11000
+            - 11100
+            - 11100
+          items:
+            type: integer
+          type: array
+        blockTimestamp:
+          example: '2022-11-17T18:00:57.379551614Z'
+          format: date-time
+          type: string
+        chainId:
+          example: azeno
+          type: string
+        circuitVersion:
+          example: v1.0.0
+          type: string
+        electionCount:
+          example: 120
+          type: integer
+        genesisTime:
+          example: '2022-11-17T18:00:57.379551614Z'
+          format: date-time
+          type: string
+        height:
+          example: 5467
+          type: integer
+        maxCensusSize:
+          example: 50000
+          type: integer
+        networkCapacity:
+          example: 2000
+          type: integer
+        organizationCount:
+          example: 20
+          type: integer
+        syncing:
+          example: true
+          type: boolean
+        transactionCount:
+          example: 554
+          type: integer
+        validatorCount:
+          example: 5
+          type: integer
+        voteCount:
+          example: 432
+          type: integer
+      type: object
+    api.ChoiceMetadata:
+      properties:
+        title:
+          $ref: '#/components/schemas/api.LanguageString'
+        value:
+          type: integer
+      type: object
+    api.Election:
+      properties:
+        census:
+          $ref: '#/components/schemas/api.ElectionCensus'
+        chainId:
+          type: string
+        creationTime:
+          type: string
+        electionId:
+          type: string
+        electionMode:
+          $ref: '#/components/schemas/api.ElectionMode'
+        endDate:
+          type: string
+        finalResults:
+          type: boolean
+        fromArchive:
+          type: boolean
+        manuallyEnded:
+          type: boolean
+        metadata:
+          $ref: '#/components/schemas/api.ElectionMetadata'
+        metadataURL:
+          type: string
+        organizationId:
+          type: string
+        result:
+          items:
+            items:
+              $ref: '#/components/schemas/types.BigInt'
+            type: array
+          type: array
+        startDate:
+          type: string
+        status:
+          type: string
+        tallyMode:
+          $ref: '#/components/schemas/api.TallyMode'
+        voteCount:
+          type: integer
+        voteMode:
+          $ref: '#/components/schemas/api.VoteMode'
+      type: object
+    api.ElectionCensus:
+      properties:
+        censusOrigin:
+          type: string
+        censusRoot:
+          type: string
+        censusURL:
+          type: string
+        maxCensusSize:
+          type: integer
+        postRegisterCensusRoot:
+          type: string
+      type: object
+    api.ElectionCreate:
+      properties:
+        electionID:
+          type: string
+        metadata:
+          items:
+            type: integer
+          type: array
+        metadataURL:
+          type: string
+        txHash:
+          type: string
+        txPayload:
+          items:
+            type: integer
+          type: array
+      type: object
+    api.ElectionDescription:
+      properties:
+        census:
+          $ref: '#/components/schemas/api.CensusTypeDescription'
+        description:
+          $ref: '#/components/schemas/api.LanguageString'
+        electionType:
+          $ref: '#/components/schemas/api.ElectionType'
+        endDate:
+          type: string
+        header:
+          type: string
+        questions:
+          items:
+            $ref: '#/components/schemas/api.Question'
+          type: array
+        startDate:
+          type: string
+        streamUri:
+          type: string
+        tempSIKs:
+          type: boolean
+        title:
+          $ref: '#/components/schemas/api.LanguageString'
+        voteType:
+          $ref: '#/components/schemas/api.VoteType'
+      type: object
+    api.ElectionFilter:
+      properties:
+        electionId:
+          type: string
+        organizationId:
+          type: string
+        status:
+          type: string
+        withResults:
+          type: boolean
+      type: object
+    api.ElectionKeys:
+      properties:
+        privateKeys:
+          type: string
+        publicKeys:
+          type: string
+      type: object
+    api.ElectionMetadata:
+      properties:
+        description:
+          $ref: '#/components/schemas/api.LanguageString'
+        media:
+          $ref: '#/components/schemas/api.ProcessMedia'
+        meta: {}
+        questions:
+          items:
+            $ref: '#/components/schemas/api.Question'
+          type: array
+        title:
+          $ref: '#/components/schemas/api.LanguageString'
+        type:
+          $ref: '#/components/schemas/api.ElectionProperties'
+        version:
+          type: string
+      type: object
+    api.ElectionMode:
+      properties:
+        autoStart:
+          type: boolean
+        dynamicCensus:
+          type: boolean
+        encryptedMetaData:
+          type: boolean
+        interruptible:
+          type: boolean
+        preRegister:
+          type: boolean
+      type: object
+    api.ElectionProperties:
+      properties:
+        name:
+          type: string
+        properties: {}
+      type: object
+    api.ElectionResults:
+      properties:
+        censusRoot:
+          description: CensusRoot is the root of the census tree
+          type: string
+        electionId:
+          description: ElectionID is the ID of the election
+          type: string
+        organizationId:
+          description: >-
+            OrganizationID is the ID of the organization that created the election
+          type: string
+        results:
+          description: Results is the list of votes
+          items:
+            items:
+              $ref: '#/components/schemas/types.BigInt'
+            type: array
+          type: array
+        sourceContractAddress:
+          description: >-
+            SourceContractAddress is the address of the smart contract containing the census
+          type: string
+      type: object
+    api.ElectionSummary:
+      properties:
+        chainId:
+          type: string
+        electionId:
+          type: string
+        endDate:
+          type: string
+        finalResults:
+          type: boolean
+        fromArchive:
+          type: boolean
+        manuallyEnded:
+          type: boolean
+        organizationId:
+          type: string
+        result:
+          items:
+            items:
+              $ref: '#/components/schemas/types.BigInt'
+            type: array
+          type: array
+        startDate:
+          type: string
+        status:
+          type: string
+        voteCount:
+          type: integer
+      type: object
+    api.ElectionType:
+      properties:
+        anonymous:
+          type: boolean
+        autostart:
+          type: boolean
+        dynamicCensus:
+          type: boolean
+        interruptible:
+          type: boolean
+        secretUntilTheEnd:
+          type: boolean
+      type: object
+    api.File:
+      properties:
+        cid:
+          type: string
+      type: object
+    api.GenericTransactionWithInfo:
+      properties:
+        signature:
+          type: string
+        tx:
+          oneOf:
+            - $ref: "#/components/schemas/models.Tx_Vote"
+            - $ref: "#/components/schemas/models.Tx_Admin"
+            - $ref: "#/components/schemas/models.Tx_SetProcess"
+            - $ref: "#/components/schemas/models.Tx_RegisterKey"
+            - $ref: "#/components/schemas/models.Tx_SendTokens"
+            - $ref: "#/components/schemas/models.Tx_SetTransactionCosts"
+            - $ref: "#/components/schemas/models.Tx_SetAccount"
+            - $ref: "#/components/schemas/models.Tx_CollectFaucet"
+            - $ref: "#/components/schemas/models.Tx_SetKeykeeper"
+        txInfo:
+          $ref: '#/components/schemas/indexertypes.Transaction'
+      type: object
+    api.LanguageString:
+      additionalProperties:
+        type: string
+      type: object
+    api.NextElectionID:
+      properties:
+        censusOrigin:
+          type: integer
+        envelopeType:
+          properties:
+            anonymous:
+              type: boolean
+            costFromWeight:
+              type: boolean
+            encryptedVotes:
+              type: boolean
+            serial:
+              type: boolean
+            uniqueValues:
+              type: boolean
+          type: object
+        organizationId:
+          type: string
+      type: object
+    api.OrganizationList:
+      properties:
+        electionCount:
+          example: 1
+          type: integer
+        organizationID:
+          example: 3.1407138843303053e+47
+          type: string
+      type: object
+    api.ProcessMedia:
+      properties:
+        header:
+          type: string
+        streamUri:
+          type: string
+      type: object
+    api.Question:
+      properties:
+        choices:
+          items:
+            $ref: '#/components/schemas/api.ChoiceMetadata'
+          type: array
+        description:
+          $ref: '#/components/schemas/api.LanguageString'
+        title:
+          $ref: '#/components/schemas/api.LanguageString'
+      type: object
+    api.TallyMode:
+      properties:
+        costExponent:
+          type: integer
+        maxCount:
+          type: integer
+        maxTotalCost:
+          type: integer
+        maxValue:
+          type: integer
+        maxVoteOverwrites:
+          type: integer
+      type: object
+    api.Transaction:
+      properties:
+        code:
+          type: integer
+          x-omitempty: true
+        hash:
+          type: string
+          x-omitempty: true
+        response:
+          format: base64
+          type: string
+          x-omitempty: true
+      type: object
+    api.TransactionMetadata:
+      properties:
+        transactionHash:
+          type: string
+        transactionIndex:
+          type: integer
+        transactionNumber:
+          type: integer
+        transactionType:
+          type: string
+      type: object
+    api.Validator:
+      properties:
+        address:
+          type: string
+        joinHeight:
+          type: integer
+        name:
+          type: string
+        power:
+          type: integer
+        proposals:
+          type: integer
+        pubKey:
+          type: string
+        score:
+          type: integer
+        validatorAddress:
+          type: string
+        votes:
+          type: integer
+      type: object
+    api.ValidatorList:
+      properties:
+        validators:
+          items:
+            $ref: '#/components/schemas/api.Validator'
+          type: array
+      type: object
+    api.Vote:
+      properties:
+        blockHeight:
+          type: integer
+          x-omitempty: true
+        date:
+          description: Date when the vote was emitted
+          type: string
+          x-omitempty: true
+        electionID:
+          type: string
+          x-omitempty: true
+        encryptionKeys:
+          description: Sent only for encrypted elections (no results until the end)
+          items:
+            type: integer
+          type: array
+          x-omitempty: true
+        number:
+          type: integer
+          x-omitempty: true
+        overwriteCount:
+          type: integer
+          x-omitempty: true
+        package:
+          description: For encrypted elections this will be codified
+          items:
+            type: integer
+          type: array
+          x-omitempty: true
+        transactionIndex:
+          type: integer
+          x-omitempty: true
+        txHash:
+          type: string
+          x-omitempty: true
+        voteID:
+          type: string
+          x-omitempty: true
+        voterID:
+          type: string
+          x-omitempty: true
+        weight:
+          type: string
+          x-omitempty: true
+      type: object
+    api.VoteMode:
+      properties:
+        anonymous:
+          type: boolean
+        costFromWeight:
+          type: boolean
+        encryptedVotes:
+          type: boolean
+        serial:
+          type: boolean
+        uniqueValues:
+          type: boolean
+      type: object
+    api.VoteType:
+      properties:
+        costExponent:
+          type: integer
+        costFromWeight:
+          type: boolean
+        maxCount:
+          type: integer
+        maxValue:
+          type: integer
+        maxVoteOverwrites:
+          type: integer
+        uniqueChoices:
+          type: boolean
+      type: object
+    api.chainTxListPaginated.response:
+      properties:
+        transactions:
+          items:
+            $ref: '#/components/schemas/indexertypes.Transaction'
+          type: array
+      type: object
+    api.organizationListHandler.response:
+      properties:
+        organizations:
+          items:
+            $ref: '#/components/schemas/api.OrganizationList'
+          type: array
+      type: object
+    apirest.APIerror:
+      properties:
+        code:
+          type: integer
+        err: {}
+        httpstatus:
+          type: integer
+      type: object
+    censusdb.CensusDump:
+      properties:
+        censusID:
+          type: string
+        data:
+          items:
+            type: integer
+          type: array
+        maxLevels:
+          description: >-
+            MaxLevels is required to load the census with the original size because
+
+            it could be different according to the election (and census) type.
+          type: integer
+        rootHash:
+          type: string
+        size:
+          type: integer
+        token:
+          type: string
+        type:
+          $ref: '#/components/schemas/models.Census_Type'
+        uri:
+          type: string
+      type: object
+    circuit.Config:
+      properties:
+        circuitPath:
+          description: |-
+            CircuitPath defines the path from where the files are downloaded.
+            Locally, they will be cached inside circuit.BaseDir path,
+            under that directory it will follow the CircuitPath dir structure
+          type: string
+        levels:
+          description: >-
+            Levels refers the number of levels that the merkle tree associated to the
+
+            current circuit configuration artifacts has
+          type: integer
+        publicSignals:
+          additionalProperties:
+            type: integer
+          description: PublicSignals indicates the index of each public signal
+          type: object
+        uri:
+          description: URI defines the URI from where to download the files
+          type: string
+        vKeyFilename:
+          description: |-
+            FilenameVerificationKey defines the name of the file of the circom
+            VerificationKey
+          type: string
+        vKeyHash:
+          description: >-
+            VerificationKeyHash contains the expected hash for the file filenameVK
+          type: string
+        version:
+          description: Version of the published circuit
+          type: string
+        wasmFilename:
+          description: >-
+            FilenameWasm defines the name of the file of the circuit wasm compiled
+
+            version
+          type: string
+        wasmHash:
+          description: WasmHash contains the expected hash for the file filenameWasm
+          type: string
+        zKeyFilename:
+          description: >-
+            FilenameProvingKey defines the name of the file of the circom ProvingKey
+          type: string
+        zKeyHash:
+          description: ProvingKeyHash contains the expected hash for the file filenameZKey
+          type: string
+      type: object
+    electionprice.Calculator:
+      properties:
+        basePrice:
+          description: base price for an election
+          example: 5
+          type: integer
+        capacity:
+          description: capacity of the blockchain
+          example: 2000
+          type: integer
+        factors:
+          allOf:
+            - $ref: '#/components/schemas/electionprice.Factors'
+          description: factors affecting the price
+      type: object
+    electionprice.ElectionParameters:
+      properties:
+        anonymousVotes:
+          type: boolean
+        electionBlocks:
+          type: integer
+        electionDuration:
+          type: integer
+        encryptedVotes:
+          type: boolean
+        maxCensusSize:
+          type: integer
+        maxVoteOverwrite:
+          type: integer
+      type: object
+    electionprice.Factors:
+      properties:
+        k1:
+          description: sizePriceFactor
+          example: 0.002
+          type: number
+        k2:
+          description: durationPriceFactor
+          example: 0.0005
+          type: number
+        k3:
+          description: encryptedPriceFactor
+          example: 0.005
+          type: number
+        k4:
+          description: anonymousPriceFactor
+          example: 10
+          type: number
+        k5:
+          description: overwritePriceFactor
+          example: 3
+          type: number
+        k6:
+          description: Size scaling factor for maxCensusSize
+          example: 0.0008
+          type: number
+        k7:
+          description: Threshold for maxCensusSize scaling
+          example: 200
+          type: integer
+      type: object
+    genesis.TransactionCosts:
+      properties:
+        Tx_AddDelegateForAccount:
+          type: integer
+        Tx_CollectFaucet:
+          type: integer
+        Tx_CreateAccount:
+          type: integer
+        Tx_DelDelegateForAccount:
+          type: integer
+        Tx_DelSik:
+          type: integer
+        Tx_NewProcess:
+          type: integer
+        Tx_RegisterKey:
+          type: integer
+        Tx_SendTokens:
+          type: integer
+        Tx_SetAccountInfoURI:
+          type: integer
+        Tx_SetAccountValidator:
+          type: integer
+        Tx_SetProcessCensus:
+          type: integer
+        Tx_SetProcessQuestionIndex:
+          type: integer
+        Tx_SetProcessStatus:
+          type: integer
+        Tx_SetSik:
+          type: integer
+      type: object
+    github_com_cometbft_cometbft_types.Header:
+      properties:
+        app_hash:
+          description: state after txs from the previous block
+          items:
+            type: integer
+          type: array
+        chain_id:
+          type: string
+        consensus_hash:
+          description: consensus params for current block
+          items:
+            type: integer
+          type: array
+        data_hash:
+          description: transactions
+          items:
+            type: integer
+          type: array
+        evidence_hash:
+          description: consensus info
+          items:
+            type: integer
+          type: array
+        height:
+          type: integer
+        last_block_id:
+          allOf:
+            - $ref: '#/components/schemas/types.BlockID'
+          description: prev block info
+        last_commit_hash:
+          description: hashes of block data
+          items:
+            type: integer
+          type: array
+        last_results_hash:
+          description: >-
+            root hash of all results from the txs from the previous block
+
+            see `DeterministicExecTxResult` to understand which parts of a tx is hashed into here
+          items:
+            type: integer
+          type: array
+        next_validators_hash:
+          description: validators for the next block
+          items:
+            type: integer
+          type: array
+        proposer_address:
+          description: original proposer of the block
+          items:
+            type: integer
+          type: array
+        time:
+          type: string
+        validators_hash:
+          description: hashes from the app output from the prev block
+          items:
+            type: integer
+          type: array
+        version:
+          allOf:
+            - $ref: '#/components/schemas/v1.Consensus'
+          description: basic block info
+      type: object
+    indexertypes.Account:
+      properties:
+        address:
+          items:
+            type: integer
+          type: array
+        balance:
+          type: integer
+        nonce:
+          type: integer
+      type: object
+    indexertypes.TokenFeeMeta:
+      properties:
+        cost:
+          type: integer
+        from:
+          items:
+            type: integer
+          type: array
+        height:
+          type: integer
+        reference:
+          type: string
+        timestamp:
+          type: string
+        txType:
+          type: string
+      type: object
+    indexertypes.TokenTransferMeta:
+      properties:
+        amount:
+          type: integer
+        from:
+          items:
+            type: integer
+          type: array
+        height:
+          type: integer
+        timestamp:
+          type: string
+        to:
+          items:
+            type: integer
+          type: array
+        txHash:
+          items:
+            type: integer
+          type: array
+      type: object
+    indexertypes.TokenTransfersAccount:
+      properties:
+        received:
+          items:
+            $ref: '#/components/schemas/indexertypes.TokenTransferMeta'
+          type: array
+        sent:
+          items:
+            $ref: '#/components/schemas/indexertypes.TokenTransferMeta'
+          type: array
+      type: object
+    indexertypes.Transaction:
+      properties:
+        blockHeight:
+          example: 64924
+          format: int32
+          type: integer
+        transactionHash:
+          example: 75e8f822f5dd13973ac5158d600f0a2a5fea4bfefce9712ab5195bf17884cfad
+          type: string
+        transactionIndex:
+          example: 0
+          format: int32
+          type: integer
+        transactionNumber:
+          example: 944
+          format: int64
+          type: integer
+        transactionType:
+          enum:
+            - vote
+            - newProcess
+            - admin
+            - setProcess
+            - registerKey
+            - mintTokens
+            - sendTokens
+            - setTransactionCosts
+            - setAccount
+            - collectFaucet
+            - setKeykeeper
+          example: Vote
+          type: string
+      type: object
+    models.AdminTx:
+      properties:
+        address:
+          items:
+            type: integer
+          type: array
+        encryptionPrivateKey:
+          items:
+            type: integer
+          type: array
+        encryptionPublicKey:
+          items:
+            type: integer
+          type: array
+        keyIndex:
+          type: integer
+        nonce:
+          type: integer
+        power:
+          type: integer
+        processId:
+          items:
+            type: integer
+          type: array
+        publicKey:
+          items:
+            type: integer
+          type: array
+        txtype:
+          $ref: '#/components/schemas/models.TxType'
+      type: object
+    models.CensusOrigin:
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 11
+        - 12
+        - 13
+        - 14
+        - 15
+        - 16
+      type: integer
+      x-enum-varnames:
+        - CensusOrigin_CENSUS_UNKNOWN
+        - CensusOrigin_OFF_CHAIN_TREE
+        - CensusOrigin_OFF_CHAIN_TREE_WEIGHTED
+        - CensusOrigin_OFF_CHAIN_CA
+        - CensusOrigin_ERC20
+        - CensusOrigin_ERC721
+        - CensusOrigin_ERC1155
+        - CensusOrigin_ERC777
+        - CensusOrigin_MINI_ME
+        - CensusOrigin_FARCASTER_FRAME
+    models.Census_Type:
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+      type: integer
+      x-enum-varnames:
+        - Census_UNKNOWN
+        - Census_ARBO_BLAKE2B
+        - Census_ARBO_POSEIDON
+        - Census_ETHEREUMSTORAGE
+        - Census_ETHEREUMACCOUNT
+        - Census_CA
+        - Census_FARCASTER_FRAME
+    models.CollectFaucetTx:
+      properties:
+        faucetPackage:
+          $ref: '#/components/schemas/models.FaucetPackage'
+        nonce:
+          type: integer
+        txType:
+          $ref: '#/components/schemas/models.TxType'
+      type: object
+    models.EnvelopeType:
+      properties:
+        anonymous:
+          type: boolean
+        costFromWeight:
+          type: boolean
+        encryptedVotes:
+          type: boolean
+        serial:
+          type: boolean
+        uniqueValues:
+          type: boolean
+      type: object
+    models.FaucetPackage:
+      properties:
+        payload:
+          items:
+            type: integer
+          type: array
+        signature:
+          items:
+            type: integer
+          type: array
+      type: object
+    models.NewProcessTx:
+      properties:
+        nonce:
+          type: integer
+        process:
+          $ref: '#/components/schemas/models.Process'
+        txtype:
+          $ref: '#/components/schemas/models.TxType'
+      type: object
+    models.Process:
+      properties:
+        blockCount:
+          description: >-
+            BlockCount represents the amount of tendermint blocks that the process will last
+          type: integer
+        censusOrigin:
+          $ref: '#/components/schemas/models.CensusOrigin'
+        censusRoot:
+          description: CensusRoot merkle root of all the census in the process
+          items:
+            type: integer
+          type: array
+        censusURI:
+          description: CensusURI where to find the census
+          type: string
+        duration:
+          description: The duration of the process in seconds
+          type: integer
+        encryptionPrivateKeys:
+          description: EncryptionPrivateKeys are the keys required to decrypt the votes
+          items:
+            type: string
+          type: array
+        encryptionPublicKeys:
+          description: EncryptionPublicKeys are the keys required to encrypt the votes
+          items:
+            type: string
+          type: array
+        entityId:
+          description: EntityId identifies unequivocally an entity
+          items:
+            type: integer
+          type: array
+        envelopeType:
+          $ref: '#/components/schemas/models.EnvelopeType'
+        ethIndexSlot:
+          type: integer
+        keyIndex:
+          type: integer
+        maxCensusSize:
+          description: >-
+            MaxCensusSize is set by the Process creator, indicates the maximum number of votes that will be allowed.
+          type: integer
+        metadata:
+          description: >-
+            Metadata is the content hashed URI of the JSON meta data (See Data Origins)
+          type: string
+        mode:
+          $ref: '#/components/schemas/models.ProcessMode'
+        namespace:
+          type: integer
+        nullifiersRoot:
+          description: |-
+            NullifiersRoot is the root of the pre-census nullifiers merkle tree.
+            Used when Mode.PreRegister = true.
+          items:
+            type: integer
+          type: array
+        owner:
+          description: >-
+            Owner is the creator of a process (if any) otherwise is assumed the creator is the entityId
+          items:
+            type: integer
+          type: array
+        paramsSignature:
+          items:
+            type: integer
+          type: array
+        processId:
+          items:
+            type: integer
+          type: array
+        questionCount:
+          type: integer
+        questionIndex:
+          type: integer
+        results:
+          $ref: '#/components/schemas/models.ProcessResult'
+        rollingCensusRoot:
+          description: |-
+            RollingCensusRoot merkle root of the rolling census.  Set by the
+            vocdoni-node when Mode.Process = true
+          items:
+            type: integer
+          type: array
+        rollingCensusSize:
+          description: |-
+            RollingCensusSize is set by the vocdoni-node when Mode.PreRegister =
+            true and the StartBlock has been reached.
+          type: integer
+        sourceBlockHeight:
+          description: >-
+            SourceBlockHeight is the block height of the origin blockchain (if any)
+          type: integer
+        sourceNetworkContractAddr:
+          description: >-
+            sourceNetworkContractAddr is used for EVM token based voting and it is
+
+            the contract address of the token that is going to define the census
+          items:
+            type: integer
+          type: array
+        sourceNetworkId:
+          allOf:
+            - $ref: '#/components/schemas/models.SourceNetworkId'
+          description: >-
+            SourceNetworkId is the identifier of the network origin (where the process have been created)
+        startBlock:
+          description: >-
+            StartBlock represents the tendermint block where the process goes from scheduled to active
+          type: integer
+        startTime:
+          description: The unix timestamp of the start of the process
+          type: integer
+        status:
+          $ref: '#/components/schemas/models.ProcessStatus'
+        tempSIKs:
+          description: >-
+            tempSIKs flag decides if when the process has finished, the SIKs related
+
+            to it will be removed or not
+          type: boolean
+        tokenDecimals:
+          description: >-
+            tokenDecimals represents the number of decimals of the token (i.e ERC20) used for voting.
+
+            It is normally used for processes with on-chain census
+          type: integer
+        voteOptions:
+          $ref: '#/components/schemas/models.ProcessVoteOptions'
+      type: object
+    models.ProcessMode:
+      properties:
+        autoStart:
+          type: boolean
+        dynamicCensus:
+          type: boolean
+        encryptedMetaData:
+          type: boolean
+        interruptible:
+          type: boolean
+        preRegister:
+          type: boolean
+      type: object
+    models.ProcessResult:
+      properties:
+        votes:
+          items:
+            $ref: '#/components/schemas/models.QuestionResult'
+          type: array
+      type: object
+    models.ProcessStatus:
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+      type: integer
+      x-enum-varnames:
+        - ProcessStatus_PROCESS_UNKNOWN
+        - ProcessStatus_READY
+        - ProcessStatus_ENDED
+        - ProcessStatus_CANCELED
+        - ProcessStatus_PAUSED
+        - ProcessStatus_RESULTS
+    models.ProcessVoteOptions:
+      properties:
+        costExponent:
+          type: integer
+        maxCount:
+          type: integer
+        maxTotalCost:
+          type: integer
+        maxValue:
+          type: integer
+        maxVoteOverwrites:
+          type: integer
+      type: object
+    models.Proof:
+      properties:
+        payload:
+          description: "Types that are assignable to Payload:\n\n\t*Proof_EthereumStorage\n\t*Proof_EthereumAccount\n\t*Proof_Ca\n\t*Proof_Arbo\n\t*Proof_ZkSnark\n\t*Proof_MinimeStorage\n\t*Proof_FarcasterFrame"
+      type: object
+    models.QuestionResult:
+      properties:
+        question:
+          items:
+            items:
+              type: integer
+            type: array
+          type: array
+      type: object
+    models.RegisterKeyTx:
+      properties:
+        newKey:
+          description: New key to register
+          items:
+            type: integer
+          type: array
+        nonce:
+          description: >-
+            Unique number per vote attempt, so that replay attacks can't reuse this payload
+          type: integer
+        processId:
+          description: The process for which the vote is casted
+          items:
+            type: integer
+          type: array
+        proof:
+          allOf:
+            - $ref: '#/components/schemas/models.Proof'
+          description: Franchise proof
+        weight:
+          description: Weight to delegate to newKey
+          type: string
+      type: object
+    models.SendTokensTx:
+      properties:
+        from:
+          items:
+            type: integer
+          type: array
+        nonce:
+          type: integer
+        to:
+          items:
+            type: integer
+          type: array
+        txtype:
+          $ref: '#/components/schemas/models.TxType'
+        value:
+          type: integer
+      type: object
+    models.SetAccountTx:
+      properties:
+        SIK:
+          items:
+            type: integer
+          type: array
+        account:
+          items:
+            type: integer
+          type: array
+        delegates:
+          items:
+            items:
+              type: integer
+            type: array
+          type: array
+        faucetPackage:
+          $ref: '#/components/schemas/models.FaucetPackage'
+        infoURI:
+          type: string
+        name:
+          type: string
+        nonce:
+          type: integer
+        publicKey:
+          items:
+            type: integer
+          type: array
+        txtype:
+          $ref: '#/components/schemas/models.TxType'
+      type: object
+    models.SetKeykeeperTx:
+      properties:
+        keykeeper:
+          items:
+            type: integer
+          type: array
+        nonce:
+          type: integer
+        txtype:
+          $ref: '#/components/schemas/models.TxType'
+      type: object
+    models.SetProcessTx:
+      properties:
+        censusRoot:
+          items:
+            type: integer
+          type: array
+        censusURI:
+          type: string
+        duration:
+          type: integer
+        nonce:
+          type: integer
+        processId:
+          items:
+            type: integer
+          type: array
+        proof:
+          $ref: '#/components/schemas/models.Proof'
+        questionIndex:
+          type: integer
+        results:
+          $ref: '#/components/schemas/models.ProcessResult'
+        status:
+          $ref: '#/components/schemas/models.ProcessStatus'
+        tempSIKs:
+          description: >-
+            tempSIKs flag decides if when the process has finished, the SIKs related
+
+            to it will be removed or not
+          type: boolean
+        txtype:
+          $ref: '#/components/schemas/models.TxType'
+      type: object
+    models.SetTransactionCostsTx:
+      properties:
+        nonce:
+          type: integer
+        txtype:
+          $ref: '#/components/schemas/models.TxType'
+        value:
+          type: integer
+      type: object
+    models.SignedTx:
+      properties:
+        signature:
+          description: >-
+            The signature for the tx bytes.
+
+            signature is only required in those transactions that actually need signature.
+
+            I.e zk-Snarks based transactions won't needed, however the transaction should use
+
+            this message type in order to preserve consistency on the Vochain
+          items:
+            type: integer
+          type: array
+        tx:
+          description: 'The bytes produced by Marshaling a Tx{} message'
+          items:
+            type: integer
+          type: array
+      type: object
+    models.SourceNetworkId:
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+        - 12
+        - 13
+        - 14
+      type: integer
+      x-enum-varnames:
+        - SourceNetworkId_UNKNOWN
+        - SourceNetworkId_ETH_MAINNET
+        - SourceNetworkId_ETH_RINKEBY
+        - SourceNetworkId_ETH_GOERLI
+        - SourceNetworkId_POA_XDAI
+        - SourceNetworkId_POA_SOKOL
+        - SourceNetworkId_POLYGON
+        - SourceNetworkId_BSC
+        - SourceNetworkId_ETH_MAINNET_SIGNALING
+        - SourceNetworkId_ETH_RINKEBY_SIGNALING
+        - SourceNetworkId_AVAX_FUJI
+        - SourceNetworkId_AVAX
+        - SourceNetworkId_POLYGON_MUMBAI
+        - SourceNetworkId_OPTIMISM
+        - SourceNetworkId_ARBITRUM
+    models.TxType:
+      enum:
+        - 0
+        - 1
+        - 2
+        - 3
+        - 4
+        - 5
+        - 6
+        - 7
+        - 8
+        - 9
+        - 10
+        - 11
+        - 12
+        - 13
+        - 15
+        - 17
+        - 18
+        - 19
+        - 20
+        - 21
+        - 22
+        - 23
+        - 24
+        - 25
+        - 26
+        - 27
+        - 28
+      type: integer
+      x-enum-varnames:
+        - TxType_TX_UNKNOWN
+        - TxType_NEW_PROCESS
+        - TxType_SET_PROCESS_STATUS
+        - TxType_SET_PROCESS_CENSUS
+        - TxType_SET_PROCESS_QUESTION_INDEX
+        - TxType_ADD_PROCESS_KEYS
+        - TxType_REVEAL_PROCESS_KEYS
+        - TxType_ADD_ORACLE
+        - TxType_REMOVE_ORACLE
+        - TxType_ADD_VALIDATOR
+        - TxType_REMOVE_VALIDATOR
+        - TxType_VOTE
+        - TxType_SET_PROCESS_RESULTS
+        - TxType_REGISTER_VOTER_KEY
+        - TxType_SEND_TOKENS
+        - TxType_SET_ACCOUNT_INFO_URI
+        - TxType_ADD_DELEGATE_FOR_ACCOUNT
+        - TxType_DEL_DELEGATE_FOR_ACCOUNT
+        - TxType_COLLECT_FAUCET
+        - TxType_ADD_KEYKEEPER
+        - TxType_DELETE_KEYKEEPER
+        - TxType_CREATE_ACCOUNT
+        - TxType_SET_ACCOUNT_SIK
+        - TxType_DEL_ACCOUNT_SIK
+        - TxType_REGISTER_SIK
+        - TxType_SET_ACCOUNT_VALIDATOR
+        - TxType_SET_PROCESS_DURATION
+    models.Tx_Admin:
+      properties:
+        admin:
+          $ref: '#/components/schemas/models.AdminTx'
+      type: object
+    models.Tx_CollectFaucet:
+      properties:
+        collectFaucet:
+          $ref: '#/components/schemas/models.CollectFaucetTx'
+      type: object
+    models.Tx_NewProcess:
+      properties:
+        newProcess:
+          $ref: '#/components/schemas/models.NewProcessTx'
+      type: object
+    models.Tx_RegisterKey:
+      properties:
+        registerKey:
+          $ref: '#/components/schemas/models.RegisterKeyTx'
+      type: object
+    models.Tx_SendTokens:
+      properties:
+        sendTokens:
+          $ref: '#/components/schemas/models.SendTokensTx'
+      type: object
+    models.Tx_SetAccount:
+      properties:
+        setAccount:
+          $ref: '#/components/schemas/models.SetAccountTx'
+      type: object
+    models.Tx_SetKeykeeper:
+      properties:
+        setKeykeeper:
+          $ref: '#/components/schemas/models.SetKeykeeperTx'
+      type: object
+    models.Tx_SetProcess:
+      properties:
+        setProcess:
+          $ref: '#/components/schemas/models.SetProcessTx'
+      type: object
+    models.Tx_SetTransactionCosts:
+      properties:
+        setTransactionCosts:
+          $ref: '#/components/schemas/models.SetTransactionCostsTx'
+      type: object
+    models.Tx_Vote:
+      properties:
+        vote:
+          $ref: '#/components/schemas/models.VoteEnvelope'
+      type: object
+    models.VoteEnvelope:
+      properties:
+        encryptionKeyIndexes:
+          description: >-
+            On encrypted votes, contains the (sorted) indexes of the keys used to encrypt
+          items:
+            type: integer
+          type: array
+        nonce:
+          description: >-
+            Unique number per vote attempt, so that replay attacks can't reuse this payload
+          items:
+            type: integer
+          type: array
+        nullifier:
+          description: Hash of the private key + processId
+          items:
+            type: integer
+          type: array
+        processId:
+          description: The process for which the vote is casted
+          items:
+            type: integer
+          type: array
+        proof:
+          allOf:
+            - $ref: '#/components/schemas/models.Proof'
+          description: Franchise proof
+        votePackage:
+          description: >-
+            JSON string of the Vote Package (potentially encrypted), encoded as bytes.
+          items:
+            type: integer
+          type: array
+      type: object
+    types.BigInt:
+      type: object
+    types.BlockID:
+      properties:
+        hash:
+          items:
+            type: integer
+          type: array
+        parts:
+          $ref: '#/components/schemas/types.PartSetHeader'
+      type: object
+    types.BlockIDFlag:
+      enum:
+        - 1
+        - 2
+        - 3
+      type: integer
+      x-enum-varnames:
+        - BlockIDFlagAbsent
+        - BlockIDFlagCommit
+        - BlockIDFlagNil
+    types.Commit:
+      properties:
+        block_id:
+          $ref: '#/components/schemas/types.BlockID'
+        height:
+          description: >-
+            NOTE: The signatures are in order of address to preserve the bonded
+
+            ValidatorSet order.
+
+            Any peer with a block can gossip signatures by index with a peer without
+
+            recalculating the active ValidatorSet.
+          type: integer
+        round:
+          type: integer
+        signatures:
+          items:
+            $ref: '#/components/schemas/types.CommitSig'
+          type: array
+      type: object
+    types.CommitSig:
+      properties:
+        block_id_flag:
+          $ref: '#/components/schemas/types.BlockIDFlag'
+        signature:
+          items:
+            type: integer
+          type: array
+        timestamp:
+          type: string
+        validator_address:
+          items:
+            type: integer
+          type: array
+      type: object
+    types.Data:
+      properties:
+        txs:
+          description: >-
+            Txs that will be applied by state @ block.Height+1.
+
+            NOTE: not all txs here are valid.  We're just agreeing on the order first.
+
+            This means that block.AppHash does not include these txs.
+          items:
+            items:
+              type: integer
+            type: array
+          type: array
+      type: object
+    types.EvidenceData:
+      properties:
+        evidence:
+          items: {}
+          type: array
+      type: object
+    types.PartSetHeader:
+      properties:
+        hash:
+          items:
+            type: integer
+          type: array
+        total:
+          type: integer
+      type: object
+    v1.Consensus:
+      properties:
+        app:
+          type: integer
+        block:
+          type: integer
+      type: object
+  securitySchemes:
+    # BasicAuth:
+    #   scheme: basic
+    #   type: http
+    API Key:
+      name: API Key
+      type: apiKey
+      in: header
+    Bearer:
+      type: http
+      scheme: bearer
+tags:
+  - description: >-
+      Everything about internal Vochain information (transactions, organizations, blocks, stats...)
+    name: Chain
+  - description: >-
+      Related to account metadata (additional account information like balance, storage URI, process count...)
+    name: Accounts
+  - description: 'Create, manage and get information about elections'
+    name: Elections
+  - description: 'Manage census: create, add, get, verify...'
+    name: Censuses
+  - description: 'Submit, get, and verify votes'
+    name: Votes
+  - description: Operations for the wallets managed backend side
+    name: Wallet
+  - description: The Secret Identity Key (SIK) operations used on anonymous voting
+    name: SIK
