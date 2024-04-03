@@ -37,7 +37,6 @@ jobs:
       - name: Set myvars
         id: myvars
         run: |
-          openapi_spec_file_selected=${{ github.event.inputs.openapi_spec_file }}
           branchname=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )
           dateinsecs=$(date +%s)
           githashshort=$(git rev-parse --short HEAD)
@@ -55,6 +54,10 @@ jobs:
             echo "SHORT_ENV_OUT=TEST" >> $GITHUB_OUTPUT
           fi
           echo "BRANCH_NAME=$branchname" >> $GITHUB_OUTPUT
+          openapi_spec_file_selected=${{ github.event.inputs.openapi_spec_file }}
+          if [ "$openapi_spec_file_selected" == "" ]; then
+            openapi_spec_file_selected='none'
+          fi
           echo "OPENAPI_SPEC_FILE_SELECTED=$openapi_spec_file_selected" >> $GITHUB_OUTPUT
 
       - name: Setup NodeJS
@@ -92,7 +95,7 @@ jobs:
         with:
           files: |
             out/spectral_owasp.junit
-          check_name: 'OWASP report for ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}'
+          check_name: 'OWASP report - ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}'
           comment_mode: always
           job_summary: true
           compare_to_earlier_commit: true

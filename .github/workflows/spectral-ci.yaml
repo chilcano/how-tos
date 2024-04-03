@@ -12,14 +12,14 @@ on:
   push:
     branches: [main,api]
     paths:
-      - 'src/api_specs/**.yaml'
+      # - 'src/api_specs/**.yaml'
       - '.github/workflows/spectral-ci.yaml'
   pull_request:
     types:
       - opened
     branches: [main,api]
     paths:
-      - 'src/api_specs/**.yaml'
+      # - 'src/api_specs/**.yaml'
       - '.github/workflows/spectral-ci.yaml'
 
 concurrency:
