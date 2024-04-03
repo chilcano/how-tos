@@ -76,7 +76,7 @@ jobs:
           mkdir -p out/
 
       - name: Run Spectral (OpenAPI spec file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
-        if: (${{ success() }} || ${{ failure() }}) && ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }}
+        if: ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }} &&  (${{ success() }} || ${{ failure() }})
         run: |
           set -o pipefail
           npx spectral lint src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }} -r .spectral_owasp.yaml -f junit -o out/spectral_owasp.junit
