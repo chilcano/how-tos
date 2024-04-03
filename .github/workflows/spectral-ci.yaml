@@ -122,7 +122,7 @@ jobs:
           compare_to_earlier_commit: true
           report_individual_runs: true 
           report_suite_logs: any
-          ignore_runs: false
+          ignore_runs: true
           test_file_prefix: '-/home/runner/work'
 
   # spectral-gh-action:
