@@ -119,7 +119,7 @@ jobs:
         with:
           files: |
             _out/spectral_oas.junit
-          check_name: 'Report OpenAPI checks'
+          check_name: 'Report OpenAPI Spec checks'
           comment_mode: always
           job_summary: true
           compare_to_earlier_commit: true
