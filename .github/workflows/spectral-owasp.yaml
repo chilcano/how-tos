@@ -1,0 +1,104 @@
+name: spectral-owasp
+
+on:
+  workflow_dispatch:
+    inputs:
+      openapi_spec_file:
+        description: 'Select the OpenAPI definition file'
+        type: choice
+        required: false
+        default: 'vocdoni-api.yaml'
+        options: [vocdoni-api.yaml, vocdoni-api-fixed.yaml] 
+  push:
+    branches: [main,api]
+    paths:
+      - 'src/api_specs/**.yaml'
+  pull_request:
+    types:
+      - opened
+    branches: [main,api]
+    paths:
+      - 'src/api_specs/**.yaml'
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  spectral-owasp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set myvars
+        id: myvars
+        run: |
+          branchname=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )
+          dateinsecs=$(date +%s)
+          githashshort=$(git rev-parse --short HEAD)
+          echo "GIT_HASH_SHORT=$githashshort" >> $GITHUB_OUTPUT
+          echo "DATE_IN_SECS=$dateinsecs" >> $GITHUB_OUTPUT
+          if [ "$branchname" = "develop" ]; then
+            echo "CURRENT_ENVIRONMENT=development" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=DEV" >> $GITHUB_OUTPUT
+          elif [ "$branchname" = "main" ] || [ "$branchname" = "master" ]; then
+            echo "CURRENT_ENVIRONMENT=production" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=PROD" >> $GITHUB_OUTPUT
+          else
+            branchname='test'
+            echo "CURRENT_ENVIRONMENT=testing" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=TEST" >> $GITHUB_OUTPUT
+          fi
+          echo "BRANCH_NAME=$branchname" >> $GITHUB_OUTPUT
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Spectral and initial rulesets
+        run: |
+          npm install @stoplight/spectral-cli
+          npm install @stoplight/spectral-owasp-ruleset
+
+      - name: Setup OWASP APISec Spectral rulesets
+        run: |
+          echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > .spectral_owasp.yaml
+          mkdir -p _out/
+
+      - name: Run Spectral (OAS ruleset - junit format)
+        if: ${{ success() }} || ${{ failure() }}
+        run: |
+          set -o pipefail
+          npx spectral lint src/api_specs/openapi01.yaml -r .spectral_oas.yaml -f junit -o _out/spectral_oas.junit
+
+      - name: Run Spectral (OWASP ruleset - junit format)
+        if: ${{ success() }} || ${{ failure() }}
+        run: |
+          set -o pipefail
+          npx spectral lint src/api_specs/openapi01.yaml -r .spectral_owasp.yaml -f junit -o _out/spectral_owasp.junit
+          set +o pipefail
+
+      - name: Upload Spectral reports as Github Artifacts
+        if: ${{ success() }} || ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: spectral-reports-${{ steps.myvars.outputs.DATE_IN_SECS }}
+          path: _out/*.*
+
+      - name: Publish Spectral Results (OWASP)
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()    ## if false = bypass (dont exec)
+        with:
+          files: |
+            _out/spectral_owasp.junit
+          check_name: 'Report OWASP APISec Top10'
+          comment_mode: always
+          job_summary: true
+          compare_to_earlier_commit: true
+          report_individual_runs: true
+          report_suite_logs: any
+          ignore_runs: false
+          test_file_prefix: '-/home/runner/work'
