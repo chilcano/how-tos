@@ -14,3 +14,11 @@ target/
 .venv
 node_modules/
 src/**/*.log
+dist/
+google-serviceaccount.json
+yarn-error.log
+.api/
+package-lock.json
+package.json
+_out/
+.spectral_*.yaml
