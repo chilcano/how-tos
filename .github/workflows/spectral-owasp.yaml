@@ -73,7 +73,7 @@ jobs:
           mkdir -p out/
 
       - name: Run Spectral (OpenAPI spec file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
-        if: ${{ success() }} || ${{ failure() }}
+        if: ${{ success() }} || ${{ failure() }} || ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != null }}
         run: |
           set -o pipefail
           npx spectral lint src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }} -r .spectral_owasp.yaml -f junit -o out/spectral_owasp.junit
@@ -92,7 +92,7 @@ jobs:
         with:
           files: |
             out/spectral_owasp.junit
-          check_name: 'Report OWASP APISec (${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }})'
+          check_name: 'OWASP report for ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}'
           comment_mode: always
           job_summary: true
           compare_to_earlier_commit: true
