@@ -3433,9 +3433,9 @@ components:
       name: API Key
       type: apiKey
       in: header
-    # Bearer:
-    #   type: http
-    #   scheme: bearer
+    Bearer:
+      type: http
+      scheme: bearer
 tags:
   - description: >-
       Everything about internal Vochain information (transactions, organizations, blocks, stats...)
