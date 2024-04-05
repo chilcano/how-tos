@@ -83,10 +83,7 @@ jobs:
           -f junit -o.junit out/spectral_owasp.junit \
           -f json -o.json out/spectral_owasp.json \
           -f html -o.html out/spectral_owasp.html \
-          # -f sarif -o.sarif out/spectral_owasp.sarif \
-          # -f stylish -o.stylish "<stdout>" \
           -f github-actions -o.github-actions out/spectral_owasp.gha --verbose
-          # -f github-actions -o.github-actions "<stdout>" --verbose
           set +o pipefail
 
       - name: Upload Spectral reports as GH Artifact (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
@@ -123,6 +120,6 @@ jobs:
         run: |
           GHA_REPORT_FILE=${{ github.workspace }}/out/spectral_owasp.gha
           echo $GHA_REPORT_FILE
-          while read ROW; do
+          while read -r ROW; do
             echo "$ROW"
           done < "$GHA_REPORT_FILE"
