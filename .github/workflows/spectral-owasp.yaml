@@ -103,20 +103,20 @@ jobs:
           name: spectral-reports-${{ steps.myvars.outputs.DATE_IN_SECS }}
           path: out/*.*
 
-      # - name: Publish Spectral Results (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
-      #   uses: EnricoMi/publish-unit-test-result-action@v2
-      #   if: always()    ## if false = bypass (dont exec)
-      #   with:
-      #     files: |
-      #       out/spectral_owasp.junit
-      #     check_name: 'OWASP report - ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}'
-      #     comment_mode: always
-      #     job_summary: true
-      #     compare_to_earlier_commit: true
-      #     report_individual_runs: true
-      #     report_suite_logs: any
-      #     ignore_runs: false
-      #     test_file_prefix: '-/home/runner/work/how-tos'
+      - name: Publish Spectral Results (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()    ## if false = bypass (dont exec)
+        with:
+          files: |
+            out/spectral_owasp.junit
+          check_name: 'OWASP report - ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}'
+          comment_mode: always
+          job_summary: true
+          compare_to_earlier_commit: true
+          report_individual_runs: true
+          report_suite_logs: any
+          ignore_runs: false
+          test_file_prefix: '-/home/runner/work/how-tos/how-tos/'
 
       # - name: Load Sarif Report to Github
       #   uses: github/codeql-action/upload-sarif@v3
@@ -125,10 +125,10 @@ jobs:
       #     sarif_file: out/spectral_owasp.sarif
       #     category: spectral-owasp-apisec
 
-      - name: Load GHA Report as Annotations
-        if: always()
-        run: |
-          GHA_REPORT_FILE=${{ github.workspace }}/out/spectral_owasp.gha
-          while read -r ROW; do
-            echo "$ROW"
-          done < "$GHA_REPORT_FILE"
+      # - name: Load GHA Report as Annotations
+      #   if: always()
+      #   run: |
+      #     GHA_REPORT_FILE=${{ github.workspace }}/out/spectral_owasp.gha
+      #     while read -r ROW; do
+      #       echo "$ROW"
+      #     done < "$GHA_REPORT_FILE"
