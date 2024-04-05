@@ -60,15 +60,15 @@ jobs:
           fi
           echo "OPENAPI_SPEC_FILE_SELECTED=$openapi_spec_file_selected" >> $GITHUB_OUTPUT
 
-      - name: Setup NodeJS
-        uses: actions/setup-node@v4
-        with:
-          node-version: 18
+      # - name: Setup NodeJS
+      #   uses: actions/setup-node@v4
+      #   with:
+      #     node-version: 18
 
-      - name: Install Spectral and initial rulesets
-        run: |
-          npm install @stoplight/spectral-cli
-          npm install @stoplight/spectral-owasp-ruleset
+      # - name: Install Spectral and initial rulesets
+      #   run: |
+      #     npm install @stoplight/spectral-cli
+      #     npm install @stoplight/spectral-owasp-ruleset
 
       - name: Setup OWASP APISec Spectral rulesets
         run: |
