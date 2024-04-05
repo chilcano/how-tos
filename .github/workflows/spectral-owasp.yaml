@@ -121,6 +121,6 @@ jobs:
       - name: Load GHA Report as Annotations
         if: ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }}
         run: |
-        while read p; do
-          echo "$p"
-        done <out/spectral_owasp.gha
+          while read p; do
+            echo "$p"
+          done <out/spectral_owasp.gha
