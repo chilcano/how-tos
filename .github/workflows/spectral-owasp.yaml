@@ -79,7 +79,13 @@ jobs:
         if: ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }}
         run: |
           set -o pipefail
-          npx spectral lint src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }} -r .spectral_owasp.yaml -f junit -o out/spectral_owasp.junit
+          npx spectral lint src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }} -r .spectral_owasp.yaml \
+          -f junit -o.junit out/spectral_owasp.junit \
+          -f json -o.json out/spectral_owasp.json \
+          -f stylish -o.stylish "<stdout>" \
+          -f html -o.html out/spectral_owasp.html \
+          -f sarif -o.sarif out/spectral_owasp.sarif \
+          -f github-actions -o.github-actions out/spectral_owasp.gha
           set +o pipefail
 
       - name: Upload Spectral reports as GH Artifact (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
@@ -89,17 +95,24 @@ jobs:
           name: spectral-reports-${{ steps.myvars.outputs.DATE_IN_SECS }}
           path: out/*.*
 
-      - name: Publish Spectral Results (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()    ## if false = bypass (dont exec)
+      # - name: Publish Spectral Results (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
+      #   uses: EnricoMi/publish-unit-test-result-action@v2
+      #   if: always()    ## if false = bypass (dont exec)
+      #   with:
+      #     files: |
+      #       out/spectral_owasp.junit
+      #     check_name: 'OWASP report - ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}'
+      #     comment_mode: always
+      #     job_summary: true
+      #     compare_to_earlier_commit: true
+      #     report_individual_runs: true
+      #     report_suite_logs: any
+      #     ignore_runs: false
+      #     test_file_prefix: '-/home/runner/work/how-tos'
+
+      - name: Load Sarif Report to Github
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()    ## if false = bypass
         with:
-          files: |
-            out/spectral_owasp.junit
-          check_name: 'OWASP report - ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}'
-          comment_mode: always
-          job_summary: true
-          compare_to_earlier_commit: true
-          report_individual_runs: true
-          report_suite_logs: any
-          ignore_runs: false
-          test_file_prefix: '-/home/runner/work/how-tos'
+          sarif_file: out/spectral_owasp.sarif
+          category: spectral-owasp-apisec
