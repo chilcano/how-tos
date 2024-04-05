@@ -22,3 +22,4 @@ package-lock.json
 package.json
 _out/
 .spectral_*.yaml
+report.*
