@@ -111,12 +111,12 @@ jobs:
       #     ignore_runs: false
       #     test_file_prefix: '-/home/runner/work/how-tos'
 
-      - name: Load Sarif Report to Github
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()    ## if false = bypass
-        with:
-          sarif_file: out/spectral_owasp.sarif
-          category: spectral-owasp-apisec
+      # - name: Load Sarif Report to Github
+      #   uses: github/codeql-action/upload-sarif@v3
+      #   if: always()    ## if false = bypass
+      #   with:
+      #     sarif_file: out/spectral_owasp.sarif
+      #     category: spectral-owasp-apisec
 
       - name: Load GHA Report as Annotations
         if: ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }}
