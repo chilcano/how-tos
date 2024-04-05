@@ -85,7 +85,7 @@ jobs:
           -f stylish -o.stylish "<stdout>" \
           -f html -o.html out/spectral_owasp.html \
           -f sarif -o.sarif out/spectral_owasp.sarif \
-          -f github-actions -o.github-actions out/spectral_owasp.gha
+          -f github-actions -o.github-actions out/spectral_owasp.gha --verbose
           set +o pipefail
 
       - name: Upload Spectral reports as GH Artifact (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
