@@ -121,6 +121,8 @@ jobs:
       - name: Load GHA Report as Annotations
         if: always()
         run: |
-          while read p; do
-            echo "$p"
-          done < ${{ github.workspace }}/out/spectral_owasp.gha
+          GHA_REPORT_FILE=${{ github.workspace }}/out/spectral_owasp.gha
+          echo $GHA_REPORT_FILE
+          while read ROW; do
+            echo "$ROW"
+          done < "$GHA_REPORT_FILE"
