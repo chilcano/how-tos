@@ -75,21 +75,21 @@ jobs:
           echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > .spectral_owasp.yaml
           mkdir -p out/
 
-      - name: Run Spectral (OpenAPI spec file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
-        if: ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }} &&  (${{ success() }} || ${{ failure() }})
+      - name: Run Spectral (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
+        if: ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }}
         run: |
           set -o pipefail
           npx spectral lint src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }} -r .spectral_owasp.yaml -f junit -o out/spectral_owasp.junit
           set +o pipefail
 
-      - name: Upload Spectral reports as Github Artifacts
+      - name: Upload Spectral reports as GH Artifact (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
         if: ${{ success() }} || ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: spectral-reports-${{ steps.myvars.outputs.DATE_IN_SECS }}
           path: out/*.*
 
-      - name: Publish Spectral Results
+      - name: Publish Spectral Results (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()    ## if false = bypass (dont exec)
         with:
@@ -102,4 +102,4 @@ jobs:
           report_individual_runs: true
           report_suite_logs: any
           ignore_runs: false
-          test_file_prefix: '-/home/runner/work'
+          test_file_prefix: '-/home/runner/work/how-tos/'
