@@ -102,4 +102,4 @@ jobs:
           report_individual_runs: true
           report_suite_logs: any
           ignore_runs: false
-          test_file_prefix: '-/home/runner/work/how-tos/'
+          test_file_prefix: '-/home/runner/work/how-tos'
