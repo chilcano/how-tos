@@ -119,7 +119,7 @@ jobs:
       #     category: spectral-owasp-apisec
 
       - name: Load GHA Report as Annotations
-        if: ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }}
+        if: always()
         run: |
           while read p; do
             echo "$p"
