@@ -72,14 +72,15 @@ jobs:
 
       - name: Setup OWASP APISec Spectral rulesets
         run: |
-          echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
+          echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > .spectral_owasp.yaml
           mkdir -p out/
+          echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs"]' > .spectral.yaml
 
       - name: Run Spectral (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
         if: ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }}
         # run: |
         #   set -o pipefail
-        #   npx spectral lint src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }} -r .spectral.yaml \
+        #   npx spectral lint src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }} -r .spectral_owasp.yaml \
         #   -f junit -o.junit out/spectral_owasp.junit \
         #   -f json -o.json out/spectral_owasp.json \
         #   -f html -o.html out/spectral_owasp.html \
