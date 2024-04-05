@@ -72,19 +72,22 @@ jobs:
 
       - name: Setup OWASP APISec Spectral rulesets
         run: |
-          echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > .spectral_owasp.yaml
+          echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > .spectral.yaml
           mkdir -p out/
 
       - name: Run Spectral (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
         if: ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }}
-        run: |
-          set -o pipefail
-          npx spectral lint src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }} -r .spectral_owasp.yaml \
-          -f junit -o.junit out/spectral_owasp.junit \
-          -f json -o.json out/spectral_owasp.json \
-          -f html -o.html out/spectral_owasp.html \
-          -f github-actions -o.github-actions out/spectral_owasp.gha --verbose
-          set +o pipefail
+        # run: |
+        #   set -o pipefail
+        #   npx spectral lint src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }} -r .spectral.yaml \
+        #   -f junit -o.junit out/spectral_owasp.junit \
+        #   -f json -o.json out/spectral_owasp.json \
+        #   -f html -o.html out/spectral_owasp.html \
+        #   -f github-actions -o.github-actions out/spectral_owasp.gha --verbose
+        #   set +o pipefail
+        uses: stoplightio/spectral-action@latest
+        with:
+          file_glob: './src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}
 
       - name: Upload Spectral reports as GH Artifact (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
         if: ${{ success() }} || ${{ failure() }}
@@ -115,11 +118,10 @@ jobs:
       #     sarif_file: out/spectral_owasp.sarif
       #     category: spectral-owasp-apisec
 
-      - name: Load GHA Report as Annotations
-        if: always()
-        run: |
-          GHA_REPORT_FILE=${{ github.workspace }}/out/spectral_owasp.gha
-          echo $GHA_REPORT_FILE
-          while read -r ROW; do
-            echo "$ROW"
-          done < "$GHA_REPORT_FILE"
+      # - name: Load GHA Report as Annotations
+      #   if: always()
+      #   run: |
+      #     GHA_REPORT_FILE=${{ github.workspace }}/out/spectral_owasp.gha
+      #     while read -r ROW; do
+      #       echo "$ROW"
+      #     done < "$GHA_REPORT_FILE"
