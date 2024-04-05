@@ -82,7 +82,6 @@ jobs:
           npx spectral lint src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }} -r .spectral_owasp.yaml \
           -f junit -o.junit out/spectral_owasp.junit \
           -f json -o.json out/spectral_owasp.json \
-          -f stylish -o.stylish "<stdout>" \
           -f html -o.html out/spectral_owasp.html \
           -f sarif -o.sarif out/spectral_owasp.sarif \
           -f github-actions -o.github-actions out/spectral_owasp.gha --verbose
