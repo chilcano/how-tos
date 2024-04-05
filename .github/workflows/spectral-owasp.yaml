@@ -123,4 +123,4 @@ jobs:
         run: |
           while read p; do
             echo "$p"
-          done <out/spectral_owasp.gha
+          done < ${{ github.workspace }}/out/spectral_owasp.gha
