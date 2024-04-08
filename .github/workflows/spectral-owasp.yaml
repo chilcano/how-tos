@@ -84,10 +84,10 @@ jobs:
         run: |
           set -o pipefail
           npx spectral lint src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }} -r .spectral_owasp.yaml \
-          -f junit -o.junit report_${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}_owasp.junit \
-          -f json -o.json report_${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}_owasp.json \
-          -f html -o.html report_${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}_owasp.html \
-          -f github-actions -o.github-actions report_${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}_owasp.gha --verbose
+          -f junit -o.junit report_spectral_owasp.junit \
+          -f json -o.json report_spectral_owasp.json \
+          -f html -o.html report_spectral_owasp.html \
+          -f github-actions -o.github-actions report_spectral_owasp.gha --verbose
           set +o pipefail
 
       ## Only it is triggered in PR or PUSH events. 
@@ -111,7 +111,7 @@ jobs:
         if: always()    ## if false = bypass (dont exec)
         with:
           files: |
-            *owasp.junit
+            report_spectral_owasp.junit
           check_name: 'OWASP report [${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}]
           comment_mode: always
           job_summary: true
