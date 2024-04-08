@@ -7,21 +7,11 @@ on:
         description: 'Select the OpenAPI spec file'
         type: choice
         required: true
-        default: 'vocdoni-api.yaml'
+        default: 'petstore.yaml'
         options: 
           - 'vocdoni-api.yaml'
           - 'vocdoni-api-fixed.yaml'
           - 'petstore.yaml'
-  push:
-    branches: [main,api]
-    paths:
-      - 'src/api_specs/**.yaml'
-  pull_request:
-    types:
-      - opened
-    branches: [main,api]
-    paths:
-      - 'src/api_specs/**.yaml'
 
 concurrency:
   group: ${{ github.ref }}-${{ github.workflow }}
@@ -63,11 +53,6 @@ jobs:
           fi
           echo "OPENAPI_SPEC_FILE_SELECTED=$openapi_spec_file_selected" >> $GITHUB_OUTPUT
 
-      # - name: Setup NodeJS
-      #   uses: actions/setup-node@v4
-      #   with:
-      #     node-version: 18
-
       - name: Install Spectral and initial rulesets
         run: |
           npm install @stoplight/spectral-cli
@@ -75,11 +60,11 @@ jobs:
 
       - name: Setup OWASP APISec Spectral rulesets
         run: |
-          # echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs"]' > .spectral_owasp.yaml     ## This download from CDN
+          # echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs"]' > .spectral_owasp.yaml     ## This is downloaded from CDN
           echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > .spectral_owasp.yaml                                          ## This uses from previous 'npm install @stoplight/spectral-owasp-ruleset'
           mkdir -p out/
 
-      - name: Run Spectral CLI (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
+      - name: Run Spectral CLI
         if: ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }}
         run: |
           set -o pipefail
@@ -92,23 +77,23 @@ jobs:
 
       ## Only it is triggered in PR or PUSH events. 
       ## It doesn't work with  workflow_dispatch:
-      # - name: Run Spectral Github Action (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
+      # - name: Run Spectral Github Action 
       #   if: ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }}
       #   uses: stoplightio/spectral-action@latest
       #   with:
       #     file_glob: ./src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}
       #     spectral_ruleset: .spectral_owasp.yaml
 
-      - name: Upload Spectral reports as GH Artifact (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
+      - name: Upload Spectral reports as GH Artifact
         if: ${{ success() }} || ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: spectral-reports-${{ steps.myvars.outputs.DATE_FULL }}
           path: report_*.*
 
-      - name: Publish Spectral Results (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
+      - name: Publish Spectral Results
         uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()    ## if false = bypass (dont exec)
+        if: always()
         with:
           files: |
             report_spectral_owasp.junit
@@ -119,7 +104,7 @@ jobs:
           report_individual_runs: true
           report_suite_logs: any
           ignore_runs: false
-          test_file_prefix: '-/home/runner/work/how-tos/how-tos/'
+          # test_file_prefix: '-/'
 
       # - name: Publish Spectral Results 1
       #   uses: EnricoMi/publish-unit-test-result-action@v2
