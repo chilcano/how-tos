@@ -39,9 +39,11 @@ jobs:
         run: |
           branchname=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )
           dateinsecs=$(date +%s)
+          fullnumericdate=$(date +%Y%m%d%H%M%S)
           githashshort=$(git rev-parse --short HEAD)
           echo "GIT_HASH_SHORT=$githashshort" >> $GITHUB_OUTPUT
           echo "DATE_IN_SECS=$dateinsecs" >> $GITHUB_OUTPUT
+          echo "DATE_FULL=$fullnumericdate" >> $GITHUB_OUTPUT
           if [ "$branchname" = "develop" ]; then
             echo "CURRENT_ENVIRONMENT=development" >> $GITHUB_OUTPUT
             echo "SHORT_ENV_OUT=DEV" >> $GITHUB_OUTPUT
@@ -100,7 +102,7 @@ jobs:
         if: ${{ success() }} || ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
-          name: spectral-reports-${{ steps.myvars.outputs.DATE_IN_SECS }}
+          name: spectral-reports-${{ steps.myvars.outputs.DATE_FULL }}
           path: report_spectral_*.*
 
       - name: Publish Spectral Results (OAS file '${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}')
