@@ -112,7 +112,7 @@ jobs:
         with:
           files: |
             report_spectral_owasp.junit
-          check_name: 'OWASP report [${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}]
+          check_name: 'OWASP report ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}
           comment_mode: always
           job_summary: true
           compare_to_earlier_commit: true
