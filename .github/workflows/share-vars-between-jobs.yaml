@@ -1,5 +1,5 @@
 ---
-name: Share vars between jobs
+name: Test sharing vars between jobs
 
 on:
   workflow_dispatch:
