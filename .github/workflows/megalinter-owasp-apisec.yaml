@@ -61,8 +61,8 @@ jobs:
 
       - name: Install Spectral Rulesets
         run: |
-          npm install --save -D @stoplight/spectral-owasp-ruleset
-          echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > myspectral_ruleset.yaml
+          # npm install --save -D @stoplight/spectral-owasp-ruleset
+          # echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > myspectral_ruleset.yaml
           mkdir -p out/
 
       - name: Run MegaLinter Action
@@ -73,10 +73,10 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENABLE_LINTERS: OPENAPI_SPECTRAL
           OPENAPI_SPECTRAL_FILTER_REGEX_INCLUDE: (src/api_specs/petstore.yaml)
-          OPENAPI_SPECTRAL_CONFIG_FILE: myspectral_ruleset.yaml
+          # OPENAPI_SPECTRAL_CONFIG_FILE: myspectral_ruleset.yaml
           OPENAPI_SPECTRAL_RULES_PATH: .
-          OPENAPI_SPECTRAL_ARGUMENTS: '-f json -o.json out/ml_report_spectral.json -f junit -o.junit out/ml_report_spectral.junit -f html -o.html out/ml_report_spectral.html'
-          ##OPENAPI_SPECTRAL_ARGUMENTS: '-r node_modules/@stoplight/spectral-owasp-ruleset'
+          # OPENAPI_SPECTRAL_ARGUMENTS: '-f json -o.json out/ml_report_spectral.json -f junit -o.junit out/ml_report_spectral.junit -f html -o.html out/ml_report_spectral.html'
+          OPENAPI_SPECTRAL_ARGUMENTS: '-r node_modules/@stoplight/spectral-owasp-ruleset -f json -o.json out/ml_report_spectral.json -f junit -o.junit out/ml_report_spectral.junit -f html -o.html out/ml_report_spectral.html'
           LOG_LEVEL: DEBUG
 
       - name: Upload MegaLinter reports as Github Artifacts
