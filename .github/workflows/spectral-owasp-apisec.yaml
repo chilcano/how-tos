@@ -62,7 +62,6 @@ jobs:
         run: |
           # echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs"]' > .spectral_owasp.yaml     ## This is downloaded from CDN
           echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > .spectral_owasp.yaml                                          ## This uses from previous 'npm install @stoplight/spectral-owasp-ruleset'
-          mkdir -p out/
 
       - name: Run Spectral CLI
         if: ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }}
@@ -95,4 +94,4 @@ jobs:
           report_individual_runs: true
           report_suite_logs: any
           ignore_runs: false
-          # test_file_prefix: '-/'
+          test_file_prefix: '-/home/runner/work/how-tos/how-tos/'
