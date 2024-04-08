@@ -120,6 +120,49 @@ jobs:
           ignore_runs: false
           test_file_prefix: '-/home/runner/work/how-tos/how-tos/'
 
+
+      - name: Publish Spectral Results 1
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()    ## if false = bypass (dont exec)
+        with:
+          files: |
+            src/api_specs/report_spectral_owasp_1.junit
+          check_name: 'OWASP report 1'
+          comment_mode: always
+          job_summary: true
+          compare_to_earlier_commit: true
+          report_individual_runs: true
+          report_suite_logs: any
+          ignore_runs: false
+
+      - name: Publish Spectral Results 2
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()    ## if false = bypass (dont exec)
+        with:
+          files: |
+            src/api_specs/report_spectral_owasp_2.junit
+          check_name: 'OWASP report 2'
+          comment_mode: always
+          job_summary: true
+          compare_to_earlier_commit: true
+          report_individual_runs: true
+          report_suite_logs: any
+          ignore_runs: false
+
+      - name: Publish Spectral Results 3
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()    ## if false = bypass (dont exec)
+        with:
+          files: |
+            src/api_specs/report_spectral_owasp_3.junit
+          check_name: 'OWASP report 3'
+          comment_mode: always
+          job_summary: true
+          compare_to_earlier_commit: true
+          report_individual_runs: true
+          report_suite_logs: any
+          ignore_runs: false
+
       # - name: Load Sarif Report to Github
       #   uses: github/codeql-action/upload-sarif@v3
       #   if: always()    ## if false = bypass
