@@ -75,7 +75,7 @@ jobs:
           OPENAPI_SPECTRAL_FILTER_REGEX_INCLUDE: (src/api_specs/petstore.yaml)
           OPENAPI_SPECTRAL_CONFIG_FILE: myspectral_ruleset.yaml
           OPENAPI_SPECTRAL_RULES_PATH: .
-          OPENAPI_SPECTRAL_ARGUMENTS: '-f json -o.json out/ml_report_spectral.json -f junit -o.junit out/ml_report_spectral.junit -f html -o.html out/ml_report_spectral.html'
+          OPENAPI_SPECTRAL_ARGUMENTS: '-f sarif -o.sarif out/ml_report_spectral.sarif -f json -o.json out/ml_report_spectral.json -f junit -o.junit out/ml_report_spectral.junit -f html -o.html out/ml_report_spectral.html'
           # OPENAPI_SPECTRAL_ARGUMENTS: '-r node_modules/@stoplight/spectral-owasp-ruleset -f json -o.json out/ml_report_spectral.json -f junit -o.junit out/ml_report_spectral.junit -f html -o.html out/ml_report_spectral.html'
           LOG_LEVEL: DEBUG
 
