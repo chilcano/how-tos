@@ -1,0 +1,95 @@
+name: megalinter-owasp-apisec
+
+on:
+  workflow_dispatch:
+    inputs:
+      openapi_spec_file:
+        description: 'Select the OpenAPI spec file'
+        type: choice
+        required: true
+        default: 'petstore.yaml'
+        options: 
+          - 'vocdoni-api.yaml'
+          - 'vocdoni-api-fixed.yaml'
+          - 'petstore.yaml'
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  megalinter:
+    name: MegaLinter
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set myvars
+        id: myvars
+        run: |
+          branchname=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )
+          dateinsecs=$(date +%s)
+          fullnumericdate=$(date +%Y%m%d%H%M%S)
+          githashshort=$(git rev-parse --short HEAD)
+          echo "GIT_HASH_SHORT=$githashshort" >> $GITHUB_OUTPUT
+          echo "DATE_IN_SECS=$dateinsecs" >> $GITHUB_OUTPUT
+          echo "DATE_FULL=$fullnumericdate" >> $GITHUB_OUTPUT
+          if [ "$branchname" = "develop" ]; then
+            echo "CURRENT_ENVIRONMENT=development" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=DEV" >> $GITHUB_OUTPUT
+          elif [ "$branchname" = "main" ] || [ "$branchname" = "master" ]; then
+            echo "CURRENT_ENVIRONMENT=production" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=PROD" >> $GITHUB_OUTPUT
+          else
+            branchname='test'
+            echo "CURRENT_ENVIRONMENT=testing" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=TEST" >> $GITHUB_OUTPUT
+          fi
+          echo "BRANCH_NAME=$branchname" >> $GITHUB_OUTPUT
+          openapi_spec_file_selected=${{ github.event.inputs.openapi_spec_file }}
+          if [ "$openapi_spec_file_selected" == "" ]; then
+            openapi_spec_file_selected='none'
+          fi
+          echo "OPENAPI_SPEC_FILE_SELECTED=$openapi_spec_file_selected" >> $GITHUB_OUTPUT
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install Spectral Rulesets
+        run: |
+          npm install --save -D @stoplight/spectral-owasp-ruleset
+          echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > myspectral_ruleset.yaml
+
+      - name: Run MegaLinter Action
+        id: ml
+        uses: oxsecurity/megalinter@v7
+        env:
+          VALIDATE_ALL_CODEBASE: true
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ENABLE_LINTERS: OPENAPI_SPECTRAL
+          FILTER_REGEX_INCLUDE: (src/api_specs/petstore.yaml)
+          OPENAPI_SPECTRAL_CONFIG_FILE: myspectral_ruleset.yaml
+          OPENAPI_SPECTRAL_RULES_PATH: .
+          ##OPENAPI_SPECTRAL_ARGUMENTS: '-r node_modules/@stoplight/spectral-owasp-ruleset'
+          #LOG_LEVEL: DEBUG
+
+      - name: Upload MegaLinter reports as Github Artifacts
+        if: ${{ success() }} || ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: megalinter-reports-${{ steps.myvars.outputs.DATE_FULL }}
+          path: |
+            megalinter-reports
+            mega-linter.log
+
+      - name: Explore workdir
+        if: ${{ success() }} || ${{ failure() }}
+        run: |
+          ls -la
+          echo home_path: $(pwd)
+          cat myspectral_ruleset.yaml
+          ls -la node_modules/@stoplight/spectral-owasp-ruleset/
