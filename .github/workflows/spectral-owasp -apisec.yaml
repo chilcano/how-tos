@@ -1,0 +1,98 @@
+name: spectral-owasp-apisec
+
+on:
+  workflow_dispatch:
+    inputs:
+      openapi_spec_file:
+        description: 'Select the OpenAPI spec file'
+        type: choice
+        required: true
+        default: 'petstore.yaml'
+        options: 
+          - 'vocdoni-api.yaml'
+          - 'vocdoni-api-fixed.yaml'
+          - 'petstore.yaml'
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  spectral-owasp:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set myvars
+        id: myvars
+        run: |
+          branchname=$(echo ${GITHUB_REF#refs/heads/} | tr '/' '-' )
+          dateinsecs=$(date +%s)
+          fullnumericdate=$(date +%Y%m%d%H%M%S)
+          githashshort=$(git rev-parse --short HEAD)
+          echo "GIT_HASH_SHORT=$githashshort" >> $GITHUB_OUTPUT
+          echo "DATE_IN_SECS=$dateinsecs" >> $GITHUB_OUTPUT
+          echo "DATE_FULL=$fullnumericdate" >> $GITHUB_OUTPUT
+          if [ "$branchname" = "develop" ]; then
+            echo "CURRENT_ENVIRONMENT=development" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=DEV" >> $GITHUB_OUTPUT
+          elif [ "$branchname" = "main" ] || [ "$branchname" = "master" ]; then
+            echo "CURRENT_ENVIRONMENT=production" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=PROD" >> $GITHUB_OUTPUT
+          else
+            branchname='test'
+            echo "CURRENT_ENVIRONMENT=testing" >> $GITHUB_OUTPUT
+            echo "SHORT_ENV_OUT=TEST" >> $GITHUB_OUTPUT
+          fi
+          echo "BRANCH_NAME=$branchname" >> $GITHUB_OUTPUT
+          openapi_spec_file_selected=${{ github.event.inputs.openapi_spec_file }}
+          if [ "$openapi_spec_file_selected" == "" ]; then
+            openapi_spec_file_selected='none'
+          fi
+          echo "OPENAPI_SPEC_FILE_SELECTED=$openapi_spec_file_selected" >> $GITHUB_OUTPUT
+
+      - name: Install Spectral and initial rulesets
+        run: |
+          npm install @stoplight/spectral-cli
+          npm install @stoplight/spectral-owasp-ruleset
+
+      - name: Setup OWASP APISec Spectral rulesets
+        run: |
+          # echo 'extends: ["https://unpkg.com/@stoplight/spectral-owasp-ruleset/dist/ruleset.mjs"]' > .spectral_owasp.yaml     ## This is downloaded from CDN
+          echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > .spectral_owasp.yaml                                          ## This uses from previous 'npm install @stoplight/spectral-owasp-ruleset'
+          mkdir -p out/
+
+      - name: Run Spectral CLI
+        if: ${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED != 'none' }}
+        run: |
+          set -o pipefail
+          npx spectral lint src/api_specs/${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }} -r .spectral_owasp.yaml \
+          -f junit -o.junit report_spectral_owasp.junit \
+          -f json -o.json report_spectral_owasp.json \
+          -f html -o.html report_spectral_owasp.html \
+          -f github-actions -o.github-actions report_spectral_owasp.gha --verbose
+          set +o pipefail
+
+      - name: Upload Spectral reports as GH Artifact
+        if: ${{ success() }} || ${{ failure() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: spectral-reports-${{ steps.myvars.outputs.DATE_FULL }}
+          path: report_*.*
+
+      - name: Publish Spectral Results
+        uses: EnricoMi/publish-unit-test-result-action@v2
+        if: always()
+        with:
+          files: |
+            report_spectral_owasp.junit
+          check_name: 'OWASP report [${{ steps.myvars.outputs.OPENAPI_SPEC_FILE_SELECTED }}]'
+          comment_mode: always
+          job_summary: true
+          compare_to_earlier_commit: true
+          report_individual_runs: true
+          report_suite_logs: any
+          ignore_runs: false
+          # test_file_prefix: '-/'
