@@ -98,3 +98,9 @@ jobs:
           cat myspectral_ruleset.yaml
           ls -la out/
           ls -la node_modules/@stoplight/spectral-owasp-ruleset/
+
+      - name: Upload MegaLinter Sarif report to GitHub Security tab
+        if: success() || failure()
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'out/ml_report_spectral.sarif'
