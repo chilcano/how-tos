@@ -77,7 +77,7 @@ jobs:
       - name: Convert Spectral Json report to Sarif
         if: ${{ success() }} || ${{ failure() }}
         run: |
-          npx spectral-sarif report_spectral_owasp.json -o report_spectral_owasp.sarif -r ${{ github.workspace }}
+          npx spectral-sarif report_spectral_owasp.json -o report_spectral_owasp.sarif -r ${{ github.workspace }}/
 
       - name: Upload Spectral reports as GH Artifact
         if: ${{ success() }} || ${{ failure() }}
