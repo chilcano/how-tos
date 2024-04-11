@@ -74,17 +74,17 @@ jobs:
           -f github-actions -o.github-actions report_spectral_owasp.gha --verbose
           set +o pipefail
 
+      - name: Convert Spectral Json report to Sarif
+        if: ${{ success() }} || ${{ failure() }}
+        run: |
+          npx spectral-sarif report_spectral_owasp.json -o report_spectral_owasp.sarif -r ${{ github.workspace }}
+
       - name: Upload Spectral reports as GH Artifact
         if: ${{ success() }} || ${{ failure() }}
         uses: actions/upload-artifact@v4
         with:
           name: spectral-reports-${{ steps.myvars.outputs.DATE_FULL }}
           path: report_*.*
-
-      - name: Convert Spectral Json report to Sarif
-        run: |
-          echo 'extends: ["@stoplight/spectral-owasp-ruleset"]' > .spectral_owasp.yaml
-          npx spectral-sarif report_spectral_owasp.json -o report_spectral_owasp.sarif -r ${{ github.workspace }}
 
       - name: Load Spectral Sarif report to Github
         uses: github/codeql-action/upload-sarif@v3
