@@ -57,6 +57,7 @@ jobs:
         run: |
           npm install @stoplight/spectral-cli
           npm install @stoplight/spectral-owasp-ruleset
+          npm install @stoplight/spectral-formatters  @stoplight/spectral-core @stoplight/spectral-parsers
 
       - name: Setup OWASP APISec Spectral rulesets
         run: |

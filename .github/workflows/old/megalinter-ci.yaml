@@ -69,9 +69,10 @@ jobs:
       
       - name: Download API specs example
         run: |
-          curl -s -o vocdoni-api.yaml https://raw.githubusercontent.com/vocdoni/developer-portal/main/swaggers/vocdoni-api.yaml
           mkdir -p src/api_specs/
+          curl -s https://raw.githubusercontent.com/vocdoni/developer-portal/main/swaggers/vocdoni-api.yaml -o vocdoni-api.yaml 
           mv vocdoni-api.yaml src/api_specs/.
+          curl -s https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/examples/v3.0/petstore.yaml -o src/api_specs/petstore.yaml 
 
       - name: Download Spectral Rulesets
         run: |
