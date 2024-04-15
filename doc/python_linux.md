@@ -19,10 +19,10 @@ $ sudo apt -yqq install python3 python3-pip build-essential libssl-dev libffi-de
 Let's check packages and modules in a minimum python installation.
 ```sh
 $ python3 -V
-Python 3.9.7
+Python 3.11.4
 
 $ pip -V
-pip 20.3.4 from /usr/lib/python3/dist-packages/pip (python 3.9)
+pip 23.0.1 from /usr/lib/python3/dist-packages/pip (python 3.11)
 
 $ pip list | wc -l
 13
@@ -31,67 +31,79 @@ $ pip list | wc -l
 ## 2. Working with Pip and virtual environments
 
 
-### 2.1. Install virtualenv module globally
+### 2.1. Install virtual environment module globally
 
 ```sh
 $ pip install virtualenv
-...
-  WARNING: The script virtualenv is installed in '/home/chilcano/.local/bin' which is not on PATH.
-  Consider adding this directory to PATH or, if you prefer to suppress this warning, use --no-warn-script-location.
-Successfully installed distlib-0.3.4 filelock-3.7.1 platformdirs-2.5.2 virtualenv-20.14.1
+
+error: externally-managed-environment
+
+× This environment is externally managed
+╰─> To install Python packages system-wide, try apt install
+    python3-xyz, where xyz is the package you are trying to
+    install.
+    
+    If you wish to install a non-Debian-packaged Python package,
+    create a virtual environment using python3 -m venv path/to/venv.
+    Then use path/to/venv/bin/python and path/to/venv/bin/pip. Make
+    sure you have python3-full installed.
+    
+    If you wish to install a non-Debian packaged Python application,
+    it may be easiest to use pipx install xyz, which will manage a
+    virtual environment for you. Make sure you have pipx installed.
+    
+    See /usr/share/doc/python3.11/README.venv for more information.
+
+note: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.
+hint: See PEP 668 for the detailed specification.
+
 ```
 
-Checking how many modules were installed.
+> The above error means that we can not install `virtualenv` and mixing `apt` provided packages and `pip` provided packages, and the recommendated option is using `python3 -m venv path/to/venv` instead of `python3 -m virtualenv path/to/venv`. The `venv` should be instaled using this command `apt install python3-venv` or `apt install python3.11-venv`.
+
+
 ```sh
-$ pip list | wc -l
-15
+$ sudo apt -yqq install python3-venv
 ```
-In this case `virtualenv` and `six` were installed.
-
 
 ### 2.2. Create a virtual environment 
 
-In a current empty directory create a virtualenv.
+In a current empty directory create a virtual environment.
 ```sh
-$ python3 -m virtualenv .venv
+$ python3 -m venv .venv
 ```
 
 Checking what folders were created.
 ```sh
-$ tree . -a -L 3
-.
-└── .venv
-    ├── bin
-    │   ├── activate
-    │   ├── activate.csh
-    │   ├── activate.fish
-    │   ├── activate.nu
-    │   ├── activate.ps1
-    │   ├── activate_this.py
-    │   ├── deactivate.nu
-    │   ├── pip
-    │   ├── pip3
-    │   ├── pip-3.9
-    │   ├── pip3.9
-    │   ├── python -> /usr/bin/python3
-    │   ├── python3 -> python
-    │   ├── python3.9 -> python
-    │   ├── wheel
-    │   ├── wheel3
-    │   ├── wheel-3.9
-    │   └── wheel3.9
-    ├── .gitignore
-    ├── lib
-    │   └── python3.9
-    └── pyvenv.cfg
+$ tree .venv -a -L 3 
+.venv
+├── bin
+│   ├── activate
+│   ├── activate.csh
+│   ├── activate.fish
+│   ├── Activate.ps1
+│   ├── pip
+│   ├── pip3
+│   ├── pip3.11
+│   ├── python -> python3
+│   ├── python3 -> /usr/bin/python3
+│   └── python3.11 -> python3
+├── include
+│   └── python3.11
+├── lib
+│   └── python3.11
+│       └── site-packages
+├── lib64 -> lib
+└── pyvenv.cfg
 
-4 directories, 20 files
+8 directories, 11 files
+
 ```
 
 List all modules installed globally.
 ```sh
 $ pip list | wc -l
-80
+96
 ```
 
 ### 2.3. Activate the virtual environment 
@@ -181,10 +193,12 @@ Now, you can update those modules:
 ```sh
 $ pip install -U setuptools
 ```
+
 Or using the `requirements.txt` file:
 ```sh
 $ pip install -U -r requirements.txt
 ```
+
 Once updated, generate an updated `requirements.txt` file.
 ```sh
 $ pip freeze > requirements.txt
@@ -204,5 +218,3 @@ Recommended extensions:
 2. yyy
 3. zzzz
 
-ssh -L [LOCAL_IP:]LOCAL_PORT:DESTINATION:DESTINATION_PORT [USER@]SSH_SERVER
-ssh -L 8000:3.8.236.219:80 bitnami@3.8.236.219 -i ~/.ssh/tmpkey2
