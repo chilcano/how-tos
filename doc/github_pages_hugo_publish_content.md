@@ -18,6 +18,7 @@ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/git
 This script will remove previous `hugo` installation and will install the extended version of `hugo`.
 ```sh
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_setting_in_linux.sh)
+source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_setting_in_linux.sh) -a=amd64 -b=deb
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_setting_in_linux.sh) -a=64bit -b=deb -d=extended
 source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_setting_in_linux.sh) -a=ARM64 -b=tar.gz -d=extended
 ```  

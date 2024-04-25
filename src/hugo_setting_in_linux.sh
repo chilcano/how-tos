@@ -6,7 +6,7 @@ echo "##########################################################"
 echo "#    Installing Hugo binary cross-platform on Ubuntu     #"
 echo "##########################################################"
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_setting_in_linux.sh) -a=ARM64|64bit -b=tar.gz|deb -d=extended
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_setting_in_linux.sh) -a=AMD64|ARM64|64bit -b=tar.gz|deb -d=extended
 # ./hugo_setting_in_linux.sh -a=64bit -b=tar.gz -d=extended
 # curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_setting_in_linux.sh | bash
 
@@ -45,21 +45,31 @@ sudo dpkg -r hugo
 
 printf "\n"
 printf ">> Downloading and installing a new 'Hugo' binary. \n\n"
-HUGO_PKG="Linux-${_ARCH:-64bit}.${_EXT:-deb}"
+HUGO_PKG="Linux-${_ARCH:-amd64}.${_BIN:-deb}"
+HUGO_BUNDLE_URL=""
 
 if [[ "${_DIST}" == "extended" ]]; then
-    HUGO_BUNDLE_URL=$(curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | jq -r ".assets[].browser_download_url" | grep -i ${HUGO_PKG} | grep -i "extended")
+  HUGO_BUNDLE_URL=$(curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | jq -r ".assets[].browser_download_url" | grep -i ${HUGO_PKG} | grep -i "extended")
 else
-    HUGO_BUNDLE_URL=$(curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | jq -r ".assets[].browser_download_url" | grep -i ${HUGO_PKG} | grep -v "extended")
+  HUGO_BUNDLE_URL=$(curl -s https://api.github.com/repos/gohugoio/hugo/releases/latest | jq -r ".assets[].browser_download_url" | grep -i ${HUGO_PKG} | grep -v "extended")
 fi
+
+if [ -z "${HUGO_BUNDLE_URL}" ]; then
+  printf "* Hugo $HUGO_PKG $_DIST not found as a released binary at Github. Please, try 64bit, amd64, deb or tar.gz flags.\n"
+  return
+fi
+
 HUGO_BUNDLE_NAME="${HUGO_BUNDLE_URL##*/}"
 
 if [ -f "${HUGO_BUNDLE_NAME}" ]; then
-    printf "* The $HUGO_BUNDLE_NAME file exists. Nothing to download. \n"
+  printf "* The $HUGO_BUNDLE_NAME file exists. Nothing to download. \n"
 else
-    printf "* Downloading the $HUGO_BUNDLE_NAME file. \n"
-    wget -q $HUGO_BUNDLE_URL
+  printf "* Downloading the $HUGO_BUNDLE_NAME file. \n"
+  wget -q $HUGO_BUNDLE_URL
 fi
-printf "\t * Installing the $HUGO_BUNDLE_NAME file. \n"
+
+printf "* Installing the $HUGO_BUNDLE_NAME file. \n"
+printf "\n"
+
 sudo dpkg -i $HUGO_BUNDLE_NAME
 hugo version
