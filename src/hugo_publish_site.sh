@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/hugo_publish_site.sh)
+# source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/master/src/hugo_publish_site.sh)
 
 # Ref: https://gohugo.io/hosting-and-deployment/hosting-on-github/
 
@@ -11,6 +11,10 @@ while [ $# -gt 0 ]; do
   case "$1" in
     --commit_msg*|-m*)
       _COMMIT_MSG="${1#*=}"
+      ;;
+    --sign*|-s*)
+      if [[ "$1" != *=* ]]; then shift; fi
+      _SIGN="${1#*=}"
       ;;
     --help|-h)
       printf "Publish Hugo content."
@@ -26,7 +30,7 @@ done
 
 printf "\n"
 echo "###############################################################"
-echo "#            Publishing Website / Hugo content                #"
+echo "#             Publishing Website / Hugo content               #"
 echo "###############################################################"
 
 CURRENT_DIR="${PWD##*/}"
@@ -36,16 +40,19 @@ HUGO_CONTENT_DIR="ghp-content"
 HUGO_CONTENT_BRANCH="${HUGO_CONTENT_DIR}"
 
 if [ -z ${_COMMIT_MSG+x} ]; then
-    if [ "`git status -s`" ]; then
-        printf "==> The working directory is dirty. Please commit any pending changes or re-run this script with '--commit_msg' or '-m' params. \n"
-        exit 1;
-    fi
+  if [ "`git status -s`" ]; then
+    printf "==> The working directory is dirty. Please commit any pending changes or re-run this script with '--commit_msg' or '-m' params. \n"
+    exit 1;
+  fi
 else
-    printf "==> Pushing previous changes.\n"
-    git add .; git commit -m "Published content: ${_COMMIT_MSG}"; git push
+  if [ -z ${_SIGN+x} ]; then
+    git add .; git commit -S -m "chore: publishes content: ${_COMMIT_MSG}"; git push
+  else
+    git add .; git commit -m "chore: publishes content: ${_COMMIT_MSG}"; git push
+  fi
 fi
 
-printf "==> Deleting older content and history of '${HUGO_CONTENT_BRANCH}' \n"
+printf "==> Deleting older content and history of '${HUGO_CONTENT_BRANCH}' \n" 
 rm -rf ${HUGO_CONTENT_DIR}
 mkdir -p ${HUGO_CONTENT_DIR}
 git worktree prune
@@ -53,7 +60,7 @@ rm -rf .git/worktrees/${HUGO_CONTENT_DIR}/
 
 printf "==> This worktree will allow us to get all content in '${HUGO_CONTENT_BRANCH}' branch as a dir. \n"
 git worktree add -B ${HUGO_CONTENT_BRANCH} ${HUGO_CONTENT_DIR} origin/${HUGO_CONTENT_BRANCH}
-printf "==> Deleting older content under '${HUGO_CONTENT_BRANCH}' except CNAME \n"
+printf "==> Deleting older content under '${HUGO_CONTENT_BRANCH}' except CNAME \n" 
 
 find ${HUGO_CONTENT_DIR}/docs/* ! -name 'CNAME' -exec rm -rf {} +
 
@@ -70,4 +77,3 @@ git push --all
 
 printf "==> Returning to current dir. \n"
 cd ../
-
