@@ -65,8 +65,9 @@ Repository with technical indications to install, configure any interesting stuf
 31. [Turn off Macbook/iMac startup sound on Ubuntu](doc/turn_off_mac_startup_sound_on_ubuntu.md)
 32. [Kubernetes Ops guide](doc/kubernetes_ops_guide.md)
 33. [CI/CD GitHub workflows for NodeJS and TypeScript applications](doc/github-workflow-for-nodejs-typescript-apps.md)
-33. [Getting a NodeJS development setup](doc/nodejs-typescript-dev-workflow.md) - tbc
-
+34. [Getting a NodeJS development setup](doc/nodejs-typescript-dev-workflow.md) - tbc
+35. [Install your own Minecraft Server](doc/minecraft-server.md)
+36. [Firewalling in Linux with UFW](doc/firewall-ubuntu.md)
 
 ### Security guides
 
