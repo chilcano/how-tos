@@ -1,4 +1,5 @@
-import xml.etree.ElementTree as ET
+# import xml.etree.ElementTree as ET
+from defusedxml.etree import ElementTree as ET
 import sys, getopt
 import re
 

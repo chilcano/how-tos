@@ -10,7 +10,10 @@ class NewPasswordGenerator
         String pwd1 = "";
         String pwd2 = "";
 
-        if (a != "" && b != "") {
+        // if (a != "" && b != "") {        // snyk detects issue with !=
+        if (a.equals("") && b.equals("")) {
+            System.out.println(" ==>> Error. Can't generate a new password!");
+        } else {
             if (lena >= lenb) {
                 min = lenb;
                 pwd2 = a.substring(lenb);
@@ -21,9 +24,7 @@ class NewPasswordGenerator
             for (int i = 0; i < min; i++) {
                 pwd1 = pwd1 + a.substring(i, i+1) + b.substring(i, i+1);
             }
-            System.out.println(" ==>> New Password genrated: " + pwd1 + pwd2);
-        } else {
-            System.out.println(" ==>> Error. Can't generate a new password!");
-        } 
+            System.out.println(" ==>> New Password generated: " + pwd1 + pwd2);
+        }
     } 
 } 
