@@ -1,0 +1,9 @@
+*.{env.CUSTOM_FQDN}:443 {
+  tls {
+    dns duckdns {env.DNS_PROVIDER_TOKEN}
+  }
+  @immich host immich.{env.CUSTOM_FQDN}
+  handle @immich {
+    reverse_proxy immich-server:3001
+  }
+}

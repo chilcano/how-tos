@@ -68,6 +68,7 @@ Repository with technical indications to install, configure any interesting stuf
 34. [Getting a NodeJS development setup](doc/nodejs-typescript-dev-workflow.md) - tbc
 35. [Install your own Minecraft Server](doc/minecraft-server.md)
 36. [Firewalling in Linux with UFW](doc/firewall-ubuntu.md)
+37. [Immich, a self-hosted Google Photos alternative](doc/immich-self-hosted-google-photos-alt/)
 
 ### Security guides
 
