@@ -77,6 +77,13 @@ docker logs -f immich_server
 
 ### 5. Moving existing Docker volumes to local directories
 
+__0. References__
+
+* https://docs.docker.com/compose/compose-file/07-volumes/
+* https://docs.docker.com/storage/volumes/#backup-restore-or-migrate-data-volumes
+* https://blog.rico-j.de/moving-docker-volumes/
+
+
 __1. Identify the volumes to move__
 
 ```sh
@@ -234,3 +241,12 @@ docker inspect immich_postgres | jq -r ".[].Mounts"
   }
 ]
 ```
+
+__7. Get siz of docker volumes__
+
+```sh
+$ sudo du -hs $HOME/_docker_volumes
+
+8.5G	/home/chilcano/_docker_volumes
+```
+
