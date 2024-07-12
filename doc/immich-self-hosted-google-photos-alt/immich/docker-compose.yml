@@ -16,7 +16,7 @@ services:
     #   file: hwaccel.transcoding.yml
     #   service: cpu # set to one of [nvenc, quicksync, rkmpp, vaapi, vaapi-wsl] for accelerated transcoding
     volumes:
-      - media:/usr/src/app/upload
+      - ${UPLOAD_LOCATION}:/usr/src/app/upload
       - /etc/localtime:/etc/localtime:ro
     env_file:
       - .env
@@ -43,8 +43,6 @@ services:
     #   service: cpu # set to one of [armnn, cuda, openvino, openvino-wsl] for accelerated inference - use the `-wsl` version for WSL2 where applicable
     volumes:
       - model-cache:/cache
-    env_file:
-      - .env
     # restart: always
 
   redis:
@@ -64,8 +62,9 @@ services:
       POSTGRES_DB: ${DB_DATABASE_NAME}
       POSTGRES_INITDB_ARGS: '--data-checksums'
     volumes:
-      # - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
-      - pgdata:/var/lib/postgresql/data
+      - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
+    env_file:
+      - .env
     healthcheck:
       test: pg_isready --dbname='${DB_DATABASE_NAME}' --username='${DB_USERNAME}' || exit 1; Chksum="$$(psql --dbname='${DB_DATABASE_NAME}' --username='${DB_USERNAME}' --tuples-only --no-align --command='SELECT COALESCE(SUM(checksum_failures), 0) FROM pg_stat_database')"; echo "checksum failure count is $$Chksum"; [ "$$Chksum" = '0' ] || exit 1
       interval: 5m
@@ -76,10 +75,10 @@ services:
     restart: unless-stopped
 
 volumes:
-  pgdata:
+  # pgdata:
   model-cache:
   # upload:
-  media:
+  # media:
 
 networks:
   proxy-net:
