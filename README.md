@@ -69,6 +69,8 @@ Repository with technical indications to install, configure any interesting stuf
 35. [Install your own Minecraft Server](doc/minecraft-server.md)
 36. [Firewalling in Linux with UFW](doc/firewall-ubuntu.md)
 37. [Immich, a self-hosted Google Photos alternative](doc/immich-self-hosted-google-photos-alt/)
+38. [Docker Management with Portainer](doc/portainer_install.md)
+39. [Prime Numbers in Python](src/python_challenges/prime_numbers)
 
 ### Security guides
 
