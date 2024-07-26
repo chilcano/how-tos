@@ -7,10 +7,10 @@ def get_primes(num_lower, num_upper):
     prime_list = []
     prime = [True for x in range(num_upper+1)]
     prime[0] = prime[1] = False
-    max_div = math.floor(math.sqrt(num_upper))        ## gets the sqrt of total divisors
+    max_div = math.floor(math.sqrt(num_upper))
     for divisor in range(2, max_div+1):             ## this reduce to sqrt the total of divisors rather than half of divisors
         if prime[divisor] == True:
-            for y in range(divisor*divisor, num_upper+1, divisor):
+            for y in range(divisor*divisor, num_upper+1, divisor): ## removes non prime numbers (multiple of divisor)
                 prime[y] = False
     for z in range(num_lower, num_upper+1):
         if prime[z]:
