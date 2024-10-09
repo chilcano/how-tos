@@ -79,4 +79,5 @@ Repository with technical indications to install, configure any interesting stuf
 3. [Bitnami Sealed Secrets on Google Kubernetes Engine](doc/bitnami_sealed_secrets_on_gke_guide.md)
 4. [Bitnami Decrypt Sealed Secrets](doc/bitnami_sealed_secrets_decrypt.md)
 5. [Trivy - Security Dependencies Checking](doc/trivy_security_dependencies_checking.md)
+6. [Project Discovery Nuclei - Vulnerability scanner](src/hacktools/project-discovery-nuclei.md)
 

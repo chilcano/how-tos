@@ -1,0 +1,32 @@
+name: hacktools
+
+services:
+  nuclei:
+    image: projectdiscovery/nuclei:latest
+    container_name: pd-nuclei
+    volumes:
+      - ./pd:/pd/
+    networks:
+      - hack-net
+    #tty: true
+    #command: tail -F /dev/null
+
+  subfinder:
+    image: projectdiscovery/subfinder:latest
+    container_name: pd-subfinder
+    volumes:
+      - ./pd/templates/:/pd/templates/
+    networks:
+      - hack-net
+
+  httpx:
+    image: projectdiscovery/httpx:latest
+    container_name: pd-httpx
+    volumes:
+      - ./pd/templates/:/pd/templates/
+    networks:
+      - hack-net
+
+networks:
+  hack-net:
+    external: true

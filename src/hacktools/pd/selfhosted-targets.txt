@@ -1,0 +1,3 @@
+https://test.juiceshop.local
+https://prod.juiceshop.local
+https://sockshop.local
