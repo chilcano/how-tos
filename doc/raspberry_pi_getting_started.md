@@ -56,13 +56,17 @@ source <(curl -s https://raw.githubusercontent.com/chilcano/how-tos/main/src/boo
 ### 3. Insert SD Card and boot your RPi
 
 You can connect your Raspberry Pi to:
-1. To computer directly. I've tested this in an Ubuntu Laptop using USB to Ethernet adaptor. Ubuntu detects inmediatelly and assigns an insternal IP Address.
+1. To computer directly through Ethernet port or USB-to-Eth Adapter. I've tested this with an Ubuntu Laptop without Ethernet port. Ubuntu detects inmediatelly and assigns an internal IP Address.
 2. To your Network LAN using a Ethernet cable directly.
 3. To your Wireless LAN. You need to pre-configure your WIFI when burning the Image into your Raspberry Pi.
 
 The next steps help you how to do any scenario.
 
 ### 4. RPi connected directly to Ubuntu Laptop
+
+__Observations:__
+> Unfortunately, this headless method didn't work to me when using `2024-07-04-raspios-bookworm-arm64` and worked previous versions.
+
 
 * 4.1. Connect Raspberry Pi to Laptop with Ethernet.
 
@@ -73,7 +77,7 @@ The next steps help you how to do any scenario.
 
 * 4.4. Navigate to `IPv4` option and select `Shared to other computers`.
 
-* 4.4. Open Terminal and type next command (`$ ip a s`) to get the IP address for the `enx<MAC-ADDRESS>` Network Interface. Also you can see it in `Wired Settings > IPv4`. 
+* 4.4. Open Terminal and type next command (`$ ip a s`) to get the IP address for the `enx<MAC-ADDRESS>` or `enp<STRING>` Network Interface. Also you can see it in `Wired Settings > IPv4`. 
 
 ```sh
 ip a s
@@ -109,7 +113,7 @@ You will see all network interfaces listed:
        valid_lft forever preferred_lft forever
 ```
 
-* 4.5. Install `nmap` 7.9x (7.8 has a bug).
+* 4.5. Install `nmap` 7.9x (7.8 has a bug). The `nmap` will scan and identify the assigned RPi's IP address to connected Laptop.
 
 ```sh
 sudo apt install snapd
@@ -118,7 +122,7 @@ sudo snap connect nmap:network-control
 ``` 
 Now, you are ready to run `nmap`.
 
-* 4.6. With that IP address (`enx8cae4cf9014c with 10.42.0.1/24`), run the next command to scan all active IP addresses under the `10.42.0.0/24` network.
+* 4.6. With that IP address (`enx8cae4cf9014c with 10.42.0.1/24`), run the next command to scan all active IP addresses under the `10.42.0.0/24` network. Generally you will have 2 IP addresses, one of they will be the RPi's IP address.
 
 ```sh
 nmap -sn 10.42.0.0/24
@@ -134,7 +138,7 @@ Host is up (0.00057s latency).
 Nmap done: 256 IP addresses (2 hosts up) scanned in 2.40 seconds
 ```
 
-Run it with `sudo` to get hostnames:
+Run it with `sudo` to get hostnames and MAC:
 ```sh
 sudo nmap -sn 10.42.0.0/24
 ```
@@ -155,6 +159,10 @@ Nmap done: 256 IP addresses (2 hosts up) scanned in 9.25 seconds
 ```sh
 ssh pi@<ip-of-raspberry-pi>       ## Pwd: raspberry, if you used Raspbian or Raspberry OS
 ssh ubuntu@<ip-of-raspberry-pi>   ## Pwd: ubuntu, if you used Ubuntu OS
+```
+In our case the ssh command is:
+```sh
+ssh pi@10.42.0.159
 ```
 
 ### 5. RPi connected directly to same Ubuntu Laptop's LAN 
