@@ -71,6 +71,7 @@ Repository with technical indications to install, configure any interesting stuf
 37. [Immich, a self-hosted Google Photos alternative](doc/immich-self-hosted-google-photos-alt/)
 38. [Docker Management with Portainer](doc/portainer_install.md)
 39. [Prime Numbers in Python](src/python_challenges/prime_numbers)
+40. [Enable WIFI in Ubuntu Recovery Mode](doc/enable_wifi_in_ubuntu_recovery_mode.md)
 
 ### Security guides
 
