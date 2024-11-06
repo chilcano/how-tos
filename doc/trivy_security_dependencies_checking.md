@@ -17,7 +17,7 @@ $ sudo apt-get install trivy
 __2. From Github released binary__
 
 ```sh
-$ curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.49.0
+$ curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.57.0
 ```
 
 ```sh
@@ -67,7 +67,7 @@ Clone any Github repository, go to a project directory to run Trivy from a Termi
 * Scan for vulns, secrets and misconfigs in local folder repo and send results to stdout.
 
 ```sh
-$ trivy fs --format table --vuln-type os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL .
+$ trivy fs --format table --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL .
 ```
 
 You will see these results in your terminal.
@@ -79,7 +79,7 @@ You will see these results in your terminal.
 * Skipping directories. This is convenient when dependencies were installed in local directory and we want to ignore vulnerabilities there. In this case we want to skip the `node_modules` dir.
 
 ```sh
-$ trivy fs --format table --vuln-type os,library --scanners vuln,secret,misconfig --skip-dirs node_modules --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL .
+$ trivy fs --format table --pkg-types os,library --scanners vuln,secret,misconfig --skip-dirs node_modules --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL .
 
 ```
 
@@ -102,7 +102,7 @@ Once built the image, run Trivy to scan it. Note that this scan doesn't use `mis
 For example, the package `swagger2openapi-7.0.8` includes a Dockerfile that run commands as ROOT and Trivy will detect that as issue.
 
 ```sh
-$ trivy image --format table --vuln-type os,library --scanners vuln,secret --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL chilcano/dops-srv-trivy:v1
+$ trivy image --format table --pkg-types os,library --scanners vuln,secret --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL chilcano/dops-srv-trivy:v1
 ```
 
 You will have this output:
@@ -114,14 +114,14 @@ You will have this output:
 * Running Trivy to scan vulns, secrets and misconfigs on local directory and generating HTML.
 
 ```sh
-$ trivy fs --format template --template @/contrib/html.tpl --vuln-type os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL --output trivy-results-repo-55f3040.html .
+$ 
+$ trivy fs --format template --template @/contrib/html.tpl --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL --output trivy-results-repo-55f3040.html .
 ```
-
 
 * Using output template for JUnit.
 
 ```sh
-$ trivy fs --format template --template @/contrib/junit.tpl --vuln-type os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL --output trivy-results-repo-55f3040.junit .
+$ trivy fs --format template --template @/contrib/junit.tpl --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL --output trivy-results-repo-55f3040.junit .
 ```
 
 ### Example 05:
@@ -130,6 +130,55 @@ $ trivy fs --format template --template @/contrib/junit.tpl --vuln-type os,libra
 * Scanning vulns, secrets and misconfig in a remote container image and send report to stdout
 
 ```sh
-$ trivy image --format table --vuln-type os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL ghcr.io/aragon/devops-server:test-55f3040
+$ trivy image --format table --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL ghcr.io/aragon/devops-server:test-55f3040
 ```
 
+### Example 06:
+
+* Scanning vulns, leaked secrets and misconfig in remote container image and generate HTML report.
+* Ref: https://aquasecurity.github.io/trivy/v0.57/docs/configuration/reporting/
+
+> Seems that Trivy versions > v0.47 can not download the default (junit, html, etc.) template from Github.
+> That is reason I download manually.
+
+```sh
+# download the proper template to get a report in a format desired, in this case it will be HTML
+$ wget -q https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl
+
+$ mkdir trivy_out/ && mv html.tpl trivy_out/.
+
+# run trivy and get a HTML report
+$ trivy image --format template --template @html.tpl --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL weaveworksdemos/front-end:0.3.12 -o trivy_out/report-front-end-0.3.12.html 
+
+# Trivy will search the docker image in DockerHub if it doesn't exist locally. It will not download the image.
+$ trivy image --format template --template @html.tpl --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL weaveworksdemos/front-end:latest -o trivy_out/report-front-end-latest.html
+```
+
+
+### Example 07:
+
+* Scanning vulns, leaked secrets and misconfig in remote and __private__ container image hosted in Github Container Registry
+* You need a Github Personal Access Token in order to login into `ghcr.io` and we don't need to download the docker image to local at least we want to run a shell on it.
+* Ref: https://github.com/aquasecurity/trivy/blob/main/docs/docs/advanced/private-registries/index.md
+
+```sh
+# login
+$ CR_PAT="abc...1234567890"
+$ echo $CR_PAT | docker login ghcr.io -u chilcano --password-stdin
+
+# download the proper template to get a report in a format desired, in this case it will be HTML
+$ wget -q https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/html.tpl
+
+$ mkdir trivy_out/ && mv html.tpl trivy_out/.
+
+# run trivy and print report in stdout 
+$ trivy image --format table --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL ghcr.io/chilcano/mac-address-manuf-lookup:main-5781d2c  
+
+# run trivy and get a HTML report
+$ trivy image --format template --template @html.tpl --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL ghcr.io/chilcano/mac-address-manuf-lookup:latest -o trivy_out/report-mac-address-manuf-lookup-latest.html 
+
+# run trivy and get a JSON report. JSON tpl is not needed to be downloaded.
+$ trivy image --format template --template @/contrib/json.tpl --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL ghcr.io/chilcano/mac-address-manuf-lookup:latest -o trivy_out/report-mac-address-manuf-lookup-latest.json 
+
+
+```

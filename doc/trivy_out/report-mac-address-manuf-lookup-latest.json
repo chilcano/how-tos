@@ -1,0 +1,1779 @@
+{
+  "SchemaVersion": 2,
+  "CreatedAt": "2024-11-06T17:22:03.730191392+01:00",
+  "ArtifactName": "ghcr.io/chilcano/mac-address-manuf-lookup:latest",
+  "ArtifactType": "container_image",
+  "Metadata": {
+    "OS": {
+      "Family": "alpine",
+      "Name": "3.20.0"
+    },
+    "ImageID": "sha256:6e1596b31886329e4dbd124ef23b3d9a1185c54b83e9dec00020eab4b3d24b24",
+    "DiffIDs": [
+      "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72",
+      "sha256:2b4aacde20aba82fae6121eac6bc0e093c71a139dbfb912e4887b4877f39a862",
+      "sha256:2d4dfc806acc4792c2968f88b0e1d364d1e46ae53c6551ea3a60c0b9a53dd88c",
+      "sha256:f17b1f60a5008430de2f767bd362525600b08a4915bed5783bc7a778c47c92dd",
+      "sha256:b460a573bcd3c94fb8285c29e46e2ffd3f3d3fd1f68ddfbc6dd30414c51dfe55",
+      "sha256:73be66ea4f6a05273be4ff7b66e452e2065a00f3576318a73bfb017eb63fe1be",
+      "sha256:0293601cad6003a8ddfff5d610eca2e30cc65ad1aa04e7a534b34a128a43668e",
+      "sha256:bd4c24e753f3a7e2a8fd5e2b84e9efb49383fdc676a5a600226be7ff435452f6",
+      "sha256:4441f1adbd8c465a57f85b731c9a6ebd14f78d62b9800b1ab8e1b13ed6e9b5aa",
+      "sha256:d2e0ea79631dfc70dca3e5f523034c994e775eb8511f4b26a7adab83075a32be",
+      "sha256:314cd55c8bf25861df1ab8db8aff648504d4c9e6c54ea742bd9d447cbe358f00",
+      "sha256:95a8fc9e0f6d9430cafabcf53828a5ee9adfd308fb809635f9a0426ffd115429",
+      "sha256:78aa32e5a5ec663df02967962106fa559619fe002cdbe1db9275b1cc1f0aa554",
+      "sha256:7da5430485eb1919c634991c50104be32f92d9ffb050d70f4217eb1997796897",
+      "sha256:941eeda1f3bd264860815ac9e25046aea2ac4c39b2746e14f12c7d6a985f7f97",
+      "sha256:2c8aeec7da4fc85d4f396ae83b92c72cad93898ca3859a8633d918c051b0a2b7",
+      "sha256:530da1c5eb647d5da75b7a5691b8a1d44596273045c6dc585cccffade0ee5ef7"
+    ],
+    "RepoTags": [
+      "ghcr.io/chilcano/mac-address-manuf-lookup:latest"
+    ],
+    "RepoDigests": [
+      "ghcr.io/chilcano/mac-address-manuf-lookup@sha256:895bbc77ba6f134d65402e7a57e0dbd94718a74e0bacf7d58013c02364dffc61"
+    ],
+    "ImageConfig": {
+      "architecture": "amd64",
+      "created": "2024-06-05T15:13:25.902507507Z",
+      "history": [
+        {
+          "created": "2024-05-22T18:18:11.872913732Z",
+          "created_by": "/bin/sh -c #(nop) ADD file:e3abcdba177145039cfef1ad882f9f81a612a24c9f044b19f713b95454d2e3f6 in / "
+        },
+        {
+          "created": "2024-05-22T18:18:12.052034407Z",
+          "created_by": "/bin/sh -c #(nop)  CMD [\"/bin/sh\"]",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-05-22T12:26:30Z",
+          "created_by": "ENV PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-05-22T12:26:30Z",
+          "created_by": "ENV LANG=C.UTF-8",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-05-22T12:26:30Z",
+          "created_by": "RUN /bin/sh -c set -eux; \tapk add --no-cache \t\tca-certificates \t\ttzdata \t; # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-22T12:26:30Z",
+          "created_by": "ENV GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-05-22T12:26:30Z",
+          "created_by": "ENV PYTHON_VERSION=3.12.3",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-05-22T12:26:30Z",
+          "created_by": "RUN /bin/sh -c set -eux; \t\tapk add --no-cache --virtual .build-deps \t\tgnupg \t\ttar \t\txz \t\t\t\tbluez-dev \t\tbzip2-dev \t\tdpkg-dev dpkg \t\texpat-dev \t\tfindutils \t\tgcc \t\tgdbm-dev \t\tlibc-dev \t\tlibffi-dev \t\tlibnsl-dev \t\tlibtirpc-dev \t\tlinux-headers \t\tmake \t\tncurses-dev \t\topenssl-dev \t\tpax-utils \t\treadline-dev \t\tsqlite-dev \t\ttcl-dev \t\ttk \t\ttk-dev \t\tutil-linux-dev \t\txz-dev \t\tzlib-dev \t; \t\twget -O python.tar.xz \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz\"; \twget -O python.tar.xz.asc \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc\"; \tGNUPGHOME=\"$(mktemp -d)\"; export GNUPGHOME; \tgpg --batch --keyserver hkps://keys.openpgp.org --recv-keys \"$GPG_KEY\"; \tgpg --batch --verify python.tar.xz.asc python.tar.xz; \tgpgconf --kill all; \trm -rf \"$GNUPGHOME\" python.tar.xz.asc; \tmkdir -p /usr/src/python; \ttar --extract --directory /usr/src/python --strip-components=1 --file python.tar.xz; \trm python.tar.xz; \t\tcd /usr/src/python; \tgnuArch=\"$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)\"; \t./configure \t\t--build=\"$gnuArch\" \t\t--enable-loadable-sqlite-extensions \t\t--enable-optimizations \t\t--enable-option-checking=fatal \t\t--enable-shared \t\t--with-lto \t\t--with-system-expat \t\t--without-ensurepip \t; \tnproc=\"$(nproc)\"; \tEXTRA_CFLAGS=\"-DTHREAD_STACK_SIZE=0x100000\"; \tLDFLAGS=\"${LDFLAGS:--Wl},--strip-all\"; \tmake -j \"$nproc\" \t\t\"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\" \t\t\"LDFLAGS=${LDFLAGS:-}\" \t\t\"PROFILE_TASK=${PROFILE_TASK:-}\" \t; \trm python; \tmake -j \"$nproc\" \t\t\"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\" \t\t\"LDFLAGS=${LDFLAGS:--Wl},-rpath='\\$\\$ORIGIN/../lib'\" \t\t\"PROFILE_TASK=${PROFILE_TASK:-}\" \t\tpython \t; \tmake install; \t\tcd /; \trm -rf /usr/src/python; \t\tfind /usr/local -depth \t\t\\( \t\t\t\\( -type d -a \\( -name test -o -name tests -o -name idle_test \\) \\) \t\t\t-o \\( -type f -a \\( -name '*.pyc' -o -name '*.pyo' -o -name 'libpython*.a' \\) \\) \t\t\\) -exec rm -rf '{}' + \t; \t\tfind /usr/local -type f -executable -not \\( -name '*tkinter*' \\) -exec scanelf --needed --nobanner --format '%n#p' '{}' ';' \t\t| tr ',' '\\n' \t\t| sort -u \t\t| awk 'system(\"[ -e /usr/local/lib/\" $1 \" ]\") == 0 { next } { print \"so:\" $1 }' \t\t| xargs -rt apk add --no-network --virtual .python-rundeps \t; \tapk del --no-network .build-deps; \t\tpython3 --version # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-22T12:26:30Z",
+          "created_by": "RUN /bin/sh -c set -eux; \tfor src in idle3 pydoc3 python3 python3-config; do \t\tdst=\"$(echo \"$src\" | tr -d 3)\"; \t\t[ -s \"/usr/local/bin/$src\" ]; \t\t[ ! -e \"/usr/local/bin/$dst\" ]; \t\tln -svT \"$src\" \"/usr/local/bin/$dst\"; \tdone # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-22T12:26:30Z",
+          "created_by": "ENV PYTHON_PIP_VERSION=24.0",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-05-22T12:26:30Z",
+          "created_by": "ENV PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/dbf0c85f76fb6e1ab42aa672ffca6f0a675d9ee4/public/get-pip.py",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-05-22T12:26:30Z",
+          "created_by": "ENV PYTHON_GET_PIP_SHA256=dfe9fd5c28dc98b5ac17979a953ea550cec37ae1b47a5116007395bfacff2ab9",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-05-22T12:26:30Z",
+          "created_by": "RUN /bin/sh -c set -eux; \t\twget -O get-pip.py \"$PYTHON_GET_PIP_URL\"; \techo \"$PYTHON_GET_PIP_SHA256 *get-pip.py\" | sha256sum -c -; \t\texport PYTHONDONTWRITEBYTECODE=1; \t\tpython get-pip.py \t\t--disable-pip-version-check \t\t--no-cache-dir \t\t--no-compile \t\t\"pip==$PYTHON_PIP_VERSION\" \t; \trm -f get-pip.py; \t\tpip --version # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-05-22T12:26:30Z",
+          "created_by": "CMD [\"python3\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-06-05T14:34:04.779159298Z",
+          "created_by": "LABEL author=Roger Carhuatocto",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-06-05T14:34:04.779159298Z",
+          "created_by": "LABEL description=A MAC Address Manufacturer Lookup RESTful API",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-06-05T14:34:04.779159298Z",
+          "created_by": "LABEL blog=https://holisticsecurity.io",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-06-05T14:34:04.779159298Z",
+          "created_by": "LABEL post=https://holisticsecurity.wordpress.com/2016/02/02/everything-generates-data-capturing-wifi-anonymous-traffic-raspberrypi-wso2-part-i/",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-06-05T14:34:04.779159298Z",
+          "created_by": "LABEL version=1.4",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-06-05T14:34:04.779159298Z",
+          "created_by": "RUN /bin/sh -c pip install --upgrade pip # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-06-05T14:34:05.285494764Z",
+          "created_by": "RUN /bin/sh -c apk add --update --no-cache openssl # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-06-05T14:34:05.295610554Z",
+          "created_by": "WORKDIR /code",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-06-05T14:34:05.367219834Z",
+          "created_by": "RUN /bin/sh -c addgroup -S mygroup \u0026\u0026 adduser -S myuser -G mygroup -s /sbin/nologin # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-06-05T14:34:05.436313172Z",
+          "created_by": "RUN /bin/sh -c chown -R myuser:mygroup /code # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-06-05T14:34:05.436313172Z",
+          "created_by": "USER myuser",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-06-05T15:13:14.53867584Z",
+          "created_by": "COPY ./src/python/requirements.txt . # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-06-05T15:13:25.094019135Z",
+          "created_by": "RUN /bin/sh -c pip install -r requirements.txt # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-06-05T15:13:25.094019135Z",
+          "created_by": "EXPOSE map[5443/tcp:{}]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        },
+        {
+          "created": "2024-06-05T15:13:25.125887679Z",
+          "created_by": "COPY ./src/python/mac_manuf_wireshark_file.py . # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-06-05T15:13:25.134795848Z",
+          "created_by": "COPY ./src/python/mac_manuf_table_def.py . # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-06-05T15:13:25.144534818Z",
+          "created_by": "COPY ./src/python/mac_manuf_api_rest.py . # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-06-05T15:13:25.153772446Z",
+          "created_by": "COPY ./src/python/mac_manuf_api_rest_https.py . # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-06-05T15:13:25.902507507Z",
+          "created_by": "RUN /bin/sh -c python ./mac_manuf_wireshark_file.py # buildkit",
+          "comment": "buildkit.dockerfile.v0"
+        },
+        {
+          "created": "2024-06-05T15:13:25.902507507Z",
+          "created_by": "CMD [\"python\" \"./mac_manuf_api_rest_https.py\"]",
+          "comment": "buildkit.dockerfile.v0",
+          "empty_layer": true
+        }
+      ],
+      "os": "linux",
+      "rootfs": {
+        "type": "layers",
+        "diff_ids": [
+          "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72",
+          "sha256:2b4aacde20aba82fae6121eac6bc0e093c71a139dbfb912e4887b4877f39a862",
+          "sha256:2d4dfc806acc4792c2968f88b0e1d364d1e46ae53c6551ea3a60c0b9a53dd88c",
+          "sha256:f17b1f60a5008430de2f767bd362525600b08a4915bed5783bc7a778c47c92dd",
+          "sha256:b460a573bcd3c94fb8285c29e46e2ffd3f3d3fd1f68ddfbc6dd30414c51dfe55",
+          "sha256:73be66ea4f6a05273be4ff7b66e452e2065a00f3576318a73bfb017eb63fe1be",
+          "sha256:0293601cad6003a8ddfff5d610eca2e30cc65ad1aa04e7a534b34a128a43668e",
+          "sha256:bd4c24e753f3a7e2a8fd5e2b84e9efb49383fdc676a5a600226be7ff435452f6",
+          "sha256:4441f1adbd8c465a57f85b731c9a6ebd14f78d62b9800b1ab8e1b13ed6e9b5aa",
+          "sha256:d2e0ea79631dfc70dca3e5f523034c994e775eb8511f4b26a7adab83075a32be",
+          "sha256:314cd55c8bf25861df1ab8db8aff648504d4c9e6c54ea742bd9d447cbe358f00",
+          "sha256:95a8fc9e0f6d9430cafabcf53828a5ee9adfd308fb809635f9a0426ffd115429",
+          "sha256:78aa32e5a5ec663df02967962106fa559619fe002cdbe1db9275b1cc1f0aa554",
+          "sha256:7da5430485eb1919c634991c50104be32f92d9ffb050d70f4217eb1997796897",
+          "sha256:941eeda1f3bd264860815ac9e25046aea2ac4c39b2746e14f12c7d6a985f7f97",
+          "sha256:2c8aeec7da4fc85d4f396ae83b92c72cad93898ca3859a8633d918c051b0a2b7",
+          "sha256:530da1c5eb647d5da75b7a5691b8a1d44596273045c6dc585cccffade0ee5ef7"
+        ]
+      },
+      "config": {
+        "Cmd": [
+          "python",
+          "./mac_manuf_api_rest_https.py"
+        ],
+        "Env": [
+          "PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+          "LANG=C.UTF-8",
+          "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+          "PYTHON_VERSION=3.12.3",
+          "PYTHON_PIP_VERSION=24.0",
+          "PYTHON_GET_PIP_URL=https://github.com/pypa/get-pip/raw/dbf0c85f76fb6e1ab42aa672ffca6f0a675d9ee4/public/get-pip.py",
+          "PYTHON_GET_PIP_SHA256=dfe9fd5c28dc98b5ac17979a953ea550cec37ae1b47a5116007395bfacff2ab9"
+        ],
+        "Labels": {
+          "author": "Roger Carhuatocto",
+          "blog": "https://holisticsecurity.io",
+          "description": "A MAC Address Manufacturer Lookup RESTful API",
+          "post": "https://holisticsecurity.wordpress.com/2016/02/02/everything-generates-data-capturing-wifi-anonymous-traffic-raspberrypi-wso2-part-i/",
+          "version": "1.4"
+        },
+        "User": "myuser",
+        "WorkingDir": "/code",
+        "ExposedPorts": {
+          "5443/tcp": {}
+        },
+        "ArgsEscaped": true
+      }
+    }
+  },
+  "Results": [
+    {
+      "Target": "ghcr.io/chilcano/mac-address-manuf-lookup:latest (alpine 3.20.0)",
+      "Class": "os-pkgs",
+      "Type": "alpine",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2023-42364",
+          "PkgID": "busybox@1.36.1-r28",
+          "PkgName": "busybox",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/busybox@1.36.1-r28?arch=x86_64\u0026distro=3.20.0",
+            "UID": "b81e03862228fe1c"
+          },
+          "InstalledVersion": "1.36.1-r28",
+          "FixedVersion": "1.36.1-r29",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-42364",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "busybox: use-after-free",
+          "Description": "A use-after-free vulnerability in BusyBox v.1.36.1 allows attackers to cause a denial of service via a crafted awk pattern in the awk.c evaluate function.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-416"
+          ],
+          "VendorSeverity": {
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 5.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 7.8
+            }
+          },
+          "References": [
+            "http://lists.busybox.net/pipermail/busybox/2024-May/090762.html",
+            "https://access.redhat.com/security/cve/CVE-2023-42364",
+            "https://bugs.busybox.net/show_bug.cgi?id=15868",
+            "https://gitlab.alpinelinux.org/alpine/aports/-/blob/master/main/busybox/CVE-2023-42364-CVE-2023-42365.patch",
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-42364",
+            "https://ubuntu.com/security/notices/USN-6961-1",
+            "https://www.cve.org/CVERecord?id=CVE-2023-42364"
+          ],
+          "PublishedDate": "2023-11-27T23:15:07.313Z",
+          "LastModifiedDate": "2024-10-11T21:36:08.877Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2023-42365",
+          "PkgID": "busybox@1.36.1-r28",
+          "PkgName": "busybox",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/busybox@1.36.1-r28?arch=x86_64\u0026distro=3.20.0",
+            "UID": "b81e03862228fe1c"
+          },
+          "InstalledVersion": "1.36.1-r28",
+          "FixedVersion": "1.36.1-r29",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-42365",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "busybox: use-after-free",
+          "Description": "A use-after-free vulnerability was discovered in BusyBox v.1.36.1 via a crafted awk pattern in the awk.c copyvar function.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-416"
+          ],
+          "VendorSeverity": {
+            "azure": 2,
+            "cbl-mariner": 2,
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 5.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 7.8
+            }
+          },
+          "References": [
+            "http://lists.busybox.net/pipermail/busybox/2024-May/090762.html",
+            "https://access.redhat.com/security/cve/CVE-2023-42365",
+            "https://bugs.busybox.net/show_bug.cgi?id=15871",
+            "https://gitlab.alpinelinux.org/alpine/aports/-/blob/master/main/busybox/CVE-2023-42364-CVE-2023-42365.patch",
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-42365",
+            "https://ubuntu.com/security/notices/USN-6961-1",
+            "https://www.cve.org/CVERecord?id=CVE-2023-42365"
+          ],
+          "PublishedDate": "2023-11-27T23:15:07.373Z",
+          "LastModifiedDate": "2023-11-30T05:08:08.77Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2023-42364",
+          "PkgID": "busybox-binsh@1.36.1-r28",
+          "PkgName": "busybox-binsh",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/busybox-binsh@1.36.1-r28?arch=x86_64\u0026distro=3.20.0",
+            "UID": "985f4a0d0359956c"
+          },
+          "InstalledVersion": "1.36.1-r28",
+          "FixedVersion": "1.36.1-r29",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-42364",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "busybox: use-after-free",
+          "Description": "A use-after-free vulnerability in BusyBox v.1.36.1 allows attackers to cause a denial of service via a crafted awk pattern in the awk.c evaluate function.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-416"
+          ],
+          "VendorSeverity": {
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 5.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 7.8
+            }
+          },
+          "References": [
+            "http://lists.busybox.net/pipermail/busybox/2024-May/090762.html",
+            "https://access.redhat.com/security/cve/CVE-2023-42364",
+            "https://bugs.busybox.net/show_bug.cgi?id=15868",
+            "https://gitlab.alpinelinux.org/alpine/aports/-/blob/master/main/busybox/CVE-2023-42364-CVE-2023-42365.patch",
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-42364",
+            "https://ubuntu.com/security/notices/USN-6961-1",
+            "https://www.cve.org/CVERecord?id=CVE-2023-42364"
+          ],
+          "PublishedDate": "2023-11-27T23:15:07.313Z",
+          "LastModifiedDate": "2024-10-11T21:36:08.877Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2023-42365",
+          "PkgID": "busybox-binsh@1.36.1-r28",
+          "PkgName": "busybox-binsh",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/busybox-binsh@1.36.1-r28?arch=x86_64\u0026distro=3.20.0",
+            "UID": "985f4a0d0359956c"
+          },
+          "InstalledVersion": "1.36.1-r28",
+          "FixedVersion": "1.36.1-r29",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-42365",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "busybox: use-after-free",
+          "Description": "A use-after-free vulnerability was discovered in BusyBox v.1.36.1 via a crafted awk pattern in the awk.c copyvar function.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-416"
+          ],
+          "VendorSeverity": {
+            "azure": 2,
+            "cbl-mariner": 2,
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 5.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 7.8
+            }
+          },
+          "References": [
+            "http://lists.busybox.net/pipermail/busybox/2024-May/090762.html",
+            "https://access.redhat.com/security/cve/CVE-2023-42365",
+            "https://bugs.busybox.net/show_bug.cgi?id=15871",
+            "https://gitlab.alpinelinux.org/alpine/aports/-/blob/master/main/busybox/CVE-2023-42364-CVE-2023-42365.patch",
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-42365",
+            "https://ubuntu.com/security/notices/USN-6961-1",
+            "https://www.cve.org/CVERecord?id=CVE-2023-42365"
+          ],
+          "PublishedDate": "2023-11-27T23:15:07.373Z",
+          "LastModifiedDate": "2023-11-30T05:08:08.77Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-4741",
+          "PkgID": "libcrypto3@3.3.0-r2",
+          "PkgName": "libcrypto3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libcrypto3@3.3.0-r2?arch=x86_64\u0026distro=3.20.0",
+            "UID": "4b33e8088ef31713"
+          },
+          "InstalledVersion": "3.3.0-r2",
+          "FixedVersion": "3.3.0-r3",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-4741",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: Use After Free with SSL_free_buffers",
+          "Description": "A use-after-free vulnerability was found in OpenSSL. Calling the OpenSSL API SSL_free_buffers function may cause memory to be accessed that was previously freed in some situations.",
+          "Severity": "MEDIUM",
+          "VendorSeverity": {
+            "amazon": 2,
+            "cbl-mariner": 3,
+            "photon": 2,
+            "redhat": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L",
+              "V3Score": 5.6
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2024-4741",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-4741",
+            "https://ubuntu.com/security/notices/USN-6937-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-4741",
+            "https://www.openssl.org/news/secadv/20240528.txt"
+          ]
+        },
+        {
+          "VulnerabilityID": "CVE-2024-5535",
+          "PkgID": "libcrypto3@3.3.0-r2",
+          "PkgName": "libcrypto3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libcrypto3@3.3.0-r2?arch=x86_64\u0026distro=3.20.0",
+            "UID": "4b33e8088ef31713"
+          },
+          "InstalledVersion": "3.3.0-r2",
+          "FixedVersion": "3.3.1-r1",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-5535",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: SSL_select_next_proto buffer overread",
+          "Description": "Issue summary: Calling the OpenSSL API function SSL_select_next_proto with an\nempty supported client protocols buffer may cause a crash or memory contents to\nbe sent to the peer.\n\nImpact summary: A buffer overread can have a range of potential consequences\nsuch as unexpected application beahviour or a crash. In particular this issue\ncould result in up to 255 bytes of arbitrary private data from memory being sent\nto the peer leading to a loss of confidentiality. However, only applications\nthat directly call the SSL_select_next_proto function with a 0 length list of\nsupported client protocols are affected by this issue. This would normally never\nbe a valid scenario and is typically not under attacker control but may occur by\naccident in the case of a configuration or programming error in the calling\napplication.\n\nThe OpenSSL API function SSL_select_next_proto is typically used by TLS\napplications that support ALPN (Application Layer Protocol Negotiation) or NPN\n(Next Protocol Negotiation). NPN is older, was never standardised and\nis deprecated in favour of ALPN. We believe that ALPN is significantly more\nwidely deployed than NPN. The SSL_select_next_proto function accepts a list of\nprotocols from the server and a list of protocols from the client and returns\nthe first protocol that appears in the server list that also appears in the\nclient list. In the case of no overlap between the two lists it returns the\nfirst item in the client list. In either case it will signal whether an overlap\nbetween the two lists was found. In the case where SSL_select_next_proto is\ncalled with a zero length client list it fails to notice this condition and\nreturns the memory immediately following the client list pointer (and reports\nthat there was no overlap in the lists).\n\nThis function is typically called from a server side application callback for\nALPN or a client side application callback for NPN. In the case of ALPN the list\nof protocols supplied by the client is guaranteed by libssl to never be zero in\nlength. The list of server protocols comes from the application and should never\nnormally be expected to be of zero length. In this case if the\nSSL_select_next_proto function has been called as expected (with the list\nsupplied by the client passed in the client/client_len parameters), then the\napplication will not be vulnerable to this issue. If the application has\naccidentally been configured with a zero length server list, and has\naccidentally passed that zero length server list in the client/client_len\nparameters, and has additionally failed to correctly handle a \"no overlap\"\nresponse (which would normally result in a handshake failure in ALPN) then it\nwill be vulnerable to this problem.\n\nIn the case of NPN, the protocol permits the client to opportunistically select\na protocol when there is no overlap. OpenSSL returns the first client protocol\nin the no overlap case in support of this. The list of client protocols comes\nfrom the application and should never normally be expected to be of zero length.\nHowever if the SSL_select_next_proto function is accidentally called with a\nclient_len of 0 then an invalid memory pointer will be returned instead. If the\napplication uses this output as the opportunistic protocol then the loss of\nconfidentiality will occur.\n\nThis issue has been assessed as Low severity because applications are most\nlikely to be vulnerable if they are using NPN instead of ALPN - but NPN is not\nwidely used. It also requires an application configuration or programming error.\nFinally, this issue would not typically be under attacker control making active\nexploitation unlikely.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.\n\nDue to the low severity of this issue we are not issuing new releases of\nOpenSSL at this time. The fix will be included in the next releases when they\nbecome available.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-200"
+          ],
+          "VendorSeverity": {
+            "alma": 1,
+            "amazon": 2,
+            "azure": 2,
+            "cbl-mariner": 4,
+            "oracle-oval": 1,
+            "photon": 4,
+            "redhat": 1,
+            "rocky": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2024/06/27/1",
+            "http://www.openwall.com/lists/oss-security/2024/06/28/4",
+            "https://access.redhat.com/errata/RHSA-2024:7848",
+            "https://access.redhat.com/security/cve/CVE-2024-5535",
+            "https://bugzilla.redhat.com/2294581",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2294581",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-5535",
+            "https://errata.almalinux.org/8/ALSA-2024-7848.html",
+            "https://errata.rockylinux.org/RLSA-2024:7848",
+            "https://github.com/openssl/openssl/commit/4ada436a1946cbb24db5ab4ca082b69c1bc10f37",
+            "https://github.com/openssl/openssl/commit/99fb785a5f85315b95288921a321a935ea29a51e",
+            "https://github.com/openssl/openssl/commit/cf6f91f6121f4db167405db2f0de410a456f260c",
+            "https://github.com/openssl/openssl/commit/e86ac436f0bd54d4517745483e2315650fae7b2c",
+            "https://github.openssl.org/openssl/extended-releases/commit/9947251413065a05189a63c9b7a6c1d4e224c21c",
+            "https://github.openssl.org/openssl/extended-releases/commit/b78ec0824da857223486660177d3b1f255c65d87",
+            "https://linux.oracle.com/cve/CVE-2024-5535.html",
+            "https://linux.oracle.com/errata/ELSA-2024-7848.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-5535",
+            "https://openssl.org/news/secadv/20240627.txt",
+            "https://security.netapp.com/advisory/ntap-20240712-0005/",
+            "https://ubuntu.com/security/notices/USN-6937-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-5535",
+            "https://www.openssl.org/news/secadv/20240627.txt",
+            "https://www.oracle.com/security-alerts/cpuoct2024.html#AppendixMSQL"
+          ],
+          "PublishedDate": "2024-06-27T11:15:24.447Z",
+          "LastModifiedDate": "2024-07-12T14:15:16.79Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-6119",
+          "PkgID": "libcrypto3@3.3.0-r2",
+          "PkgName": "libcrypto3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libcrypto3@3.3.0-r2?arch=x86_64\u0026distro=3.20.0",
+            "UID": "4b33e8088ef31713"
+          },
+          "InstalledVersion": "3.3.0-r2",
+          "FixedVersion": "3.3.2-r0",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-6119",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: Possible denial of service in X.509 name checks",
+          "Description": "Issue summary: Applications performing certificate name checks (e.g., TLS\nclients checking server certificates) may attempt to read an invalid memory\naddress resulting in abnormal termination of the application process.\n\nImpact summary: Abnormal termination of an application can a cause a denial of\nservice.\n\nApplications performing certificate name checks (e.g., TLS clients checking\nserver certificates) may attempt to read an invalid memory address when\ncomparing the expected name with an `otherName` subject alternative name of an\nX.509 certificate. This may result in an exception that terminates the\napplication program.\n\nNote that basic certificate chain validation (signatures, dates, ...) is not\naffected, the denial of service can occur only when the application also\nspecifies an expected DNS name, Email address or IP address.\n\nTLS servers rarely solicit client certificates, and even when they do, they\ngenerally don't perform a name check against a reference identifier (expected\nidentity), but rather extract the presented identity after checking the\ncertificate chain.  So TLS servers are generally not affected and the severity\nof the issue is Moderate.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-843"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 2,
+            "azure": 3,
+            "cbl-mariner": 3,
+            "oracle-oval": 2,
+            "photon": 3,
+            "redhat": 2,
+            "rocky": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2024:6783",
+            "https://access.redhat.com/security/cve/CVE-2024-6119",
+            "https://bugzilla.redhat.com/2306158",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2306158",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-6119",
+            "https://errata.almalinux.org/9/ALSA-2024-6783.html",
+            "https://errata.rockylinux.org/RLSA-2024:6783",
+            "https://github.com/openssl/openssl/commit/05f360d9e849a1b277db628f1f13083a7f8dd04f",
+            "https://github.com/openssl/openssl/commit/06d1dc3fa96a2ba5a3e22735a033012aadc9f0d6",
+            "https://github.com/openssl/openssl/commit/621f3729831b05ee828a3203eddb621d014ff2b2",
+            "https://github.com/openssl/openssl/commit/7dfcee2cd2a63b2c64b9b4b0850be64cb695b0a0",
+            "https://github.com/openssl/openssl/security/advisories/GHSA-5qrj-vq78-58fj",
+            "https://linux.oracle.com/cve/CVE-2024-6119.html",
+            "https://linux.oracle.com/errata/ELSA-2024-6783.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-6119",
+            "https://openssl-library.org/news/secadv/20240903.txt",
+            "https://ubuntu.com/security/notices/USN-6986-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-6119"
+          ],
+          "PublishedDate": "2024-09-03T16:15:07.177Z",
+          "LastModifiedDate": "2024-09-03T21:35:12.987Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-9143",
+          "PkgID": "libcrypto3@3.3.0-r2",
+          "PkgName": "libcrypto3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libcrypto3@3.3.0-r2?arch=x86_64\u0026distro=3.20.0",
+            "UID": "4b33e8088ef31713"
+          },
+          "InstalledVersion": "3.3.0-r2",
+          "FixedVersion": "3.3.2-r1",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-9143",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: Low-level invalid GF(2^m) parameters lead to OOB memory access",
+          "Description": "Issue summary: Use of the low-level GF(2^m) elliptic curve APIs with untrusted\nexplicit values for the field polynomial can lead to out-of-bounds memory reads\nor writes.\n\nImpact summary: Out of bound memory writes can lead to an application crash or\neven a possibility of a remote code execution, however, in all the protocols\ninvolving Elliptic Curve Cryptography that we're aware of, either only \"named\ncurves\" are supported, or, if explicit curve parameters are supported, they\nspecify an X9.62 encoding of binary (GF(2^m)) curves that can't represent\nproblematic input values. Thus the likelihood of existence of a vulnerable\napplication is low.\n\nIn particular, the X9.62 encoding is used for ECC keys in X.509 certificates,\nso problematic inputs cannot occur in the context of processing X.509\ncertificates.  Any problematic use-cases would have to be using an \"exotic\"\ncurve encoding.\n\nThe affected APIs include: EC_GROUP_new_curve_GF2m(), EC_GROUP_new_from_params(),\nand various supporting BN_GF2m_*() functions.\n\nApplications working with \"exotic\" explicit binary (GF(2^m)) curve parameters,\nthat make it possible to represent invalid field polynomials with a zero\nconstant term, via the above or similar APIs, may terminate abruptly as a\nresult of reading or writing outside of array bounds.  Remote code execution\ncannot easily be ruled out.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "Severity": "LOW",
+          "CweIDs": [
+            "CWE-787"
+          ],
+          "VendorSeverity": {
+            "redhat": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V3Score": 3.7
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2024-9143",
+            "https://github.com/openssl/openssl/commit/72ae83ad214d2eef262461365a1975707f862712",
+            "https://github.com/openssl/openssl/commit/bc7e04d7c8d509fb78fc0e285aa948fb0da04700",
+            "https://github.com/openssl/openssl/commit/c0d3e4d32d2805f49bec30547f225bc4d092e1f4",
+            "https://github.com/openssl/openssl/commit/fdf6723362ca51bd883295efe206cb5b1cfa5154",
+            "https://github.openssl.org/openssl/extended-releases/commit/8efc0cbaa8ebba8e116f7b81a876a4123594d86a",
+            "https://github.openssl.org/openssl/extended-releases/commit/9d576994cec2b7aa37a91740ea7e680810957e41",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-9143",
+            "https://openssl-library.org/news/secadv/20241016.txt",
+            "https://www.cve.org/CVERecord?id=CVE-2024-9143"
+          ],
+          "PublishedDate": "2024-10-16T17:15:18.13Z",
+          "LastModifiedDate": "2024-10-18T12:53:04.627Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-45491",
+          "PkgID": "libexpat@2.6.2-r0",
+          "PkgName": "libexpat",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libexpat@2.6.2-r0?arch=x86_64\u0026distro=3.20.0",
+            "UID": "fede3295dcb07bb3"
+          },
+          "InstalledVersion": "2.6.2-r0",
+          "FixedVersion": "2.6.3-r0",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:17b8b3e271e5b605ee5646251d4733514718b7b4efee222d4c5be3d49b63a361",
+            "DiffID": "sha256:2d4dfc806acc4792c2968f88b0e1d364d1e46ae53c6551ea3a60c0b9a53dd88c"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-45491",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "libexpat: Integer Overflow or Wraparound",
+          "Description": "An issue was discovered in libexpat before 2.6.3. dtdCopy in xmlparse.c can have an integer overflow for nDefaultAtts on 32-bit platforms (where UINT_MAX equals SIZE_MAX).",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-190"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "azure": 3,
+            "cbl-mariner": 3,
+            "nvd": 4,
+            "oracle-oval": 2,
+            "photon": 4,
+            "redhat": 2,
+            "rocky": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2024:6754",
+            "https://access.redhat.com/security/cve/CVE-2024-45491",
+            "https://bugzilla.redhat.com/2308615",
+            "https://bugzilla.redhat.com/2308616",
+            "https://bugzilla.redhat.com/2308617",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2308615",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2308616",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2308617",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-45490",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-45491",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-45492",
+            "https://errata.almalinux.org/9/ALSA-2024-6754.html",
+            "https://errata.rockylinux.org/RLSA-2024:6989",
+            "https://github.com/libexpat/libexpat/blob/R_2_6_3/expat/Changes",
+            "https://github.com/libexpat/libexpat/issues/888",
+            "https://github.com/libexpat/libexpat/pull/891",
+            "https://linux.oracle.com/cve/CVE-2024-45491.html",
+            "https://linux.oracle.com/errata/ELSA-2024-6989.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-45491",
+            "https://ubuntu.com/security/notices/USN-7000-1",
+            "https://ubuntu.com/security/notices/USN-7000-2",
+            "https://ubuntu.com/security/notices/USN-7001-1",
+            "https://ubuntu.com/security/notices/USN-7001-2",
+            "https://www.cve.org/CVERecord?id=CVE-2024-45491"
+          ],
+          "PublishedDate": "2024-08-30T03:15:03.85Z",
+          "LastModifiedDate": "2024-09-04T14:28:33.953Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-45492",
+          "PkgID": "libexpat@2.6.2-r0",
+          "PkgName": "libexpat",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libexpat@2.6.2-r0?arch=x86_64\u0026distro=3.20.0",
+            "UID": "fede3295dcb07bb3"
+          },
+          "InstalledVersion": "2.6.2-r0",
+          "FixedVersion": "2.6.3-r0",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:17b8b3e271e5b605ee5646251d4733514718b7b4efee222d4c5be3d49b63a361",
+            "DiffID": "sha256:2d4dfc806acc4792c2968f88b0e1d364d1e46ae53c6551ea3a60c0b9a53dd88c"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-45492",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "libexpat: integer overflow",
+          "Description": "An issue was discovered in libexpat before 2.6.3. nextScaffoldPart in xmlparse.c can have an integer overflow for m_groupSize on 32-bit platforms (where UINT_MAX equals SIZE_MAX).",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-190"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "azure": 3,
+            "cbl-mariner": 3,
+            "nvd": 4,
+            "oracle-oval": 2,
+            "photon": 4,
+            "redhat": 2,
+            "rocky": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 6.2
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2024:6754",
+            "https://access.redhat.com/security/cve/CVE-2024-45492",
+            "https://bugzilla.redhat.com/2308615",
+            "https://bugzilla.redhat.com/2308616",
+            "https://bugzilla.redhat.com/2308617",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2308615",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2308616",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2308617",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-45490",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-45491",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-45492",
+            "https://errata.almalinux.org/9/ALSA-2024-6754.html",
+            "https://errata.rockylinux.org/RLSA-2024:6989",
+            "https://github.com/libexpat/libexpat/blob/R_2_6_3/expat/Changes",
+            "https://github.com/libexpat/libexpat/issues/889",
+            "https://github.com/libexpat/libexpat/pull/892",
+            "https://linux.oracle.com/cve/CVE-2024-45492.html",
+            "https://linux.oracle.com/errata/ELSA-2024-6989.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-45492",
+            "https://ubuntu.com/security/notices/USN-7000-1",
+            "https://ubuntu.com/security/notices/USN-7000-2",
+            "https://www.cve.org/CVERecord?id=CVE-2024-45492"
+          ],
+          "PublishedDate": "2024-08-30T03:15:03.93Z",
+          "LastModifiedDate": "2024-09-04T14:28:41.76Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-45490",
+          "PkgID": "libexpat@2.6.2-r0",
+          "PkgName": "libexpat",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libexpat@2.6.2-r0?arch=x86_64\u0026distro=3.20.0",
+            "UID": "fede3295dcb07bb3"
+          },
+          "InstalledVersion": "2.6.2-r0",
+          "FixedVersion": "2.6.3-r0",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:17b8b3e271e5b605ee5646251d4733514718b7b4efee222d4c5be3d49b63a361",
+            "DiffID": "sha256:2d4dfc806acc4792c2968f88b0e1d364d1e46ae53c6551ea3a60c0b9a53dd88c"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-45490",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "libexpat: Negative Length Parsing Vulnerability in libexpat",
+          "Description": "An issue was discovered in libexpat before 2.6.3. xmlparse.c does not reject a negative length for XML_ParseBuffer.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-611"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "azure": 3,
+            "cbl-mariner": 3,
+            "nvd": 3,
+            "oracle-oval": 2,
+            "photon": 3,
+            "redhat": 2,
+            "rocky": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2024:6754",
+            "https://access.redhat.com/security/cve/CVE-2024-45490",
+            "https://bugzilla.redhat.com/2308615",
+            "https://bugzilla.redhat.com/2308616",
+            "https://bugzilla.redhat.com/2308617",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2308615",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2308616",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2308617",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-45490",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-45491",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-45492",
+            "https://errata.almalinux.org/9/ALSA-2024-6754.html",
+            "https://errata.rockylinux.org/RLSA-2024:6989",
+            "https://github.com/libexpat/libexpat/blob/R_2_6_3/expat/Changes",
+            "https://github.com/libexpat/libexpat/issues/887",
+            "https://github.com/libexpat/libexpat/pull/890",
+            "https://linux.oracle.com/cve/CVE-2024-45490.html",
+            "https://linux.oracle.com/errata/ELSA-2024-6989.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-45490",
+            "https://ubuntu.com/security/notices/USN-7000-1",
+            "https://ubuntu.com/security/notices/USN-7000-2",
+            "https://ubuntu.com/security/notices/USN-7001-1",
+            "https://ubuntu.com/security/notices/USN-7001-2",
+            "https://www.cve.org/CVERecord?id=CVE-2024-45490"
+          ],
+          "PublishedDate": "2024-08-30T03:15:03.757Z",
+          "LastModifiedDate": "2024-10-18T12:24:23.597Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-4741",
+          "PkgID": "libssl3@3.3.0-r2",
+          "PkgName": "libssl3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libssl3@3.3.0-r2?arch=x86_64\u0026distro=3.20.0",
+            "UID": "e8a569b5e48bd1ba"
+          },
+          "InstalledVersion": "3.3.0-r2",
+          "FixedVersion": "3.3.0-r3",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-4741",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: Use After Free with SSL_free_buffers",
+          "Description": "A use-after-free vulnerability was found in OpenSSL. Calling the OpenSSL API SSL_free_buffers function may cause memory to be accessed that was previously freed in some situations.",
+          "Severity": "MEDIUM",
+          "VendorSeverity": {
+            "amazon": 2,
+            "cbl-mariner": 3,
+            "photon": 2,
+            "redhat": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L",
+              "V3Score": 5.6
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2024-4741",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-4741",
+            "https://ubuntu.com/security/notices/USN-6937-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-4741",
+            "https://www.openssl.org/news/secadv/20240528.txt"
+          ]
+        },
+        {
+          "VulnerabilityID": "CVE-2024-5535",
+          "PkgID": "libssl3@3.3.0-r2",
+          "PkgName": "libssl3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libssl3@3.3.0-r2?arch=x86_64\u0026distro=3.20.0",
+            "UID": "e8a569b5e48bd1ba"
+          },
+          "InstalledVersion": "3.3.0-r2",
+          "FixedVersion": "3.3.1-r1",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-5535",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: SSL_select_next_proto buffer overread",
+          "Description": "Issue summary: Calling the OpenSSL API function SSL_select_next_proto with an\nempty supported client protocols buffer may cause a crash or memory contents to\nbe sent to the peer.\n\nImpact summary: A buffer overread can have a range of potential consequences\nsuch as unexpected application beahviour or a crash. In particular this issue\ncould result in up to 255 bytes of arbitrary private data from memory being sent\nto the peer leading to a loss of confidentiality. However, only applications\nthat directly call the SSL_select_next_proto function with a 0 length list of\nsupported client protocols are affected by this issue. This would normally never\nbe a valid scenario and is typically not under attacker control but may occur by\naccident in the case of a configuration or programming error in the calling\napplication.\n\nThe OpenSSL API function SSL_select_next_proto is typically used by TLS\napplications that support ALPN (Application Layer Protocol Negotiation) or NPN\n(Next Protocol Negotiation). NPN is older, was never standardised and\nis deprecated in favour of ALPN. We believe that ALPN is significantly more\nwidely deployed than NPN. The SSL_select_next_proto function accepts a list of\nprotocols from the server and a list of protocols from the client and returns\nthe first protocol that appears in the server list that also appears in the\nclient list. In the case of no overlap between the two lists it returns the\nfirst item in the client list. In either case it will signal whether an overlap\nbetween the two lists was found. In the case where SSL_select_next_proto is\ncalled with a zero length client list it fails to notice this condition and\nreturns the memory immediately following the client list pointer (and reports\nthat there was no overlap in the lists).\n\nThis function is typically called from a server side application callback for\nALPN or a client side application callback for NPN. In the case of ALPN the list\nof protocols supplied by the client is guaranteed by libssl to never be zero in\nlength. The list of server protocols comes from the application and should never\nnormally be expected to be of zero length. In this case if the\nSSL_select_next_proto function has been called as expected (with the list\nsupplied by the client passed in the client/client_len parameters), then the\napplication will not be vulnerable to this issue. If the application has\naccidentally been configured with a zero length server list, and has\naccidentally passed that zero length server list in the client/client_len\nparameters, and has additionally failed to correctly handle a \"no overlap\"\nresponse (which would normally result in a handshake failure in ALPN) then it\nwill be vulnerable to this problem.\n\nIn the case of NPN, the protocol permits the client to opportunistically select\na protocol when there is no overlap. OpenSSL returns the first client protocol\nin the no overlap case in support of this. The list of client protocols comes\nfrom the application and should never normally be expected to be of zero length.\nHowever if the SSL_select_next_proto function is accidentally called with a\nclient_len of 0 then an invalid memory pointer will be returned instead. If the\napplication uses this output as the opportunistic protocol then the loss of\nconfidentiality will occur.\n\nThis issue has been assessed as Low severity because applications are most\nlikely to be vulnerable if they are using NPN instead of ALPN - but NPN is not\nwidely used. It also requires an application configuration or programming error.\nFinally, this issue would not typically be under attacker control making active\nexploitation unlikely.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.\n\nDue to the low severity of this issue we are not issuing new releases of\nOpenSSL at this time. The fix will be included in the next releases when they\nbecome available.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-200"
+          ],
+          "VendorSeverity": {
+            "alma": 1,
+            "amazon": 2,
+            "azure": 2,
+            "cbl-mariner": 4,
+            "oracle-oval": 1,
+            "photon": 4,
+            "redhat": 1,
+            "rocky": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2024/06/27/1",
+            "http://www.openwall.com/lists/oss-security/2024/06/28/4",
+            "https://access.redhat.com/errata/RHSA-2024:7848",
+            "https://access.redhat.com/security/cve/CVE-2024-5535",
+            "https://bugzilla.redhat.com/2294581",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2294581",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-5535",
+            "https://errata.almalinux.org/8/ALSA-2024-7848.html",
+            "https://errata.rockylinux.org/RLSA-2024:7848",
+            "https://github.com/openssl/openssl/commit/4ada436a1946cbb24db5ab4ca082b69c1bc10f37",
+            "https://github.com/openssl/openssl/commit/99fb785a5f85315b95288921a321a935ea29a51e",
+            "https://github.com/openssl/openssl/commit/cf6f91f6121f4db167405db2f0de410a456f260c",
+            "https://github.com/openssl/openssl/commit/e86ac436f0bd54d4517745483e2315650fae7b2c",
+            "https://github.openssl.org/openssl/extended-releases/commit/9947251413065a05189a63c9b7a6c1d4e224c21c",
+            "https://github.openssl.org/openssl/extended-releases/commit/b78ec0824da857223486660177d3b1f255c65d87",
+            "https://linux.oracle.com/cve/CVE-2024-5535.html",
+            "https://linux.oracle.com/errata/ELSA-2024-7848.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-5535",
+            "https://openssl.org/news/secadv/20240627.txt",
+            "https://security.netapp.com/advisory/ntap-20240712-0005/",
+            "https://ubuntu.com/security/notices/USN-6937-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-5535",
+            "https://www.openssl.org/news/secadv/20240627.txt",
+            "https://www.oracle.com/security-alerts/cpuoct2024.html#AppendixMSQL"
+          ],
+          "PublishedDate": "2024-06-27T11:15:24.447Z",
+          "LastModifiedDate": "2024-07-12T14:15:16.79Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-6119",
+          "PkgID": "libssl3@3.3.0-r2",
+          "PkgName": "libssl3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libssl3@3.3.0-r2?arch=x86_64\u0026distro=3.20.0",
+            "UID": "e8a569b5e48bd1ba"
+          },
+          "InstalledVersion": "3.3.0-r2",
+          "FixedVersion": "3.3.2-r0",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-6119",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: Possible denial of service in X.509 name checks",
+          "Description": "Issue summary: Applications performing certificate name checks (e.g., TLS\nclients checking server certificates) may attempt to read an invalid memory\naddress resulting in abnormal termination of the application process.\n\nImpact summary: Abnormal termination of an application can a cause a denial of\nservice.\n\nApplications performing certificate name checks (e.g., TLS clients checking\nserver certificates) may attempt to read an invalid memory address when\ncomparing the expected name with an `otherName` subject alternative name of an\nX.509 certificate. This may result in an exception that terminates the\napplication program.\n\nNote that basic certificate chain validation (signatures, dates, ...) is not\naffected, the denial of service can occur only when the application also\nspecifies an expected DNS name, Email address or IP address.\n\nTLS servers rarely solicit client certificates, and even when they do, they\ngenerally don't perform a name check against a reference identifier (expected\nidentity), but rather extract the presented identity after checking the\ncertificate chain.  So TLS servers are generally not affected and the severity\nof the issue is Moderate.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-843"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 2,
+            "azure": 3,
+            "cbl-mariner": 3,
+            "oracle-oval": 2,
+            "photon": 3,
+            "redhat": 2,
+            "rocky": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2024:6783",
+            "https://access.redhat.com/security/cve/CVE-2024-6119",
+            "https://bugzilla.redhat.com/2306158",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2306158",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-6119",
+            "https://errata.almalinux.org/9/ALSA-2024-6783.html",
+            "https://errata.rockylinux.org/RLSA-2024:6783",
+            "https://github.com/openssl/openssl/commit/05f360d9e849a1b277db628f1f13083a7f8dd04f",
+            "https://github.com/openssl/openssl/commit/06d1dc3fa96a2ba5a3e22735a033012aadc9f0d6",
+            "https://github.com/openssl/openssl/commit/621f3729831b05ee828a3203eddb621d014ff2b2",
+            "https://github.com/openssl/openssl/commit/7dfcee2cd2a63b2c64b9b4b0850be64cb695b0a0",
+            "https://github.com/openssl/openssl/security/advisories/GHSA-5qrj-vq78-58fj",
+            "https://linux.oracle.com/cve/CVE-2024-6119.html",
+            "https://linux.oracle.com/errata/ELSA-2024-6783.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-6119",
+            "https://openssl-library.org/news/secadv/20240903.txt",
+            "https://ubuntu.com/security/notices/USN-6986-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-6119"
+          ],
+          "PublishedDate": "2024-09-03T16:15:07.177Z",
+          "LastModifiedDate": "2024-09-03T21:35:12.987Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-9143",
+          "PkgID": "libssl3@3.3.0-r2",
+          "PkgName": "libssl3",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/libssl3@3.3.0-r2?arch=x86_64\u0026distro=3.20.0",
+            "UID": "e8a569b5e48bd1ba"
+          },
+          "InstalledVersion": "3.3.0-r2",
+          "FixedVersion": "3.3.2-r1",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-9143",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: Low-level invalid GF(2^m) parameters lead to OOB memory access",
+          "Description": "Issue summary: Use of the low-level GF(2^m) elliptic curve APIs with untrusted\nexplicit values for the field polynomial can lead to out-of-bounds memory reads\nor writes.\n\nImpact summary: Out of bound memory writes can lead to an application crash or\neven a possibility of a remote code execution, however, in all the protocols\ninvolving Elliptic Curve Cryptography that we're aware of, either only \"named\ncurves\" are supported, or, if explicit curve parameters are supported, they\nspecify an X9.62 encoding of binary (GF(2^m)) curves that can't represent\nproblematic input values. Thus the likelihood of existence of a vulnerable\napplication is low.\n\nIn particular, the X9.62 encoding is used for ECC keys in X.509 certificates,\nso problematic inputs cannot occur in the context of processing X.509\ncertificates.  Any problematic use-cases would have to be using an \"exotic\"\ncurve encoding.\n\nThe affected APIs include: EC_GROUP_new_curve_GF2m(), EC_GROUP_new_from_params(),\nand various supporting BN_GF2m_*() functions.\n\nApplications working with \"exotic\" explicit binary (GF(2^m)) curve parameters,\nthat make it possible to represent invalid field polynomials with a zero\nconstant term, via the above or similar APIs, may terminate abruptly as a\nresult of reading or writing outside of array bounds.  Remote code execution\ncannot easily be ruled out.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "Severity": "LOW",
+          "CweIDs": [
+            "CWE-787"
+          ],
+          "VendorSeverity": {
+            "redhat": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V3Score": 3.7
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2024-9143",
+            "https://github.com/openssl/openssl/commit/72ae83ad214d2eef262461365a1975707f862712",
+            "https://github.com/openssl/openssl/commit/bc7e04d7c8d509fb78fc0e285aa948fb0da04700",
+            "https://github.com/openssl/openssl/commit/c0d3e4d32d2805f49bec30547f225bc4d092e1f4",
+            "https://github.com/openssl/openssl/commit/fdf6723362ca51bd883295efe206cb5b1cfa5154",
+            "https://github.openssl.org/openssl/extended-releases/commit/8efc0cbaa8ebba8e116f7b81a876a4123594d86a",
+            "https://github.openssl.org/openssl/extended-releases/commit/9d576994cec2b7aa37a91740ea7e680810957e41",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-9143",
+            "https://openssl-library.org/news/secadv/20241016.txt",
+            "https://www.cve.org/CVERecord?id=CVE-2024-9143"
+          ],
+          "PublishedDate": "2024-10-16T17:15:18.13Z",
+          "LastModifiedDate": "2024-10-18T12:53:04.627Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-4741",
+          "PkgID": "openssl@3.3.0-r2",
+          "PkgName": "openssl",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/openssl@3.3.0-r2?arch=x86_64\u0026distro=3.20.0",
+            "UID": "6bea76f58e90ed8f"
+          },
+          "InstalledVersion": "3.3.0-r2",
+          "FixedVersion": "3.3.0-r3",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:98f051b0c34c76a8761096cc0bec1cda0ee865ed9e3ed6c11b2bf1e07adf98c9",
+            "DiffID": "sha256:0293601cad6003a8ddfff5d610eca2e30cc65ad1aa04e7a534b34a128a43668e"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-4741",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: Use After Free with SSL_free_buffers",
+          "Description": "A use-after-free vulnerability was found in OpenSSL. Calling the OpenSSL API SSL_free_buffers function may cause memory to be accessed that was previously freed in some situations.",
+          "Severity": "MEDIUM",
+          "VendorSeverity": {
+            "amazon": 2,
+            "cbl-mariner": 3,
+            "photon": 2,
+            "redhat": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:L/A:L",
+              "V3Score": 5.6
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2024-4741",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-4741",
+            "https://ubuntu.com/security/notices/USN-6937-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-4741",
+            "https://www.openssl.org/news/secadv/20240528.txt"
+          ]
+        },
+        {
+          "VulnerabilityID": "CVE-2024-5535",
+          "PkgID": "openssl@3.3.0-r2",
+          "PkgName": "openssl",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/openssl@3.3.0-r2?arch=x86_64\u0026distro=3.20.0",
+            "UID": "6bea76f58e90ed8f"
+          },
+          "InstalledVersion": "3.3.0-r2",
+          "FixedVersion": "3.3.1-r1",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:98f051b0c34c76a8761096cc0bec1cda0ee865ed9e3ed6c11b2bf1e07adf98c9",
+            "DiffID": "sha256:0293601cad6003a8ddfff5d610eca2e30cc65ad1aa04e7a534b34a128a43668e"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-5535",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: SSL_select_next_proto buffer overread",
+          "Description": "Issue summary: Calling the OpenSSL API function SSL_select_next_proto with an\nempty supported client protocols buffer may cause a crash or memory contents to\nbe sent to the peer.\n\nImpact summary: A buffer overread can have a range of potential consequences\nsuch as unexpected application beahviour or a crash. In particular this issue\ncould result in up to 255 bytes of arbitrary private data from memory being sent\nto the peer leading to a loss of confidentiality. However, only applications\nthat directly call the SSL_select_next_proto function with a 0 length list of\nsupported client protocols are affected by this issue. This would normally never\nbe a valid scenario and is typically not under attacker control but may occur by\naccident in the case of a configuration or programming error in the calling\napplication.\n\nThe OpenSSL API function SSL_select_next_proto is typically used by TLS\napplications that support ALPN (Application Layer Protocol Negotiation) or NPN\n(Next Protocol Negotiation). NPN is older, was never standardised and\nis deprecated in favour of ALPN. We believe that ALPN is significantly more\nwidely deployed than NPN. The SSL_select_next_proto function accepts a list of\nprotocols from the server and a list of protocols from the client and returns\nthe first protocol that appears in the server list that also appears in the\nclient list. In the case of no overlap between the two lists it returns the\nfirst item in the client list. In either case it will signal whether an overlap\nbetween the two lists was found. In the case where SSL_select_next_proto is\ncalled with a zero length client list it fails to notice this condition and\nreturns the memory immediately following the client list pointer (and reports\nthat there was no overlap in the lists).\n\nThis function is typically called from a server side application callback for\nALPN or a client side application callback for NPN. In the case of ALPN the list\nof protocols supplied by the client is guaranteed by libssl to never be zero in\nlength. The list of server protocols comes from the application and should never\nnormally be expected to be of zero length. In this case if the\nSSL_select_next_proto function has been called as expected (with the list\nsupplied by the client passed in the client/client_len parameters), then the\napplication will not be vulnerable to this issue. If the application has\naccidentally been configured with a zero length server list, and has\naccidentally passed that zero length server list in the client/client_len\nparameters, and has additionally failed to correctly handle a \"no overlap\"\nresponse (which would normally result in a handshake failure in ALPN) then it\nwill be vulnerable to this problem.\n\nIn the case of NPN, the protocol permits the client to opportunistically select\na protocol when there is no overlap. OpenSSL returns the first client protocol\nin the no overlap case in support of this. The list of client protocols comes\nfrom the application and should never normally be expected to be of zero length.\nHowever if the SSL_select_next_proto function is accidentally called with a\nclient_len of 0 then an invalid memory pointer will be returned instead. If the\napplication uses this output as the opportunistic protocol then the loss of\nconfidentiality will occur.\n\nThis issue has been assessed as Low severity because applications are most\nlikely to be vulnerable if they are using NPN instead of ALPN - but NPN is not\nwidely used. It also requires an application configuration or programming error.\nFinally, this issue would not typically be under attacker control making active\nexploitation unlikely.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.\n\nDue to the low severity of this issue we are not issuing new releases of\nOpenSSL at this time. The fix will be included in the next releases when they\nbecome available.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-200"
+          ],
+          "VendorSeverity": {
+            "alma": 1,
+            "amazon": 2,
+            "azure": 2,
+            "cbl-mariner": 4,
+            "oracle-oval": 1,
+            "photon": 4,
+            "redhat": 1,
+            "rocky": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.0/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "http://www.openwall.com/lists/oss-security/2024/06/27/1",
+            "http://www.openwall.com/lists/oss-security/2024/06/28/4",
+            "https://access.redhat.com/errata/RHSA-2024:7848",
+            "https://access.redhat.com/security/cve/CVE-2024-5535",
+            "https://bugzilla.redhat.com/2294581",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2294581",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-5535",
+            "https://errata.almalinux.org/8/ALSA-2024-7848.html",
+            "https://errata.rockylinux.org/RLSA-2024:7848",
+            "https://github.com/openssl/openssl/commit/4ada436a1946cbb24db5ab4ca082b69c1bc10f37",
+            "https://github.com/openssl/openssl/commit/99fb785a5f85315b95288921a321a935ea29a51e",
+            "https://github.com/openssl/openssl/commit/cf6f91f6121f4db167405db2f0de410a456f260c",
+            "https://github.com/openssl/openssl/commit/e86ac436f0bd54d4517745483e2315650fae7b2c",
+            "https://github.openssl.org/openssl/extended-releases/commit/9947251413065a05189a63c9b7a6c1d4e224c21c",
+            "https://github.openssl.org/openssl/extended-releases/commit/b78ec0824da857223486660177d3b1f255c65d87",
+            "https://linux.oracle.com/cve/CVE-2024-5535.html",
+            "https://linux.oracle.com/errata/ELSA-2024-7848.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-5535",
+            "https://openssl.org/news/secadv/20240627.txt",
+            "https://security.netapp.com/advisory/ntap-20240712-0005/",
+            "https://ubuntu.com/security/notices/USN-6937-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-5535",
+            "https://www.openssl.org/news/secadv/20240627.txt",
+            "https://www.oracle.com/security-alerts/cpuoct2024.html#AppendixMSQL"
+          ],
+          "PublishedDate": "2024-06-27T11:15:24.447Z",
+          "LastModifiedDate": "2024-07-12T14:15:16.79Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-6119",
+          "PkgID": "openssl@3.3.0-r2",
+          "PkgName": "openssl",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/openssl@3.3.0-r2?arch=x86_64\u0026distro=3.20.0",
+            "UID": "6bea76f58e90ed8f"
+          },
+          "InstalledVersion": "3.3.0-r2",
+          "FixedVersion": "3.3.2-r0",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:98f051b0c34c76a8761096cc0bec1cda0ee865ed9e3ed6c11b2bf1e07adf98c9",
+            "DiffID": "sha256:0293601cad6003a8ddfff5d610eca2e30cc65ad1aa04e7a534b34a128a43668e"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-6119",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: Possible denial of service in X.509 name checks",
+          "Description": "Issue summary: Applications performing certificate name checks (e.g., TLS\nclients checking server certificates) may attempt to read an invalid memory\naddress resulting in abnormal termination of the application process.\n\nImpact summary: Abnormal termination of an application can a cause a denial of\nservice.\n\nApplications performing certificate name checks (e.g., TLS clients checking\nserver certificates) may attempt to read an invalid memory address when\ncomparing the expected name with an `otherName` subject alternative name of an\nX.509 certificate. This may result in an exception that terminates the\napplication program.\n\nNote that basic certificate chain validation (signatures, dates, ...) is not\naffected, the denial of service can occur only when the application also\nspecifies an expected DNS name, Email address or IP address.\n\nTLS servers rarely solicit client certificates, and even when they do, they\ngenerally don't perform a name check against a reference identifier (expected\nidentity), but rather extract the presented identity after checking the\ncertificate chain.  So TLS servers are generally not affected and the severity\nof the issue is Moderate.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-843"
+          ],
+          "VendorSeverity": {
+            "alma": 2,
+            "amazon": 2,
+            "azure": 3,
+            "cbl-mariner": 3,
+            "oracle-oval": 2,
+            "photon": 3,
+            "redhat": 2,
+            "rocky": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 5.9
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2024:6783",
+            "https://access.redhat.com/security/cve/CVE-2024-6119",
+            "https://bugzilla.redhat.com/2306158",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2306158",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2024-6119",
+            "https://errata.almalinux.org/9/ALSA-2024-6783.html",
+            "https://errata.rockylinux.org/RLSA-2024:6783",
+            "https://github.com/openssl/openssl/commit/05f360d9e849a1b277db628f1f13083a7f8dd04f",
+            "https://github.com/openssl/openssl/commit/06d1dc3fa96a2ba5a3e22735a033012aadc9f0d6",
+            "https://github.com/openssl/openssl/commit/621f3729831b05ee828a3203eddb621d014ff2b2",
+            "https://github.com/openssl/openssl/commit/7dfcee2cd2a63b2c64b9b4b0850be64cb695b0a0",
+            "https://github.com/openssl/openssl/security/advisories/GHSA-5qrj-vq78-58fj",
+            "https://linux.oracle.com/cve/CVE-2024-6119.html",
+            "https://linux.oracle.com/errata/ELSA-2024-6783.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-6119",
+            "https://openssl-library.org/news/secadv/20240903.txt",
+            "https://ubuntu.com/security/notices/USN-6986-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-6119"
+          ],
+          "PublishedDate": "2024-09-03T16:15:07.177Z",
+          "LastModifiedDate": "2024-09-03T21:35:12.987Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-9143",
+          "PkgID": "openssl@3.3.0-r2",
+          "PkgName": "openssl",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/openssl@3.3.0-r2?arch=x86_64\u0026distro=3.20.0",
+            "UID": "6bea76f58e90ed8f"
+          },
+          "InstalledVersion": "3.3.0-r2",
+          "FixedVersion": "3.3.2-r1",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:98f051b0c34c76a8761096cc0bec1cda0ee865ed9e3ed6c11b2bf1e07adf98c9",
+            "DiffID": "sha256:0293601cad6003a8ddfff5d610eca2e30cc65ad1aa04e7a534b34a128a43668e"
+          },
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-9143",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "openssl: Low-level invalid GF(2^m) parameters lead to OOB memory access",
+          "Description": "Issue summary: Use of the low-level GF(2^m) elliptic curve APIs with untrusted\nexplicit values for the field polynomial can lead to out-of-bounds memory reads\nor writes.\n\nImpact summary: Out of bound memory writes can lead to an application crash or\neven a possibility of a remote code execution, however, in all the protocols\ninvolving Elliptic Curve Cryptography that we're aware of, either only \"named\ncurves\" are supported, or, if explicit curve parameters are supported, they\nspecify an X9.62 encoding of binary (GF(2^m)) curves that can't represent\nproblematic input values. Thus the likelihood of existence of a vulnerable\napplication is low.\n\nIn particular, the X9.62 encoding is used for ECC keys in X.509 certificates,\nso problematic inputs cannot occur in the context of processing X.509\ncertificates.  Any problematic use-cases would have to be using an \"exotic\"\ncurve encoding.\n\nThe affected APIs include: EC_GROUP_new_curve_GF2m(), EC_GROUP_new_from_params(),\nand various supporting BN_GF2m_*() functions.\n\nApplications working with \"exotic\" explicit binary (GF(2^m)) curve parameters,\nthat make it possible to represent invalid field polynomials with a zero\nconstant term, via the above or similar APIs, may terminate abruptly as a\nresult of reading or writing outside of array bounds.  Remote code execution\ncannot easily be ruled out.\n\nThe FIPS modules in 3.3, 3.2, 3.1 and 3.0 are not affected by this issue.",
+          "Severity": "LOW",
+          "CweIDs": [
+            "CWE-787"
+          ],
+          "VendorSeverity": {
+            "redhat": 1,
+            "ubuntu": 1
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V3Score": 3.7
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2024-9143",
+            "https://github.com/openssl/openssl/commit/72ae83ad214d2eef262461365a1975707f862712",
+            "https://github.com/openssl/openssl/commit/bc7e04d7c8d509fb78fc0e285aa948fb0da04700",
+            "https://github.com/openssl/openssl/commit/c0d3e4d32d2805f49bec30547f225bc4d092e1f4",
+            "https://github.com/openssl/openssl/commit/fdf6723362ca51bd883295efe206cb5b1cfa5154",
+            "https://github.openssl.org/openssl/extended-releases/commit/8efc0cbaa8ebba8e116f7b81a876a4123594d86a",
+            "https://github.openssl.org/openssl/extended-releases/commit/9d576994cec2b7aa37a91740ea7e680810957e41",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-9143",
+            "https://openssl-library.org/news/secadv/20241016.txt",
+            "https://www.cve.org/CVERecord?id=CVE-2024-9143"
+          ],
+          "PublishedDate": "2024-10-16T17:15:18.13Z",
+          "LastModifiedDate": "2024-10-18T12:53:04.627Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2023-42364",
+          "PkgID": "ssl_client@1.36.1-r28",
+          "PkgName": "ssl_client",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/ssl_client@1.36.1-r28?arch=x86_64\u0026distro=3.20.0",
+            "UID": "7096e866daf6539f"
+          },
+          "InstalledVersion": "1.36.1-r28",
+          "FixedVersion": "1.36.1-r29",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-42364",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "busybox: use-after-free",
+          "Description": "A use-after-free vulnerability in BusyBox v.1.36.1 allows attackers to cause a denial of service via a crafted awk pattern in the awk.c evaluate function.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-416"
+          ],
+          "VendorSeverity": {
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 5.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 7.8
+            }
+          },
+          "References": [
+            "http://lists.busybox.net/pipermail/busybox/2024-May/090762.html",
+            "https://access.redhat.com/security/cve/CVE-2023-42364",
+            "https://bugs.busybox.net/show_bug.cgi?id=15868",
+            "https://gitlab.alpinelinux.org/alpine/aports/-/blob/master/main/busybox/CVE-2023-42364-CVE-2023-42365.patch",
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-42364",
+            "https://ubuntu.com/security/notices/USN-6961-1",
+            "https://www.cve.org/CVERecord?id=CVE-2023-42364"
+          ],
+          "PublishedDate": "2023-11-27T23:15:07.313Z",
+          "LastModifiedDate": "2024-10-11T21:36:08.877Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2023-42365",
+          "PkgID": "ssl_client@1.36.1-r28",
+          "PkgName": "ssl_client",
+          "PkgIdentifier": {
+            "PURL": "pkg:apk/alpine/ssl_client@1.36.1-r28?arch=x86_64\u0026distro=3.20.0",
+            "UID": "7096e866daf6539f"
+          },
+          "InstalledVersion": "1.36.1-r28",
+          "FixedVersion": "1.36.1-r29",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:d25f557d7f31bf7acfac935859b5153da41d13c41f2b468d16f729a5b883634f",
+            "DiffID": "sha256:02f2bcb26af5ea6d185dcf509dc795746d907ae10c53918b6944ac85447a0c72"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2023-42365",
+          "DataSource": {
+            "ID": "alpine",
+            "Name": "Alpine Secdb",
+            "URL": "https://secdb.alpinelinux.org/"
+          },
+          "Title": "busybox: use-after-free",
+          "Description": "A use-after-free vulnerability was discovered in BusyBox v.1.36.1 via a crafted awk pattern in the awk.c copyvar function.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-416"
+          ],
+          "VendorSeverity": {
+            "azure": 2,
+            "cbl-mariner": 2,
+            "nvd": 2,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:N/I:N/A:H",
+              "V3Score": 5.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:L/AC:L/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 7.8
+            }
+          },
+          "References": [
+            "http://lists.busybox.net/pipermail/busybox/2024-May/090762.html",
+            "https://access.redhat.com/security/cve/CVE-2023-42365",
+            "https://bugs.busybox.net/show_bug.cgi?id=15871",
+            "https://gitlab.alpinelinux.org/alpine/aports/-/blob/master/main/busybox/CVE-2023-42364-CVE-2023-42365.patch",
+            "https://nvd.nist.gov/vuln/detail/CVE-2023-42365",
+            "https://ubuntu.com/security/notices/USN-6961-1",
+            "https://www.cve.org/CVERecord?id=CVE-2023-42365"
+          ],
+          "PublishedDate": "2023-11-27T23:15:07.373Z",
+          "LastModifiedDate": "2023-11-30T05:08:08.77Z"
+        }
+      ]
+    },
+    {
+      "Target": "Python",
+      "Class": "lang-pkgs",
+      "Type": "python-pkg",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2024-6221",
+          "PkgName": "Flask-Cors",
+          "PkgPath": "home/myuser/.local/lib/python3.12/site-packages/Flask_Cors-4.0.1.dist-info/METADATA",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/flask-cors@4.0.1",
+            "UID": "d5e58ece4dd38314"
+          },
+          "InstalledVersion": "4.0.1",
+          "FixedVersion": "4.0.2",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:2d63ffe7325c4097584f02b956b8dec650509642a7191daef9730149536c52f2",
+            "DiffID": "sha256:95a8fc9e0f6d9430cafabcf53828a5ee9adfd308fb809635f9a0426ffd115429"
+          },
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-6221",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Title": "A vulnerability in corydolphin/flask-cors version 4.0.1 allows the `Ac ...",
+          "Description": "A vulnerability in corydolphin/flask-cors version 4.0.1 allows the `Access-Control-Allow-Private-Network` CORS header to be set to true by default, without any configuration option. This behavior can expose private network resources to unauthorized external access, leading to significant security risks such as data breaches, unauthorized access to sensitive information, and potential network intrusions.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-284"
+          ],
+          "VendorSeverity": {
+            "ghsa": 3,
+            "nvd": 3
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:N",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://github.com/corydolphin/flask-cors",
+            "https://github.com/corydolphin/flask-cors/commit/7ae310c56ac30e0b94fb42129aa377bf633256ec",
+            "https://github.com/corydolphin/flask-cors/commit/c8514760cf03fcce16d77f6db7007aad429c4548",
+            "https://github.com/corydolphin/flask-cors/issues/362",
+            "https://github.com/corydolphin/flask-cors/pull/363",
+            "https://github.com/corydolphin/flask-cors/pull/368",
+            "https://github.com/corydolphin/flask-cors/releases",
+            "https://github.com/pypa/advisory-database/tree/main/vulns/flask-cors/PYSEC-2024-71.yaml",
+            "https://huntr.com/bounties/a42935fc-6f57-4818-bca4-3d528235df4d",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-6221"
+          ],
+          "PublishedDate": "2024-08-18T19:15:04.73Z",
+          "LastModifiedDate": "2024-08-20T19:37:23.077Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-49766",
+          "PkgName": "Werkzeug",
+          "PkgPath": "home/myuser/.local/lib/python3.12/site-packages/werkzeug-3.0.3.dist-info/METADATA",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/werkzeug@3.0.3",
+            "UID": "423388681e9c4a39"
+          },
+          "InstalledVersion": "3.0.3",
+          "FixedVersion": "3.0.6",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:2d63ffe7325c4097584f02b956b8dec650509642a7191daef9730149536c52f2",
+            "DiffID": "sha256:95a8fc9e0f6d9430cafabcf53828a5ee9adfd308fb809635f9a0426ffd115429"
+          },
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-49766",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Title": "werkzeug: python-werkzeug: Werkzeug safe_join not safe on Windows",
+          "Description": "Werkzeug is a Web Server Gateway Interface web application library. On Python \u003c 3.11 on Windows, os.path.isabs() does not catch UNC paths like //server/share. Werkzeug's safe_join() relies on this check, and so can produce a path that is not safe, potentially allowing unintended access to data. Applications using Python \u003e= 3.11, or not using Windows, are not vulnerable. Werkzeug version 3.0.6 contains a patch.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-22"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "redhat": 2
+          },
+          "CVSS": {
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:N/S:U/C:L/I:N/A:N",
+              "V3Score": 3.7
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2024-49766",
+            "https://github.com/pallets/werkzeug",
+            "https://github.com/pallets/werkzeug/commit/2767bcb10a7dd1c297d812cc5e6d11a474c1f092",
+            "https://github.com/pallets/werkzeug/releases/tag/3.0.6",
+            "https://github.com/pallets/werkzeug/security/advisories/GHSA-f9vj-2wh5-fj8j",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-49766",
+            "https://www.cve.org/CVERecord?id=CVE-2024-49766"
+          ],
+          "PublishedDate": "2024-10-25T20:15:04.41Z",
+          "LastModifiedDate": "2024-10-28T13:58:09.23Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2024-49767",
+          "PkgName": "Werkzeug",
+          "PkgPath": "home/myuser/.local/lib/python3.12/site-packages/werkzeug-3.0.3.dist-info/METADATA",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/werkzeug@3.0.3",
+            "UID": "423388681e9c4a39"
+          },
+          "InstalledVersion": "3.0.3",
+          "FixedVersion": "3.0.6",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:2d63ffe7325c4097584f02b956b8dec650509642a7191daef9730149536c52f2",
+            "DiffID": "sha256:95a8fc9e0f6d9430cafabcf53828a5ee9adfd308fb809635f9a0426ffd115429"
+          },
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2024-49767",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Title": "werkzeug: python-werkzeug: Werkzeug possible resource exhaustion when parsing file data in forms",
+          "Description": "Werkzeug is a Web Server Gateway Interface web application library. Applications using `werkzeug.formparser.MultiPartParser` corresponding to a version of Werkzeug prior to 3.0.6 to parse `multipart/form-data` requests (e.g. all flask applications) are vulnerable to a relatively simple but effective resource exhaustion (denial of service) attack. A specifically crafted form submission request can cause the parser to allocate and block 3 to 8 times the upload size in main memory. There is no upper limit; a single upload at 1 Gbit/s can exhaust 32 GB of RAM in less than 60 seconds. Werkzeug version 3.0.6 fixes this issue.",
+          "Severity": "MEDIUM",
+          "CweIDs": [
+            "CWE-400",
+            "CWE-770"
+          ],
+          "VendorSeverity": {
+            "ghsa": 2,
+            "nvd": 3,
+            "redhat": 2,
+            "ubuntu": 2
+          },
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:L",
+              "V3Score": 5.3
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2024-49767",
+            "https://github.com/pallets/quart/commit/5e78c4169b8eb66b91ead3e62d44721b9e1644ee",
+            "https://github.com/pallets/werkzeug",
+            "https://github.com/pallets/werkzeug/commit/50cfeebcb0727e18cc52ffbeb125f4a66551179b",
+            "https://github.com/pallets/werkzeug/releases/tag/3.0.6",
+            "https://github.com/pallets/werkzeug/security/advisories/GHSA-q34m-jh98-gwm2",
+            "https://nvd.nist.gov/vuln/detail/CVE-2024-49767",
+            "https://ubuntu.com/security/notices/USN-7093-1",
+            "https://www.cve.org/CVERecord?id=CVE-2024-49767"
+          ],
+          "PublishedDate": "2024-10-25T20:15:04.53Z",
+          "LastModifiedDate": "2024-11-05T20:03:04.847Z"
+        },
+        {
+          "VulnerabilityID": "GHSA-h4gh-qq45-vh27",
+          "PkgName": "cryptography",
+          "PkgPath": "home/myuser/.local/lib/python3.12/site-packages/cryptography-42.0.5.dist-info/METADATA",
+          "PkgIdentifier": {
+            "PURL": "pkg:pypi/cryptography@42.0.5",
+            "UID": "1fedc1959ae26454"
+          },
+          "InstalledVersion": "42.0.5",
+          "FixedVersion": "43.0.1",
+          "Status": "fixed",
+          "Layer": {
+            "Digest": "sha256:2d63ffe7325c4097584f02b956b8dec650509642a7191daef9730149536c52f2",
+            "DiffID": "sha256:95a8fc9e0f6d9430cafabcf53828a5ee9adfd308fb809635f9a0426ffd115429"
+          },
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://github.com/advisories/GHSA-h4gh-qq45-vh27",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory pip",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Apip"
+          },
+          "Title": "pyca/cryptography has a vulnerable OpenSSL included in cryptography wheels",
+          "Description": "pyca/cryptography's wheels include a statically linked copy of OpenSSL. The versions of OpenSSL included in cryptography 37.0.0-43.0.0 are vulnerable to a security issue. More details about the vulnerability itself can be found in https://openssl-library.org/news/secadv/20240903.txt.\n\nIf you are building cryptography source (\"sdist\") then you are responsible for upgrading your copy of OpenSSL. Only users installing from wheels built by the cryptography project (i.e., those distributed on PyPI) need to update their cryptography versions.\n",
+          "Severity": "MEDIUM",
+          "VendorSeverity": {
+            "ghsa": 2
+          },
+          "References": [
+            "https://github.com/pyca/cryptography",
+            "https://github.com/pyca/cryptography/security/advisories/GHSA-h4gh-qq45-vh27",
+            "https://openssl-library.org/news/secadv/20240903.txt"
+          ]
+        }
+      ]
+    }
+  ]
+}
