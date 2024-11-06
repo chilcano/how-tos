@@ -1,6 +1,6 @@
 {
   "SchemaVersion": 2,
-  "CreatedAt": "2024-11-06T17:22:03.730191392+01:00",
+  "CreatedAt": "2024-11-06T18:41:29.653249853+01:00",
   "ArtifactName": "ghcr.io/chilcano/mac-address-manuf-lookup:latest",
   "ArtifactType": "container_image",
   "Metadata": {

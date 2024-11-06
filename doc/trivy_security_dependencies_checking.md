@@ -178,7 +178,40 @@ $ trivy image --format table --pkg-types os,library --scanners vuln,secret,misco
 $ trivy image --format template --template @html.tpl --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL ghcr.io/chilcano/mac-address-manuf-lookup:latest -o trivy_out/report-mac-address-manuf-lookup-latest.html 
 
 # run trivy and get a JSON report. JSON tpl is not needed to be downloaded.
-$ trivy image --format template --template @/contrib/json.tpl --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL ghcr.io/chilcano/mac-address-manuf-lookup:latest -o trivy_out/report-mac-address-manuf-lookup-latest.json 
-
-
+$ trivy image --format json --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL ghcr.io/chilcano/mac-address-manuf-lookup:latest -o trivy_out/report-mac-address-manuf-lookup-latest.json 
 ```
+
+### Example 08:
+
+* Scanning vulns, leaked secrets and misconfig in __remote git repo__ and __docker image__, and generate a single filterable/sortable rich HTML report.
+* Ref: https://github.com/fatihtokus/scan2html
+
+```sh
+$ mkdir trivy_out/
+
+# install fatihtokus/scan2html trivy plugin
+$ trivy plugin install github.com/fatihtokus/scan2html
+
+# run trivy and print report in stdout 
+$ trivy repo --format table --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL https://github.com/microservices-demo/front-end
+
+# scan remote repo and get JSON report
+$ trivy repo -f json --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL https://github.com/microservices-demo/front-end -o trivy_out/report-front-end.repo.json
+
+# scan remote docker image and get JSON report
+$ trivy image -f json --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL weaveworksdemos/front-end:0.3.12 -o trivy_out/report-front-end.0.3.12.image.json
+
+# scan remote repo and get rich HTML report by using scan2html plugin
+$ trivy scan2html repo --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL https://github.com/microservices-demo/front-end trivy_out/report-front-end.repo.rich.html 
+
+# scan remote docker image and get rich HTML report by using scan2html plugin
+$ trivy scan2html image --pkg-types os,library --scanners vuln,secret,misconfig --severity UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL weaveworksdemos/front-end:0.3.12 trivy_out/report-front-end.0.3.12.image.rich.html 
+
+# merge repo and image json reports in single rich HTML report by using scan2html plugin (experimental)
+$ trivy scan2html generate trivy_out/report-front-end.merged.rich.html from trivy_out/report-front-end.repo.json trivy_out/report-front-end.0.3.12.image.json
+
+# merge repo and image json reports in single rich HTML report with EPSS scores by using scan2html plugin (experimental)
+$ trivy scan2html generate --with-epss trivy_out/report-front-end.merged.rich.epss.html from trivy_out/report-front-end.repo.json trivy_out/report-front-end.0.3.12.image.json
+```
+
+* __Browse generated rich html reports:__ [https://github.com/chilcano/how-tos/tree/main/doc/trivy_out/](https://github.com/chilcano/how-tos/tree/main/doc/trivy_out/)
