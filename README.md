@@ -81,4 +81,6 @@ Repository with technical indications to install, configure any interesting stuf
 4. [Bitnami Decrypt Sealed Secrets](doc/bitnami_sealed_secrets_decrypt.md)
 5. [Trivy - Security Dependencies Checking](doc/trivy_security_dependencies_checking.md)
 6. [Project Discovery Nuclei - Vulnerability scanner](src/hacktools/project-discovery-nuclei.md)
+7. [DefectDojo - Application Security Posture Management (ASPM) and Vulnerability Management](doc/defectdojo_install.md)
+
 
