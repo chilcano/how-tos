@@ -4,17 +4,28 @@
 ### GitHub Authentication and Credential Manager
 
 ```sh
-$ git config --global user.email "chilcano@intix.info"
-$ git config --global user.name "Roger Carhuatocto"
+## Step 01: Set username and email
+git config --global user.email "chilcano@intix.info"
+git config --global user.name "Roger Carhuatocto"
 
-// Save the credentials permanently
-$ git config --global credential.helper store
+## Step 02: Activate that credentials are saved in local store permanently
+git config --global credential.helper store
 
-// Save the credentials for a session  
-$ git config --global credential.helper cache
+## Step 03: Save different credentials for each different URL repos
+git config --global credential.https://github.com.useHttpPath true
+```
 
-// Also set a timeout for the above setting
-$ git config --global credential.helper 'cache --timeout=600'
+Using other commands:
+```sh
+## Save the credentials for a session  
+git config --global credential.helper cache
+
+## Also set a timeout for the above setting
+git config --global credential.helper 'cache --timeout=600'
+
+## Check previous values
+git config --global user.email
+git config --global user.name
 ```
 
 __Enabling 2FA__

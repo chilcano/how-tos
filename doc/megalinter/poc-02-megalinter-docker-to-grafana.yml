@@ -1,0 +1,208 @@
+# MegaLinter GitHub Action configuration file
+# More info at https://megalinter.io
+---
+name: poc-02-megalinter-docker-to-grafana
+
+# Trigger mega-linter at every push. Action will also be visible from
+# Pull Requests to main
+on:
+  # Comment this line to trigger action only on pull-requests
+  # (not recommended if you don't pay for GH Actions)
+  push:
+    branches:
+      - 'main'
+      - 'roger/megalinter-to-grafana'
+    paths:
+      # - 'apps_zama/megalinter-list-of-products.txt'
+      - '.github/workflows/poc-02-megalinter-docker-to-grafana.yml'
+      - '!.gitignore'
+  pull_request:
+    branches:
+      - main-temp
+
+# Comment env block if you do not want to apply fixes
+env:
+  # Apply linter fixes configuration
+  #
+  # When active, APPLY_FIXES must also be defined as environment variable
+  # (in github/workflows/mega-linter.yml or other CI tool)
+  APPLY_FIXES: none
+
+  # Decide which event triggers application of fixes in a commit or a PR
+  # (pull_request, push, all)
+  APPLY_FIXES_EVENT: pull_request
+
+  # If APPLY_FIXES is used, defines if the fixes are directly committed (commit)
+  # or posted in a PR (pull_request)
+  APPLY_FIXES_MODE: commit
+
+concurrency:
+  group: ${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: true
+
+jobs:
+  scan-and-report:
+    runs-on: ubuntu-latest
+
+    # Give the default GITHUB_TOKEN write permission to commit and push, comment
+    # issues, and post new Pull Requests; remove the ones you do not need
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      # Git Checkout
+      - name: Checkout parent Repo
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683     # v4.2.2
+        with:
+          token: ${{ secrets.PAT || secrets.GITHUB_TOKEN }}
+
+          # If you use VALIDATE_ALL_CODEBASE = true, you can remove this line to
+          # improve performance
+          fetch-depth: 0
+
+      - name: Clone ext product Repos into parent Repo
+        id: myvars
+        env:
+            GITHUB_TOKEN: ${{ secrets.SECURITY_AUDIT_TOKEN }}
+        run: |
+            EXT_LOCAL_DOCKER_LIST_TO_SCAN="apps_zama/megalinter-list-of-products.txt"
+            OUT_DIR_ROOT_REPO="child_repos"
+            OUT_DIR_ROOT_TARBALL="child_tarballs"
+            DATE_BUILD=$(date +%y%m%d_%H%M%S)
+            
+            if [ ! -f "${EXT_LOCAL_DOCKER_LIST_TO_SCAN}" ]; then exit 1; fi
+
+            first_matched_repo=$(cat ${EXT_LOCAL_DOCKER_LIST_TO_SCAN} | grep -m1 -E '^repo\s\|.*')
+
+            REPO_CHILD_TYPE=$(echo $first_matched_repo | cut -d '|' -f 2 | tr -d ' ')
+            REPO_CHILD_URL=$(echo $first_matched_repo | cut -d '|' -f 3 | tr -d ' ')
+            REPO_EXT_NAME=${REPO_CHILD_URL##*/}
+            REPO_CHILD_ATT_KEYVALUE=$(echo $first_matched_repo | cut -d '|' -f 4 | tr -d ' ')
+            REPO_EXT_ATT_KEY=$(echo $REPO_CHILD_ATT_KEYVALUE | cut -d ':' -f 1)
+            REPO_EXT_ATT_VAL=$(echo $REPO_CHILD_ATT_KEYVALUE | cut -d ':' -f 2)
+
+            if [[ ! "${REPO_EXT_ATT_KEY}" =~ ^branch|tag|commit$ ]]; then
+                echo ">>> Error. Not valid branch, tag or commit ($col4) value."
+                exit 1
+            else
+                TRIVY_REPO_PARAM_ATT_KEYVALUE="--$REPO_EXT_ATT_KEY $REPO_EXT_ATT_VAL"
+            fi
+            echo "=== Repo to scan: < ${REPO_EXT_ATT_KEY}:${REPO_EXT_ATT_VAL} | ${REPO_CHILD_URL} >"
+
+            REPO_CHILD_OUT_DIR_NAME=${REPO_EXT_NAME}.${DATE_BUILD}.${REPO_EXT_ATT_KEY}.${REPO_EXT_ATT_VAL}
+            REPO_CHILD_PATH=$OUT_DIR_ROOT_REPO/${REPO_CHILD_OUT_DIR_NAME}
+
+            mkdir -p ${REPO_CHILD_PATH}/
+            repo_url_with_token=$REPO_CHILD_URL
+            if [[ "${REPO_CHILD_TYPE}" == "private" ]]; then
+                repo_url_with_token=$(echo $REPO_CHILD_URL | sed -E 's|^https://github.com|https://'"$GITHUB_TOKEN"':@github.com|g' )
+            fi
+            git clone $repo_url_with_token $REPO_CHILD_PATH/ --quiet
+            if [ $? -gt 0 ]; then 
+                echo ">>> Error. Repo [$REPO_CHILD_URL] could not be cloned. Check the provided token or availability of repo."
+                rm -rf $REPO_CHILD_PATH
+                exit 1
+            fi
+
+            current_dir=$PWD
+            cd $REPO_CHILD_PATH
+            git -c advice.detachedHead=false checkout $REPO_EXT_ATT_VAL --quiet
+            if [ $? -gt 0 ]; then
+                printf "* Error. The repo [$REPO_CHILD_PATH ] has not checked out to [$REPO_EXT_ATT_VAL]."
+                exit 1
+            fi
+            GIT_HASH_SHORT=$(git rev-parse --short HEAD)
+            cd $current_dir
+
+            ## set global vars
+            echo "EXT_LOCAL_DOCKER_LIST_TO_SCAN=$EXT_LOCAL_DOCKER_LIST_TO_SCAN" >> $GITHUB_OUTPUT
+            echo "OUT_DIR_ROOT_REPO=$OUT_DIR_ROOT_REPO" >> $GITHUB_OUTPUT
+            echo "OUT_DIR_ROOT_TARBALL=$OUT_DIR_ROOT_TARBALL" >> $GITHUB_OUTPUT
+            echo "DATE_BUILD=$DATE_BUILD" >> $GITHUB_OUTPUT
+
+            ## vars for each child repo
+            echo "REPO_CHILD_URL=$REPO_CHILD_URL" >> $GITHUB_OUTPUT
+            echo "REPO_EXT_NAME=$REPO_EXT_NAME" >> $GITHUB_OUTPUT
+            echo "GIT_HASH_SHORT=$GIT_HASH_SHORT" >> $GITHUB_OUTPUT
+            echo "REPO_CHILD_OUT_DIR_NAME=$REPO_CHILD_OUT_DIR_NAME" >> $GITHUB_OUTPUT
+            echo "REPO_CHILD_PATH=$REPO_CHILD_PATH" >> $GITHUB_OUTPUT
+            echo "TRIVY_REPO_PARAM_ATT_KEYVALUE=$TRIVY_REPO_PARAM_ATT_KEYVALUE" >> $GITHUB_OUTPUT
+
+      - name: Pull MegaLinter docker image
+        run:
+          #docker pull oxsecurity/megalinter:v8.3.0
+          docker pull oxsecurity/megalinter-ci_light:v8.3.0          
+
+      - name: Run MegaLinter (Docker to Grafana)
+        id: ml
+        run: |
+          ML_CHILD_REPO_DIR=${{ github.workspace }}/${{ steps.myvars.outputs.REPO_CHILD_PATH }}
+          ML_CFG_FILE=${{ github.workspace }}/.mega-linter.yml
+          ML_OUT_DIR=${{ github.workspace }}/megalinter-reports
+          ## Trivy can scan repo branch, tag or commit 
+          ML_TRIVY_PARAM_REPO_ATT="${{ steps.myvars.outputs.TRIVY_REPO_PARAM_ATT_KEYVALUE }}"
+          ML_GF_LOKI_URL=${{ vars.GRAFANA_CHILCANO_LOKI_URL }}
+          ML_GF_LOKI_USR=${{ vars.GRAFANA_CHILCANO_LOKI_USR }}
+          ML_GF_PROM_URL=${{ vars.GRAFANA_CHILCANO_PROM_URL }}
+          ML_GF_PROM_USR=${{ vars.GRAFANA_CHILCANO_PROM_USR }}
+          ML_GF_TOKEN=${{ secrets.GRAFANA_CHILCANO_TOKEN_MEGALINTER }}
+          ## Trivy report format can be: json|sarif|table
+          ML_TRIVY_PARAM_REPORT_FORMAT="json"
+
+          mkdir -p ${{ github.workspace }}/megalinter-reports/
+
+          cd scripts/ 
+          ./exec-megalinter-docker.sh \
+            $ML_CHILD_REPO_DIR \
+            $ML_CFG_FILE \
+            $ML_OUT_DIR \
+            "$ML_TRIVY_PARAM_REPO_ATT" \
+            $ML_GF_LOKI_URL $ML_GF_LOKI_USR $ML_GF_PROM_URL $ML_GF_PROM_USR $ML_GF_TOKEN \
+            $ML_TRIVY_PARAM_REPORT_FORMAT 
+
+      - name: Generate Trivy HTML report and check generated MegaLinter files
+        if: success() || failure()
+        run: |
+            echo "=============== [ Installing Trivy and scan2html plugin ]"
+            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.57.0
+            trivy -v
+            trivy plugin install github.com/fatihtokus/scan2html
+
+            ## change to child repo dir
+            echo "=============== [ Changing to child repo dir to be scanned ]"
+            cd ${{ steps.myvars.outputs.OUT_DIR_ROOT_REPO}}/${{ steps.myvars.outputs.REPO_CHILD_OUT_DIR_NAME }}/ 
+
+            ## generates json report
+            trivy fs -f json \
+            --scanners vuln,misconfig \
+            --quiet \
+            ${TRIVY_REPO_PARAM_ATT_KEYVALUE} \
+            .  \
+            -o trivy.${{ steps.myvars.outputs.REPO_CHILD_OUT_DIR_NAME }}.json
+
+            ## transform json report to html report
+            trivy scan2html generate \
+            --scan2html-flags --with-epss \
+            --output trivy.${{ steps.myvars.outputs.REPO_CHILD_OUT_DIR_NAME }}.html \
+            --report-title "$REPORT_TITLE_REPO_VALUE" \
+            --from trivy.${{ steps.myvars.outputs.REPO_CHILD_OUT_DIR_NAME }}.json &> /dev/null
+
+            echo "=============== [ List of files in child repo < ${{ github.workspace }}/${{ steps.myvars.outputs.OUT_DIR_ROOT_REPO}}/${{ steps.myvars.outputs.REPO_CHILD_OUT_DIR_NAME }}/ > ]"
+            ls -la ${{ github.workspace }}/${{ steps.myvars.outputs.OUT_DIR_ROOT_REPO}}/${{ steps.myvars.outputs.REPO_CHILD_OUT_DIR_NAME }}/
+            echo "=============== [ List of files generated by MegaLinter < ${{ github.workspace }}/megalinter-reports/ > ]"
+            ls -la ${{ github.workspace }}/megalinter-reports/
+
+      # Upload MegaLinter artifacts
+      - name: Upload reports as artifacts
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882    # v4.4.3
+        if: success() || failure()
+        with:
+          name: megalinter_reports.${{ steps.myvars.outputs.DATE_BUILD }}
+          path: |
+            megalinter-reports
+            mega-linter.log
+            ${{ steps.myvars.outputs.OUT_DIR_ROOT_REPO}}/**/trivy.*.html
+            ${{ steps.myvars.outputs.OUT_DIR_ROOT_REPO}}/**/trivy.*.json
+

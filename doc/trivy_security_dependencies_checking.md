@@ -16,10 +16,8 @@ $ sudo apt-get install trivy
 
 __2. From Github released binary__
 
-```sh
-$ curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.57.0
-```
 
+* Help information about the `install.sh` script.
 ```sh
 Usage: $this [-b] bindir [-d] [tag]
   -b sets bindir or installation directory, Defaults to ./bin
@@ -29,10 +27,19 @@ Usage: $this [-b] bindir [-d] [tag]
    If tag is missing, then the latest will be used.
 ```
 
-To install latest version only for current user and debugging the installation, run this:
+* Both commands have worked in Github Actions and install in privileged user and path.
 ```sh
-$ curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b ~/.local/bin -d
+## This don't use 'sudo' and might prompt for password in terminal to be installed.
+$ curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b /usr/local/bin v0.58.0
 
+## Pinned version and using 'sudo'. 
+$ curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/cd01f230315a364b0eea35edb8db1c4c73c7019a/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.58.0
+```
+
+* Install latest version only for **current user** and enabling debugging during installation. 
+```sh
+## This doesn't ask for password in any case because install in the current user home.
+$ curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/main/contrib/install.sh | sh -s -- -b ~/.local/bin -d
 
 aquasecurity/trivy info checking GitHub for latest tag
 aquasecurity/trivy info found version: 0.49.0 for v0.49.0/Linux/64bit
@@ -40,9 +47,13 @@ aquasecurity/trivy debug downloading files into /tmp/tmp.rKAaOuXTpF
 aquasecurity/trivy debug http_download https://github.com/aquasecurity/trivy/releases/download/v0.49.0/trivy_0.49.0_Linux-64bit.tar.gz
 aquasecurity/trivy debug http_download https://github.com/aquasecurity/trivy/releases/download/v0.49.0/trivy_0.49.0_checksums.txt
 aquasecurity/trivy info installed /home/chilcano/.local/bin/trivy
+
+
+## The pinned version for 'install.sh' and its corresponding version work as well
+$ curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/cd01f230315a364b0eea35edb8db1c4c73c7019a/contrib/install.sh | sh -s -- -b ~/.local/bin v0.58.0
 ```
 
-Checking installation:
+* Checking installation.
 ```sh
 $ trivy -v
 
