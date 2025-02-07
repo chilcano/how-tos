@@ -41,6 +41,8 @@ operator:
   # -- accessGlobalSecretsAndServiceAccount The flag to enable access to global secrets/service accounts to allow `vulnerability scan job` to pull images from private registries
   accessGlobalSecretsAndServiceAccount: true
 
+  ##------------ Get Details --------------##
+
   # -- metricsVulnIdEnabled the flag to enable metrics about cve vulns id
   # be aware of metrics cardinality is significantly increased with this feature enabled.
   metricsVulnIdEnabled: false
@@ -93,3 +95,4 @@ compliance:
     - k8s-nsa-1.0
     - k8s-pss-baseline-0.1
     - k8s-pss-restricted-0.1
+    - eks-cis-1.4     ## It requires EKS ami
