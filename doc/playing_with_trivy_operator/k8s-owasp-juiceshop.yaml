@@ -7,20 +7,20 @@ metadata:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: owasp-juiceshop
+  name: juiceshop
   namespace: juiceshop
 spec:
   selector:
     matchLabels:
-      app: owasp-juiceshop
+      app: juiceshop-app
   replicas: 1
   template:
     metadata:
       labels:
-        app: owasp-juiceshop
+        app: juiceshop-app
     spec:
       containers:
-      - name: owasp-juiceshop
+      - name: juiceshop
         image: bkimminich/juice-shop:v17.1.1
         ports:
         - containerPort: 3000
@@ -28,13 +28,33 @@ spec:
 kind: Service
 apiVersion: v1
 metadata:
-  name: owasp-juiceshop
+  name: juiceshop-svc
   namespace: juiceshop
 spec:
   type: ClusterIP
   selector:
-    app: owasp-juiceshop
+    app: juiceshop-app
   ports:
   - name: http
     port: 3080
     targetPort: 3000
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: juiceshop-ing
+  namespace: juiceshop
+spec:
+  # ingressClassName: public
+  ingressClassName: nginx
+  rules:
+  - host: juiceshop.tawa.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: juiceshop-svc
+            port:
+              number: 3080

@@ -1,0 +1,60 @@
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: prometheus-ing
+  namespace: monitoring
+spec:
+  # ingressClassName: public
+  ingressClassName: nginx
+  rules:
+  - host: prometheus.tawa.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prom-kube-prometheus-stack-prometheus
+            port:
+              number: 9090
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: grafana-ing
+  namespace: monitoring
+spec:
+  # ingressClassName: public
+  ingressClassName: nginx
+  rules:
+  - host: grafana.tawa.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: prom-grafana
+            port:
+              number: 80
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: trivy-operator-ing
+  namespace: trivy-system
+spec:
+  # ingressClassName: public
+  ingressClassName: nginx
+  rules:
+  - host: trivy.tawa.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: trivy-operator
+            port:
+              number: 80

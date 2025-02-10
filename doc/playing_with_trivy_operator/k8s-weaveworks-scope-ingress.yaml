@@ -1,0 +1,20 @@
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: scope-ing
+  namespace: weave
+spec:
+  # ingressClassName: public
+  ingressClassName: nginx
+  rules:
+  - host: scope.tawa.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: weave-scope-app
+            port:
+              number: 80
