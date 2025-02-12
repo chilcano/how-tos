@@ -2,6 +2,8 @@ serviceMonitor:
   # enabled determines whether a serviceMonitor should be deployed
   enabled: true
 trivy:
+  # true: view only fixed vulns (equivalent to 'trivy image --ignore-unfixed ...')
+  # false: view all (fixed and unfixed) vulns
   ignoreUnfixed: true
 service:
   # disabled ensures that the pod gets a ClusterIP.
@@ -12,6 +14,10 @@ service:
 ### Oci chart version: v0.25.0, chart tag: v0.23.0 
 
 operator:
+  # -- builtInTrivyServer The flag enables the usage of built-in trivy server in cluster. It also overrides the following trivy params with built-in values
+  # trivy.mode = ClientServer and serverURL = http://<serverServiceName>.<trivy operator namespace>:4975
+  builtInTrivyServer: true
+
   # -- the flag to enable vulnerability scanner
   vulnerabilityScannerEnabled: true
   # -- the flag to enable sbom generation, required for enabling ClusterVulnerabilityReports
@@ -45,7 +51,7 @@ operator:
 
   # -- metricsVulnIdEnabled the flag to enable metrics about cve vulns id
   # be aware of metrics cardinality is significantly increased with this feature enabled.
-  metricsVulnIdEnabled: false
+  metricsVulnIdEnabled: true
 
   # -- exposedSecretScannerEnabled the flag to enable exposed secret scanner
   exposedSecretScannerEnabled: true
@@ -69,11 +75,11 @@ operator:
   # -- MetricsImageInfo the flag to enable metrics about Image Information of scanned images
   # This information has image os information including os family, name/version, and if end of service life has been reached
   # be aware of metrics cardinality is significantly increased with this feature enabled.
-  metricsImageInfo: false
+  metricsImageInfo: true
 
   # -- MetricsClusterComplianceInfo the flag to enable metrics about Cluster Compliance
   # be aware of metrics cardinality is significantly increased with this feature enabled.
-  metricsClusterComplianceInfo: false
+  metricsClusterComplianceInfo: true
 
 compliance:
   # -- failEntriesLimit the flag to limit the number of fail entries per control check in the cluster compliance detail report
@@ -95,4 +101,4 @@ compliance:
     - k8s-nsa-1.0
     - k8s-pss-baseline-0.1
     - k8s-pss-restricted-0.1
-    - eks-cis-1.4     ## It requires EKS ami
+    - eks-cis-1.4

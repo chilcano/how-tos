@@ -38,23 +38,3 @@ spec:
             name: prom-grafana
             port:
               number: 80
----
-kind: Ingress
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: trivy-operator-ing
-  namespace: trivy-system
-spec:
-  # ingressClassName: public
-  ingressClassName: nginx
-  rules:
-  - host: trivy.tawa.local
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: trivy-operator
-            port:
-              number: 80

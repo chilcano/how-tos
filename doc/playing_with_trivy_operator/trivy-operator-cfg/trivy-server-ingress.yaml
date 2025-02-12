@@ -1,0 +1,20 @@
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: trivy-server-ing
+  namespace: trivy-system
+spec:
+  # ingressClassName: public
+  ingressClassName: nginx
+  rules:
+  - host: trivy-server.tawa.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: trivy-service
+            port:
+              number: 4954

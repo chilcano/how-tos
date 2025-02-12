@@ -24,11 +24,14 @@ chmod 0600 ~/.kube
 su - $USER
 
 microk8s status --wait-ready
-microk8s enable dashboard
 
-# Start, stop
+# Install addons
+microk8s enable hostpath-storage dashboard ingress dns helm helm3 metrics-server
+
+# Start, stop, status
 microk8s start
 microk8s stop
+microk8s status
 ```
 
 ### 1.1. Install kubectl and plugin manager (optional)
@@ -62,7 +65,7 @@ kubectl config use-context <my-context>
 
 ### 2.1. Install Trivy Operator
 
-**Select k8s cluster by selecting context**
+**Select k8s cluster by selecting the context**
 ```sh
 kubectl config use-context microk8s
 ```
@@ -83,8 +86,6 @@ helm list -n trivy-system
 
 NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                   APP VERSION
 trivy-operator  trivy-system    1               2025-02-04 22:40:07.107265491 +0100 CET deployed        trivy-operator-0.25.0   0.23.0 
-
-kubectl get deployment -n trivy-system
 ```
 
 **Update**
@@ -150,7 +151,64 @@ kubectl get infraassessmentreports --all-namespaces -o wide | wc -l
 kubectl get rbacassessmentreports --all-namespaces -o wide | wc -l
 kubectl get sbomreports --all-namespaces -o wide | wc -l
 kubectl get vulnerabilityreports --all-namespaces -o wide | wc -l
+
+## List installed K8s resources
+kubectl get deploy,pod,ds,cm,svc,ing -n trivy-system
 ```
+
+**Checking Trivy configuration**
+
+List installed K8s resources:
+```sh
+kubectl get deploy,pod,ds,cm,svc -n trivy-system
+
+NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/trivy-operator   1/1     1            1           4d23h
+
+NAME                                  READY   STATUS    RESTARTS         AGE
+pod/trivy-operator-667d769f4b-6n5bd   1/1     Running   11 (7h11m ago)   4d23h
+pod/trivy-server-0                    1/1     Running   1 (7h11m ago)    26h
+
+NAME                                    DATA   AGE
+configmap/kube-root-ca.crt              1      7d17h
+configmap/trivy-operator                14     4d23h
+configmap/trivy-operator-config         40     4d23h
+configmap/trivy-operator-trivy-config   32     4d23h
+
+NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+service/trivy-operator   ClusterIP   10.152.183.133   <none>        80/TCP     4d23h
+service/trivy-service    ClusterIP   10.152.183.57    <none>        4954/TCP   26h
+```
+
+Retrieving Trivy Operator configuration:
+```sh
+kubectl get cm/trivy-operator-trivy-config -n trivy-system -o yaml | grep -E '(ignoreUnfixed|mode)'
+
+  trivy.ignoreUnfixed: "true"
+  trivy.mode: ClientServer
+```
+
+**Observations about configuration**
+1. The `ignoreUnfixed: true` means that only fixed vulnerabilities will be included in the reports.
+
+The generated vulnerabilities reports, even Prometheus metrics and Grafana Dashboard will show only fixed vulnerabilities.
+You can verify that from Trivy CLI using the flag `--ignore-unfixed`.
+```sh
+± trivy image -q --scanners vuln index.docker.io/bkimminich/juice-shop:v17.1.1 --ignore-unfixed | grep -E "^(Total|Failure)"
+
+Total: 13 (UNKNOWN: 1, LOW: 4, MEDIUM: 8, HIGH: 0, CRITICAL: 0)
+Total: 52 (UNKNOWN: 0, LOW: 6, MEDIUM: 22, HIGH: 19, CRITICAL: 5)
+```
+If you set `ignoreUnfixed: false`, then you will get fixed and unfixed vulnerabilities, even in Prometheus and Grafana.
+```sh
+± trivy image -q --scanners vuln index.docker.io/bkimminich/juice-shop:v17.1.1 | grep -E "^(Total|Failure)" 
+
+Total: 28 (UNKNOWN: 1, LOW: 14, MEDIUM: 13, HIGH: 0, CRITICAL: 0)
+Total: 61 (UNKNOWN: 0, LOW: 6, MEDIUM: 24, HIGH: 21, CRITICAL: 10)
+```
+
+2. The `mode: ClientServer` means that Trivy Operator has been deployed in client/server mode.
+
 
 ### 2.2. Integrating with Grafana/Prometheus
 
@@ -180,38 +238,90 @@ kubectl port-forward service/prom-kube-prometheus-stack-prometheus -n monitoring
 kubectl port-forward service/prom-grafana -n monitoring 3000:80
 ```
 
-**Forward Trivy Operator port**
+**Open next urls in your browser**
+* Grafana: http://tawa.local:3000 
+* Prometheus: http://tawa.local:9090
+
+
+### 2.3. Access to Trivy Metrics Exporter
+
+**With Port Forward**
 ```sh
 kubectl port-forward service/trivy-operator -n trivy-system 5000:80
 ```
 
-**Open next urls in your browser**
-* Grafana: http://tawa.local:3000 
-* Prometheus: http://tawa.local:9090
-* Trivy Metrics Server: http://tawa.local:5000
+Open Trivy Metrics Exporter URL in your browser:
+* Trivy Metrics Exporter: http://tawa.local:5000
 
 
-### 2.4. Install the Trivy Operator Grafana Dashboards
+**With Ingress**
 
-![](./trivy-operator-cfg/trivy-operator-01-import-grafana-dashboard.png)
+Check Trivy Operator services:
+```sh
+kubectl get svc -n trivy-system
 
-Open Grafana in your browser and import the next Dashboards:
-1. Trivy Operator Dashboard
-  - Basic Dashboard that allows to explore vulnerabilities, misconfigs, rbac config and secrets. 
-  - https://grafana.com/grafana/dashboards/17813-trivy-operator-dashboard/
-2. Trivy Operator - Vulnerabilities
-  - Rich Dashboard and include detailed findings for all K8s resources assessed.
-  - https://grafana.com/grafana/dashboards/16337-trivy-operator-vulnerabilities/
+NAME             TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+trivy-operator   ClusterIP   10.152.183.133   <none>        80/TCP     3d22h
+trivy-service    ClusterIP   10.152.183.57    <none>        4954/TCP   136m
+```
+
+Get Trivy Operator service:
+```sh
+kubectl get svc trivy-operator -n trivy-system -o yaml
+
+...
+spec:
+  clusterIP: 10.152.183.133
+  clusterIPs:
+  - 10.152.183.133
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - appProtocol: TCP
+    name: metrics
+    port: 80
+    protocol: TCP
+    targetPort: metrics
+...
+```
+
+Define an Ingress:
+```sh
+cat trivy-operator-cfg/trivy-exporter-ingress.yaml
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: trivy-operator-ing
+  namespace: trivy-system
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: trivy-exporter.tawa.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: trivy-operator
+            port:
+              number: 80
+```
+
+Deploy the Ingress:
+```sh
+kubectl apply -f trivy-operator-cfg/trivy-exporter-ingress.yaml
+```
+
+Open the Trivy Metrics Exporter URL in your browser:
+* http://trivy-exporter.tawa.local/metrics
 
 
-### 2.5. Install sample applications to play with its functionalities
-
-I've installed:
-1. WeaveWorks Scope (Application to visualize K8s resources)
-2. OWASP JuiceShop (Vulnerable Application) 
-
-
-## 3. Assess K8s with Trivy
+## 3. Security scanning K8s with Trivy
 
 
 ### 3.1. Using Trivy CLI
@@ -349,6 +459,88 @@ And you are able to get the entire report in JSON format:
 ```sh
 trivy k8s microk8s -q --compliance k8s-cis-1.23 --report all --format json -o microk8s.compliance.cis.json
 ```
+
+**4. Operating Trivy Server from the Trivy CLI**
+
+If Trivy Operator has been deployed in client/server mode, then we can use Trivy Server to scan any target in a centric way.
+To do that, we need to check if Trivy Server is running in K8s, once done, Trivy Server should be reachable from Trivy CLI.
+In our case, we will expose the existing Trivy Server running in K8s through an ingress.
+
+Check Trivy Operator services:
+```sh
+kubectl get svc -n trivy-system
+
+NAME             TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
+trivy-operator   ClusterIP   10.152.183.133   <none>        80/TCP     3d22h
+trivy-service    ClusterIP   10.152.183.57    <none>        4954/TCP   136m
+```
+
+The `trivy-service` is the service used by Trivy Server instance:
+```sh
+kubectl get svc trivy-service -n trivy-system -o yaml
+
+...
+spec:
+  clusterIP: 10.152.183.57
+  clusterIPs:
+  - 10.152.183.57
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: trivy-http
+    port: 4954
+    protocol: TCP
+    targetPort: 4954
+...
+```
+
+Define an Ingress:
+```sh
+cat trivy-operator-cfg/trivy-server-ingress.yaml
+
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: trivy-server-ing
+  namespace: trivy-system
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: trivy-server.tawa.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: trivy-service
+            port:
+              number: 4954
+```
+
+Deploy the Ingress:
+```sh
+kubectl apply -f trivy-operator-cfg/trivy-server-ingress.yaml
+```
+
+Now, you can use the Trivy Server frpom Trivy CLI by using this URL in your Terminal:
+* http://trivy-server.tawa.local
+
+```sh
+trivy --server http://trivy-server.tawa.local -q image alpine:3.10
+
+trivy image ghcr.io/zama-ai/gateway-l2/sc-bundle:latest -q --server http://trivy-server.tawa.local | grep -E '^(Total|Failures)'
+
+Total: 77 (UNKNOWN: 0, LOW: 57, MEDIUM: 18, HIGH: 1, CRITICAL: 1)
+Total: 8 (UNKNOWN: 0, LOW: 6, MEDIUM: 0, HIGH: 2, CRITICAL: 0)
+Total: 1 (UNKNOWN: 0, LOW: 1, MEDIUM: 0, HIGH: 0, CRITICAL: 0)
+```
+
+Further information about Trivy Server:
+* https://trivy.dev/v0.59/docs/references/configuration/cli/trivy_server/
 
 ### 3.2. Using Trivy Operator
 
@@ -568,3 +760,28 @@ kubectl get vulnerabilityreports -n juiceshop replicaset-owasp-juiceshop-c648dbb
   "unknownCount": 1
 }
 ```
+
+### 3.3. Browsing Trivy findings through Grafana Dashboards
+
+**01. Install sample applications (optional)**
+
+I've installed:
+
+* WeaveWorks Scope (Application to visualize K8s resources): https://github.com/weaveworks/scope
+* OWASP JuiceShop (Vulnerable Application): https://github.com/juice-shop/juice-shop
+* OWASP bWAPP (Another vulnerable Application): http://www.itsecgames.com/
+
+
+**02. Install existing Grafana Dashboard**
+
+![](./trivy-operator-cfg/trivy-operator-01-import-grafana-dashboard.png)
+
+Open Grafana in your browser and import the next Dashboards:
+
+1. Trivy Operator Dashboard
+  - Basic Dashboard that allows to explore vulnerabilities, misconfigs, rbac config and secrets. 
+  - https://grafana.com/grafana/dashboards/17813-trivy-operator-dashboard/
+2. Trivy Operator - Vulnerabilities
+  - Rich Dashboard and include detailed findings for all K8s resources assessed.
+  - https://grafana.com/grafana/dashboards/16337-trivy-operator-vulnerabilities/
+

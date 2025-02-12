@@ -1,13 +1,8 @@
-# Installation of sample applications in MicroK8s
+# Setup Microk8s and deploy of sample applications
 
-## 01. Configure MicroK8s
+## 01. Configure Microk8s
 
-### 1. DNS
-
-### 2. Load Balancer
-
-### 3. Ingress
-
+Install all Microk8s addons required.
 ```sh
 microk8s enable ingress
 
@@ -43,6 +38,43 @@ Pod Template:
     Host Ports:  80/TCP, 443/TCP, 10254/TCP
 ...
 ```
+
+To check what microk8s addons have been installed, run this:
+```sh
+microk8s is running
+
+high-availability: no
+  datastore master nodes: 127.0.0.1:19001
+  datastore standby nodes: none
+addons:
+  enabled:
+    dashboard            # (core) The Kubernetes dashboard
+    dns                  # (core) CoreDNS
+    ha-cluster           # (core) Configure high availability on the current node
+    helm                 # (core) Helm - the package manager for Kubernetes
+    helm3                # (core) Helm 3 - the package manager for Kubernetes
+    hostpath-storage     # (core) Storage class; allocates storage from host directory
+    ingress              # (core) Ingress controller for external access
+    metrics-server       # (core) K8s Metrics Server for API access to service metrics
+    storage              # (core) Alias to hostpath-storage add-on, deprecated
+  disabled:
+    cert-manager         # (core) Cloud native certificate management
+    cis-hardening        # (core) Apply CIS K8s hardening
+    community            # (core) The community addons repository
+    gpu                  # (core) Alias to nvidia add-on
+    host-access          # (core) Allow Pods connecting to Host services smoothly
+    kube-ovn             # (core) An advanced network fabric for Kubernetes
+    mayastor             # (core) OpenEBS MayaStor
+    metallb              # (core) Loadbalancer for your Kubernetes cluster
+    minio                # (core) MinIO object storage
+    nvidia               # (core) NVIDIA hardware (GPU and network) support
+    observability        # (core) A lightweight observability stack for logs, traces and metrics
+    prometheus           # (core) Prometheus operator for monitoring and logging
+    rbac                 # (core) Role-Based Access Control for authorisation
+    registry             # (core) Private image registry exposed on localhost:32000
+    rook-ceph            # (core) Distributed Ceph storage using Rook
+```
+
 
 ## 02. Install sample Applications
 
@@ -123,6 +155,10 @@ kubectl apply -f k8s-weaveworks-scope-ingress.yaml
 * https://owasp.org/www-project-juice-shop/
 * https://pwning.owasp-juice.shop/companion-guide/latest/part1/running.html
 
+Use next links if you want to install Multi-Juicer (based on OWASP JuiceShop), suitable for CTF:
+* https://pwning.owasp-juice.shop/companion-guide/latest/part4/multi-juicer.html
+* https://github.com/juice-shop/multi-juicer/blob/main/guides/k8s/k8s.md
+
 
 **01. Install**
 
@@ -184,7 +220,6 @@ cat /etc/hosts
 127.0.0.1   juiceshop.tawa.local
 ```
 
-
 * The URL is `http://juiceshop.<hostname>`
 
 * The traffic final is:
@@ -194,32 +229,25 @@ browser -> 127.0.0.1:80 ->      80    ->    3080   -> 3000
 ```
 
 
-### 3. Multi-Juicer (based on OWASP JuiceShop)
+### 3. OWASP bWAPP
 
-* https://pwning.owasp-juice.shop/companion-guide/latest/part4/multi-juicer.html
-* https://github.com/juice-shop/multi-juicer/blob/main/guides/k8s/k8s.md
-
-### Install and configuration
-
-**01. Install**
+**Step : Deploy bWAPP** 
 
 ```sh
-
+kubectl apply -f k8s-owasp-bwapp.yaml
 ```
 
-**02. Check installation**
+**Step 1: Run Install** 
+- http://bwapp.tawa.local/install.php
 
-```sh
+**Step 2: Create user in bWAPP**
+- http://bwapp.tawa.local/user_new.php
 
-```
+**Step 3: Login and play** 
+- http://bwapp.tawa.local/login.php
 
-**03. Get access**
 
-```sh
-
-```
-
-### 4. Prometheus, Grafana and Trivy Metrics
+### 4. Prometheus and Grafana
 
 ```sh
 ± kubectl get svc,ing -n monitoring 
@@ -232,13 +260,9 @@ service/prom-kube-prometheus-stack-prometheus     ClusterIP   10.152.183.130   <
 service/prom-kube-state-metrics                   ClusterIP   10.152.183.146   <none>        8080/TCP                     5d23h
 service/prom-prometheus-node-exporter             ClusterIP   10.152.183.107   <none>        9100/TCP                     5d23h
 service/prometheus-operated                       ClusterIP   None             <none>        9090/TCP                     5d23h
-
-± kubectl get svc,ing -n trivy-system
-NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)   AGE
-service/trivy-operator   ClusterIP   10.152.183.133   <none>        80/TCP    3d6h
 ```
 
-### Install and configuration
+#### 4.1 Install and configuration
 
 The services are:
 ```sh
@@ -282,39 +306,17 @@ spec:
     protocol: TCP
     targetPort: 3000
 ...
-
-± kubectl get svc trivy-operator -n trivy-system -o yaml
-
-...
-spec:
-  clusterIP: 10.152.183.133
-  clusterIPs:
-  - 10.152.183.133
-  internalTrafficPolicy: Cluster
-  ipFamilies:
-  - IPv4
-  ipFamilyPolicy: SingleStack
-  ports:
-  - appProtocol: TCP
-    name: metrics
-    port: 80
-    protocol: TCP
-    targetPort: metrics
-...
 ```
 
 
 **01. Install**
 
 ```sh
-± kubectl apply -f k8s-trivy-monitoring-ingress.yaml 
+± kubectl apply -f microk8s-mon-ingress.yaml 
 
 ingress.networking.k8s.io/prometheus-ing created
 ingress.networking.k8s.io/grafana-ing created
-ingress.networking.k8s.io/trivy-operator-ing created
 ```
-
-
 
 **02. Get access**
 
@@ -322,9 +324,10 @@ Open the next URLs in your browser:
 
 * Prometheus: http://prometheus.tawa.local
 * Grafana: http://grafana.tawa.local (admin/prom-operator)
-* Trivy Metrics Server: http://trivy.tawa.local/metrics
+
 
 ### 5. Kubernetes Dashboard
+
 
 **01. Dashboard installation**
 
@@ -369,7 +372,7 @@ Open the next URL: https://tawa.local:10443/ (use the token)
 **04. Accessing through ingress**
 
 ```sh
-cat  k8s-dashboard-ingress.yaml
+cat  microk8s-dashboard-ingress.yaml
 ```
 Note the annotation is important:
 ```yaml
@@ -399,8 +402,9 @@ spec:
 ```
 
 ```sh
-kubectl apply -f k8s-dashboard-ingress.yaml
+kubectl apply -f microk8s-dashboard-ingress.yaml
 ```
 
-Open the next URL: https://dashboard.tawa.local/ (use the token)
+Open the next URL: 
+* https://dashboard.tawa.local/ (use the token)
 

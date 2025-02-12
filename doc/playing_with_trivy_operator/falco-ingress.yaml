@@ -1,0 +1,33 @@
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: falcosidekick-ui-ing
+  namespace: falco
+spec:
+  # ingressClassName: public
+  ingressClassName: nginx
+  rules:
+  - host: falcosidekick-ui.tawa.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: falco-falcosidekick-ui 
+            port:
+              number: 2802
+
+## Step 1: Get service port
+#
+# kubectl get svc,ing -n falco
+#
+# NAME                                   TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
+# service/falco-falcosidekick            ClusterIP   10.152.183.25    <none>        2801/TCP,2810/TCP   10m
+# service/falco-falcosidekick-ui         ClusterIP   10.152.183.113   <none>        2802/TCP            10m
+# service/falco-falcosidekick-ui-redis   ClusterIP   10.152.183.192   <none>        6379/TCP            10m
+#
+## Step 2: Update ingress port accordingly and deploy ingress
+# kubectl apply -f falco-ingress.yaml
+
