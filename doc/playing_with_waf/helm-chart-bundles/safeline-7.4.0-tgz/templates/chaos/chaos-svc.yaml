@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{ template "safeline.chaos" . }}"
+  labels:
+{{ include "safeline.labels" . | indent 4 }}
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: {{ template "safeline.http.port" . }}
+    - name: stpp
+      protocol: TCP
+      port: {{ template "safeline.stpp.port" . }}
+    - name: challenge
+      protocol: TCP
+      port: {{ template "safeline.challenge.port" . }}
+    {{- if .Values.global.exposeServicesAsPorts.enabled }}
+    - name: wrapi
+      protocol: TCP
+      port: {{ template "safeline.wrapi.port" . }}
+    - name: wrtcp
+      protocol: TCP
+      port: {{ template "safeline.wrtcp.port" . }}
+    - name: authserve
+      protocol: TCP
+      port: {{ template "safeline.authserve.port" . }}
+    {{- end }}
+  selector:
+{{ include "safeline.matchLabels" . | indent 4 }}
+    component: chaos

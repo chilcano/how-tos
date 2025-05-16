@@ -1,0 +1,46 @@
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: safeline-mgt-ing
+  namespace: safeline
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS  # This is important, otherwise we get a 400 bad request
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: sl.waf.tawa.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: safeline-mgt
+            port:
+              number: 1443
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: juiceshop-svc-np
+  namespace: juiceshop
+spec:
+  type: NodePort
+  selector:
+    app: juiceshop-app
+  ports:
+  - name: http
+    port: 3081
+    targetPort: 3000
+##
+## kubectl apply -f safeline-mgt-ingress.yaml 
+## 
+# kubectl get svc,ing -n juiceshop
+#
+# NAME                       TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+# service/juiceshop-svc      ClusterIP   10.152.183.161   <none>        3080/TCP         14d
+# service/juiceshop-svc-np   NodePort    10.152.183.59    <none>        3081:30164/TCP   16s
+
+# NAME                                      CLASS   HOSTS                  ADDRESS     PORTS   AGE
+# ingress.networking.k8s.io/juiceshop-ing   nginx   juiceshop.tawa.local   127.0.0.1   80      14d

@@ -1,0 +1,886 @@
+<?xml version="1.0"?>
+<OWASPZAPReport programName="ZAP" version="2.16.1" generated="Tue, 13 May 2025 12:29:28">
+	
+		<site name="http://cdnjs.cloudflare.com" host="cdnjs.cloudflare.com" port="80" ssl="false">
+			<alerts>
+				
+			</alerts>
+		</site>
+	
+	
+		<site name="http://cdnjs.cloudflare.com" host="cdnjs.cloudflare.com" port="80" ssl="false">
+			<alerts>
+				
+			</alerts>
+		</site>
+	
+	
+		<site name="http://juiceshop-svc.juiceshop.svc.cluster.local:3080" host="juiceshop-svc.juiceshop.svc.cluster.local" port="3080" ssl="false">
+			<alerts>
+				
+					<alertitem>
+						<pluginid>10038</pluginid>
+						<alertRef>10038-1</alertRef>
+						<alert>Content Security Policy (CSP) Header Not Set</alert>
+						<name>Content Security Policy (CSP) Header Not Set</name>
+						<riskcode>2</riskcode>
+						<confidence>3</confidence>
+						<riskdesc>Medium (High)</riskdesc>
+						<confidencedesc>High</confidencedesc>
+						<desc>&lt;p&gt;Content Security Policy (CSP) is an added layer of security that helps to detect and mitigate certain types of attacks, including Cross Site Scripting (XSS) and data injection attacks. These attacks are used for everything from data theft to site defacement or distribution of malware. CSP provides a set of standard HTTP headers that allow website owners to declare approved sources of content that browsers should be allowed to load on that page &#x2014; covered types are JavaScript, CSS, HTML frames, fonts, images and embeddable objects such as Java applets, ActiveX, audio and video files.&lt;/p&gt;</desc>
+						<instances>
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dbeg&amp;sid=oejUC9N7hidQVEAiAABu</uri>
+									<method>POST</method>
+									<param></param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dc4a&amp;sid=a3i-ZPo0R_zvnMK2AABw</uri>
+									<method>POST</method>
+									<param></param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dcXx&amp;sid=66zDH88F2ffLi28wAABy</uri>
+									<method>POST</method>
+									<param></param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dcyd&amp;sid=NRIjri1rebofn7lCAAB0</uri>
+									<method>POST</method>
+									<param></param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9ddOX&amp;sid=_tl8Y8yGYhJQXYXqAAB2</uri>
+									<method>POST</method>
+									<param></param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9ddsd&amp;sid=IxvxT_7bcp8dQ0OuAAB4</uri>
+									<method>POST</method>
+									<param></param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9de9G&amp;sid=7xsB2f9fSr8WPW6TAAB6</uri>
+									<method>POST</method>
+									<param></param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+						</instances>
+						<count>8</count>
+						<solution>&lt;p&gt;Ensure that your web server, application server, load balancer, etc. is configured to set the Content-Security-Policy header.&lt;/p&gt;</solution>
+						<otherinfo></otherinfo>
+						<reference>&lt;p&gt;https://developer.mozilla.org/en-US/docs/Web/Security/CSP/Introducing_Content_Security_Policy&lt;/p&gt;&lt;p&gt;https://cheatsheetseries.owasp.org/cheatsheets/Content_Security_Policy_Cheat_Sheet.html&lt;/p&gt;&lt;p&gt;https://www.w3.org/TR/CSP/&lt;/p&gt;&lt;p&gt;https://w3c.github.io/webappsec-csp/&lt;/p&gt;&lt;p&gt;https://web.dev/articles/csp&lt;/p&gt;&lt;p&gt;https://caniuse.com/#feat=contentsecuritypolicy&lt;/p&gt;&lt;p&gt;https://content-security-policy.com/&lt;/p&gt;</reference>
+						<cweid>693</cweid>
+						<wascid>15</wascid>
+						<sourceid>116</sourceid>
+					</alertitem>
+				
+				
+					<alertitem>
+						<pluginid>10098</pluginid>
+						<alertRef>10098</alertRef>
+						<alert>Cross-Domain Misconfiguration</alert>
+						<name>Cross-Domain Misconfiguration</name>
+						<riskcode>2</riskcode>
+						<confidence>2</confidence>
+						<riskdesc>Medium (Medium)</riskdesc>
+						<confidencedesc>Medium</confidencedesc>
+						<desc>&lt;p&gt;Web browser data loading may be possible, due to a Cross Origin Resource Sharing (CORS) misconfiguration on the web server.&lt;/p&gt;</desc>
+						<instances>
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>Access-Control-Allow-Origin: *</evidence>
+									<otherinfo>The CORS misconfiguration on the web server permits cross-domain read requests from arbitrary third party domains, using unauthenticated APIs on this domain. Web browser implementations do not permit arbitrary third parties to read the response from authenticated APIs, however. This reduces the risk somewhat. This misconfiguration could be used by an attacker to access data that is available in an unauthenticated manner, but which uses some other form of security, such as IP address white-listing.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/api/Challenges/?name=Score%20Board</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>Access-Control-Allow-Origin: *</evidence>
+									<otherinfo>The CORS misconfiguration on the web server permits cross-domain read requests from arbitrary third party domains, using unauthenticated APIs on this domain. Web browser implementations do not permit arbitrary third parties to read the response from authenticated APIs, however. This reduces the risk somewhat. This misconfiguration could be used by an attacker to access data that is available in an unauthenticated manner, but which uses some other form of security, such as IP address white-listing.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/api/Quantitys/</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>Access-Control-Allow-Origin: *</evidence>
+									<otherinfo>The CORS misconfiguration on the web server permits cross-domain read requests from arbitrary third party domains, using unauthenticated APIs on this domain. Web browser implementations do not permit arbitrary third parties to read the response from authenticated APIs, however. This reduces the risk somewhat. This misconfiguration could be used by an attacker to access data that is available in an unauthenticated manner, but which uses some other form of security, such as IP address white-listing.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/assets/public/images/products/apple_juice.jpg</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>Access-Control-Allow-Origin: *</evidence>
+									<otherinfo>The CORS misconfiguration on the web server permits cross-domain read requests from arbitrary third party domains, using unauthenticated APIs on this domain. Web browser implementations do not permit arbitrary third parties to read the response from authenticated APIs, however. This reduces the risk somewhat. This misconfiguration could be used by an attacker to access data that is available in an unauthenticated manner, but which uses some other form of security, such as IP address white-listing.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/assets/public/images/products/apple_pressings.jpg</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>Access-Control-Allow-Origin: *</evidence>
+									<otherinfo>The CORS misconfiguration on the web server permits cross-domain read requests from arbitrary third party domains, using unauthenticated APIs on this domain. Web browser implementations do not permit arbitrary third parties to read the response from authenticated APIs, however. This reduces the risk somewhat. This misconfiguration could be used by an attacker to access data that is available in an unauthenticated manner, but which uses some other form of security, such as IP address white-listing.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/assets/public/images/products/artwork2.jpg</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>Access-Control-Allow-Origin: *</evidence>
+									<otherinfo>The CORS misconfiguration on the web server permits cross-domain read requests from arbitrary third party domains, using unauthenticated APIs on this domain. Web browser implementations do not permit arbitrary third parties to read the response from authenticated APIs, however. This reduces the risk somewhat. This misconfiguration could be used by an attacker to access data that is available in an unauthenticated manner, but which uses some other form of security, such as IP address white-listing.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/assets/public/images/products/banana_juice.jpg</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>Access-Control-Allow-Origin: *</evidence>
+									<otherinfo>The CORS misconfiguration on the web server permits cross-domain read requests from arbitrary third party domains, using unauthenticated APIs on this domain. Web browser implementations do not permit arbitrary third parties to read the response from authenticated APIs, however. This reduces the risk somewhat. This misconfiguration could be used by an attacker to access data that is available in an unauthenticated manner, but which uses some other form of security, such as IP address white-listing.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/MaterialIcons-Regular.woff2</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>Access-Control-Allow-Origin: *</evidence>
+									<otherinfo>The CORS misconfiguration on the web server permits cross-domain read requests from arbitrary third party domains, using unauthenticated APIs on this domain. Web browser implementations do not permit arbitrary third parties to read the response from authenticated APIs, however. This reduces the risk somewhat. This misconfiguration could be used by an attacker to access data that is available in an unauthenticated manner, but which uses some other form of security, such as IP address white-listing.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/polyfills.js</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>Access-Control-Allow-Origin: *</evidence>
+									<otherinfo>The CORS misconfiguration on the web server permits cross-domain read requests from arbitrary third party domains, using unauthenticated APIs on this domain. Web browser implementations do not permit arbitrary third parties to read the response from authenticated APIs, however. This reduces the risk somewhat. This misconfiguration could be used by an attacker to access data that is available in an unauthenticated manner, but which uses some other form of security, such as IP address white-listing.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/rest/admin/application-configuration</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>Access-Control-Allow-Origin: *</evidence>
+									<otherinfo>The CORS misconfiguration on the web server permits cross-domain read requests from arbitrary third party domains, using unauthenticated APIs on this domain. Web browser implementations do not permit arbitrary third parties to read the response from authenticated APIs, however. This reduces the risk somewhat. This misconfiguration could be used by an attacker to access data that is available in an unauthenticated manner, but which uses some other form of security, such as IP address white-listing.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/styles.css</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>Access-Control-Allow-Origin: *</evidence>
+									<otherinfo>The CORS misconfiguration on the web server permits cross-domain read requests from arbitrary third party domains, using unauthenticated APIs on this domain. Web browser implementations do not permit arbitrary third parties to read the response from authenticated APIs, however. This reduces the risk somewhat. This misconfiguration could be used by an attacker to access data that is available in an unauthenticated manner, but which uses some other form of security, such as IP address white-listing.</otherinfo>
+								</instance>
+							
+						</instances>
+						<count>11</count>
+						<solution>&lt;p&gt;Ensure that sensitive data is not available in an unauthenticated manner (using IP address white-listing, for instance).&lt;/p&gt;&lt;p&gt;Configure the &quot;Access-Control-Allow-Origin&quot; HTTP header to a more restrictive set of domains, or remove all CORS headers entirely, to allow the web browser to enforce the Same Origin Policy (SOP) in a more restrictive manner.&lt;/p&gt;</solution>
+						<otherinfo>&lt;p&gt;The CORS misconfiguration on the web server permits cross-domain read requests from arbitrary third party domains, using unauthenticated APIs on this domain. Web browser implementations do not permit arbitrary third parties to read the response from authenticated APIs, however. This reduces the risk somewhat. This misconfiguration could be used by an attacker to access data that is available in an unauthenticated manner, but which uses some other form of security, such as IP address white-listing.&lt;/p&gt;</otherinfo>
+						<reference>&lt;p&gt;https://vulncat.fortify.com/en/detail?id=desc.config.dotnet.html5_overly_permissive_cors_policy&lt;/p&gt;</reference>
+						<cweid>264</cweid>
+						<wascid>14</wascid>
+						<sourceid>4</sourceid>
+					</alertitem>
+				
+				
+					<alertitem>
+						<pluginid>10020</pluginid>
+						<alertRef>10020-1</alertRef>
+						<alert>Missing Anti-clickjacking Header</alert>
+						<name>Missing Anti-clickjacking Header</name>
+						<riskcode>2</riskcode>
+						<confidence>2</confidence>
+						<riskdesc>Medium (Medium)</riskdesc>
+						<confidencedesc>Medium</confidencedesc>
+						<desc>&lt;p&gt;The response does not protect against &apos;ClickJacking&apos; attacks. It should include either Content-Security-Policy with &apos;frame-ancestors&apos; directive or X-Frame-Options.&lt;/p&gt;</desc>
+						<instances>
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dc4a&amp;sid=a3i-ZPo0R_zvnMK2AABw</uri>
+									<method>POST</method>
+									<param>x-frame-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dcXx&amp;sid=66zDH88F2ffLi28wAABy</uri>
+									<method>POST</method>
+									<param>x-frame-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dcyd&amp;sid=NRIjri1rebofn7lCAAB0</uri>
+									<method>POST</method>
+									<param>x-frame-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9ddOX&amp;sid=_tl8Y8yGYhJQXYXqAAB2</uri>
+									<method>POST</method>
+									<param>x-frame-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9ddsd&amp;sid=IxvxT_7bcp8dQ0OuAAB4</uri>
+									<method>POST</method>
+									<param>x-frame-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9de9G&amp;sid=7xsB2f9fSr8WPW6TAAB6</uri>
+									<method>POST</method>
+									<param>x-frame-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9deA0&amp;sid=P2OF-NWoLe-puBF0AAB7</uri>
+									<method>POST</method>
+									<param>x-frame-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9deJJ&amp;sid=9XeC1T5rHBoLnr4lAAB-</uri>
+									<method>POST</method>
+									<param>x-frame-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dep7&amp;sid=fGpNTboxwCvTtuzZAACC</uri>
+									<method>POST</method>
+									<param>x-frame-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9deSu&amp;sid=VtjS7n0dS0pAsCwAAACA</uri>
+									<method>POST</method>
+									<param>x-frame-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9df6X&amp;sid=xYEYqLB3H2XWml99AACE</uri>
+									<method>POST</method>
+									<param>x-frame-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+						</instances>
+						<count>11</count>
+						<solution>&lt;p&gt;Modern Web browsers support the Content-Security-Policy and X-Frame-Options HTTP headers. Ensure one of them is set on all web pages returned by your site/app.&lt;/p&gt;&lt;p&gt;If you expect the page to be framed only by pages on your server (e.g. it&apos;s part of a FRAMESET) then you&apos;ll want to use SAMEORIGIN, otherwise if you never expect the page to be framed, you should use DENY. Alternatively consider implementing Content Security Policy&apos;s &quot;frame-ancestors&quot; directive.&lt;/p&gt;</solution>
+						<otherinfo></otherinfo>
+						<reference>&lt;p&gt;https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options&lt;/p&gt;</reference>
+						<cweid>1021</cweid>
+						<wascid>15</wascid>
+						<sourceid>91</sourceid>
+					</alertitem>
+				
+				
+					<alertitem>
+						<pluginid>3</pluginid>
+						<alertRef>3-1</alertRef>
+						<alert>Session ID in URL Rewrite</alert>
+						<name>Session ID in URL Rewrite</name>
+						<riskcode>2</riskcode>
+						<confidence>3</confidence>
+						<riskdesc>Medium (High)</riskdesc>
+						<confidencedesc>High</confidencedesc>
+						<desc>&lt;p&gt;URL rewrite is used to track user session ID. The session ID may be disclosed via cross-site referer header. In addition, the session ID might be stored in browser history or server logs.&lt;/p&gt;</desc>
+						<instances>
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dbfP&amp;sid=oejUC9N7hidQVEAiAABu</uri>
+									<method>GET</method>
+									<param>sid</param>
+									<attack></attack>
+									<evidence>oejUC9N7hidQVEAiAABu</evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dc4b&amp;sid=a3i-ZPo0R_zvnMK2AABw</uri>
+									<method>GET</method>
+									<param>sid</param>
+									<attack></attack>
+									<evidence>a3i-ZPo0R_zvnMK2AABw</evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dc50&amp;sid=a3i-ZPo0R_zvnMK2AABw</uri>
+									<method>GET</method>
+									<param>sid</param>
+									<attack></attack>
+									<evidence>a3i-ZPo0R_zvnMK2AABw</evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dcXx.0&amp;sid=66zDH88F2ffLi28wAABy</uri>
+									<method>GET</method>
+									<param>sid</param>
+									<attack></attack>
+									<evidence>66zDH88F2ffLi28wAABy</evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dcYo&amp;sid=66zDH88F2ffLi28wAABy</uri>
+									<method>GET</method>
+									<param>sid</param>
+									<attack></attack>
+									<evidence>66zDH88F2ffLi28wAABy</evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=websocket&amp;sid=66zDH88F2ffLi28wAABy</uri>
+									<method>GET</method>
+									<param>sid</param>
+									<attack></attack>
+									<evidence>66zDH88F2ffLi28wAABy</evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=websocket&amp;sid=a3i-ZPo0R_zvnMK2AABw</uri>
+									<method>GET</method>
+									<param>sid</param>
+									<attack></attack>
+									<evidence>a3i-ZPo0R_zvnMK2AABw</evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=websocket&amp;sid=oejUC9N7hidQVEAiAABu</uri>
+									<method>GET</method>
+									<param>sid</param>
+									<attack></attack>
+									<evidence>oejUC9N7hidQVEAiAABu</evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dbeg&amp;sid=oejUC9N7hidQVEAiAABu</uri>
+									<method>POST</method>
+									<param>sid</param>
+									<attack></attack>
+									<evidence>oejUC9N7hidQVEAiAABu</evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dc4a&amp;sid=a3i-ZPo0R_zvnMK2AABw</uri>
+									<method>POST</method>
+									<param>sid</param>
+									<attack></attack>
+									<evidence>a3i-ZPo0R_zvnMK2AABw</evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dcXx&amp;sid=66zDH88F2ffLi28wAABy</uri>
+									<method>POST</method>
+									<param>sid</param>
+									<attack></attack>
+									<evidence>66zDH88F2ffLi28wAABy</evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+						</instances>
+						<count>11</count>
+						<solution>&lt;p&gt;For secure content, put session ID in a cookie. To be even more secure consider using a combination of cookie and URL rewrite.&lt;/p&gt;</solution>
+						<otherinfo></otherinfo>
+						<reference>&lt;p&gt;https://seclists.org/webappsec/2002/q4/111&lt;/p&gt;</reference>
+						<cweid>598</cweid>
+						<wascid>13</wascid>
+						<sourceid>72</sourceid>
+					</alertitem>
+				
+				
+					<alertitem>
+						<pluginid>10017</pluginid>
+						<alertRef>10017</alertRef>
+						<alert>Cross-Domain JavaScript Source File Inclusion</alert>
+						<name>Cross-Domain JavaScript Source File Inclusion</name>
+						<riskcode>1</riskcode>
+						<confidence>2</confidence>
+						<riskdesc>Low (Medium)</riskdesc>
+						<confidencedesc>Medium</confidencedesc>
+						<desc>&lt;p&gt;The page includes one or more script files from a third-party domain.&lt;/p&gt;</desc>
+						<instances>
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/</uri>
+									<method>GET</method>
+									<param>//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js</param>
+									<attack></attack>
+									<evidence>&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js&quot;&gt;&lt;/script&gt;</evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/</uri>
+									<method>GET</method>
+									<param>//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js</param>
+									<attack></attack>
+									<evidence>&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js&quot;&gt;&lt;/script&gt;</evidence>
+									<otherinfo></otherinfo>
+								</instance>
+							
+						</instances>
+						<count>2</count>
+						<solution>&lt;p&gt;Ensure JavaScript source files are loaded from only trusted sources, and the sources can&apos;t be controlled by end users of the application.&lt;/p&gt;</solution>
+						<otherinfo></otherinfo>
+						<reference></reference>
+						<cweid>829</cweid>
+						<wascid>15</wascid>
+						<sourceid>4</sourceid>
+					</alertitem>
+				
+				
+					<alertitem>
+						<pluginid>2</pluginid>
+						<alertRef>2</alertRef>
+						<alert>Private IP Disclosure</alert>
+						<name>Private IP Disclosure</name>
+						<riskcode>1</riskcode>
+						<confidence>2</confidence>
+						<riskdesc>Low (Medium)</riskdesc>
+						<confidencedesc>Medium</confidencedesc>
+						<desc>&lt;p&gt;A private IP (such as 10.x.x.x, 172.x.x.x, 192.168.x.x) or an Amazon EC2 private hostname (for example, ip-10-0-56-78) has been found in the HTTP response body. This information might be helpful for further attacks targeting internal systems.&lt;/p&gt;</desc>
+						<instances>
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/rest/admin/application-configuration</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>192.168.99.100:3000</evidence>
+									<otherinfo>192.168.99.100:3000
+192.168.99.100:4200
+</otherinfo>
+								</instance>
+							
+						</instances>
+						<count>1</count>
+						<solution>&lt;p&gt;Remove the private IP address from the HTTP response body. For comments, use JSP/ASP/PHP comment instead of HTML/JavaScript comment which can be seen by client browsers.&lt;/p&gt;</solution>
+						<otherinfo>&lt;p&gt;192.168.99.100:3000&lt;/p&gt;&lt;p&gt;192.168.99.100:4200&lt;/p&gt;&lt;p&gt;&lt;/p&gt;</otherinfo>
+						<reference>&lt;p&gt;https://tools.ietf.org/html/rfc1918&lt;/p&gt;</reference>
+						<cweid>497</cweid>
+						<wascid>13</wascid>
+						<sourceid>43</sourceid>
+					</alertitem>
+				
+				
+					<alertitem>
+						<pluginid>10096</pluginid>
+						<alertRef>10096</alertRef>
+						<alert>Timestamp Disclosure - Unix</alert>
+						<name>Timestamp Disclosure - Unix</name>
+						<riskcode>1</riskcode>
+						<confidence>1</confidence>
+						<riskdesc>Low (Low)</riskdesc>
+						<confidencedesc>Low</confidencedesc>
+						<desc>&lt;p&gt;A timestamp was disclosed by the application/web server. - Unix&lt;/p&gt;</desc>
+						<instances>
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/main.js</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>1734944650</evidence>
+									<otherinfo>1734944650, which evaluates to: 2024-12-23 09:04:10.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/rest/admin/application-configuration</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>1969196030</evidence>
+									<otherinfo>1969196030, which evaluates to: 2032-05-26 14:53:50.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/rest/admin/application-configuration</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>1970691216</evidence>
+									<otherinfo>1970691216, which evaluates to: 2032-06-12 22:13:36.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/rest/products/search?q=</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>1969196030</evidence>
+									<otherinfo>1969196030, which evaluates to: 2032-05-26 14:53:50.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/rest/products/search?q=</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>1970691216</evidence>
+									<otherinfo>1970691216, which evaluates to: 2032-06-12 22:13:36.</otherinfo>
+								</instance>
+							
+						</instances>
+						<count>5</count>
+						<solution>&lt;p&gt;Manually confirm that the timestamp data is not sensitive, and that the data cannot be aggregated to disclose exploitable patterns.&lt;/p&gt;</solution>
+						<otherinfo>&lt;p&gt;1734944650, which evaluates to: 2024-12-23 09:04:10.&lt;/p&gt;</otherinfo>
+						<reference>&lt;p&gt;https://cwe.mitre.org/data/definitions/200.html&lt;/p&gt;</reference>
+						<cweid>497</cweid>
+						<wascid>13</wascid>
+						<sourceid>9</sourceid>
+					</alertitem>
+				
+				
+					<alertitem>
+						<pluginid>10021</pluginid>
+						<alertRef>10021</alertRef>
+						<alert>X-Content-Type-Options Header Missing</alert>
+						<name>X-Content-Type-Options Header Missing</name>
+						<riskcode>1</riskcode>
+						<confidence>2</confidence>
+						<riskdesc>Low (Medium)</riskdesc>
+						<confidencedesc>Medium</confidencedesc>
+						<desc>&lt;p&gt;The Anti-MIME-Sniffing header X-Content-Type-Options was not set to &apos;nosniff&apos;. This allows older versions of Internet Explorer and Chrome to perform MIME-sniffing on the response body, potentially causing the response body to be interpreted and displayed as a content type other than the declared content type. Current (early 2014) and legacy versions of Firefox will use the declared content type (if one is set), rather than performing MIME-sniffing.&lt;/p&gt;</desc>
+						<instances>
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dbeh&amp;sid=oejUC9N7hidQVEAiAABu</uri>
+									<method>GET</method>
+									<param>x-content-type-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
+At &quot;High&quot; threshold this scan rule will not alert on client or server error responses.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dbfP&amp;sid=oejUC9N7hidQVEAiAABu</uri>
+									<method>GET</method>
+									<param>x-content-type-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
+At &quot;High&quot; threshold this scan rule will not alert on client or server error responses.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dc33</uri>
+									<method>GET</method>
+									<param>x-content-type-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
+At &quot;High&quot; threshold this scan rule will not alert on client or server error responses.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dc4b&amp;sid=a3i-ZPo0R_zvnMK2AABw</uri>
+									<method>GET</method>
+									<param>x-content-type-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
+At &quot;High&quot; threshold this scan rule will not alert on client or server error responses.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dc50&amp;sid=a3i-ZPo0R_zvnMK2AABw</uri>
+									<method>GET</method>
+									<param>x-content-type-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
+At &quot;High&quot; threshold this scan rule will not alert on client or server error responses.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dcW5</uri>
+									<method>GET</method>
+									<param>x-content-type-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
+At &quot;High&quot; threshold this scan rule will not alert on client or server error responses.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dcXx.0&amp;sid=66zDH88F2ffLi28wAABy</uri>
+									<method>GET</method>
+									<param>x-content-type-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
+At &quot;High&quot; threshold this scan rule will not alert on client or server error responses.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dcYo&amp;sid=66zDH88F2ffLi28wAABy</uri>
+									<method>GET</method>
+									<param>x-content-type-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
+At &quot;High&quot; threshold this scan rule will not alert on client or server error responses.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dbeg&amp;sid=oejUC9N7hidQVEAiAABu</uri>
+									<method>POST</method>
+									<param>x-content-type-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
+At &quot;High&quot; threshold this scan rule will not alert on client or server error responses.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dc4a&amp;sid=a3i-ZPo0R_zvnMK2AABw</uri>
+									<method>POST</method>
+									<param>x-content-type-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
+At &quot;High&quot; threshold this scan rule will not alert on client or server error responses.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/socket.io/?EIO=4&amp;transport=polling&amp;t=PR9dcXx&amp;sid=66zDH88F2ffLi28wAABy</uri>
+									<method>POST</method>
+									<param>x-content-type-options</param>
+									<attack></attack>
+									<evidence></evidence>
+									<otherinfo>This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.
+At &quot;High&quot; threshold this scan rule will not alert on client or server error responses.</otherinfo>
+								</instance>
+							
+						</instances>
+						<count>11</count>
+						<solution>&lt;p&gt;Ensure that the application/web server sets the Content-Type header appropriately, and that it sets the X-Content-Type-Options header to &apos;nosniff&apos; for all web pages.&lt;/p&gt;&lt;p&gt;If possible, ensure that the end user uses a standards-compliant and modern web browser that does not perform MIME-sniffing at all, or that can be directed by the web application/web server to not perform MIME-sniffing.&lt;/p&gt;</solution>
+						<otherinfo>&lt;p&gt;This issue still applies to error type pages (401, 403, 500, etc.) as those pages are often still affected by injection issues, in which case there is still concern for browsers sniffing pages away from their actual content type.&lt;/p&gt;&lt;p&gt;At &quot;High&quot; threshold this scan rule will not alert on client or server error responses.&lt;/p&gt;</otherinfo>
+						<reference>&lt;p&gt;https://learn.microsoft.com/en-us/previous-versions/windows/internet-explorer/ie-developer/compatibility/gg622941(v=vs.85)&lt;/p&gt;&lt;p&gt;https://owasp.org/www-community/Security_Headers&lt;/p&gt;</reference>
+						<cweid>693</cweid>
+						<wascid>15</wascid>
+						<sourceid>47</sourceid>
+					</alertitem>
+				
+				
+					<alertitem>
+						<pluginid>10027</pluginid>
+						<alertRef>10027</alertRef>
+						<alert>Information Disclosure - Suspicious Comments</alert>
+						<name>Information Disclosure - Suspicious Comments</name>
+						<riskcode>0</riskcode>
+						<confidence>1</confidence>
+						<riskdesc>Informational (Low)</riskdesc>
+						<confidencedesc>Low</confidencedesc>
+						<desc>&lt;p&gt;The response appears to contain suspicious comments which may help an attacker.&lt;/p&gt;</desc>
+						<instances>
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/main.js</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>query</evidence>
+									<otherinfo>The following pattern was used: \bQUERY\b and was detected in likely comment: &quot;//w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/771984076&amp;amp;color=%23ff5500&amp;amp;auto&amp;lowbar;play=true&amp;amp;h&quot;, see evidence field for the suspicious comment/snippet.</otherinfo>
+								</instance>
+							
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/vendor.js</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>query</evidence>
+									<otherinfo>The following pattern was used: \bQUERY\b and was detected in likely comment: &quot;//bit.ly/2sd4HMP\n*/\n@media ${Fe} {.fx-query-test{ }}\n`)),_t.head.appendChild(ye),kt.forEach(Pe=&gt;R[Pe]=ye)}catch(ye){console.e&quot;, see evidence field for the suspicious comment/snippet.</otherinfo>
+								</instance>
+							
+						</instances>
+						<count>2</count>
+						<solution>&lt;p&gt;Remove all comments that return information that may help an attacker and fix any underlying problems they refer to.&lt;/p&gt;</solution>
+						<otherinfo>&lt;p&gt;The following pattern was used: \bQUERY\b and was detected in likely comment: &quot;//w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/771984076&amp;amp;color=%23ff5500&amp;amp;auto&amp;lowbar;play=true&amp;amp;h&quot;, see evidence field for the suspicious comment/snippet.&lt;/p&gt;</otherinfo>
+						<reference></reference>
+						<cweid>615</cweid>
+						<wascid>13</wascid>
+						<sourceid>9</sourceid>
+					</alertitem>
+				
+				
+					<alertitem>
+						<pluginid>10109</pluginid>
+						<alertRef>10109</alertRef>
+						<alert>Modern Web Application</alert>
+						<name>Modern Web Application</name>
+						<riskcode>0</riskcode>
+						<confidence>2</confidence>
+						<riskdesc>Informational (Medium)</riskdesc>
+						<confidencedesc>Medium</confidencedesc>
+						<desc>&lt;p&gt;The application appears to be a modern web application. If you need to explore it automatically then the Ajax Spider may well be more effective than the standard one.&lt;/p&gt;</desc>
+						<instances>
+							
+								<instance>
+									<uri>http://juiceshop-svc.juiceshop.svc.cluster.local:3080/</uri>
+									<method>GET</method>
+									<param></param>
+									<attack></attack>
+									<evidence>&lt;script src=&quot;//cdnjs.cloudflare.com/ajax/libs/cookieconsent2/3.1.0/cookieconsent.min.js&quot;&gt;&lt;/script&gt;</evidence>
+									<otherinfo>No links have been found while there are scripts, which is an indication that this is a modern web application.</otherinfo>
+								</instance>
+							
+						</instances>
+						<count>1</count>
+						<solution>&lt;p&gt;This is an informational alert and so no changes are required.&lt;/p&gt;</solution>
+						<otherinfo>&lt;p&gt;No links have been found while there are scripts, which is an indication that this is a modern web application.&lt;/p&gt;</otherinfo>
+						<reference></reference>
+						<cweid>-1</cweid>
+						<wascid>-1</wascid>
+						<sourceid>4</sourceid>
+					</alertitem>
+				
+			</alerts>
+		</site>
+	
+</OWASPZAPReport>

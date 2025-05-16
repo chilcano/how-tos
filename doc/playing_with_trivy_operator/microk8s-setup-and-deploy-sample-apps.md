@@ -1,8 +1,19 @@
 # Setup Microk8s and deploy of sample applications
 
-## 01. Configure Microk8s
+## 01. Install and configure
 
-Install all Microk8s addons required.
+### 1. Install Microk8s
+
+
+```sh
+
+
+```
+
+### 2. Configure Microk8s
+
+**Install all Microk8s Nginx ingress addon***
+
 ```sh
 microk8s enable ingress
 
@@ -39,10 +50,14 @@ Pod Template:
 ...
 ```
 
-To check what microk8s addons have been installed, run this:
+**To check what microk8s addons have been installed**
+```sh
+microk8s status
+```
+
+You will have this:
 ```sh
 microk8s is running
-
 high-availability: no
   datastore master nodes: 127.0.0.1:19001
   datastore standby nodes: none
@@ -73,6 +88,78 @@ addons:
     rbac                 # (core) Role-Based Access Control for authorisation
     registry             # (core) Private image registry exposed on localhost:32000
     rook-ceph            # (core) Distributed Ceph storage using Rook
+```
+
+### Trubleshooting
+
+**1. Changing of network**
+
+Error:
+```sh
+$ kubectl config use-context microk8s
+
+$ kubectl get ns -A
+
+E0512 14:15:38.994839  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
+E0512 14:15:42.066889  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
+E0512 14:15:45.143537  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
+E0512 14:15:48.210815  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
+E0512 14:15:51.282795  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
+Unable to connect to the server: dial tcp 192.168.1.153:16443: connect: no route to host
+```
+
+If you are facing this problem, then follow the next steps:
+
+- `2. Update the cluster IP`
+- `3. Merge all kubeconfigs`
+
+
+2. Update the microk8s kubeconfig:
+
+**2. Update the cluster IP**
+
+According the documentation (https://microk8s.io/docs/configure-host-interfaces), this is not needed, however if you change frequently the IP address and the default network interface, 
+well, it's recommended update it to IP loopback.
+
+This optional if you network and ip address change frequently. With that you will use the loopback.
+```sh
+sudo microk8s stop
+nano /var/snap/microk8s/current/args/kube-apiserver
+
+--advertise-address=127.0.0.1
+--bind-address=0.0.0.0
+--secure-port=16443
+
+sudo microk8s start
+```
+Where:
+- `advertise-address=127.0.0.1` the kubeconfig will have this ip
+- `bind-address=0.0.0.0` by default microk8s already binds to all interfaces
+
+**3. Merge all kubeconfigs**
+
+```sh
+cp ~/.kube/config ~/.kube/config.20250512
+
+kubectl config delete-context microk8s
+kubectl config delete-cluster microk8s-cluster
+
+microk8s config > ~/.kube/config.microk8s 
+
+export KUBECONFIG=~/.kube/config:~/.kube/config.microk8s
+kubectl config view --flatten > ~/.kube/config.flatten
+mv ~/.kube/config.flatten ~/.kube/config
+```
+Verify if works
+```sh
+kubectl config get-clusters
+kubectl config get-contexts
+
+CURRENT   NAME                      CLUSTER                                                 AUTHINFO                                                NAMESPACE
+ *        microk8s                  microk8s-cluster                                        foo-usr                                                   
+          acme-k8s-ctx              acme-k8s-cluster                                        acme-k8s-usr      
+
+kubectl config use-context <my-context>
 ```
 
 
@@ -194,6 +281,7 @@ kubectl port-forward svc/owasp-juiceshop -n juiceshop 3080:3080
 * Juiceshop service:
 ```sh
 ± kubectl get svc juiceshop-svc -n juiceshop -o yaml
+
 apiVersion: v1
 kind: Service
 ...
@@ -214,6 +302,7 @@ spec:
 ```
 
 * Add `juiceshop.<hostname>` to `/etc/hosts` file.
+
 ```sh
 cat /etc/hosts
 
@@ -380,7 +469,7 @@ Note the annotation is important:
 kind: Ingress
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: dashboard-ing
+  name: kubernetes-dashboard
   namespace: kube-system
   annotations:
     nginx.ingress.kubernetes.io/backend-protocol: HTTPS  # This is important, otherwise we get a 400 bad request
@@ -398,7 +487,7 @@ spec:
             name: kubernetes-dashboard
             port:
               number: 443
-
+---
 ```
 
 ```sh

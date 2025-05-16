@@ -160,7 +160,7 @@ kubectl get deploy,pod,ds,cm,svc,ing -n trivy-system
 
 List installed K8s resources:
 ```sh
-kubectl get deploy,pod,ds,cm,svc -n trivy-system
+kubectl get deploy,pod,ds,svc -n trivy-system
 
 NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/trivy-operator   1/1     1            1           4d23h
@@ -169,11 +169,6 @@ NAME                                  READY   STATUS    RESTARTS         AGE
 pod/trivy-operator-667d769f4b-6n5bd   1/1     Running   11 (7h11m ago)   4d23h
 pod/trivy-server-0                    1/1     Running   1 (7h11m ago)    26h
 
-NAME                                    DATA   AGE
-configmap/kube-root-ca.crt              1      7d17h
-configmap/trivy-operator                14     4d23h
-configmap/trivy-operator-config         40     4d23h
-configmap/trivy-operator-trivy-config   32     4d23h
 
 NAME                     TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)    AGE
 service/trivy-operator   ClusterIP   10.152.183.133   <none>        80/TCP     4d23h
@@ -182,10 +177,34 @@ service/trivy-service    ClusterIP   10.152.183.57    <none>        4954/TCP   2
 
 Retrieving Trivy Operator configuration:
 ```sh
-kubectl get cm/trivy-operator-trivy-config -n trivy-system -o yaml | grep -E '(ignoreUnfixed|mode)'
+# List all Trivy Operator configurations files
+kubectl get cm -n trivy-system
+
+NAME                                    DATA   AGE
+configmap/kube-root-ca.crt              1      7d17h
+configmap/trivy-operator                14     4d23h
+configmap/trivy-operator-config         40     4d23h
+configmap/trivy-operator-trivy-config   32     4d23h
+
+# trivy-operator-trivy-config
+kubectl get cm/trivy-operator-trivy-config -n trivy-system -o yaml | grep -E '\s+trivy\.(ignore|mode|server)'
 
   trivy.ignoreUnfixed: "true"
   trivy.mode: ClientServer
+  trivy.serverURL: http://trivy-service.trivy-system:4954
+
+# trivy-operator-config
+kubectl get cm/trivy-operator-config -n trivy-system -o yaml | grep -E '\s+OPERATOR_METRICS_'
+
+  OPERATOR_METRICS_BIND_ADDRESS: :8080
+  OPERATOR_METRICS_CLUSTER_COMPLIANCE_INFO_ENABLED: "true"
+  OPERATOR_METRICS_CONFIG_AUDIT_INFO_ENABLED: "false"
+  OPERATOR_METRICS_EXPOSED_SECRET_INFO_ENABLED: "false"
+  OPERATOR_METRICS_FINDINGS_ENABLED: "true"
+  OPERATOR_METRICS_IMAGE_INFO_ENABLED: "true"
+  OPERATOR_METRICS_INFRA_ASSESSMENT_INFO_ENABLED: "false"
+  OPERATOR_METRICS_RBAC_ASSESSMENT_INFO_ENABLED: "false"
+  OPERATOR_METRICS_VULN_ID_ENABLED: "true"
 ```
 
 **Observations about configuration**

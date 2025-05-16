@@ -2,7 +2,7 @@
 
 * https://falco.org/docs/getting-started/falco-kubernetes-quickstart/
 
-### 1. Deploy Falco
+## 1. Deploy Falco
 
 **01. Install**
 ```sh
@@ -131,3 +131,6 @@ kubectl apply -f falco-ingress.yaml
 ```
 
 Open Falcosidekick URL in your browser: http://falcosidekick-ui.tawa.local/
+
+## 4. Integrate Falco with Prometheus/Grafana
+

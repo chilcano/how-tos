@@ -1,0 +1,274 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: safeline
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: safeline-config
+  namespace: safeline
+data:
+  IMAGE_PREFIX: chaitin     # safeline
+  ARCH_SUFFIX: ''
+  REGION: '-g'
+  RELEASE: ''
+  IMAGE_TAG: latest
+  PG_USR: safeline-usr
+  PG_DB: safeline-db
+#   SUBNET_PREFIX: "192.168.1"
+#   MGT_PORT: "9443"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: safeline-secrets
+  namespace: safeline
+type: Opaque
+data:
+  pg-pwd: c2VjdXJlLXBhc3N3b3Jk  # (base64 encoded value of 'secure-password')
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: safeline-pg-pvc
+  namespace: safeline
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: safeline-pg
+  namespace: safeline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: safeline-pg
+  template:
+    metadata:
+      labels:
+        app: safeline-pg
+    spec:
+      containers:
+        - name: safeline-pg
+          image: $(IMAGE_PREFIX)/safeline-postgres$(ARCH_SUFFIX):15.2
+          envFrom:
+            - configMapRef:
+               name: safeline-config
+          env:
+            - name: PG_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: safeline-secrets
+                  key: pg-pwd
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: safeline-pg-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: safeline-mgt
+  namespace: safeline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: safeline-mgt
+  template:
+    metadata:
+      labels:
+        app: safeline-mgt
+    spec:
+      containers:
+        - name: safeline-mgt
+          image: $(IMAGE_PREFIX)/safeline-mgt$(REGION)$(ARCH_SUFFIX)$(RELEASE):$(IMAGE_TAG)
+          envFrom:
+            - configMapRef:
+                name: safeline-config
+          env:
+            - name: PG_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: safeline-secrets
+                  key: pg-pwd
+            ## Set env var using already defined env vars
+            - name: MGT_PG
+              value: postgres://$(PG_USR):$(PG_PWD)@safeline-pg-svc/$(PG_DB)?sslmode=disable
+          ports:
+            - containerPort: 1443
+          volumeMounts:
+            - name: mgt-storage
+              mountPath: /app/data
+      volumes:
+        - name: mgt-storage
+          emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: safeline-detector
+  namespace: safeline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: safeline-detector
+  template:
+    metadata:
+      labels:
+        app: safeline-detector
+    spec:
+      containers:
+        - name: safeline-detector
+          image: $(IMAGE_PREFIX)/safeline-detector$(REGION)$(ARCH_SUFFIX)$(RELEASE):$(IMAGE_TAG)
+          envFrom:
+            - configMapRef:
+                name: safeline-config
+      volumes:
+        - name: detector-storage
+          emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: safeline-tengine
+  namespace: safeline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: safeline-tengine
+  template:
+    metadata:
+      labels:
+        app: safeline-tengine
+    spec:
+      hostNetwork: true
+      containers:
+        - name: safeline-tengine
+          image: $(IMAGE_PREFIX)/safeline-tengine$(REGION)$(ARCH_SUFFIX)$(RELEASE):$(IMAGE_TAG)
+          envFrom:
+            - configMapRef:
+                name: safeline-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: safeline-luigi
+  namespace: safeline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: safeline-luigi
+  template:
+    metadata:
+      labels:
+        app: safeline-luigi
+    spec:
+      containers:
+        - name: safeline-luigi
+          image: $(IMAGE_PREFIX)/safeline-luigi$(REGION)$(ARCH_SUFFIX)$(RELEASE):$(IMAGE_TAG)
+          envFrom:
+            - configMapRef:
+                name: safeline-config
+          env:
+            - name: PG_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: safeline-secrets
+                  key: pg-pwd
+            - name: MGT_IP
+              value: '$(SUBNET_PREFIX).4'
+            - name: LUIGI_PG
+              value: postgres://$(PG_USR):$(PG_PWD)@safeline-pg-svc/$(PG_DB)?sslmode=disable
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: safeline-fvm
+  namespace: safeline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: safeline-fvm
+  template:
+    metadata:
+      labels:
+        app: safeline-fvm
+    spec:
+      containers:
+        - name: safeline-fvm
+          image: $(IMAGE_PREFIX)/safeline-fvm$(REGION)$(ARCH_SUFFIX)$(RELEASE):$(IMAGE_TAG)
+          envFrom:
+            - configMapRef:
+                name: safeline-config
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: safeline-chaos
+  namespace: safeline
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: safeline-chaos
+  template:
+    metadata:
+      labels:
+        app: safeline-chaos
+    spec:
+      containers:
+        - name: safeline-chaos
+          image: $(IMAGE_PREFIX)/safeline-chaos$(REGION)$(ARCH_SUFFIX)$(RELEASE):$(IMAGE_TAG)
+          envFrom:
+            - configMapRef:
+                name: safeline-config
+          env:
+            - name: PG_PWD
+              valueFrom:
+                secretKeyRef:
+                  name: safeline-secrets
+                  key: pg-pwd
+            - name: DB_ADDR
+              value: postgres://$(PG_USR):$(PG_PWD)@safeline-pg-svc/$(PG_DB)?sslmode=disable
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: safeline-pg-svc
+  namespace: safeline
+spec:
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+  selector:
+    app: safeline-pg
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: safeline-mgt
+  namespace: safeline
+spec:
+  type: NodePort
+  ports:
+    - protocol: TCP
+      port: 9443
+      targetPort: 1443
+  selector:
+    app: safeline-mgt

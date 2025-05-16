@@ -1,0 +1,23 @@
+{{- if .Values.global.exposeServicesAsPorts.enabled }}
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name:  safeline-chaos-cp-toml
+  labels:
+{{ include "safeline.labels" . | indent 4 }}
+data:
+  cp_config_toml.sh: |
+    #!/bin/bash
+
+    OLD_CONFIG_FILE=/app/chaos/chaos.toml
+    CONFIG_FILE=/app/chaos/config.toml
+    if [ ! -s "$OLD_CONFIG_FILE" ];then
+      rm -f "$OLD_CONFIG_FILE"
+    fi
+    if [ ! -f "$CONFIG_FILE" ];then
+      cp -f /config.toml $CONFIG_FILE
+    else
+      echo "Ignoring the execution of the cp command!!!"
+      exit 0;
+    fi
+{{- end }}
