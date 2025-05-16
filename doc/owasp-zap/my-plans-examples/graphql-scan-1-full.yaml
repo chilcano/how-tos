@@ -1,0 +1,65 @@
+env:
+  contexts:
+    - name: graphql-context
+      urls:
+        - http://tawa.local:3000/graphql
+      includePaths:
+        - http://tawa.local:3000/.*
+
+parameters:
+  failOnError: false
+  progressToStdout: true
+
+jobs:
+  - type: passiveScan-config
+    parameters:
+      maxAlertsPerRule: 10
+
+  - type: spider
+    parameters:
+      context: graphql-context
+      maxDuration: 1
+
+  - type: graphql
+    parameters:
+      context: graphql-context
+      endpoint: http://tawa.local:3000/graphql
+
+  - type: activeScan
+    parameters:
+      context: graphql-context
+      maxDuration: 5
+      maxRuleDurationInMins: 2
+      threadPerHost: 2
+      # policy: Default Policy
+      policy: OWASP-A01-A02-A05-Policy
+      rules:
+        # A01 - Broken Access Control
+        - id: 10105  # Private IP Disclosure
+        - id: 10095  # Hidden File Found
+        - id: 20012  # Forced Browsing
+        - id: 20015  # Directory Browsing
+        - id: 20019  # Access Control Issues
+
+        # A02 - Cryptographic Failures
+        - id: 10062  # Password Autocomplete in Browser
+        - id: 10096  # Secure Page includes Mixed Content
+        - id: 10098  # HTTPS Content Available via HTTP
+        - id: 10094  # Backup File Disclosure
+
+        # A05 - Security Misconfiguration
+        - id: 10020  # Server Leaks Information via "X-Powered-By" HTTP Header Field
+        - id: 10038  # Content Security Policy (CSP) Header Not Set
+        - id: 10039  # Information Disclosure - Suspicious Comments
+        - id: 10055  # X-Content-Type-Options Header Missing
+        - id: 10061  # CSP Header Contains Unsafe Directive
+        - id: 10064  # Timestamp Disclosure
+        - id: 10065  # Application Error Disclosure
+        - id: 10093  # HTTP Methods Allowed (including potentially dangerous)
+        - id: 10097  # Server Leaks Version Info via "Server" HTTP Header Field
+
+  - type: report
+    parameters:
+      template: traditional-html
+      reportDir: /zap/wrk
+      reportFile: zap-report-graphql-full.html

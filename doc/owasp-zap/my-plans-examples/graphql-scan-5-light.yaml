@@ -1,0 +1,61 @@
+env:
+  contexts:
+    - name: graphql-context
+      urls:
+        - http://tawa.local:3000/graphql
+      includePaths:
+        - http://tawa.local:3000/.*
+
+parameters:
+  failOnError: false
+  progressToStdout: true
+
+jobs:
+  - type: passiveScan-config
+    parameters:
+      maxAlertsPerRule: 10
+
+  - type: spider
+    parameters:
+      context: graphql-context
+      maxDuration: 1
+
+  - type: graphql
+    parameters:
+      context: graphql-context
+      endpoint: http://tawa.local:3000/graphql
+
+  - type: activeScan-policy            # Defines a new active scan policy which can be used by later activeScan related jobs
+    parameters:
+      name: my-faster-scan-policy
+    policyDefinition:
+      defaultStrength: LOW
+      defaultThreshold: HIGH
+      rules:
+      - id: -1  # disable everything
+      # - id: 40012
+      #   name: SQL Injection
+      #   description: Detects classic SQL injection vulnerabilities.
+      - id: 40018
+        name: SQL Injection - PostgreSQL
+        description: Detects PostgreSQL-specific SQL injection patterns.
+      - id: 40020
+        name: Cross Site Scripting (XSS)
+        description: Detects reflected XSS vulnerabilities.
+      # - id: 40016
+      #   name: DOM XSS
+      #   description: Detects DOM-based Cross Site Scripting.
+      - id: 40035
+        name: GraphQL Introspection Enabled
+        description: Identifies GraphQL endpoints with introspection enabled.
+
+  - type: activeScan
+    parameters:
+      context: graphql-context
+      policy: my-faster-scan-policy
+
+  - type: report
+    parameters:
+      template: traditional-html
+      reportDir: /zap/wrk
+      reportFile: zap-report-graphql-light.html

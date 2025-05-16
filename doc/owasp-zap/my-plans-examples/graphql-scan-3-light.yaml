@@ -1,0 +1,45 @@
+env:
+  contexts:
+    - name: graphql-context
+      urls:
+        - http://tawa.local:3000/graphql
+      includePaths:
+        - http://tawa.local:3000/.*
+
+parameters:
+  failOnError: false
+  progressToStdout: true
+
+jobs:
+  - type: passiveScan-config
+    parameters:
+      maxAlertsPerRule: 10
+
+  # - type: loadPolicy
+  #   name: load-dev-policy
+  #   parameters:
+  #     fileName: '/root/.ZAP/policies/Dev CICD.policy'
+  #     name: Developer CI/CD
+
+  - type: spider
+    parameters:
+      context: graphql-context
+      maxDuration: 1
+
+  - type: graphql
+    parameters:
+      context: graphql-context
+      endpoint: http://tawa.local:3000/graphql
+
+  - type: activeScan
+    parameters:
+      context: graphql-context
+      # policy: fast-graphql-scan-policy-3
+      # policy: Developer CI/CD
+      policy: Dev CICD
+
+  - type: report
+    parameters:
+      template: traditional-html
+      reportDir: /zap/wrk
+      reportFile: zap-report-graphql-light.html

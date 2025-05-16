@@ -1,0 +1,61 @@
+env:
+  contexts:
+    - name: graphql-context
+      urls:
+        - http://tawa.local:3000/graphql
+      includePaths:
+        - http://tawa.local:3000/.*
+
+parameters:
+  failOnError: false
+  progressToStdout: true
+
+jobs:
+  - type: passiveScan-config
+    parameters:
+      maxAlertsPerRule: 10
+
+  - type: spider
+    parameters:
+      context: graphql-context
+      maxDuration: 1
+
+  - type: graphql
+    parameters:
+      context: graphql-context
+      endpoint: http://tawa.local:3000/graphql
+
+  - type: activeScan
+    parameters:
+      context: graphql-context
+    policyDefinition:                  # The policy definition - only used if the 'policy' is not set
+      defaultStrength: LOW             # String: The default Attack Strength for all rules, one of Low, Medium, High, Insane (not recommended), default: Medium
+      defaultThreshold: HIGH           # String: The default Alert Threshold for all rules, one of Off, Low, Medium, High, default: Medium
+      rules:                           # A list of one or more active scan rules and associated settings which override the defaults
+      # - id: 40012
+      #   name: SQL Injection
+      #   description: Detects classic SQL injection vulnerabilities.
+      - id: 40018
+        name: SQL Injection - PostgreSQL
+        description: Detects PostgreSQL-specific SQL injection patterns.
+      - id: 40020
+        name: Cross Site Scripting (XSS)
+        description: Detects reflected XSS vulnerabilities.
+      # - id: 40016
+      #   name: DOM XSS
+      #   description: Detects DOM-based Cross Site Scripting.
+      - id: 40035
+        name: GraphQL Introspection Enabled
+        description: Identifies GraphQL endpoints with introspection enabled.
+      # - id: HttpOnlyCookieScanRule    # 10095 Cookie Without HttpOnly Flag
+      #   name: Cookie Without HttpOnly
+      #   description: Checks for cookies missing the HttpOnly flag.
+      # - id: SecureCookieScanRule      # 10094 Cookie Without Secure Flag
+      #   name: Cookie Without Secure
+      #   description: Checks for cookies missing the Secure flag.
+
+  - type: report
+    parameters:
+      template: traditional-html
+      reportDir: /zap/wrk
+      reportFile: zap-report-graphql-light.html

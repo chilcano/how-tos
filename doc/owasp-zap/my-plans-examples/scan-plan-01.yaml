@@ -1,0 +1,77 @@
+env:
+  contexts:
+    - name: app-ctx
+      urls:
+        # spider error 400 status
+        - http://tawa.local:3000/graphql
+        # spider error 404 status
+        # - http://tawa.local:3000
+      includePaths:
+        - http://localhost:3000/.* 
+      technology:
+        # List of tech to exclude, as per https://www.zaproxy.org/techtags/ (just use last names)
+        exclude: [HypersonicSQL, MariaDB, Oracle, MySQL, PHP, ASP, Windows, IIS]
+  parameters:
+    failOnError: true
+    failOnWarning: false
+    continueOnFailure: false
+    progressToStdout: true 
+
+jobs:
+  - type: passiveScan-config
+    parameters:
+      maxAlertsPerRule: 10
+      scanOnlyInScope: true
+
+  - type: spider
+    parameters:
+      context: app-ctx
+      maxDuration: 0
+      maxDepth: 5
+      parseComments: true
+      parseGit: false
+      parseDsStore: false
+      parseRobotsTxt: true
+      parseSitemapXml: false
+      parseSVNEntries: false
+      postForm: true
+      processForm: true
+      sendRefererHeader: true
+
+  - type: spiderAjax
+    parameters:
+      context: app-ctx
+      maxDuration: 0
+      maxCrawlDepth: 10
+      runOnlyIfModern: false
+      inScopeOnly: true
+      # Browser Id to use, default: firefox-headless
+      # browserId: chrome-headless    # Chrome requires be installed. Chromium doesn't work properly.
+      browserId: firefox-headless     # Already installed and configured
+      clickDefaultElems: true
+      clickElemsOnce: true
+      maxCrawlStates: 0
+
+  - type: graphql
+    parameters:
+      endpoint: http://tawa.local:3000/graphql
+      requestMethod: post_json
+      maxQueryDepth: 5
+      maxArgsDepth: 5
+
+  - type: passiveScan-wait
+    parameters:
+      maxDuration: 30
+
+  # - type: activeScan
+  #   parameters:
+  #     context: app-ctx
+  #     policy: my-initial-rules
+
+  - type: report
+    parameters:
+      template: traditional-html
+      # reportDir: ../../
+      # reportFile: zap-out-{{yyMMddhhmmss}}-[[site]]
+      reportFile: zap-out-{{yyMMddhhmmss}}
+      reportTitle: Dynamic App Vuln Scanning Report

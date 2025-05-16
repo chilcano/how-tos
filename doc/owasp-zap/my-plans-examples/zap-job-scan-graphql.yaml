@@ -1,0 +1,30 @@
+env:
+  contexts:
+    - name: graphql-context
+      urls:
+        - http://localhost:3000
+      includePaths:
+        - http://localhost:3000/.* 
+      technology:
+        exclude: []
+  parameters:
+    failOnError: true
+    failOnWarning: false
+
+jobs:
+  - type: graphql
+    parameters:
+      endpoint: http://localhost:3000/graphql
+      introspection: true
+      maxQueryDepth: 5
+      maxArgsDepth: 3
+
+  - type: passiveScan-wait
+    parameters:
+      maxDuration: 30
+      
+  - type: report
+    parameters:
+      template: traditional-html
+      reportDir: /zap/wrk/
+      reportFile: graphql-scan-report.html
