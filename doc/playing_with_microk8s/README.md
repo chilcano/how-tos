@@ -1,19 +1,125 @@
 # Setup Microk8s and deploy of sample applications
 
-## 01. Install and configure
+## 1. Install and configure
 
-### 1. Install Microk8s
+* https://microk8s.io/docs/getting-started
 
+### 1.1. Install Microk8s and addons
 
 ```sh
+sudo snap install microk8s --classic
 
+sudo usermod -a -G microk8s $USER
+mkdir -p ~/.kube
+chmod 0600 ~/.kube
 
+# You will also need to re-enter the session for the group update to take place:
+su - $USER
+
+microk8s status --wait-ready
+
+# Install addons
+microk8s enable hostpath-storage dashboard ingress dns helm helm3 metrics-server
+
+# Start, stop, status
+microk8s start
+microk8s stop
+microk8s status
 ```
 
-### 2. Configure Microk8s
+### 1.2. Install Microk8s with specific K8s version
 
-**Install all Microk8s Nginx ingress addon***
 
+MicroK8s can be installed in Win/macOS, VMs and Ubuntu, and can be installed using a specific K8s version.
+If you want to install the latest K8s, run this command:
+```sh
+$ sudo snap install microk8s --classic --channel=1.32
+```
+
+Or if you want to install a stable K8s version, just pick it up your version from the available channel:
+```sh
+$ snap info microk8s
+
+...
+channels:
+  1.32/stable:           v1.32.3  2025-04-22 (8148) 172MB classic
+  1.32/candidate:        v1.32.3  2025-04-22 (8148) 172MB classic
+  1.32/beta:             v1.32.3  2025-04-22 (8148) 172MB classic
+  1.32/edge:             v1.32.5  2025-05-15 (8220) 172MB classic
+  latest/stable:         v1.32.3  2025-04-07 (7964) 172MB classic
+  latest/candidate:      v1.32.3  2025-03-12 (7890) 179MB classic
+  latest/beta:           v1.32.3  2025-03-12 (7890) 179MB classic
+  latest/edge:           v1.33.1  2025-05-15 (8209) 177MB classic
+  1.33/stable:           v1.33.0  2025-04-24 (8205) 177MB classic
+  1.33/candidate:        v1.33.0  2025-04-24 (8205) 177MB classic
+  1.33/beta:             v1.33.0  2025-04-24 (8205) 177MB classic
+  1.33/edge:             v1.33.1  2025-05-15 (8208) 177MB classic
+  1.32-strict/stable:    v1.32.4  2025-04-23 (8155) 172MB -
+  1.32-strict/candidate: v1.32.4  2025-04-23 (8155) 172MB -
+  1.32-strict/beta:      v1.32.4  2025-04-23 (8155) 172MB -
+  1.32-strict/edge:      v1.32.5  2025-05-15 (8226) 172MB -
+  1.31-strict/stable:    v1.31.7  2025-03-31 (7968) 168MB -
+  1.31-strict/candidate: v1.31.7  2025-03-30 (7968) 168MB -
+  1.31-strict/beta:      v1.31.7  2025-03-30 (7968) 168MB -
+  1.31-strict/edge:      v1.31.9  2025-05-15 (8219) 168MB -
+  1.31/stable:           v1.31.7  2025-03-31 (7963) 168MB classic
+  1.31/candidate:        v1.31.7  2025-03-28 (7963) 168MB classic
+  1.31/beta:             v1.31.7  2025-03-28 (7963) 168MB classic
+  1.31/edge:             v1.31.9  2025-05-15 (8216) 168MB classic
+  1.30-strict/stable:    v1.30.11 2025-04-01 (7970) 169MB -
+  1.30-strict/candidate: v1.30.11 2025-03-30 (7970) 169MB -
+  1.30-strict/beta:      v1.30.11 2025-03-30 (7970) 169MB -
+  1.30-strict/edge:      v1.30.13 2025-05-15 (8217) 169MB -
+  1.30/stable:           v1.30.11 2025-03-31 (7966) 169MB classic
+  1.30/candidate:        v1.30.11 2025-03-29 (7966) 169MB classic
+  1.30/beta:             v1.30.11 2025-03-29 (7966) 169MB classic
+  1.30/edge:             v1.30.13 2025-05-15 (8218) 169MB classic
+...
+```
+
+```sh
+$ sudo snap install microk8s --classic --channel=1.31/beta
+```
+
+And if you already installed a specific K8s version and now you want to change, then you can next command.
+With this you will change the channel and you will receive updates comming from that channel:
+
+```sh
+$ sudo snap refresh microk8s --classic --channel=1.31/stable
+
+$ snap info microk8s | grep tracking
+
+tracking:     1.31/stable
+```
+
+### 1.3. Merge all kubeconfigs
+
+```sh
+cp ~/.kube/config ~/.kube/config.20250204
+microk8s config > ~/.kube/config.microk8s 
+export KUBECONFIG=~/.kube/config:~/.kube/config.microk8s
+kubectl config view --flatten > all-in-one-kubeconfig.yaml
+mv all-in-one-kubeconfig.yaml ~/.kube/config
+```
+Verify if works
+```sh
+kubectl config get-clusters
+kubectl config get-contexts
+
+CURRENT   NAME                      CLUSTER                                                 AUTHINFO                                                NAMESPACE
+ *        microk8s                  microk8s-cluster                                        foo-usr                                                   
+          acme-k8s-ctx              acme-k8s-cluster                                        acme-k8s-usr      
+
+kubectl config use-context <my-context>
+```
+
+
+## 2. Configure Microk8s
+
+### 2.1. Install all Microk8s Nginx ingress addon
+
+
+**Install Ingress**
 ```sh
 microk8s enable ingress
 
@@ -50,7 +156,7 @@ Pod Template:
 ...
 ```
 
-**To check what microk8s addons have been installed**
+**Check what addons have been installed**
 ```sh
 microk8s status
 ```
@@ -90,7 +196,104 @@ addons:
     rook-ceph            # (core) Distributed Ceph storage using Rook
 ```
 
-### Trubleshooting
+### 2.2. Install Certificate-Manager
+
+**1. Install and configure Certificate-Manager**
+
+```sh
+$ kubectl config use-context microk8s
+
+$ microk8s enable cert-manager
+```
+
+You will see this:
+```
+...
+Enabled cert-manager
+
+===========================
+
+Cert-manager is installed. As a next step, try creating an Issuer
+for Let's Encrypt by creating the following resource:
+
+$ microk8s kubectl apply -f - <<EOF
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: letsencrypt
+spec:
+  acme:
+    # You must replace this email address with your own.
+    # Let's Encrypt will use this to contact you about expiring
+    # certificates, and issues related to your account.
+    email: me@example.com
+    server: https://acme-v02.api.letsencrypt.org/directory
+    privateKeySecretRef:
+      # Secret resource that will be used to store the account's private key.
+      name: letsencrypt-account-key
+    # Add a single challenge solver, HTTP01 using nginx
+    solvers:
+    - http01:
+        ingress:
+          ingressClassName: nginx
+EOF
+
+Then, you can create an ingress to expose 'my-service:80' on 'https://my-service.example.com' with:
+
+$ microk8s enable ingress
+$ microk8s kubectl create ingress my-ingress \
+    --annotation cert-manager.io/issuer=letsencrypt \
+    --rule 'my-service.example.com/*=my-service:80,tls=my-service-tls'
+```
+
+```sh
+$ cat microk8s-cluster-issuer.yaml
+```
+
+```yaml
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+ name: lets-encrypt
+spec:
+ acme:
+   email: microk8s@intix.info
+   server: https://acme-v02.api.letsencrypt.org/directory
+   privateKeySecretRef:
+     name: lets-encrypt-priviate-key
+   solvers:
+   - http01:
+       ingress:
+         class: nginx
+```
+
+Once updated properly, run the command:
+```sh
+$ kubectl apply -f microk8s-cluster-issuer.yaml
+```
+
+And to verify that the ClusterIssuer was created successfully:
+```sh
+$ microk8s kubectl get clusterissuer -o wide
+
+NAME           READY   STATUS                                                 AGE
+lets-encrypt   True    The ACME account was registered with the ACME server   11s
+```
+
+**2. Generate TLS cert for an Ingress**
+
+> * This only work if domain is a fqdn like `juiceshop.intix.info`
+> * Cert-Manager (Let's Encrypt) will perform a challenge to verify `juiceshop.intix.info` and that means that your Ingress or LoadBalancer be configured to accept these challenges.
+
+```sh
+$ kubectl apply -f k8s-owasp-juiceshop-ingress-lets-encrypt.yaml
+```
+
+Now, it should be reacheable at https://juiceshop.intix.info
+
+
+### Troubleshooting
 
 **1. Changing of network**
 
@@ -163,9 +366,9 @@ kubectl config use-context <my-context>
 ```
 
 
-## 02. Install sample Applications
+## 3. Install sample Applications
 
-### 1. Weaveworks Scope
+### 3.1. Weaveworks Scope
 
 * https://github.com/weaveworks/scope/releases/tag/v1.13.2
 
@@ -237,7 +440,7 @@ browser -> 127.0.0.1:80 ->      80    ->     80    -> 4040
 kubectl apply -f k8s-weaveworks-scope-ingress.yaml
 ```
 
-### 2. OWASP JuiceShop
+### 3.2. OWASP JuiceShop
 
 * https://owasp.org/www-project-juice-shop/
 * https://pwning.owasp-juice.shop/companion-guide/latest/part1/running.html
@@ -318,7 +521,7 @@ browser -> 127.0.0.1:80 ->      80    ->    3080   -> 3000
 ```
 
 
-### 3. OWASP bWAPP
+### 3.3. OWASP bWAPP
 
 **Step : Deploy bWAPP** 
 
@@ -336,7 +539,7 @@ kubectl apply -f k8s-owasp-bwapp.yaml
 - http://bwapp.tawa.local/login.php
 
 
-### 4. Prometheus and Grafana
+### 3.4. Prometheus and Grafana
 
 ```sh
 ± kubectl get svc,ing -n monitoring 
@@ -351,7 +554,7 @@ service/prom-prometheus-node-exporter             ClusterIP   10.152.183.107   <
 service/prometheus-operated                       ClusterIP   None             <none>        9090/TCP                     5d23h
 ```
 
-#### 4.1 Install and configuration
+#### 2.4.1 Install and configuration
 
 The services are:
 ```sh
@@ -415,7 +618,7 @@ Open the next URLs in your browser:
 * Grafana: http://grafana.tawa.local (admin/prom-operator)
 
 
-### 5. Kubernetes Dashboard
+### 3.5. Kubernetes Dashboard
 
 
 **01. Dashboard installation**
@@ -496,4 +699,5 @@ kubectl apply -f microk8s-dashboard-ingress.yaml
 
 Open the next URL: 
 * https://dashboard.tawa.local/ (use the token)
+
 

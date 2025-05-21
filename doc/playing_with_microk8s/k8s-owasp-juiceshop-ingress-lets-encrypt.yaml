@@ -1,0 +1,29 @@
+## This didn't work in my private microk8s cluster
+---
+kind: Ingress
+apiVersion: networking.k8s.io/v1
+metadata:
+  name: juiceshop-ing-lets-encrypt
+  namespace: juiceshop
+  annotations:
+    cert-manager.io/cluster-issuer: lets-encrypt
+spec:
+  ingressClassName: nginx
+  tls:
+    ## ACME CA only accepts fqdn (i.e. juiceshop.intix.info).
+    ## Verifying fqdn requires the endpoint (service) be reacheable by ACME from internet. 
+    - hosts:
+      - juiceshop-le.tawa.local
+      secretName: tls-secret-le
+  rules:
+  - host: juiceshop-le.tawa.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: juiceshop-svc
+            port:
+              number: 3080
+---

@@ -82,17 +82,12 @@ defectdojo/defectdojo   1.6.187         2.46.2          A Helm chart for Kuberne
 **2. Create a values yaml to customize the installation**
 
 ```sh
-$ cat values-defectdojo.yaml 
+$ cat defectdojo-values.yaml 
 ```
 
 ```yaml
----
-# Global settings
-# create defectdojo specific secret
 createSecret: true
-# create redis secret in defectdojo chart, outside of redis chart
 createRedisSecret: true
-# create postgresql secret in defectdojo chart, outside of postgresql chart
 createPostgresqlSecret: true
 
 host: defectdojo.tawa.local
@@ -109,13 +104,17 @@ admin:
   firstName: Administrator
   lastName: User
   mail: admin@defectdojo.local
+
+alternativeHosts:
+  - defectdojo-django.defectdojo.svc.cluster.local
 ```
 
 **3. Install**
 
 ```sh
 ## install
-$ helm install defectdojo defectdojo/defectdojo -n defectdojo --create-namespace --version 1.6.187 -f ./values-defectdojo.yaml 
+$ helm install defectdojo defectdojo/defectdojo -n defectdojo \ 
+  --create-namespace --version 1.6.187 -f ./defectdojo-values.yaml 
 
 NAME: defectdojo
 LAST DEPLOYED: Mon May 12 19:21:20 2025
@@ -137,7 +136,43 @@ To find out the password, run the following command:
 ...
 
 ## update
-$ helm upgrade defectdojo defectdojo/defectdojo -n defectdojo --create-namespace --version 1.6.187 -f ./values-defectdojo.yaml
+$ helm upgrade defectdojo defectdojo/defectdojo -n defectdojo \ 
+  --create-namespace --version 1.6.187 -f ./defectdojo-values.yaml
+```
+
+**4. Update configuration**
+
+```sh
+## update installation after updating values
+± helm upgrade defectdojo defectdojo/defectdojo -n defectdojo \
+  --version 1.6.187 -f ./defectdojo-values.yaml 
+
+## check values applied
+helm get values defectdojo -n defectdojo
+
+USER-SUPPLIED VALUES:
+admin:
+  firstName: Administrator
+  lastName: User
+  mail: admin@defectdojo.local
+  password: null
+  user: admin
+alternativeHosts:
+- defectdojo-django.defectdojo.svc.cluster.local
+createPostgresqlSecret: true
+createRedisSecret: true
+createSecret: true
+django:
+  ingress:
+    activateTLS: true
+    enabled: true
+    ingressClassName: nginx
+host: defectdojo.tawa.local
+
+## check rollout status
+± kubectl -n defectdojo rollout status deployment/defectdojo-django
+
+deployment "defectdojo-django" successfully rolled out
 ```
 
 ### 2.2. Check the installation
@@ -191,7 +226,7 @@ DefectDojo admin password: Kx33in1lHb3Tbc69kxomBY
 ## 3. Using DefectDojo
 
 
-### 3.1. WeaveWorks SockShop (import reports into DefectDojo manually)
+### 3.1. Import Trivy and ZAP reports into DefectDojo manually (WeaveWorks SockShop)
 
 * WeaveWorks SockShop is composed of a set of microservices.
 * I've forked the demo repo: https://github.com/chilcano/microservices-demo/
@@ -270,7 +305,7 @@ Repeat this process for all components (repos and docker images) of SockShop.
 ![](../img/defectdojo-trivy-1.png)
 
 
-### 3.2. JuiceShop (import reports into DefectDojo through its REST API)
+### 3.2. Import Trivy reports into DefectDojo through its REST API (JuiceShop)
 
 * JuiceShop is installed in my local microk8s and it's being exposed at [http://juiceshop.tawa.local](http://juiceshop.tawa.local) and over HTTPS.
 

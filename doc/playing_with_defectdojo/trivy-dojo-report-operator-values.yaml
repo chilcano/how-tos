@@ -1,0 +1,37 @@
+defectDojoApiCredentials:
+  #url: "https://defectdojo-django.defectdojo.svc.cluster.local"
+  url: "http://defectdojo-django.defectdojo.svc.cluster.local"
+  apiKey: "620dd95db61d44de8a92213e0ddb487ffdb38f51"
+  # PR-77 (https://github.com/telekom-mms/trivy-dojo-report-operator/pull/77)
+  verifySSL: false
+
+scanType: "Trivy Operator Scan"
+
+operator:
+  trivyDojoReportOperator:
+    image:
+      # repository: ghcr.io/telekom-mms/docker-trivy-dojo-operator
+      # tag: 0.8.8
+      repository: localhost:32000/docker-trivy-dojo-operator
+      tag: 0.8.8-pr-77
+    env:
+      defectDojoActive: true
+      defectDojoAutoCreateContext: true
+      # defectDojoVerified: true
+      defectDojoCloseOldFindings: false
+      defectDojoCloseOldFindingsProductScope: false
+      defectDojoDeduplicationOnEngagement: true
+      defectDojoProductName: 'JUICESHOP2'
+      defectDojoEngagementName: 'SEC_REVIEW'
+      defectDojoProductTypeName: 'R&D'
+      reports: vulnerabilityreports
+      LABEL: 'trivy-operator.resource.namespace'
+      LABEL_VALUE: 'juiceshop'
+
+    # "labels": {
+    #   "resource-spec-hash": "5687bb5f5d",
+    #   "trivy-operator.container.name": "juiceshop",
+    #   "trivy-operator.resource.kind": "ReplicaSet",
+    #   "trivy-operator.resource.name": "juiceshop-784878964d",
+    #   "trivy-operator.resource.namespace": "juiceshop"
+    # },

@@ -8,7 +8,7 @@ PROD_TYPE_ID="${3:-}"
 PROD_DESC="${4:-Product ${PRODUCT_NAME}}"
 
 DD_HOST="${5:-https://defectdojo.tawa.local}"
-DD_API_TOKEN="${6:-620dd95db61d44de8a92213e0ddb487ffdb38f51}"
+DD_API_TOKEN="${6:-620dd95...}"
 
 echo "* PRODUCT_NAME: ${PRODUCT_NAME}"
 echo "* ENGAGEMENT_NAME: ${ENGAGEMENT_NAME}"

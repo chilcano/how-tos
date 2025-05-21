@@ -10,7 +10,7 @@ PRODUCT_TYPE_NAME="${4:-R&D}"
 DD_HOST="${DD_HOST:-defectdojo.tawa.local}"
 DD_API_HOST="${DD_API_HOST:-https://defectdojo.tawa.local}"
 # DD_API_HOST="${DD_API_HOST:-http://defectdojo-django.defectdojo.svc.cluster.local}"
-DD_API_TOKEN="${DD_API_TOKEN:-620dd95db61d44de8a92213e0ddb487ffdb38f51}"
+DD_API_TOKEN="${DD_API_TOKEN:-620dd95...}"
 
 echo "* REPORT_DIR: ${REPORT_DIR}"
 echo "* PRODUCT_NAME: ${PRODUCT_NAME}"

@@ -1,10 +1,5 @@
----
-# Global settings
-# create defectdojo specific secret
 createSecret: true
-# create redis secret in defectdojo chart, outside of redis chart
 createRedisSecret: true
-# create postgresql secret in defectdojo chart, outside of postgresql chart
 createPostgresqlSecret: true
 
 host: defectdojo.tawa.local
@@ -21,3 +16,6 @@ admin:
   firstName: Administrator
   lastName: User
   mail: admin@defectdojo.local
+
+alternativeHosts:
+  - defectdojo-django.defectdojo.svc.cluster.local

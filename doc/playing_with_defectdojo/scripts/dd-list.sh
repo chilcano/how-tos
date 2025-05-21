@@ -3,7 +3,7 @@ set -euo pipefail
 
 # Default configuration (can be overridden via environment)
 DD_HOST="${1:-https://defectdojo.tawa.local}"
-DD_API_TOKEN="${2:-620dd95db61d44de8a92213e0ddb487ffdb38f51}"
+DD_API_TOKEN="${2:-620dd95...}"
 
 AUTH_HEADER="Authorization: Token ${DD_API_TOKEN}"
 JSON_HEADER="Content-Type: application/json"

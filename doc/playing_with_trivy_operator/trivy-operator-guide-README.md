@@ -9,56 +9,11 @@
 
 ![](trivy-operator-cfg/trivy-operator-00-architecture.png)
 
+
 ## 1. Install Microk8s
 
-- https://microk8s.io/docs/getting-started
+* Follow this guide: [Playing with MicroK8s](../playing_with_microk8s/)
 
-```sh
-sudo snap install microk8s --classic
-
-sudo usermod -a -G microk8s $USER
-mkdir -p ~/.kube
-chmod 0600 ~/.kube
-
-# You will also need to re-enter the session for the group update to take place:
-su - $USER
-
-microk8s status --wait-ready
-
-# Install addons
-microk8s enable hostpath-storage dashboard ingress dns helm helm3 metrics-server
-
-# Start, stop, status
-microk8s start
-microk8s stop
-microk8s status
-```
-
-### 1.1. Install kubectl and plugin manager (optional)
-
-- https://krew.sigs.k8s.io/docs/user-guide/setup/install/
-
-
-### 1.2. Merge all kubeconfigs
-
-```sh
-cp ~/.kube/config ~/.kube/config.20250204
-microk8s config > ~/.kube/config.microk8s 
-export KUBECONFIG=~/.kube/config:~/.kube/config.microk8s
-kubectl config view --flatten > all-in-one-kubeconfig.yaml
-mv all-in-one-kubeconfig.yaml ~/.kube/config
-```
-Verify if works
-```sh
-kubectl config get-clusters
-kubectl config get-contexts
-
-CURRENT   NAME                      CLUSTER                                                 AUTHINFO                                                NAMESPACE
- *        microk8s                  microk8s-cluster                                        foo-usr                                                   
-          acme-k8s-ctx              acme-k8s-cluster                                        acme-k8s-usr      
-
-kubectl config use-context <my-context>
-```
 
 ## 2. Install Trivy Operator
 
@@ -91,6 +46,85 @@ trivy-operator  trivy-system    1               2025-02-04 22:40:07.107265491 +0
 **Update**
 ```sh
 helm upgrade trivy-operator aqua/trivy-operator -n trivy-system --create-namespace --version 0.25.0 -f ./trivy-operator-cfg/values-trivy-operator.yaml 
+```
+
+**Upgrade**
+
+I'm having these errors:
+```sh
+± kubectl -n trivy-system logs -f deployment.apps/trivy-operator
+
+....
+{"level":"error","ts":"2025-05-19T06:56:33Z","msg":"Reconciler error","controller":"job","controllerGroup":"batch","controllerKind":"Job","Job":{"name":"scan-vulnerabilityreport-7585c6d48d","namespace":"trivy-system"},"namespace":"trivy-system","name":"scan-vulnerabilityreport-7585c6d48d","reconcileID":"fe6edcfd-74a1-488b-b981-fdf2c8aba149","error":"illegal base64 data at input byte 6","stacktrace":"sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.19.1/pkg/internal/controller/controller.go:316\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.19.1/pkg/internal/controller/controller.go:263\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func2.2\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.19.1/pkg/internal/controller/controller.go:224"}
+{"level":"error","ts":"2025-05-19T06:56:34Z","msg":"Reconciler error","controller":"job","controllerGroup":"batch","controllerKind":"Job","Job":{"name":"scan-vulnerabilityreport-77bd487589","namespace":"trivy-system"},"namespace":"trivy-system","name":"scan-vulnerabilityreport-77bd487589","reconcileID":"6066bf74-7a98-419d-b141-e679a4bb5443","error":"illegal base64 data at input byte 6; illegal base64 data at input byte 6; illegal base64 data at input byte 6","errorCauses":[{"error":"illegal base64 data at input byte 6"},{"error":"illegal base64 data at input byte 6"},{"error":"illegal base64 data at input byte 6"}],"stacktrace":"sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.19.1/pkg/internal/controller/controller.go:316\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.19.1/pkg/internal/controller/controller.go:263\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func2.2\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.19.1/pkg/internal/controller/controller.go:224"
+```
+And I'm having these trivy and microk8s versions:
+```sh
+± helm list -n trivy-system
+NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                   APP VERSION
+trivy-operator  trivy-system    8               2025-02-12 18:12:42.623020728 +0100 CET deployed        trivy-operator-0.25.0   0.23.0 
+
+± microk8s version  
+MicroK8s v1.31.7 revision 7963
+```
+
+> In Microk8s (V1.27 and Superiors) a Secret is no longer generated with the Serviceacunt Token: instead tokens linked to the Pod are used via the Tokenrequest Api and “Projected” volumes in `/var/run/secrets/kubernetes.io/serviceacount/token`.
+> As there is no secret with "data.token" coded based64, the operator finds a "raw" (or empty) value and when trying to decode it produces that error.
+
+This means that I should upgrade Trivy to latest version and if that doesn't work, then I should mount the token via projected volumen in `/var/run/secrets/kubernetes.io/serviceaccount/token`.
+
+Then, let's upgrade. The latest versions are: Trivy Operator chart version is `0.28.1` and latest is application version is `0.26.1`:
+```sh
+# 1. Make sure you have added the repo de Aquasecurity
+$ helm repo add aqua https://aquasecurity.github.io/helm-charts
+
+# 2. Update the charts index
+$ helm repo update
+
+Hang tight while we grab the latest from your chart repositories...
+...Successfully got an update from the "defectdojo" chart repository
+...Successfully got an update from the "aqua" chart repository
+...Successfully got an update from the "falcosecurity" chart repository
+...Successfully got an update from the "prometheus-community" chart repository
+...Successfully got an update from the "safeline" chart repository
+Update Complete. ⎈Happy Helming!⎈
+
+# 3. Upgrade it namespace 'trivy-system'. Append "--debug" if you want to show debug logs
+$ helm upgrade trivy-operator aqua/trivy-operator --namespace trivy-system --version 0.28.1 --reuse-values
+
+Release "trivy-operator" has been upgraded. Happy Helming!
+NAME: trivy-operator
+LAST DEPLOYED: Mon May 19 09:54:05 2025
+NAMESPACE: trivy-system
+STATUS: deployed
+REVISION: 9
+TEST SUITE: None
+NOTES:
+You have installed Trivy Operator in the trivy-system namespace.
+It is configured to discover Kubernetes workloads and resources in
+all namespace(s).
+
+Inspect created VulnerabilityReports by:
+    kubectl get vulnerabilityreports --all-namespaces -o wide
+
+Inspect created ConfigAuditReports by:
+    kubectl get configauditreports --all-namespaces -o wide
+
+Inspect the work log of trivy-operator by:
+    kubectl logs -n trivy-system deployment/trivy-operator
+
+# 4. If previous cmd didn't work, try to mount the "/var/run/secrets/kubernetes.io/serviceaccount/token" in this way:
+helm upgrade trivy-operator aqua/trivy-operator --namespace trivy-system --version 0.28.1 --reuse-values \
+  --set extraArgs="{--token-file=/var/run/secrets/kubernetes.io/serviceaccount/token}"
+
+# 5. Delete existing Trivy Jobs
+± kubectl -n trivy-system delete job `kubectl get jobs -n trivy-system -o custom-columns=:.metadata.name`
+
+# 6. Check again the logs, error should disappear and check if you check if vulnerabilities reports have been generated.
+$ kubectl -n trivy-system logs -f deployment/trivy-operator
+
+± kubectl get vulnerabilityreports -o wide -A | wc -l              
+44
 ```
 
 **Uninstall**
@@ -208,6 +242,7 @@ kubectl get cm/trivy-operator-config -n trivy-system -o yaml | grep -E '\s+OPERA
 ```
 
 **Observations about configuration**
+
 1. The `ignoreUnfixed: true` means that only fixed vulnerabilities will be included in the reports.
 
 The generated vulnerabilities reports, even Prometheus metrics and Grafana Dashboard will show only fixed vulnerabilities.
@@ -265,6 +300,7 @@ kubectl port-forward service/prom-grafana -n monitoring 3000:80
 ### 2.3. Access to Trivy Metrics Exporter
 
 **With Port Forward**
+
 ```sh
 kubectl port-forward service/trivy-operator -n trivy-system 5000:80
 ```
