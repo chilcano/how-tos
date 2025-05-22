@@ -2,12 +2,11 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: zap-reports-pvc
+  name: sec-reports-pvc
 spec:
   accessModes:
     - ReadWriteOnce
-    # - ReadWriteMany
   resources:
     requests:
-      storage: 1Gi
+      storage: 4Gi
 ---

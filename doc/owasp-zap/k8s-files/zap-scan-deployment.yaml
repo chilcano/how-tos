@@ -559,8 +559,6 @@ spec:
     metadata:
       labels:
         app: zap-scan
-      annotations:
-        configmap-hash: be87c81b2c5e08d0b0d395188bcb28e62ddefd0b07c3ce35ebf10cd3091540d1
     spec:
       securityContext:
         # Get it running: echo $(id -u):$(id -g)
@@ -569,6 +567,14 @@ spec:
         - name: zap
           # image: ghcr.io/zama-ai/security-hub/sec/zap:2.16.1
           image: zaproxy/zap-stable:2.16.1
+          lifecycle:
+            postStart:
+              exec:
+                command:
+                  - sh
+                  - -c
+                  - >
+                    mkdir -p /sec-reports/zap/
           command: ["tail"]
           args: ["-f", "/dev/null"]
           env:
@@ -583,8 +589,8 @@ spec:
                   key: token
                   optional: true
           volumeMounts:
-            - name: zap-reports-dir
-              mountPath: /zap/wrk/out/
+            - name: sec-reports-dir
+              mountPath: /sec-reports/
             - name: zap-scan-plans-dir
               mountPath: /zap/wrk/plans/
             - name: zap-scan-policies-dir
@@ -597,9 +603,9 @@ spec:
               subPath: run-zap-and-defectdojo-reimport-sh
               mountPath: /zap/wrk/run-zap-and-defectdojo-reimport.sh
       volumes:
-        - name: zap-reports-dir
+        - name: sec-reports-dir
           persistentVolumeClaim:
-            claimName: zap-reports-pvc
+            claimName: sec-reports-pvc
         - name: zap-scan-plans-dir
           configMap:
             name: zap-scan-plans
@@ -610,3 +616,11 @@ spec:
           configMap:
             name: zap-reimport-script
 ---
+
+# kubectl -n dast apply -f zap-scan-deployment.yaml 
+# kubectl exec -it -n dast deployment.apps/zap-scan -- bash
+# $ ls -la /sec-reports/
+# $ ls -la /sec-reports/trivy-op/
+# $ ls -la /sec-reports/zap/
+# $ now=$(date +%y%m%d-%H%M%S)
+# $ REPORT_DATE=$now REPORT_DIR=/sec-reports/zap PRODUCT_NAME=JUICESHOP zap.sh -cmd -autorun /zap/wrk/plans/scan-plan-test1.yaml

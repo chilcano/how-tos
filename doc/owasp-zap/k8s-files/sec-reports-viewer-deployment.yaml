@@ -2,29 +2,36 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: zap-report-viewer
+  name: sec-reports-viewer
 data:
   nginx-conf: |
     server {
         listen 80;
         server_name localhost;
 
+        # avoid 404 noise for favicon.ico
+        location = /favicon.ico {
+          access_log off;
+          log_not_found off;
+          return 204;
+        }
+
         location / {
             index index.html;
             root /usr/share/nginx/html;
         }
 
-        location /zap-reports-dir/ {
+        location /reports/ {
             autoindex on;
             autoindex_exact_size off;
             autoindex_localtime on;
-            root /usr/share/nginx/html;
+            alias /usr/share/nginx/html/sec-reports/;
         }
     }
   nginx-index-html: |
     <!DOCTYPE html>
     <html lang="en">
-    <head><title>ZAMA Security Hub - DAST Reports</title>
+    <head><title>Sec Reports</title>
     <style>
     body { font-family: Telegraf, sans-serif; padding: 20px; }
     ul { list-style-type: none; padding: 0; }
@@ -55,7 +62,7 @@ data:
     </style>
     </head>
     <body>
-    <h1>ZWS Security Hub - DAST Reports</h1>
+    <h1>Security Reports</h1>
     <img src="zap-logo.png" alt="ZAP" style="width:200px;"/>
     <table id="table-sca-reports">
         <tr><th>Scan Date</th><th>Product or Team</th><th>Statistics</th></tr> 
@@ -65,7 +72,7 @@ data:
     <script>
       async function loadReports() {
         try {
-          const response = await fetch('/zap-reports-dir/');
+          const response = await fetch('/reports/zap/');
           const text = await response.text();
           const parser = new DOMParser();
           const doc = parser.parseFromString(text, 'text/html');
@@ -79,7 +86,7 @@ data:
               const li = document.createElement('li');
               const link = document.createElement('a');
               const filename = a.href.split('/').pop();
-              link.href = `/zap-reports-dir/${filename}`;
+              link.href = `/reports/zap/${filename}`;
               link.textContent = filename.replace('.html', '');
               li.appendChild(link);
               list.appendChild(li);
@@ -91,7 +98,7 @@ data:
       loadReports();
       setInterval(loadReports, 300000); // 5 minutes
     </script>
-    <a href="/zap-reports-dir/">Click here to browse all reports.</a>
+    <a href="/reports/">Click here to browse all reports.</a>
     </body>
     </html>
 binaryData:
@@ -100,20 +107,18 @@ binaryData:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: zap-report-viewer
+  name: sec-reports-viewer
   labels:
-    app: zap-report-viewer
+    app: sec-reports-viewer
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: zap-report-viewer
+      app: sec-reports-viewer
   template:
     metadata:
       labels:
-        app: zap-report-viewer
-      annotations:
-        configmap-hash: cc6bc66702d14a0010b77fc39994faf5af34006f879e9156e302f0b17687f9c2
+        app: sec-reports-viewer
     spec:
       affinity:
         podAffinity:
@@ -124,20 +129,22 @@ spec:
               topologyKey: kubernetes.io/hostname
       containers:
         - name: nginx
-          image: nginx:1.28.0-alpine3.21
+          image: nginx:1.28.0-alpine3.21-slim
           ports:
             - name: http
               containerPort: 80
               protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-              scheme: HTTP
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
+          # lifecycle:
+          #   postStart:
+          #     exec:
+          #       command:
+          #         - sh
+          #         - -c
+          #         - >
+          #           mkdir -p /usr/share/nginx/html/sec-reports/zap &&
+          #           mkdir -p /usr/share/nginx/html/sec-reports/trivy &&
+          #           mkdir -p /usr/share/nginx/html/sec-reports/trivy-op &&
+          #           mkdir -p /usr/share/nginx/html/sec-reports/falco
           volumeMounts:
             - name: report-viewer-cm
               mountPath: /etc/nginx/conf.d/default.conf
@@ -148,78 +155,92 @@ spec:
             - name: report-viewer-cm
               mountPath: /usr/share/nginx/html/zap-logo.png
               subPath: zap-logo-png-b64
-            - name: zap-reports-dir
-              mountPath: /usr/share/nginx/html/zap-reports-dir
+            - name: sec-reports-dir
+              mountPath: /usr/share/nginx/html/sec-reports/
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
       volumes:
         - name: report-viewer-cm
           configMap:
-            name: zap-report-viewer
-        - name: zap-reports-dir
+            name: sec-reports-viewer
+        - name: sec-reports-dir
           persistentVolumeClaim:
-            claimName: zap-reports-pvc
+            claimName: sec-reports-pvc
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: zap-report-viewer
+  name: sec-reports-viewer
   labels:
-    app: zap-report-viewer
+    app: sec-reports-viewer
 spec:
   type: ClusterIP
   internalTrafficPolicy: Cluster
   selector:
-    app: zap-report-viewer
+    app: sec-reports-viewer
   ports:
     - name: http
       port: 80
       protocol: TCP
       targetPort: http
----
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: zap-report-viewer
-  labels:
-    app: zap-report-viewer
-spec:
-  ingressClassName: tailscale
-  rules:
-    - host: dast-report-viewer
-      http:
-        paths:
-          - backend:
-              service:
-                name: zap-report-viewer
-                port:
-                  name: http
-            path: /
-            pathType: ImplementationSpecific
-  tls:
-    - hosts:
-      - dast-report-viewer
----
+# ---
 # apiVersion: networking.k8s.io/v1
 # kind: Ingress
 # metadata:
-#   name: zap-report-viewer
+#   name: sec-reports-viewer
 #   labels:
-#     app: zap-report-viewer
-#   # annotations:
-#   #   nginx.ingress.kubernetes.io/backend-protocol: HTTPS 
+#     app: sec-reports-viewer
 # spec:
-#   ingressClassName: nginx
+#   ingressClassName: tailscale
 #   rules:
-#     - host: dast-report-viewer.tawa.local
+#     - host: dast-report-viewer
 #       http:
 #         paths:
 #           - backend:
 #               service:
-#                 name: zap-report-viewer
+#                 name: sec-reports-viewer
 #                 port:
 #                   name: http
 #             path: /
 #             pathType: ImplementationSpecific
 #   tls:
 #     - hosts:
-#       - dast-report-viewer.tawa.local
-# ---
+#       - dast-report-viewer
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: sec-reports-viewer
+  labels:
+    app: sec-reports-viewer
+  # annotations:
+  #   nginx.ingress.kubernetes.io/backend-protocol: HTTPS 
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: sec-reports-viewer.tawa.local
+      http:
+        paths:
+          - backend:
+              service:
+                name: sec-reports-viewer
+                port:
+                  name: http
+            path: /
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+      - sec-reports-viewer.tawa.local
+---
+
+# kubectl -n dast apply -f sec-reports-viewer-deployment.yaml
+# kubectl exec -it -n dast deployment.apps/sec-reports-viewer -- sh
+# $ ls -la /usr/share/nginx/html/sec-reports/
+# $ cat /etc/nginx/conf.d/default.conf

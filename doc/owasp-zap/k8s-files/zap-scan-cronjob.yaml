@@ -31,27 +31,42 @@ spec:
                           values:
                             - zap-scan
                     topologyKey: kubernetes.io/hostname
+          securityContext:
+            # Get it running: echo $(id -u):$(id -g)
+            fsGroup: 1000
           containers:
             - name: zap-job
               image: zaproxy/zap-stable:2.16.1
+              lifecycle:
+                postStart:
+                  exec:
+                    command:
+                      # This runs as soon as the container is created,
+                      # before your main command starts.
+                      - sh
+                      - -c
+                      - >
+                        mkdir -p /sec-reports/zap/
               command: ["/bin/sh", "-c"]
               args:
                 - |
                   echo "== Updating OWASP ZAP Addons =="
                   zap.sh -cmd -addonupdate
                   now=$(date +%y%m%d-%H%M%S)
-                  # echo "== Running OWASP ZAP at ${now} =="
-                  # echo "** Scan JuiceShop **"
-                  # REPORT_DATE=$now REPORT_DIR=/zap/wrk/out PRODUCT_NAME=JUICESHOP zap.sh -cmd -autorun /zap/wrk/plans/scan-plan-test1.yaml
-                  echo "** Scan CyberChef **"
-                  REPORT_DATE=$now REPORT_DIR=/zap/wrk/out PRODUCT_NAME=CYBERCHEF zap.sh -cmd -autorun /zap/wrk/plans/scan-plan-test2.yaml
-                  echo "** Scan Console-Front **"
-                  REPORT_DATE=$now REPORT_DIR=/zap/wrk/out PRODUCT_NAME=FRONT zap.sh -cmd -autorun /zap/wrk/plans/scan-plan-01.yaml
-                  echo "** Scan Console-Back **"
-                  REPORT_DATE=$now REPORT_DIR=/zap/wrk/out PRODUCT_NAME=BACK zap.sh -cmd -autorun /zap/wrk/plans/scan-plan-02.yaml
+                  echo "== Running OWASP ZAP at ${now} =="
+
+                  echo "** Scan JuiceShop **"
+                  REPORT_DATE=$now REPORT_DIR=/sec-reports/zap PRODUCT_NAME=JUICESHOP zap.sh -cmd -autorun /zap/wrk/plans/scan-plan-test1.yaml
+
+                  # echo "** Scan CyberChef **"
+                  # REPORT_DATE=$now REPORT_DIR=/sec-reports/zap PRODUCT_NAME=CYBERCHEF zap.sh -cmd -autorun /zap/wrk/plans/scan-plan-test2.yaml
+                  # echo "** Scan Console-Front **"
+                  # REPORT_DATE=$now REPORT_DIR=/sec-reports/zap PRODUCT_NAME=FRONT zap.sh -cmd -autorun /zap/wrk/plans/scan-plan-01.yaml
+                  # echo "** Scan Console-Back **"
+                  # REPORT_DATE=$now REPORT_DIR=/sec-reports/zap PRODUCT_NAME=BACK zap.sh -cmd -autorun /zap/wrk/plans/scan-plan-02.yaml
               volumeMounts:
-                - name: zap-reports-dir
-                  mountPath: /zap/wrk/out/
+                - name: sec-reports-dir
+                  mountPath: /sec-reports/
                 - name: zap-scan-plans-dir
                   mountPath: /zap/wrk/plans/
                 - name: zap-scan-policies-dir
@@ -65,9 +80,9 @@ spec:
                   mountPath: /zap/wrk/run-zap-and-defectdojo-reimport.sh
           restartPolicy: Never
           volumes:
-            - name: zap-reports-dir
+            - name: sec-reports-dir
               persistentVolumeClaim:
-                claimName: zap-reports-pvc
+                claimName: sec-reports-pvc
             - name: zap-scan-plans-dir
               configMap:
                 name: zap-scan-plans
