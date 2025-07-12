@@ -20,11 +20,59 @@ microk8s status --wait-ready
 
 # Install addons
 microk8s enable hostpath-storage dashboard ingress dns helm helm3 metrics-server
+```
 
+> * Falcosidekick-UI uses Redis and it requires `hostpath-storage` microk8s addon.
+> * Trivy Server requires `hostpath-storage` microk8s addon.
+
+
+```
 # Start, stop, status
 microk8s start
 microk8s stop
 microk8s status
+```
+
+**Check what addons have been installed**
+```sh
+microk8s status
+```
+
+You will have this:
+```sh
+microk8s is running
+high-availability: no
+  datastore master nodes: 127.0.0.1:19001
+  datastore standby nodes: none
+addons:
+  enabled:
+
+    dns                  # (core) CoreDNS
+    ha-cluster           # (core) Configure high availability on the current node
+    helm                 # (core) Helm - the package manager for Kubernetes
+    helm3                # (core) Helm 3 - the package manager for Kubernetes
+
+  disabled:
+    cert-manager         # (core) Cloud native certificate management
+    cis-hardening        # (core) Apply CIS K8s hardening
+    community            # (core) The community addons repository
+    dashboard            # (core) The Kubernetes dashboard
+    gpu                  # (core) Alias to nvidia add-on
+    host-access          # (core) Allow Pods connecting to Host services smoothly
+    hostpath-storage     # (core) Storage class; allocates storage from host directory
+    ingress              # (core) Ingress controller for external access
+    kube-ovn             # (core) An advanced network fabric for Kubernetes
+    mayastor             # (core) OpenEBS MayaStor
+    metallb              # (core) Loadbalancer for your Kubernetes cluster
+    metrics-server       # (core) K8s Metrics Server for API access to service metrics
+    minio                # (core) MinIO object storage
+    nvidia               # (core) NVIDIA hardware (GPU and network) support
+    observability        # (core) A lightweight observability stack for logs, traces and metrics
+    prometheus           # (core) Prometheus operator for monitoring and logging
+    rbac                 # (core) Role-Based Access Control for authorisation
+    registry             # (core) Private image registry exposed on localhost:32000
+    rook-ceph            # (core) Distributed Ceph storage using Rook
+    storage              # (core) Alias to hostpath-storage add-on, deprecated
 ```
 
 ### 1.2. Install Microk8s with specific K8s version
@@ -116,28 +164,11 @@ kubectl config use-context <my-context>
 
 ## 2. Configure Microk8s
 
-### 2.1. Install all Microk8s Nginx ingress addon
-
+### 2.1. Install Nginx ingress addon
 
 **Install Ingress**
 ```sh
 microk8s enable ingress
-
-Infer repository core for addon ingress
-Enabling Ingress
-ingressclass.networking.k8s.io/public created
-ingressclass.networking.k8s.io/nginx created
-namespace/ingress created
-serviceaccount/nginx-ingress-microk8s-serviceaccount created
-clusterrole.rbac.authorization.k8s.io/nginx-ingress-microk8s-clusterrole created
-role.rbac.authorization.k8s.io/nginx-ingress-microk8s-role created
-clusterrolebinding.rbac.authorization.k8s.io/nginx-ingress-microk8s created
-rolebinding.rbac.authorization.k8s.io/nginx-ingress-microk8s created
-configmap/nginx-load-balancer-microk8s-conf created
-configmap/nginx-ingress-tcp-microk8s-conf created
-configmap/nginx-ingress-udp-microk8s-conf created
-daemonset.apps/nginx-ingress-microk8s-controller created
-Ingress is enable
 ```
 
 The Microk8s Ingress exposes the HTTP (80) and HTTPS (443) ports by default:
@@ -156,47 +187,7 @@ Pod Template:
 ...
 ```
 
-**Check what addons have been installed**
-```sh
-microk8s status
-```
-
-You will have this:
-```sh
-microk8s is running
-high-availability: no
-  datastore master nodes: 127.0.0.1:19001
-  datastore standby nodes: none
-addons:
-  enabled:
-    dashboard            # (core) The Kubernetes dashboard
-    dns                  # (core) CoreDNS
-    ha-cluster           # (core) Configure high availability on the current node
-    helm                 # (core) Helm - the package manager for Kubernetes
-    helm3                # (core) Helm 3 - the package manager for Kubernetes
-    hostpath-storage     # (core) Storage class; allocates storage from host directory
-    ingress              # (core) Ingress controller for external access
-    metrics-server       # (core) K8s Metrics Server for API access to service metrics
-    storage              # (core) Alias to hostpath-storage add-on, deprecated
-  disabled:
-    cert-manager         # (core) Cloud native certificate management
-    cis-hardening        # (core) Apply CIS K8s hardening
-    community            # (core) The community addons repository
-    gpu                  # (core) Alias to nvidia add-on
-    host-access          # (core) Allow Pods connecting to Host services smoothly
-    kube-ovn             # (core) An advanced network fabric for Kubernetes
-    mayastor             # (core) OpenEBS MayaStor
-    metallb              # (core) Loadbalancer for your Kubernetes cluster
-    minio                # (core) MinIO object storage
-    nvidia               # (core) NVIDIA hardware (GPU and network) support
-    observability        # (core) A lightweight observability stack for logs, traces and metrics
-    prometheus           # (core) Prometheus operator for monitoring and logging
-    rbac                 # (core) Role-Based Access Control for authorisation
-    registry             # (core) Private image registry exposed on localhost:32000
-    rook-ceph            # (core) Distributed Ceph storage using Rook
-```
-
-### 2.2. Install Certificate-Manager
+### 2.2. Install Certificate-Manager addon
 
 **1. Install and configure Certificate-Manager**
 
@@ -206,47 +197,7 @@ $ kubectl config use-context microk8s
 $ microk8s enable cert-manager
 ```
 
-You will see this:
-```
-...
-Enabled cert-manager
-
-===========================
-
-Cert-manager is installed. As a next step, try creating an Issuer
-for Let's Encrypt by creating the following resource:
-
-$ microk8s kubectl apply -f - <<EOF
----
-apiVersion: cert-manager.io/v1
-kind: Issuer
-metadata:
-  name: letsencrypt
-spec:
-  acme:
-    # You must replace this email address with your own.
-    # Let's Encrypt will use this to contact you about expiring
-    # certificates, and issues related to your account.
-    email: me@example.com
-    server: https://acme-v02.api.letsencrypt.org/directory
-    privateKeySecretRef:
-      # Secret resource that will be used to store the account's private key.
-      name: letsencrypt-account-key
-    # Add a single challenge solver, HTTP01 using nginx
-    solvers:
-    - http01:
-        ingress:
-          ingressClassName: nginx
-EOF
-
-Then, you can create an ingress to expose 'my-service:80' on 'https://my-service.example.com' with:
-
-$ microk8s enable ingress
-$ microk8s kubectl create ingress my-ingress \
-    --annotation cert-manager.io/issuer=letsencrypt \
-    --rule 'my-service.example.com/*=my-service:80,tls=my-service-tls'
-```
-
+Once installed, now you will be able to create a certificate issuer:
 ```sh
 $ cat microk8s-cluster-issuer.yaml
 ```
@@ -291,79 +242,6 @@ $ kubectl apply -f k8s-owasp-juiceshop-ingress-lets-encrypt.yaml
 ```
 
 Now, it should be reacheable at https://juiceshop.intix.info
-
-
-### Troubleshooting
-
-**1. Changing of network**
-
-Error:
-```sh
-$ kubectl config use-context microk8s
-
-$ kubectl get ns -A
-
-E0512 14:15:38.994839  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
-E0512 14:15:42.066889  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
-E0512 14:15:45.143537  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
-E0512 14:15:48.210815  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
-E0512 14:15:51.282795  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
-Unable to connect to the server: dial tcp 192.168.1.153:16443: connect: no route to host
-```
-
-If you are facing this problem, then follow the next steps:
-
-- `2. Update the cluster IP`
-- `3. Merge all kubeconfigs`
-
-
-2. Update the microk8s kubeconfig:
-
-**2. Update the cluster IP**
-
-According the documentation (https://microk8s.io/docs/configure-host-interfaces), this is not needed, however if you change frequently the IP address and the default network interface, 
-well, it's recommended update it to IP loopback.
-
-This optional if you network and ip address change frequently. With that you will use the loopback.
-```sh
-sudo microk8s stop
-nano /var/snap/microk8s/current/args/kube-apiserver
-
---advertise-address=127.0.0.1
---bind-address=0.0.0.0
---secure-port=16443
-
-sudo microk8s start
-```
-Where:
-- `advertise-address=127.0.0.1` the kubeconfig will have this ip
-- `bind-address=0.0.0.0` by default microk8s already binds to all interfaces
-
-**3. Merge all kubeconfigs**
-
-```sh
-cp ~/.kube/config ~/.kube/config.20250512
-
-kubectl config delete-context microk8s
-kubectl config delete-cluster microk8s-cluster
-
-microk8s config > ~/.kube/config.microk8s 
-
-export KUBECONFIG=~/.kube/config:~/.kube/config.microk8s
-kubectl config view --flatten > ~/.kube/config.flatten
-mv ~/.kube/config.flatten ~/.kube/config
-```
-Verify if works
-```sh
-kubectl config get-clusters
-kubectl config get-contexts
-
-CURRENT   NAME                      CLUSTER                                                 AUTHINFO                                                NAMESPACE
- *        microk8s                  microk8s-cluster                                        foo-usr                                                   
-          acme-k8s-ctx              acme-k8s-cluster                                        acme-k8s-usr      
-
-kubectl config use-context <my-context>
-```
 
 
 ## 3. Install sample Applications
@@ -440,6 +318,11 @@ browser -> 127.0.0.1:80 ->      80    ->     80    -> 4040
 kubectl apply -f k8s-weaveworks-scope-ingress.yaml
 ```
 
+Add DNS to `/etc/hosts` file:
+```sh
+sudo bash -c 'echo "127.0.0.1 scope.tawa.local" >> /etc/hosts'
+```
+
 ### 3.2. OWASP JuiceShop
 
 * https://owasp.org/www-project-juice-shop/
@@ -507,12 +390,10 @@ spec:
 * Add `juiceshop.<hostname>` to `/etc/hosts` file.
 
 ```sh
-cat /etc/hosts
-
-127.0.0.1   juiceshop.tawa.local
+sudo bash -c 'echo "127.0.0.1 juiceshop.tawa.local" >> /etc/hosts'
 ```
 
-* The URL is `http://juiceshop.<hostname>`
+* The URL is `http://juiceshop.tawa.local`
 
 * The traffic final is:
 ```
@@ -541,24 +422,65 @@ kubectl apply -f k8s-owasp-bwapp.yaml
 
 ### 3.4. Prometheus and Grafana
 
+
+#### 3.4.1 Install and configuration
+
+
+**01. Install Prometheus stack**
+
+* We will install Prometheus stack from official repo instead of installing Microk8s Observability plugins. This last one installs extra components such as Loki.
+* We will follow these instructions: https://aquasecurity.github.io/trivy-operator/v0.27.3/tutorials/grafana-dashboard/
+
 ```sh
-± kubectl get svc,ing -n monitoring 
-NAME                                              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
-service/alertmanager-operated                     ClusterIP   None             <none>        9093/TCP,9094/TCP,9094/UDP   5d23h
-service/prom-grafana                              ClusterIP   10.152.183.152   <none>        80/TCP                       5d23h
-service/prom-kube-prometheus-stack-alertmanager   ClusterIP   10.152.183.76    <none>        9093/TCP,8080/TCP            5d23h
-service/prom-kube-prometheus-stack-operator       ClusterIP   10.152.183.201   <none>        443/TCP                      5d23h
-service/prom-kube-prometheus-stack-prometheus     ClusterIP   10.152.183.130   <none>        9090/TCP,8080/TCP            5d23h
-service/prom-kube-state-metrics                   ClusterIP   10.152.183.146   <none>        8080/TCP                     5d23h
-service/prom-prometheus-node-exporter             ClusterIP   10.152.183.107   <none>        9100/TCP                     5d23h
-service/prometheus-operated                       ClusterIP   None             <none>        9090/TCP                     5d23h
+helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+helm repo update
+
+kubectl config use-context microk8s
+kubectl create ns monitoring
+
+helm upgrade --install prom prometheus-community/kube-prometheus-stack -n monitoring --values values-prom-stack.yaml
+
+helm list -n monitoring
+
+NAME    NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                           APP VERSION
+prom    monitoring      2               2025-07-12 16:06:05.2923361 +0200 CEST  deployed        kube-prometheus-stack-75.10.0   v0.83.0 
 ```
 
-#### 2.4.1 Install and configuration
-
-The services are:
+**02. Check installation status**
 ```sh
-± kubectl get svc prom-kube-prometheus-stack-prometheus -n monitoring -o yaml
+kubectl -n monitoring get pods,svc,ing
+
+NAME                                                         READY   STATUS    RESTARTS   AGE
+pod/alertmanager-prom-kube-prometheus-stack-alertmanager-0   2/2     Running   0          23m
+pod/prom-grafana-595c6c9d95-fnrb8                            3/3     Running   0          23m
+pod/prom-kube-prometheus-stack-operator-6d996dbb64-5mnpq     1/1     Running   0          23m
+pod/prom-kube-state-metrics-796d7cc46b-htdsq                 1/1     Running   0          23m
+pod/prom-prometheus-node-exporter-4g7qb                      1/1     Running   0          23m
+pod/prometheus-prom-kube-prometheus-stack-prometheus-0       2/2     Running   0          23m
+
+NAME                                              TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)                      AGE
+service/alertmanager-operated                     ClusterIP   None             <none>        9093/TCP,9094/TCP,9094/UDP   23m
+service/prom-grafana                              ClusterIP   10.152.183.251   <none>        80/TCP                       23m
+service/prom-kube-prometheus-stack-alertmanager   ClusterIP   10.152.183.246   <none>        9093/TCP,8080/TCP            23m
+service/prom-kube-prometheus-stack-operator       ClusterIP   10.152.183.56    <none>        443/TCP                      23m
+service/prom-kube-prometheus-stack-prometheus     ClusterIP   10.152.183.240   <none>        9090/TCP,8080/TCP            23m
+service/prom-kube-state-metrics                   ClusterIP   10.152.183.178   <none>        8080/TCP                     23m
+service/prom-prometheus-node-exporter             ClusterIP   10.152.183.138   <none>        9100/TCP                     23m
+service/prometheus-operated                       ClusterIP   None             <none>        9090/TCP                     23m
+```
+
+**03. Get Grafana 'admin' user password**
+```sh
+kubectl -n monitoring get secrets prom-grafana -ojsonpath="{.data.admin-password}" | base64 -d ; echo
+
+prom-operator
+```
+
+**04. Check Prometheus and Grafana Services**
+
+Reviewing the services before creating their ingresses:
+```sh
+$ kubectl -n monitoring get svc prom-kube-prometheus-stack-prometheus -o yaml
 
 ...
 spec:
@@ -581,7 +503,7 @@ spec:
     targetPort: reloader-web
 ...
 
-± kubectl get svc prom-grafana -n monitoring -o yaml
+$ kubectl -n monitoring get svc prom-grafana -o yaml
 
 ...
 spec:
@@ -600,23 +522,43 @@ spec:
 ...
 ```
 
-
-**01. Install**
+**04. Install Prometheus and Grafana Ingresses**
 
 ```sh
-± kubectl apply -f microk8s-mon-ingress.yaml 
-
-ingress.networking.k8s.io/prometheus-ing created
-ingress.networking.k8s.io/grafana-ing created
+kubectl apply -f microk8s-mon-ingress.yaml 
 ```
 
-**02. Get access**
+Once created, add DNS to your `/etc/hosts` file:
+```sh
+sudo bash -c 'echo "127.0.0.1 prometheus.tawa.local" >> /etc/hosts'
+sudo bash -c 'echo "127.0.0.1 grafana.tawa.local" >> /etc/hosts'
+```
 
 Open the next URLs in your browser:
-
 * Prometheus: http://prometheus.tawa.local
 * Grafana: http://grafana.tawa.local (admin/prom-operator)
 
+
+**05. Forward Prometheus and Grafana ports**
+
+If you don't want to create ingresses, you can do port-forwarding:
+```sh
+kubectl port-forward service/prom-kube-prometheus-stack-prometheus -n monitoring 9090:9090
+kubectl port-forward service/prom-grafana -n monitoring 3000:80
+```
+
+Open next urls in your browser:  
+* Grafana: http://tawa.local:3000 
+* Prometheus: http://tawa.local:9090
+
+#### 3.4.2 Uninstall
+
+```sh
+helm uninstall prom -n monitoring
+
+## should be empty
+kubectl -n monitoring get all
+```
 
 ### 3.5. Kubernetes Dashboard
 
@@ -701,3 +643,74 @@ Open the next URL:
 * https://dashboard.tawa.local/ (use the token)
 
 
+## Troubleshooting
+
+**1. Changing of network**
+
+Error:
+```sh
+$ kubectl config use-context microk8s
+
+$ kubectl get ns -A
+
+E0512 14:15:38.994839  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
+E0512 14:15:42.066889  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
+E0512 14:15:45.143537  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
+E0512 14:15:48.210815  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
+E0512 14:15:51.282795  911386 memcache.go:265] couldn't get current server API group list: Get "https://192.168.1.153:16443/api?timeout=32s": dial tcp 192.168.1.153:16443: connect: no route to host
+Unable to connect to the server: dial tcp 192.168.1.153:16443: connect: no route to host
+```
+
+If you are facing this problem, then follow the next steps:
+
+- `2. Update the cluster IP`
+- `3. Merge all kubeconfigs`
+
+
+2. Update the microk8s kubeconfig:
+
+**2. Update the cluster IP**
+
+According the documentation (https://microk8s.io/docs/configure-host-interfaces), this is not needed, however if you change frequently the IP address and the default network interface, 
+well, it's recommended update it to IP loopback.
+
+This optional if you network and ip address change frequently. With that you will use the loopback.
+```sh
+sudo microk8s stop
+nano /var/snap/microk8s/current/args/kube-apiserver
+
+--advertise-address=127.0.0.1
+--bind-address=0.0.0.0
+--secure-port=16443
+
+sudo microk8s start
+```
+Where:
+- `advertise-address=127.0.0.1` the kubeconfig will have this ip
+- `bind-address=0.0.0.0` by default microk8s already binds to all interfaces
+
+**3. Merge all kubeconfigs**
+
+```sh
+cp ~/.kube/config ~/.kube/config.20250512
+
+kubectl config delete-context microk8s
+kubectl config delete-cluster microk8s-cluster
+
+microk8s config > ~/.kube/config.microk8s 
+
+export KUBECONFIG=~/.kube/config:~/.kube/config.microk8s
+kubectl config view --flatten > ~/.kube/config.flatten
+mv ~/.kube/config.flatten ~/.kube/config
+```
+Verify if works:
+```sh
+kubectl config get-clusters
+kubectl config get-contexts
+
+CURRENT   NAME                      CLUSTER                                                 AUTHINFO                                                NAMESPACE
+ *        microk8s                  microk8s-cluster                                        foo-usr                                                   
+          acme-k8s-ctx              acme-k8s-cluster                                        acme-k8s-usr      
+
+kubectl config use-context <my-context>
+```

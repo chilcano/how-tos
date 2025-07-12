@@ -14,66 +14,85 @@
 
 * Follow this guide: [Playing with MicroK8s](../playing_with_microk8s/)
 
-
 ## 2. Install Trivy Operator
-
 
 ### 2.1. Install Trivy Operator
 
+
+**Pre-requisites**
+
+1. Trivy Server pod requires PersistentVolumeClaim enabled in Microk8s. Enable `hostpath-storage` or `storage` (alias) addon.
+```sh
+microk8s enable hostpath-storage
+```
+
+2. In Microk8s, I had to install Prometheus stack before Trivy Operator, in that way `serviceMonitor: true` in Trivy config will allow to Prometheus metrics scrapping automatically.  
+Just follow this guide: [Install Prometheus stack in Microk8s](../playing_with_microk8s/README.md#34-prometheus-and-grafana)
+
 **Select k8s cluster by selecting the context**
+
 ```sh
 kubectl config use-context microk8s
 ```
 
-**Add Helm repo**
+**Install Helm CLI in your PC**
+
+I've followed this [reference](https://helm.sh/docs/intro/install/#from-apt-debianubuntu) instead of installing the Microk8s Helm or Helm3 addon.
 ```sh
+curl https://baltocdn.com/helm/signing.asc | gpg --dearmor | sudo tee /usr/share/keyrings/helm.gpg > /dev/null
+sudo apt-get install apt-transport-https --yes
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/helm.gpg] https://baltocdn.com/helm/stable/debian/ all main" | sudo tee /etc/apt/sources.list.d/helm-stable-debian.list
+sudo apt-get update
+sudo apt-get install helm
+
+helm version
+
+version.BuildInfo{Version:"v3.18.4", GitCommit:"d80839cf37d860c8aa9a0503fe463278f26cd5e2", GitTreeState:"clean", GoVersion:"go1.24.4"}
+```
+
+**Add the AquaSecurity Helm repo**
+
+```sh
+kubectl config use-context microk8s
+
 helm repo add aqua https://aquasecurity.github.io/helm-charts/
 helm repo update
 ```
 
-**Install**
+**List all helm-charts available**
+```sh
+helm search repo aqua
+
+NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
+aqua/harbor-scanner-aqua        0.14.0          0.14.0          Harbor scanner adapter for Aqua Enterprise scanner
+aqua/harbor-scanner-trivy       0.31.2          0.31.2          Harbor scanner adapter for Trivy                  
+aqua/postee                     v2.14.0         v2.14.0         A Helm chart for Postee                           
+aqua/starboard-operator         0.10.21         0.15.23         Keeps security report resources updated           
+aqua/tracee                     0.23.1          0.23.1          Linux Runtime Security and Forensics using eBPF   
+aqua/trivy                      0.16.1          0.64.1          Trivy helm chart                                  
+aqua/trivy-operator             0.29.3          0.27.3          Keeps security report resources updated 
+```
+
+**Install Trivy Operator**
 ```sh
 ## Append "--debug" if you want to show debug logs
-helm install trivy-operator aqua/trivy-operator -n trivy-system --create-namespace --version 0.25.0 -f ./trivy-operator-cfg/values-trivy-operator.yaml 
+helm install trivy-operator aqua/trivy-operator -n trivy-system --create-namespace --version 0.29.3 -f ./trivy-operator-cfg/values-trivy-operator-min.yaml
 
 ## List installed chart
 helm list -n trivy-system
 
-NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                   APP VERSION
-trivy-operator  trivy-system    1               2025-02-04 22:40:07.107265491 +0100 CET deployed        trivy-operator-0.25.0   0.23.0 
+NAME            NAMESPACE       REVISION        UPDATED                                         STATUS          CHART                   APP VERSION
+trivy-operator  trivy-system    1               2025-07-11 17:47:09.321740516 +0200 CEST        deployed        trivy-operator-0.29.3   0.27.3 
 ```
 
 **Update**
 ```sh
-helm upgrade trivy-operator aqua/trivy-operator -n trivy-system --create-namespace --version 0.25.0 -f ./trivy-operator-cfg/values-trivy-operator.yaml 
+helm upgrade trivy-operator aqua/trivy-operator -n trivy-system --create-namespace --version <new-chart-version> -f ./trivy-operator-cfg/values-trivy-operator-min.yaml 
 ```
 
-**Upgrade**
+**Upgrading**
 
-I'm having these errors:
-```sh
-± kubectl -n trivy-system logs -f deployment.apps/trivy-operator
-
-....
-{"level":"error","ts":"2025-05-19T06:56:33Z","msg":"Reconciler error","controller":"job","controllerGroup":"batch","controllerKind":"Job","Job":{"name":"scan-vulnerabilityreport-7585c6d48d","namespace":"trivy-system"},"namespace":"trivy-system","name":"scan-vulnerabilityreport-7585c6d48d","reconcileID":"fe6edcfd-74a1-488b-b981-fdf2c8aba149","error":"illegal base64 data at input byte 6","stacktrace":"sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.19.1/pkg/internal/controller/controller.go:316\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.19.1/pkg/internal/controller/controller.go:263\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func2.2\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.19.1/pkg/internal/controller/controller.go:224"}
-{"level":"error","ts":"2025-05-19T06:56:34Z","msg":"Reconciler error","controller":"job","controllerGroup":"batch","controllerKind":"Job","Job":{"name":"scan-vulnerabilityreport-77bd487589","namespace":"trivy-system"},"namespace":"trivy-system","name":"scan-vulnerabilityreport-77bd487589","reconcileID":"6066bf74-7a98-419d-b141-e679a4bb5443","error":"illegal base64 data at input byte 6; illegal base64 data at input byte 6; illegal base64 data at input byte 6","errorCauses":[{"error":"illegal base64 data at input byte 6"},{"error":"illegal base64 data at input byte 6"},{"error":"illegal base64 data at input byte 6"}],"stacktrace":"sigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).reconcileHandler\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.19.1/pkg/internal/controller/controller.go:316\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).processNextWorkItem\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.19.1/pkg/internal/controller/controller.go:263\nsigs.k8s.io/controller-runtime/pkg/internal/controller.(*Controller[...]).Start.func2.2\n\t/home/runner/go/pkg/mod/sigs.k8s.io/controller-runtime@v0.19.1/pkg/internal/controller/controller.go:224"
-```
-And I'm having these trivy and microk8s versions:
-```sh
-± helm list -n trivy-system
-NAME            NAMESPACE       REVISION        UPDATED                                 STATUS          CHART                   APP VERSION
-trivy-operator  trivy-system    8               2025-02-12 18:12:42.623020728 +0100 CET deployed        trivy-operator-0.25.0   0.23.0 
-
-± microk8s version  
-MicroK8s v1.31.7 revision 7963
-```
-
-> In Microk8s (V1.27 and Superiors) a Secret is no longer generated with the Serviceacunt Token: instead tokens linked to the Pod are used via the Tokenrequest Api and “Projected” volumes in `/var/run/secrets/kubernetes.io/serviceacount/token`.
-> As there is no secret with "data.token" coded based64, the operator finds a "raw" (or empty) value and when trying to decode it produces that error.
-
-This means that I should upgrade Trivy to latest version and if that doesn't work, then I should mount the token via projected volumen in `/var/run/secrets/kubernetes.io/serviceaccount/token`.
-
-Then, let's upgrade. The latest versions are: Trivy Operator chart version is `0.28.1` and latest is application version is `0.26.1`:
+These commands upgrades from Trivy Operator helm chart `0.25.0` to `0.28.1`. Trivy Operator chart version `0.28.1` deploys the application version `0.26.1`:
 ```sh
 # 1. Make sure you have added the repo de Aquasecurity
 $ helm repo add aqua https://aquasecurity.github.io/helm-charts
@@ -81,44 +100,15 @@ $ helm repo add aqua https://aquasecurity.github.io/helm-charts
 # 2. Update the charts index
 $ helm repo update
 
-Hang tight while we grab the latest from your chart repositories...
-...Successfully got an update from the "defectdojo" chart repository
-...Successfully got an update from the "aqua" chart repository
-...Successfully got an update from the "falcosecurity" chart repository
-...Successfully got an update from the "prometheus-community" chart repository
-...Successfully got an update from the "safeline" chart repository
-Update Complete. ⎈Happy Helming!⎈
-
 # 3. Upgrade it namespace 'trivy-system'. Append "--debug" if you want to show debug logs
 $ helm upgrade trivy-operator aqua/trivy-operator --namespace trivy-system --version 0.28.1 --reuse-values
-
-Release "trivy-operator" has been upgraded. Happy Helming!
-NAME: trivy-operator
-LAST DEPLOYED: Mon May 19 09:54:05 2025
-NAMESPACE: trivy-system
-STATUS: deployed
-REVISION: 9
-TEST SUITE: None
-NOTES:
-You have installed Trivy Operator in the trivy-system namespace.
-It is configured to discover Kubernetes workloads and resources in
-all namespace(s).
-
-Inspect created VulnerabilityReports by:
-    kubectl get vulnerabilityreports --all-namespaces -o wide
-
-Inspect created ConfigAuditReports by:
-    kubectl get configauditreports --all-namespaces -o wide
-
-Inspect the work log of trivy-operator by:
-    kubectl logs -n trivy-system deployment/trivy-operator
 
 # 4. If previous cmd didn't work, try to mount the "/var/run/secrets/kubernetes.io/serviceaccount/token" in this way:
 helm upgrade trivy-operator aqua/trivy-operator --namespace trivy-system --version 0.28.1 --reuse-values \
   --set extraArgs="{--token-file=/var/run/secrets/kubernetes.io/serviceaccount/token}"
 
 # 5. Delete existing Trivy Jobs
-± kubectl -n trivy-system delete job `kubectl get jobs -n trivy-system -o custom-columns=:.metadata.name`
+$ kubectl -n trivy-system delete job `kubectl get jobs -n trivy-system -o custom-columns=:.metadata.name`
 
 # 6. Check again the logs, error should disappear and check if you check if vulnerabilities reports have been generated.
 $ kubectl -n trivy-system logs -f deployment/trivy-operator
@@ -135,6 +125,9 @@ kubectl config use-context microk8s
 
 ## Uninstall
 helm uninstall trivy-operator -n trivy-system
+
+## Should be empty
+kubectl -n trivy-system get all
 
 ## Remove the CRDs
 kubectl delete crd vulnerabilityreports.aquasecurity.github.io
@@ -153,7 +146,7 @@ kubectl delete crd clustervulnerabilityreports.aquasecurity.github.io
 
 **Checking Trivy Operator**
 ```sh
-kubectl logs -f -n trivy-system deployment/trivy-operator
+kubectl -n trivy-system logs -f deployment/trivy-operator
 
 kubectl get crd | sed -En 's/\.aquasecurity\.github\.io\s+.*//p'
 
@@ -179,15 +172,15 @@ kubectl get clusterrbacassessmentreports -o wide
 kubectl get clustersbomreports -o wide
 kubectl get clustervulnerabilityreports -o wide
 ## Namespace-based assessments
-kubectl get configauditreports --all-namespaces -o wide | wc -l
-kubectl get exposedsecretreports --all-namespaces -o wide | wc -l
-kubectl get infraassessmentreports --all-namespaces -o wide | wc -l
-kubectl get rbacassessmentreports --all-namespaces -o wide | wc -l
-kubectl get sbomreports --all-namespaces -o wide | wc -l
-kubectl get vulnerabilityreports --all-namespaces -o wide | wc -l
+kubectl get configauditreports -A -o wide | wc -l
+kubectl get exposedsecretreports -A -o wide | wc -l
+kubectl get infraassessmentreports -A -o wide | wc -l
+kubectl get rbacassessmentreports -A -o wide | wc -l
+kubectl get sbomreports -A -o wide | wc -l
+kubectl get vulnerabilityreports -A -o wide | wc -l
 
 ## List installed K8s resources
-kubectl get deploy,pod,ds,cm,svc,ing -n trivy-system
+kubectl -n trivy-system get deploy,pod,ds,cm,svc,ing 
 ```
 
 **Checking Trivy configuration**
@@ -248,59 +241,63 @@ kubectl get cm/trivy-operator-config -n trivy-system -o yaml | grep -E '\s+OPERA
 The generated vulnerabilities reports, even Prometheus metrics and Grafana Dashboard will show only fixed vulnerabilities.
 You can verify that from Trivy CLI using the flag `--ignore-unfixed`.
 ```sh
-± trivy image -q --scanners vuln index.docker.io/bkimminich/juice-shop:v17.1.1 --ignore-unfixed | grep -E "^(Total|Failure)"
+$ trivy image -q --scanners vuln index.docker.io/bkimminich/juice-shop:v17.1.1 --ignore-unfixed | grep -E "^(Total|Failure)"
 
-Total: 13 (UNKNOWN: 1, LOW: 4, MEDIUM: 8, HIGH: 0, CRITICAL: 0)
-Total: 52 (UNKNOWN: 0, LOW: 6, MEDIUM: 22, HIGH: 19, CRITICAL: 5)
+Total: 19 (UNKNOWN: 3, LOW: 4, MEDIUM: 11, HIGH: 1, CRITICAL: 0)
+Total: 68 (UNKNOWN: 0, LOW: 19, MEDIUM: 23, HIGH: 21, CRITICAL: 5)
 ```
-If you set `ignoreUnfixed: false`, then you will get fixed and unfixed vulnerabilities, even in Prometheus and Grafana.
+If you set `ignoreUnfixed: false`, then you will get fixed and unfixed vulnerabilities.
 ```sh
-± trivy image -q --scanners vuln index.docker.io/bkimminich/juice-shop:v17.1.1 | grep -E "^(Total|Failure)" 
+$ trivy image -q --scanners vuln index.docker.io/bkimminich/juice-shop:v17.1.1 | grep -E "^(Total|Failure)"
 
-Total: 28 (UNKNOWN: 1, LOW: 14, MEDIUM: 13, HIGH: 0, CRITICAL: 0)
-Total: 61 (UNKNOWN: 0, LOW: 6, MEDIUM: 24, HIGH: 21, CRITICAL: 10)
+Total: 33 (UNKNOWN: 3, LOW: 16, MEDIUM: 13, HIGH: 1, CRITICAL: 0)
+Total: 77 (UNKNOWN: 0, LOW: 19, MEDIUM: 25, HIGH: 23, CRITICAL: 10)
 ```
+
+Now, in Prometheus and Grafana you should get exact values.
+
 
 2. The `mode: ClientServer` means that Trivy Operator has been deployed in client/server mode.
 
+**Checking if Trivy Operator has scanned K8s resources**
+
+1. Install sample app in K8s, I'll install `juiceshop`
+```sh
+kubectl apply -f k8s-owasp-juiceshop.yaml
+
+namespace/juiceshop created
+deployment.apps/juiceshop created
+service/juiceshop-svc created
+ingress.networking.k8s.io/juiceshop-ing created
+```
+2. Check installation
+```sh
+kubectl -n juiceshop get pod,svc,ing 
+```
+
+3. After few minutes, we should see extra resources created by Trivy
+```sh
+kubectl -n juiceshop exposedsecretreports,vulnerabilityreports
+
+NAME                                                                                   REPOSITORY              TAG       SCANNER   AGE   CRITICAL   HIGH   MEDIUM   LOW
+exposedsecretreport.aquasecurity.github.io/replicaset-juiceshop-6c74f98bc6-juiceshop   bkimminich/juice-shop   v17.1.1   Trivy     19h   0          2      2        0
+
+NAME                                                                                   REPOSITORY              TAG       SCANNER   AGE   CRITICAL   HIGH   MEDIUM   LOW   UNKNOWN
+vulnerabilityreport.aquasecurity.github.io/replicaset-juiceshop-6c74f98bc6-juiceshop   bkimminich/juice-shop   v17.1.1   Trivy     19h   10         24     38       35    3
+```
+
+4. You can search for the `vulnerabilityreport` in entire k8s
+```sh
+kubectl get vulnerabilityreport -A -o wide
+```
 
 ### 2.2. Integrating with Grafana/Prometheus
 
-```sh
-kubectl create ns monitoring
-helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
-helm repo update
-
-helm upgrade --install prom prometheus-community/kube-prometheus-stack -n monitoring --values ./trivy-operator-cfg/values-prom-stack.yaml
-```
-
-**Check Prom Stack installation status**
-```sh
-kubectl --namespace monitoring get pods -l "release=prom"
-```
-
-**Get Grafana 'admin' user password**
-```sh
-kubectl --namespace monitoring get secrets prom-grafana -ojsonpath="{.data.admin-password}" | base64 -d ; echo
-
-prom-operator
-```
-
-**Forward Prometheus and Grafana ports**
-```sh
-kubectl port-forward service/prom-kube-prometheus-stack-prometheus -n monitoring 9090:9090
-kubectl port-forward service/prom-grafana -n monitoring 3000:80
-```
-
-**Open next urls in your browser**
-* Grafana: http://tawa.local:3000 
-* Prometheus: http://tawa.local:9090
-
+Just follow this guide: [Install Prometheus stack in Microk8s](../playing_with_microk8s/README.md#34-prometheus-and-grafana)
 
 ### 2.3. Access to Trivy Metrics Exporter
 
-**With Port Forward**
-
+**With Port Forward**  
 ```sh
 kubectl port-forward service/trivy-operator -n trivy-system 5000:80
 ```
@@ -309,8 +306,7 @@ Open Trivy Metrics Exporter URL in your browser:
 * Trivy Metrics Exporter: http://tawa.local:5000
 
 
-**With Ingress**
-
+**With Ingress**  
 Check Trivy Operator services:
 ```sh
 kubectl get svc -n trivy-system
@@ -370,6 +366,11 @@ spec:
 Deploy the Ingress:
 ```sh
 kubectl apply -f trivy-operator-cfg/trivy-exporter-ingress.yaml
+```
+
+Add the Trivy Exporter dns to `/etc/hosts`:
+```sh
+sudo bash -c 'echo "127.0.0.1 trivy-exporter.tawa.local" >> /etc/hosts'
 ```
 
 Open the Trivy Metrics Exporter URL in your browser:
@@ -648,7 +649,7 @@ kubectl get clustercompliancereports k8s-nsa-1.0 -o=json | jq 'del(.metadata)' |
 
 ```sh
 ## Get total of reports in all namespaces
-kubectl get configauditreports -o wide --all-namespaces | wc -l
+kubectl get configauditreports -o wide -A | wc -l
 
 ## Get reports in namespace
 kubectl get configauditreports -o wide -n juiceshop
@@ -666,7 +667,7 @@ kubectl get configauditreports replicaset-owasp-juiceshop-c648dbbfd -n juiceshop
 
 ```sh
 ## Get total of reports in all namespaces
-kubectl get exposedsecretreports -o wide --all-namespaces | wc -l
+kubectl get exposedsecretreports -o wide -A | wc -l
 
 ## Get reports in namespace
 kubectl get exposedsecretreports -o wide -n juiceshop
@@ -683,7 +684,7 @@ kubectl get exposedsecretreports -n juiceshop replicaset-owasp-juiceshop-c648dbb
 
 ```sh
 ## Get total of reports in all namespaces
-kubectl get infraassessmentreports -o wide --all-namespaces | wc -l
+kubectl get infraassessmentreports -o wide -A | wc -l
 
 ## Get reports in namespace
 kubectl get infraassessmentreports -o wide -n kube-system
@@ -701,10 +702,10 @@ kubectl get infraassessmentreports service-prom-kube-prometheus-stack-kube-contr
 
 ```sh
 ## Get total of reports in all namespaces
-kubectl get rbacassessmentreports -o wide --all-namespaces | wc -l
+kubectl get rbacassessmentreports -o wide -A | wc -l
 
 ## Get reports in all namespaces
-kubectl get rbacassessmentreports -o wide --all-namespaces
+kubectl get rbacassessmentreports -o wide -A
 
 NAMESPACE      NAME                                  SCANNER   AGE     CRITICAL   HIGH   MEDIUM   LOW
 kube-system    role-kubernetes-dashboard             Trivy     5h37m   0          0      2        0
@@ -768,7 +769,7 @@ kubectl get rbacassessmentreports role-kubernetes-dashboard -n kube-system -o js
 
 ```sh
 ## Get total of reports in all namespaces
-kubectl get sbomreports -o wide --all-namespaces | wc -l
+kubectl get sbomreports -o wide -A | wc -l
 
 ## Get reports in single namespace
 kubectl get sbomreports -o wide -n weave
@@ -793,7 +794,7 @@ kubectl get sbomreports daemonset-weave-scope-agent-scope-agent -n weave -o json
 
 ```sh
 ## Get total of reports in all namespaces
-kubectl get vulnerabilityreports -o wide --all-namespaces | wc -l
+kubectl get vulnerabilityreports -o wide -A | wc -l
 
 ## Get reports in single namespace
 kubectl get vulnerabilityreports -o wide -n juiceshop

@@ -5,11 +5,27 @@
 ## 1. Deploy Falco
 
 **01. Install**
+
 ```sh
 helm repo add falcosecurity https://falcosecurity.github.io/charts
 helm repo update
 
-helm install --replace falco --namespace falco --create-namespace --set tty=true falcosecurity/falco
+helm search repo falcosecurity
+
+NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
+falcosecurity/event-generator   0.3.4           0.10.0          A Helm chart used to deploy the event-generator...
+falcosecurity/falco             6.0.2           0.41.3          Falco                                             
+falcosecurity/falco-exporter    0.12.2          0.8.7           DEPRECATED Prometheus Metrics Exporter for Falc...
+falcosecurity/falco-talon       0.3.0           0.3.0           React to the events from Falco                    
+falcosecurity/falcosidekick     0.10.2          2.31.1          Connect Falco to your ecosystem                   
+falcosecurity/k8s-metacollector 0.1.10          0.1.1           Install k8s-metacollector to fetch and distribu...
+
+helm install --replace falco -n falco --create-namespace --set tty=true falcosecurity/falco --version 6.0.2
+
+helm list -n falco
+
+NAME    NAMESPACE       REVISION        UPDATED                                         STATUS          CHART           APP VERSION
+falco   falco           1               2025-07-11 19:49:19.399139393 +0200 CEST        deployed        falco-6.0.2     0.41.3
 ```
 
 **02. Check**
@@ -17,6 +33,7 @@ helm install --replace falco --namespace falco --create-namespace --set tty=true
 ```sh
 kubectl get pod,ds,cm,svc -n falco 
 ```
+
 You should have this:
 ```sh
 NAME              READY   STATUS    RESTARTS   AGE
@@ -33,7 +50,29 @@ configmap/kube-root-ca.crt   1      59s
 
 ## 2. Deploy Falcosidekick and Falcosidekick UI
 
-**01. Install and add custom rules**
+
+**00. Pre-requisites**
+
+* Redis requires PersistentVolumeClaim enabled in Microk8s. Enable `hostpath-storage` or `storage` (alias) addon.
+```sh
+microk8s enable hostpath-storage
+
+
+
+## You can verify if falcosidekick-ui and redis have been installed successfully
+kubectl get pod -n falco
+
+NAME                                      READY   STATUS    RESTARTS   AGE
+falco-falcosidekick-55bf9744f5-2qfl8      1/1     Running   0          16m
+falco-falcosidekick-55bf9744f5-4zrb4      1/1     Running   0          16m
+falco-falcosidekick-ui-7f58c84fdd-b7jxr   1/1     Running   0          16m
+falco-falcosidekick-ui-7f58c84fdd-lr8tf   1/1     Running   0          16m
+falco-falcosidekick-ui-redis-0            1/1     Running   0          16m
+falco-npr28                               2/2     Running   0          16m
+```
+
+
+**01. Install Falcosidekick and add custom rules**
 
 The custom rules are:
 ```yaml
@@ -130,7 +169,13 @@ metadata:
 kubectl apply -f falco-ingress.yaml
 ```
 
+Add DNS to `/etc/hosts` file:
+```sh
+sudo bash -c 'echo "127.0.0.1 falcosidekick-ui.tawa.local" >> /etc/hosts'
+```
+
 Open Falcosidekick URL in your browser: http://falcosidekick-ui.tawa.local/
 
 ## 4. Integrate Falco with Prometheus/Grafana
 
+tbc
