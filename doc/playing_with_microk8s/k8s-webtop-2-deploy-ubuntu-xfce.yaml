@@ -1,0 +1,86 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wt-ubuntu-xfce
+spec:
+  selector:
+    matchLabels:
+      app: wt-ubuntu-xfce
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wt-ubuntu-xfce
+    spec:
+      containers:
+        - name: webtop
+          image: lscr.io/linuxserver/webtop:ubuntu-xfce
+          ports:
+            - containerPort: 3001
+            # - containerPort: 3000
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: CUSTOM_USER
+              value: "chilcano"
+            - name: PASSWORD
+              value: "changeme"
+            - name: TITLE
+              value: "-.-"
+            - name: DISABLE_IPV6
+              value: "true"
+            - name: TZ
+              value: Europe/Madrid
+            - name: LANG
+              value: en_US.UTF-8
+            - name: LANGUAGE
+              value: en_US:en
+            - name: LC_ALL
+              # value: es_ES.UTF-8
+              value: en_US.UTF-8
+            - name: SUBFOLDER
+              value: "/ubuntu-xfce/"
+          volumeMounts:
+            - name: wt-vol-storage
+              mountPath: /config
+      volumes:
+        - name: wt-vol-storage
+          persistentVolumeClaim:
+            claimName: webtop-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wt-svc-ubuntu-xfce
+spec:
+  type: ClusterIP
+  selector:
+    app: wt-ubuntu-xfce
+  ports:
+    - name: https
+      port: 8443
+      targetPort: 3001
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: wt-ing-https-ubuntu-xfce
+  annotations:
+    nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: wt.tawa.local
+      http:
+        paths:
+          - path: /ubuntu-xfce
+            pathType: Prefix
+            backend:
+              service:
+                name: wt-svc-ubuntu-xfce
+                port:
+                  number: 8443
+---
