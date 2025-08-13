@@ -1,15 +1,29 @@
 ## Below settings are a copy from Trivy Operator v0.23.0 default settings. They are not been changed.
-### Original source: https://github.com/aquasecurity/trivy-operator/blob/v0.23.0/deploy/helm/values.yaml
-### Oci chart version: v0.25.0, chart tag: v0.23.0 
+### Source: https://github.com/aquasecurity/trivy-operator/blob/v0.27.3/deploy/helm/values.yaml
+### App ver: 0.27.3 // Chart ver: 0.29.3
 
 ##--------- Set default Trivy config ----------##
 serviceMonitor:
   # -- enabled determines whether a serviceMonitor should be deployed
   enabled: true
+
 trivy:
+  image:
+    # -- registry of the Trivy image
+    registry: mirror.gcr.io
+    # -- repository of the Trivy image
+    repository: aquasec/trivy
+    # -- tag version of the Trivy image
+    tag: 0.63.0
+    # -- imagePullSecret is the secret name to be used when pulling trivy image from private registries example : reg-secret
+    # It is the user responsibility to create the secret for the private registry in `trivy-operator` namespace
+    imagePullSecret: ~
+    # -- pullPolicy is the imge pull policy used for trivy image , valid values are (Always, Never, IfNotPresent)
+    pullPolicy: IfNotPresent
   # true: view only fixed vulns (equivalent to 'trivy image --ignore-unfixed ...')
   # false: view all (fixed and unfixed) vulns
   ignoreUnfixed: false
+
 service:
   # -- disabled ensures that the pod gets a ClusterIP.
   headless: false
@@ -34,7 +48,7 @@ operator:
   # -- rbacAssessmentScannerEnabled the flag to enable rbac assessment scanner
   rbacAssessmentScannerEnabled: false
   # -- infraAssessmentScannerEnabled the flag to enable infra assessment scanner
-  infraAssessmentScannerEnabled: false
+  infraAssessmentScannerEnabled: true
   # -- clusterComplianceEnabled the flag to enable cluster compliance scanner
   clusterComplianceEnabled: true
   # -- batchDeleteLimit the maximum number of configaudit reports deleted by the operator when the plugin's config has changed.
@@ -48,41 +62,32 @@ operator:
   # -- accessGlobalSecretsAndServiceAccount The flag to enable access to global secrets/service accounts to allow `vulnerability scan job` to pull images from private registries
   accessGlobalSecretsAndServiceAccount: true
 
-  ##------------ Get Details --------------##
-
-  # -- metricsVulnIdEnabled the flag to enable metrics about cve vulns id
-  # be aware of metrics cardinality is significantly increased with this feature enabled.
+  ##------------ Get Findings Details --------------##
+  # By default all of them are false, be aware of metrics cardinality when
+  # setting to true, except exposedSecretScannerEnabled (default true)
+  # They'll be enabled/disabled during the metrics cardinality evaluation
   metricsVulnIdEnabled: true
-
-  # -- exposedSecretScannerEnabled the flag to enable exposed secret scanner
   exposedSecretScannerEnabled: true
-
-  # -- MetricsExposedSecretInfo the flag to enable metrics about exposed secrets
-  # be aware of metrics cardinality is significantly increased with this feature enabled.
   metricsExposedSecretInfo: true
-
-  # -- MetricsConfigAuditInfo the flag to enable metrics about configuration audits
-  # be aware of metrics cardinality is significantly increased with this feature enabled.
   metricsConfigAuditInfo: false
-
-  # -- MetricsRbacAssessmentInfo the flag to enable metrics about Rbac Assessment
-  # be aware of metrics cardinality is significantly increased with this feature enabled.
   metricsRbacAssessmentInfo: false
-
-  # -- MetricsInfraAssessmentInfo the flag to enable metrics about Infra Assessment
-  # be aware of metrics cardinality is significantly increased with this feature enabled.
-  metricsInfraAssessmentInfo: false
-
-  # -- MetricsImageInfo the flag to enable metrics about Image Information of scanned images
-  # This information has image os information including os family, name/version, and if end of service life has been reached
-  # be aware of metrics cardinality is significantly increased with this feature enabled.
+  metricsInfraAssessmentInfo: true
   metricsImageInfo: true
-
-  # -- MetricsClusterComplianceInfo the flag to enable metrics about Cluster Compliance
-  # be aware of metrics cardinality is significantly increased with this feature enabled.
   metricsClusterComplianceInfo: true
 
+image:
+  registry: mirror.gcr.io
+  repository: aquasec/trivy-operator
+  tag: ""
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
 compliance:
+  ##---------------- Compliance assessment config -----------------##
+  # -- cron this flag control the cron interval for compliance report generation
+  # Every day at 12h
+  #cron: 0 12 * * *
+  cron: 50 */1 * * *
   specs:
     - k8s-cis-1.23
     - k8s-nsa-1.0

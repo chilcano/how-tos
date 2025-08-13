@@ -75,10 +75,10 @@ aqua/trivy-operator             0.29.3          0.27.3          Keeps security r
 
 **Install Trivy Operator**
 ```sh
-## Append "--debug" if you want to show debug logs
+## Append "--debug" if you want to show debug logs, append "--kubeconfig ~/.kube/config.microk8s" if you have a custom kubeconfig
 helm install trivy-operator aqua/trivy-operator -n trivy-system --create-namespace --version 0.29.3 -f ./trivy-operator-cfg/values-trivy-operator-min.yaml
 
-## List installed chart
+## List installed chart. Append "--kubeconfig ~/.kube/config.microk8s" if you have a custom kubeconfig
 helm list -n trivy-system
 
 NAME            NAMESPACE       REVISION        UPDATED                                         STATUS          CHART                   APP VERSION
@@ -87,7 +87,16 @@ trivy-operator  trivy-system    1               2025-07-11 17:47:09.321740516 +0
 
 **Update**
 ```sh
-helm upgrade trivy-operator aqua/trivy-operator -n trivy-system --create-namespace --version <new-chart-version> -f ./trivy-operator-cfg/values-trivy-operator-min.yaml 
+helm upgrade trivy-operator aqua/trivy-operator -n trivy-system --create-namespace --version <new-chart-version> -f ./trivy-operator-cfg/values-trivy-operator-min.yaml
+
+## Update values
+helm upgrade trivy-operator aqua/trivy-operator --namespace trivy-system --version 0.29.3 -f ./trivy-operator-cfg/values-trivy-operator-min.yaml
+
+## Check changes
+helm list -n trivy-system
+
+NAME            NAMESPACE       REVISION        UPDATED                                         STATUS          CHART                   APP VERSION
+trivy-operator  trivy-system    2               2025-07-29 11:29:11.797826314 +0200 CEST        deployed        trivy-operator-0.29.3   0.27.3
 ```
 
 **Upgrading**
@@ -101,7 +110,7 @@ $ helm repo add aqua https://aquasecurity.github.io/helm-charts
 $ helm repo update
 
 # 3. Upgrade it namespace 'trivy-system'. Append "--debug" if you want to show debug logs
-$ helm upgrade trivy-operator aqua/trivy-operator --namespace trivy-system --version 0.28.1 --reuse-values
+helm upgrade trivy-operator aqua/trivy-operator --namespace trivy-system --version 0.28.1 --reuse-values
 
 # 4. If previous cmd didn't work, try to mount the "/var/run/secrets/kubernetes.io/serviceaccount/token" in this way:
 helm upgrade trivy-operator aqua/trivy-operator --namespace trivy-system --version 0.28.1 --reuse-values \
@@ -117,37 +126,41 @@ $ kubectl -n trivy-system logs -f deployment/trivy-operator
 44
 ```
 
-**Uninstall**
+**Checking Trivy Operator Logs**
 ```sh
-## Make sure you are in your K8s cluster
-kubectl config get-contexts 
-kubectl config use-context microk8s
-
-## Uninstall
-helm uninstall trivy-operator -n trivy-system
-
-## Should be empty
-kubectl -n trivy-system get all
-
-## Remove the CRDs
-kubectl delete crd vulnerabilityreports.aquasecurity.github.io
-kubectl delete crd exposedsecretreports.aquasecurity.github.io
-kubectl delete crd configauditreports.aquasecurity.github.io
-kubectl delete crd clusterconfigauditreports.aquasecurity.github.io
-kubectl delete crd rbacassessmentreports.aquasecurity.github.io
-kubectl delete crd infraassessmentreports.aquasecurity.github.io
-kubectl delete crd clusterrbacassessmentreports.aquasecurity.github.io
-kubectl delete crd clustercompliancereports.aquasecurity.github.io
-kubectl delete crd clusterinfraassessmentreports.aquasecurity.github.io
-kubectl delete crd sbomreports.aquasecurity.github.io
-kubectl delete crd clustersbomreports.aquasecurity.github.io
-kubectl delete crd clustervulnerabilityreports.aquasecurity.github.io
+## Logs
+kubectl -n trivy-system logs -f deployment/trivy-operator
 ```
 
-**Checking Trivy Operator**
+* Error: If you are having TLS error with Trivy because you changed of network:
 ```sh
-kubectl -n trivy-system logs -f deployment/trivy-operator
+$ kubectl logs -n trivy-system deployment/trivy-operator
 
+Error from server: Get "https://192.168.1.226:10250/containerLogs/trivy-system/trivy-operator-57fc877749-t2k4b/trivy-operator": tls: failed to verify certificate: x509: certificate is valid for 192.168.1.91, 100.105.136.99, 172.17.0.1, fd7a:115c:a1e0::d801:8865, not 192.168.1.226
+```
+* Fix: Regenerate the Microk8s certificates
+```sh
+## Check existing SANs
+$ openssl s_client -connect 192.168.1.226:10250 </dev/null 2>/dev/null | openssl x509 -noout -text | grep -A1 "Subject Alternative Name"
+            X509v3 Subject Alternative Name: 
+                DNS:kimsa, IP Address:192.168.1.91, IP Address:100.105.136.99, IP Address:172.17.0.1, IP Address:FD7A:115C:A1E0:0:0:0:D801:8865
+
+$ sudo microk8s refresh-certs
+Please use the '--cert' flag to select the certificate you need refreshed.
+
+Available certificate options:
+'server.crt': refreshes the server certificate
+'front-proxy-client.crt': refreshes the front proxy client certificate
+'ca.crt': refreshes the root CA and all certificates created from it.
+            Warning: refreshing the root CA requires nodes to leave and re-join the cluster
+
+## Refresh CA and issued certs
+$ sudo microk8s refresh-certs --cert ca.crt
+```
+
+**Checking CRDs created**
+```sh
+## List CRDs
 kubectl get crd | sed -En 's/\.aquasecurity\.github\.io\s+.*//p'
 
 clustercompliancereports
@@ -187,7 +200,7 @@ kubectl -n trivy-system get deploy,pod,ds,cm,svc,ing
 
 List installed K8s resources:
 ```sh
-kubectl get deploy,pod,ds,svc -n trivy-system
+kubectl -n trivy-system get deploy,pod,ds,svc
 
 NAME                             READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/trivy-operator   1/1     1            1           4d23h
@@ -205,7 +218,7 @@ service/trivy-service    ClusterIP   10.152.183.57    <none>        4954/TCP   2
 Retrieving Trivy Operator configuration:
 ```sh
 # List all Trivy Operator configurations files
-kubectl get cm -n trivy-system
+kubectl -n trivy-system get cm 
 
 NAME                                    DATA   AGE
 configmap/kube-root-ca.crt              1      7d17h
@@ -214,14 +227,14 @@ configmap/trivy-operator-config         40     4d23h
 configmap/trivy-operator-trivy-config   32     4d23h
 
 # trivy-operator-trivy-config
-kubectl get cm/trivy-operator-trivy-config -n trivy-system -o yaml | grep -E '\s+trivy\.(ignore|mode|server)'
+kubectl -n trivy-system get cm/trivy-operator-trivy-config -o yaml | grep -E '\s+trivy\.(ignore|mode|server)'
 
   trivy.ignoreUnfixed: "true"
   trivy.mode: ClientServer
   trivy.serverURL: http://trivy-service.trivy-system:4954
 
 # trivy-operator-config
-kubectl get cm/trivy-operator-config -n trivy-system -o yaml | grep -E '\s+OPERATOR_METRICS_'
+kubectl -n trivy-system get cm/trivy-operator-config -o yaml | grep -E '\s+OPERATOR_METRICS_'
 
   OPERATOR_METRICS_BIND_ADDRESS: :8080
   OPERATOR_METRICS_CLUSTER_COMPLIANCE_INFO_ENABLED: "true"
@@ -277,7 +290,7 @@ kubectl -n juiceshop get pod,svc,ing
 
 3. After few minutes, we should see extra resources created by Trivy
 ```sh
-kubectl -n juiceshop exposedsecretreports,vulnerabilityreports
+kubectl -n juiceshop get exposedsecretreports,vulnerabilityreports
 
 NAME                                                                                   REPOSITORY              TAG       SCANNER   AGE   CRITICAL   HIGH   MEDIUM   LOW
 exposedsecretreport.aquasecurity.github.io/replicaset-juiceshop-6c74f98bc6-juiceshop   bkimminich/juice-shop   v17.1.1   Trivy     19h   0          2      2        0
@@ -289,6 +302,22 @@ vulnerabilityreport.aquasecurity.github.io/replicaset-juiceshop-6c74f98bc6-juice
 4. You can search for the `vulnerabilityreport` in entire k8s
 ```sh
 kubectl get vulnerabilityreport -A -o wide
+```
+
+**Uninstall**
+```sh
+## Make sure you are in your K8s cluster
+kubectl config get-contexts 
+kubectl config use-context microk8s
+
+## Uninstall
+helm uninstall trivy-operator -n trivy-system
+
+## Should be empty
+kubectl -n trivy-system get all
+
+## Remove the CRDs
+kubectl get crd | grep '\.aquasecurity\.github\.io' | awk '{print $1}' | xargs kubectl delete crd
 ```
 
 ### 2.2. Integrating with Grafana/Prometheus
@@ -390,7 +419,7 @@ trivy k8s microk8s -q --report summary
 
 ![](./trivy-operator-cfg/trivy-operator-02-cli-assess-microk8s.png)
 
-**2. Scans specific namespace and get summaries**
+**2. Scan specific namespace and get summaries**
 
 Get available namespaces:
 ```sh
@@ -479,23 +508,25 @@ The `--compliance <security-checklist>` flag will be used in combination with `-
 * Possible values of `<security-checklist>` are: `k8s-nsa-1.0`, `k8s-cis-1.23`, `eks-cis-1.4`, `rke2-cis-1.24`, `k8s-pss-baseline-0.1` and `k8s-pss-restricted-0.1`.
 
 ```sh
-trivy k8s microk8s -q --compliance k8s-cis-1.23 --report summary
+trivy k8s microk8s -q --compliance k8s-pss-baseline-0.1 --report summary
 
-Summary Report for compliance: CIS Kubernetes Benchmarks v1.23
-┌────────┬──────────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────────────┬────────┬────────┐
-│   ID   │ Severity │                                                  Control Name                                                   │ Status │ Issues │
-├────────┼──────────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────────────┼────────┼────────┤
-│ 1.1.1  │   HIGH   │ Ensure that the API server pod specification file permissions are set to 600 or more restrictive                │  PASS  │   0    │
-│ 1.1.2  │   HIGH   │ Ensure that the API server pod specification file ownership is set to root:root                                 │  PASS  │   0    │
-│ 1.1.3  │   HIGH   │ Ensure that the controller manager pod specification file permissions are set to 600 or more restrictive        │  PASS  │   0    │
-│ 1.1.4  │   HIGH   │ Ensure that the controller manager pod specification file ownership is set to root:root                         │  PASS  │   0    │
-│ 1.1.5  │   HIGH   │ Ensure that the scheduler pod specification file permissions are set to 600 or more restrictive                 │  PASS  │   0    │
-...
-│ 5.7.1  │  MEDIUM  │ Create administrative boundaries between resources using namespaces (Manual)                                    │   -    │   -    │
-│ 5.7.2  │  MEDIUM  │ Ensure that the seccomp profile is set to docker/default in your pod definitions                                │  FAIL  │   12   │
-│ 5.7.3  │   HIGH   │ Apply Security Context to Your Pods and Containers                                                              │  FAIL  │   68   │
-│ 5.7.4  │  MEDIUM  │ The default namespace should not be used                                                                        │  PASS  │   0    │
-└────────┴──────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────────────┴────────┴────────┘
+Summary Report for compliance: Kubernetes Pod Security Standards - Baseline
+┌────┬──────────┬───────────────────────┬────────┬────────┐
+│ ID │ Severity │     Control Name      │ Status │ Issues │
+├────┼──────────┼───────────────────────┼────────┼────────┤
+│ 1  │   HIGH   │ HostProcess           │  PASS  │   0    │
+│ 2  │   HIGH   │ Host Namespaces       │  PASS  │   0    │
+│ 3  │   HIGH   │ Privileged Containers │  FAIL  │   3    │
+│ 4  │  MEDIUM  │ Capabilities          │  FAIL  │   2    │
+│ 5  │  MEDIUM  │ HostPath Volumes      │  FAIL  │   3    │
+│ 6  │   HIGH   │ host ports            │  PASS  │   0    │
+│ 7  │   HIGH   │ AppArmor              │  PASS  │   0    │
+│ 8  │  MEDIUM  │ SELinux               │  PASS  │   0    │
+│ 9  │  MEDIUM  │ /proc Mount Type      │  PASS  │   0    │
+│ 10 │  MEDIUM  │ Seccomp               │  PASS  │   0    │
+│ 11 │  MEDIUM  │ Sysctls               │  PASS  │   0    │
+└────┴──────────┴───────────────────────┴────────┴────────┘
+```
 
 You are able to get the summary in JSON format:
 ```sh

@@ -6,10 +6,12 @@
 serviceMonitor:
   # enabled determines whether a serviceMonitor should be deployed
   enabled: true
+
 trivy:
   # true: view only fixed vulns (equivalent to 'trivy image --ignore-unfixed ...')
   # false: view all (fixed and unfixed) vulns
   ignoreUnfixed: true
+
 service:
   # disabled ensures that the pod gets a ClusterIP.
   headless: false
