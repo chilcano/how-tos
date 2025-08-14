@@ -720,6 +720,10 @@ $ k -n webtop logs -f deployment.apps/wt-ubuntu-xfce
 Error from server: Get "https://192.168.1.226:10250/containerLogs/webtop/wt-ubuntu-xfce-7bbdfb46cc-bxgmt/webtop?follow=true": tls: failed to verify certificate: x509: certificate is valid for 192.168.1.91, 100.105.136.99, 172.17.0.1, fd7a:115c:a1e0::d801:8865, not 192.168.1.226
 ```
 
+### 3.7. Harbor (Container Registry)
+
+* [Install and configure Harbor](harbor-README.md)
+
 ## Troubleshooting
 
 **01. Changing of network**
