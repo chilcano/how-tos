@@ -1,5 +1,7 @@
 # Harbor as a Container Registry in Microk8s
 
+Some instructions were applied to MicroK8s, however they are valid for any kind of K8s as well.
+
 ## References
 
 * https://vishynit.medium.com/setting-up-harbor-registry-on-kubernetes-using-helm-chart-5989d7c8df2a
@@ -326,7 +328,7 @@ filter patterns are replicated to the destination registry when the triggering c
 
 #### 8.2. Add as Replication Rules as imagenes are going to pull
 
-> Github Container Registry can not be synced properly and have reported limitations. 
+> [Github Container Registry can not be synced properly and have reported limitations](https://github.com/goharbor/harbor/issues/18373). 
 > That is why we need to create as Replication Rules as absolute docker images paths we want to replicate to Harbor.
 > Once created all rules, we should tweak the `Destination Repository Flattening` option in order to remove source paths.
 
@@ -341,4 +343,30 @@ filter patterns are replicated to the destination registry when the triggering c
 #### 8.3. Trigger the Replication Rules
 
 1. Run the Replication Rule accoringly Trigger Mode defined.
+
+### 9. User Management
+
+* https://goharbor.io/docs/2.13.0/administration/managing-users/
+* https://goharbor.io/docs/2.13.0/administration/managing-users/user-permissions-by-role/
+
+#### 9.1. Create users manually from Harbor UI
+
+- Nothing new here, login as an admin user able to create users and assign them to Projects.
+- There is not notifications, if admin created an user, it should share the credentials to user by email, for example.
+- The user created will need to login to registry using shared credentials in order to read (pull) artifacts in Projects, and write (push) if granted.
+
+#### 9.2. Enable user self-registration
+
+- Users self-registered will have read (pull) access to public Projects only.
+- Once self-registered, the admin user can grant access to specific private Projects.
+- Reset password only is possible from Harbor UI with an admin user. Once done, admin user should share new credentials.
+
+1. From Harbor Configuration > Authentication, an admin user activates "Allow Self-Registration".
+
+![](harbor-05-config-1-self-registration.png)
+
+2. Once activated, a link "Sign up for an account" will be available in Harbor landing page.
+3. After clicking on it, you will need to fill up the registration form. New user should copy user-id and user-password, both needed to make docker login.
+
+![](harbor-05-config-2-self-registration.png)
 
