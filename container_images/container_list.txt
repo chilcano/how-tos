@@ -4,4 +4,4 @@ dockerfile | not | container_images/infra/kube-utils/Dockerfile.alpine.v2 | secu
 dockerfile | not | container_images/test/cyberchef/Dockerfile.alpine.v1 | security-hub/test/cyberchef | v10.19.4 | .
 dockerfile | not | container_images/test/cyberchef/Dockerfile.alpine.v1 | security-hub/test/cyberchef | v10.19.3 | .
 dockerfile | to-review | container_images/sec/zap/Dockerfile.alpine.v1.1 | security-hub/sec/zap | 2.16.1 | . | it-should-be-revieved-fails-script-folder
-dockerfile | build | container_images/infra/harbor-portal/Dockerfile | security-hub/infra/harbor-portal | v2.13.2 | container_images/infra/harbor-portal
+dockerfile | build | container_images/infra/harbor-portal/Dockerfile | security-hub/infra/harbor-portal-tmp | v2.13.2 | container_images/infra/harbor-portal
