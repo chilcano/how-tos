@@ -164,7 +164,8 @@ ipFamily:
   ipv4:
     enabled: true
 
-imagePullPolicy: IfNotPresent
+# imagePullPolicy: IfNotPresent
+imagePullPolicy: Always
 
 # Use this set to assign a list of default pullSecrets
 imagePullSecrets:
