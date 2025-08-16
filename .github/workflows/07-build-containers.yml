@@ -24,6 +24,10 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        with:
+          submodules: false             # no fetch submodules
+          set-safe-directory: false     # opcional: avoid post-step
+          persist-credentials: false
 
       - name: Generate build matrix
         id: set-matrix
@@ -51,6 +55,10 @@ jobs:
     steps:
       - name: Checkout Project
         uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+        with:
+          submodules: false             # no fetch submodules
+          set-safe-directory: false     # opcional: avoid post-step
+          persist-credentials: false
 
       - name: Parse and print fields
         id: parse
