@@ -12,13 +12,13 @@ RUN apk add --no-cache git bash curl
 WORKDIR /app
 
 ENV NODE_OPTIONS="--max-old-space-size=2048"
-RUN git clone -b "$APP_TAG_VER" --depth=1 https://github.com/gchq/CyberChef.git . && \
-    # The 'npm install' installs deps (non deterministic).
-    # The 'npm ci' is recommended.
-    npm ci && \
-    # Creates a prod-ready build according Gruntfile.js:
-    # Default port is 8000 and default base dir is build/prod/)
-    npx grunt prod
+RUN git clone -b "$APP_TAG_VER" --depth=1 https://github.com/gchq/CyberChef.git .
+# The 'npm install' installs deps (non deterministic).
+# The 'npm ci' is recommended.
+RUN npm ci
+# Creates a prod-ready build according Gruntfile.js:
+# Default port is 8000 and default base dir is build/prod/)
+RUN npx grunt prod
 
 FROM nginx:1.27.4-alpine3.21-slim AS cyberchef
 

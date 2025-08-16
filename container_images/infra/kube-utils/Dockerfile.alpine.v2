@@ -34,7 +34,8 @@ FROM cgr.dev/chainguard/kubectl:latest AS kubectl
 FROM alpine:3.21.3 AS runtime-environment
 
 # Fix CVE-2025-31498, CVE-2025-29087 and CVE-2025-31115
-RUN apk update && apk upgrade --no-cache
+##RUN apk update && apk upgrade --no-cache
+RUN apk -U upgrade --no-cache
 
 WORKDIR /app
 ENV PATH="/app:$PATH"
