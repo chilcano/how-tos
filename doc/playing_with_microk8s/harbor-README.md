@@ -17,7 +17,6 @@ helm repo update
 
 helm search repo harbor
 
-
 NAME                            CHART VERSION   APP VERSION     DESCRIPTION                                       
 aqua/harbor-scanner-aqua        0.14.0          0.14.0          Harbor scanner adapter for Aqua Enterprise scanner
 aqua/harbor-scanner-trivy       0.31.2          0.31.2          Harbor scanner adapter for Trivy                  
@@ -99,6 +98,14 @@ echo "127.0.0.1 core.harbor.tawa.local" | sudo tee -a /etc/hosts
 
 Now, let's open harbor: https://core.harbor.tawa.local
 The password should be defined in `harborAdminPassword` of your `harbor-values-microk8s.yaml` file.
+
+
+### step 6. Uninstall
+
+```sh
+helm uninstall harbor -n harbor
+kubectl delete ns harbor
+```
 
 ## 2. Playing with Harbor
 
@@ -370,3 +377,80 @@ filter patterns are replicated to the destination registry when the triggering c
 
 ![](harbor-05-config-2-self-registration.png)
 
+
+## 3. Deploying Harbor with HA
+
+* https://goharbor.io/docs/2.13.0/install-config/harbor-ha-helm/
+
+1. Domain:
+  - Set `expose.ingress.hosts.core: cr.myorg.com` and `externalURL: https://cr.myorg.com`
+2. Storage:
+  - Set Harbor PVC or set persistence based on DB if `StorageClass` with `ReadWriteMany` is not supported.
+3. Databases:
+  - Switch from internal PostgreSQL and Redis to external PostgreSQL and Redis.
+4. Replicas:
+  - Set `portal.replicas`, `core.replicas`, `jobservice.replicas`, `registry.replicas`, `chartmuseum.replicas`, to n(n>=2).
+
+Configure everything using existing Harbor Helm Chart.
+
+## 4. Customize the Look & Feel
+
+* https://goharbor.io/docs/2.13.0/build-customize-contribute/customize-look-feel/
+
+### Option 1. Overwrite setting.json
+
+1. Update `$HARBOR_DIR/src/portal/src/setting.json`.
+2. Bundle the changes and get a new portal container.
+
+### Option 2. Build a modified Portal container
+
+> This option persist the changes in a new docker container.
+> Recommended: https://github.com/goharbor/harbor-helm/pull/1582
+
+1. Follow previous steps in option 1.
+2. Use the new Dockerfile provided to build the customized `harbor-portal` image.
+```Dockerfile
+ARG VER_APP=v2.13.2
+
+FROM ghcr.io/goharbor/harbor-portal:${VER_APP} AS builder
+
+COPY setting.json /usr/share/nginx/html/setting.json
+COPY login_bg_transp_800x600.png logo_transp.svg /usr/share/nginx/html/images/
+```
+3. Build the new image
+```sh
+cd security-hub/container_images/infra/harbor-portal/
+## Available versions: https://github.com/goharbor/harbor/pkgs/container/harbor-portal
+docker build --build-arg VER_APP=v2.13.2 -t chilcano/infra/harbor-portal:v2.13.2 -f Dockerfile .
+```
+4. Check created images
+```sh
+$ docker images | grep harbor-portal
+chilcano/infra/harbor-portal                                         v2.12.4           3bdc83ec393f   8 minutes ago    161MB
+chilcano/infra/harbor-portal                                         v2.13.2           c211284bb004   13 minutes ago   161MB
+```
+5. Update the existing Helm Chart with the new docker image built.
+```yaml
+...
+portal:
+  image:
+    repository: chilcano/infra/harbor-portal
+    tag: v2.13.2
+...
+```
+6. Apply changes in Helm Chart
+```sh
+helm upgrade harbor harbor/harbor -f ./harbor-values-microk8s.yaml -n harbor
+
+helm status harbor -n harbor
+
+kubectl -n harbor get pod,svc,ing,pvc
+```
+7. Verify if changes in the look&feel were applied.
+```sh
+$ kubectl -n harbor exec -it deployment.apps/harbor-portal -- bash
+
+nginx [ / ]$ cat /usr/share/nginx/html/setting.json 
+
+nginx [ / ]$ ls -la /usr/share/nginx/html/images/
+```

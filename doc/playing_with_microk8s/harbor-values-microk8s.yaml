@@ -340,8 +340,11 @@ nginx:
 
 portal:
   image:
-    repository: goharbor/harbor-portal
-    tag: v2.13.2
+    #repository: goharbor/harbor-portal
+    # repository: ghcr.io/zama-ai/security-hub/infra/harbor-portal
+    repository: ghcr.io/chilcano/security-hub/infra/harbor-portal-tmp3
+    #tag: v2.13.2
+    tag: v2.13.2-safe
   # set the service account to be used, default if left empty
   serviceAccountName: ""
   # mount the service account token
