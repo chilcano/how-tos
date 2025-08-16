@@ -108,7 +108,7 @@ jobs:
             cache-from: type=gha
             cache-to: type=gha,mode=max
             tags: |
-                ghcr.io/zama-ai/${{ steps.parse.outputs.path_to_image }}:temp-${{ steps.parse.outputs.img_tag_app_ver }}
+                ghcr.io/${{ github.repository_owner }}/${{ steps.parse.outputs.path_to_image }}:temp-${{ steps.parse.outputs.img_tag_app_ver }}
 
       - name: Install Trivy
         uses: aquasecurity/setup-trivy@ff1b8b060f23b650436d419b5e13f67f5d4c3087 # v0.2.2
@@ -122,7 +122,7 @@ jobs:
             TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db:2
             TRIVY_JAVA_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-java-db:1
         with:
-          image-ref: ghcr.io/zama-ai/${{ steps.parse.outputs.path_to_image }}:temp-${{ steps.parse.outputs.img_tag_app_ver }}
+          image-ref: ghcr.io/${{ github.repository_owner }}/${{ steps.parse.outputs.path_to_image }}:temp-${{ steps.parse.outputs.img_tag_app_ver }}
           severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
           scanners: secret,vuln,misconfig
           format: json
@@ -204,7 +204,7 @@ jobs:
             provenance: mode=max
             sbom: true
             tags: |
-                ghcr.io/zama-ai/${{ steps.parse.outputs.path_to_image }}:${{ steps.parse.outputs.img_tag_app_ver }}-${{ steps.decide-tag.outputs.trivy_tag_suffix }}
+                ghcr.io/${{ github.repository_owner }}/${{ steps.parse.outputs.path_to_image }}:${{ steps.parse.outputs.img_tag_app_ver }}-${{ steps.decide-tag.outputs.trivy_tag_suffix }}
             labels: |
                 TRIVY.SCAN_DATE=${{ needs.prepare-matrix.outputs.build_and_scan_date }}
                 TRIVY.TOTAL_VULN=${{ steps.trivy-parse.outputs.vulns_in_trivy_report }}
