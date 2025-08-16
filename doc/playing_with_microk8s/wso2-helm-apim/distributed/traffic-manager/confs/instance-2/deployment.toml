@@ -1,0 +1,176 @@
+[server]
+hostname = "tm.wso2.com"
+node_ip = "$env{NODE_IP}"
+server_role = "traffic-manager"
+
+[user_store]
+type = {{ .Values.wso2.apim.configurations.userStore.type | quote }}
+{{- range $key, $value := .Values.wso2.apim.configurations.userStore.properties }}
+{{ $key }} = {{ $value | quote }}
+{{- end }}
+
+[super_admin]
+username = {{ .Values.wso2.apim.configurations.adminUsername | quote }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{admin_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+{{- end }}
+create_admin_account = true
+
+[database.apim_db]
+type = "{{ .Values.wso2.apim.configurations.databases.type }}"
+url = "{{ .Values.wso2.apim.configurations.databases.apim_db.url}}"
+username = "{{ .Values.wso2.apim.configurations.databases.apim_db.username }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{apim_db_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote }}
+{{- end }}
+driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
+
+[database.apim_db.pool_options]
+{{- range $key, $value := .Values.wso2.apim.configurations.databases.apim_db.poolParameters }}
+{{ $key }} = "{{ $value }}"
+{{- end }}
+
+[database.shared_db]
+type = "{{ .Values.wso2.apim.configurations.databases.type }}"
+url = "{{ .Values.wso2.apim.configurations.databases.shared_db.url}}"
+username = "{{ .Values.wso2.apim.configurations.databases.shared_db.username }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{shared_db_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote }}
+{{- end }}
+driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
+
+[database.shared_db.pool_options]
+{{- range $key, $value := .Values.wso2.apim.configurations.databases.shared_db.poolParameters }}
+{{ $key }} = "{{ $value }}"
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.security.keystores.primary.enabled }}
+[keystore.primary]
+type = "JKS"
+file_name = "{{ .Values.wso2.apim.configurations.security.keystores.primary.name }}"
+alias = "{{ .Values.wso2.apim.configurations.security.keystores.primary.alias }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{keystore_password}"
+key_password = "$secret{keystore_key_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
+key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.keyPassword | quote }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.security.keystores.tls.enabled }}
+[keystore.tls]
+type = "JKS"
+file_name = "{{ .Values.wso2.apim.configurations.security.keystores.tls.name }}"
+alias = "{{ .Values.wso2.apim.configurations.security.keystores.tls.alias }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{ssl_keystore_password}"
+key_password = "$secret{ssl_key_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}
+key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.keyPassword | quote }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.security.keystores.internal.enabled }}
+[keystore.internal]  
+type = "JKS"
+file_name = "{{ .Values.wso2.apim.configurations.security.keystores.internal.name }}"
+alias = "{{ .Values.wso2.apim.configurations.security.keystores.internal.alias }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{internal_keystore_password}"
+key_password = "$secret{internal_keystore_key_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
+key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
+{{- end }}
+{{- end }}
+
+[truststore]
+type = "JKS"
+file_name = "{{ .Values.wso2.apim.configurations.security.truststore.name }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{truststore_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
+{{- end }}
+
+[apim.key_manager]
+{{- if .Values.wso2.apim.configurations.iskm.enabled }}
+type = "WSO2-IS"
+service_url = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:9443/services/"
+{{- else }}
+service_url = "https://{{ .Values.wso2.apim.configurations.km.serviceUrl }}:9443/services/"
+{{- end }}
+
+# Traffic Manager configurations
+[apim.throttling]
+event_duplicate_url = ["tcp://{{ template "apim-helm-tm.fullname" .}}-1-service:5672"]
+service_url = "https://{{ template "apim-helm-tm.fullname" .}}-service:9443/services/"
+throttle_decision_endpoints = ["tcp://localhost:5672"]
+
+[apim.event_hub]
+enable = true
+username = "$ref{super_admin.username}"
+password = "$ref{super_admin.password}"
+service_url = "https://{{ .Values.wso2.apim.configurations.eventhub.serviceUrl }}:9443/services/"
+{{- $len := add (len .Values.wso2.apim.configurations.eventhub.urls) -1 }}
+event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.configurations.eventhub.urls }}"tcp://{{ $element }}:5672"{{ if ne $index $len }},{{ end }}{{ end}}]
+
+[apim.oauth_config]
+{{- if .Values.wso2.apim.configurations.iskm.enabled }}
+revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:9443/oauth2/revoke"
+{{- else }}
+revoke_endpoint = "https://{{ .Values.wso2.apim.configurations.km.serviceUrl }}:9443/oauth2/revoke"
+{{- end }}
+enable_token_encryption = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenEncryption }}
+enable_token_hashing = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenHashing }}
+
+{{- if .Values.wso2.apim.configurations.openTracer.enabled }}
+[apim.open_tracer]
+remote_tracer.enable = {{ .Values.wso2.apim.configurations.openTracer.enabled }}
+remote_tracer.name = {{ .Values.wso2.apim.configurations.openTracer.name | quote }}
+remote_tracer.properties.hostname = {{ .Values.wso2.apim.configurations.openTracer.properties.hostname | quote }}
+remote_tracer.properties.port = {{ .Values.wso2.apim.configurations.openTracer.properties.port | quote }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.openTelemetry.enabled }}
+[apim.open_telemetry]
+remote_tracer.enable = {{ .Values.wso2.apim.configurations.openTelemetry.enabled }}
+remote_tracer.name = {{ .Values.wso2.apim.configurations.openTelemetry.name | quote }}
+remote_tracer.hostname = {{ .Values.wso2.apim.configurations.openTelemetry.hostname | quote }}
+remote_tracer.port = {{ .Values.wso2.apim.configurations.openTelemetry.port | quote }}
+{{- end }}
+
+[transport.https.properties]
+proxyPort = 443
+
+[[event_handler]]
+name="userPostSelfRegistration"
+subscriptions=["POST_ADD_USER"]
+
+[service_provider]
+sp_name_regex = "^[\\sa-zA-Z0-9._-]*$"
+
+[database.local]
+url = "jdbc:h2:./repository/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE"
+
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+[secrets]
+admin_password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
+keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.keyPassword | quote }}
+ssl_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}
+ssl_key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.keyPassword | quote }}
+internal_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
+internal_keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
+truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
+apim_db_password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote}}
+shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
+{{- end}}

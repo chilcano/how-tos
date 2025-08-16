@@ -1,0 +1,142 @@
+[server]
+hostname = "{{ .Values.kubernetes.ingress.km.hostname }}"
+node_ip = "$env{NODE_IP}"
+offset = {{ .Values.wso2.apim.portOffset }}
+base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
+#discard_empty_caches = false
+server_role = "default"
+
+[user_store]
+type = {{ .Values.wso2.apim.configurations.userStore.type | quote }}
+{{- range $key, $value := .Values.wso2.apim.configurations.userStore.properties }}
+{{ $key }} = {{ $value | quote }}
+{{- end }}
+
+[super_admin]
+username = {{ .Values.wso2.apim.configurations.adminUsername | quote }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{admin_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+{{- end }}
+create_admin_account = true
+
+[database.apim_db]
+type = "{{ .Values.wso2.apim.configurations.databases.type }}"
+url = "{{ .Values.wso2.apim.configurations.databases.apim_db.url}}"
+username = "{{ .Values.wso2.apim.configurations.databases.apim_db.username }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{apim_db_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote }}
+{{- end }}
+driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
+
+[database.apim_db.pool_options]
+{{- range $key, $value := .Values.wso2.apim.configurations.databases.apim_db.poolParameters }}
+{{ $key }} = "{{ $value }}"
+{{- end }}
+
+[database.shared_db]
+type = "{{ .Values.wso2.apim.configurations.databases.type }}"
+url = "{{ .Values.wso2.apim.configurations.databases.shared_db.url}}"
+username = "{{ .Values.wso2.apim.configurations.databases.shared_db.username }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{shared_db_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote }}
+{{- end }}
+driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
+
+[database.shared_db.pool_options]
+{{- range $key, $value := .Values.wso2.apim.configurations.databases.shared_db.poolParameters }}
+{{ $key }} = "{{ $value }}"
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.security.keystores.primary.enabled }}
+[keystore.primary]
+type = "JKS"
+file_name = "{{ .Values.wso2.apim.configurations.security.keystores.primary.name }}"
+alias = "{{ .Values.wso2.apim.configurations.security.keystores.primary.alias }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{keystore_password}"
+key_password = "$secret{keystore_key_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
+key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.keyPassword | quote }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.security.keystores.tls.enabled }}
+[keystore.tls]
+type = "JKS"
+file_name = "{{ .Values.wso2.apim.configurations.security.keystores.tls.name }}"
+alias = "{{ .Values.wso2.apim.configurations.security.keystores.tls.alias }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{ssl_keystore_password}"
+key_password = "$secret{ssl_key_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}
+key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.keyPassword | quote }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.security.keystores.internal.enabled }}
+[keystore.internal]  
+type = "JKS"
+file_name = "{{ .Values.wso2.apim.configurations.security.keystores.internal.name }}"
+alias = "{{ .Values.wso2.apim.configurations.security.keystores.internal.alias }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{internal_keystore_password}"
+key_password = "$secret{internal_keystore_key_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
+key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
+{{- end }}
+{{- end }}
+
+[truststore]
+type = "JKS"
+file_name = "{{ .Values.wso2.apim.configurations.security.truststore.name }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{truststore_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
+{{- end }}
+
+[[event_handler]]
+name="userPostSelfRegistration"
+subscriptions=["POST_ADD_USER"]
+
+[[event_listener]]
+id = "token_revocation"
+type = "org.wso2.carbon.identity.core.handler.AbstractIdentityHandler"
+name = "org.wso2.is.notification.ApimOauthEventInterceptor"
+order = 1
+[event_listener.properties]
+notification_endpoint = "https://{{ .Values.wso2.apim.configurations.eventhub.serviceUrl }}:9443/internal/data/v1/notify"
+username = "${admin.username}"
+password = "${admin.password}"
+'header.X-WSO2-KEY-MANAGER' = "default"
+
+[apim.event_hub]
+enable = true
+username = "$ref{super_admin.username}"
+password = "$ref{super_admin.password}"
+service_url = "https://{{ .Values.wso2.apim.configurations.eventhub.serviceUrl }}:9443/services/"
+{{- $len := add (len .Values.wso2.apim.configurations.eventhub.urls) -1 }}
+event_listening_endpoints = [{{ range $index, $element := .Values.wso2.apim.configurations.eventhub.urls }}"tcp://{{ $element }}:5672"{{ if ne $index $len }},{{ end }}{{ end}}]
+
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+[secrets]
+admin_password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
+keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.keyPassword | quote }}
+ssl_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}
+ssl_key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.keyPassword | quote }}
+internal_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
+internal_keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
+truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
+apim_db_password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote}}
+shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
+{{- end}}

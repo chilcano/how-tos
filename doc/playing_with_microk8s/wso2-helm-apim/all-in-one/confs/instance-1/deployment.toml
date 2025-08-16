@@ -1,0 +1,486 @@
+[server]
+hostname = "{{ .Values.kubernetes.ingress.management.hostname }}"
+node_ip = "$env{NODE_IP}"
+offset = {{ .Values.wso2.apim.portOffset }}
+mode = "single" #single or ha
+base_path = "${carbon.protocol}://${carbon.host}:${carbon.management.port}"
+#discard_empty_caches = false
+server_role = "default"
+
+[user_store]
+type = {{ .Values.wso2.apim.configurations.userStore.type | quote }}
+{{- range $key, $value := .Values.wso2.apim.configurations.userStore.properties }}
+{{ $key }} = {{ $value | quote }}
+{{- end }}
+
+[super_admin]
+username = {{ .Values.wso2.apim.configurations.adminUsername | quote }}
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{admin_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+{{- end }}
+create_admin_account = true
+
+[database.apim_db]
+type = "{{ .Values.wso2.apim.configurations.databases.type }}"
+url = "{{ .Values.wso2.apim.configurations.databases.apim_db.url}}"
+username = "{{ .Values.wso2.apim.configurations.databases.apim_db.username }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{apim_db_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote }}
+{{- end }}
+driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
+
+[database.apim_db.pool_options]
+{{- range $key, $value := .Values.wso2.apim.configurations.databases.apim_db.poolParameters }}
+{{ $key }} = "{{ $value }}"
+{{- end }}
+
+[database.shared_db]
+type = "{{ .Values.wso2.apim.configurations.databases.type }}"
+url = "{{ .Values.wso2.apim.configurations.databases.shared_db.url}}"
+username = "{{ .Values.wso2.apim.configurations.databases.shared_db.username }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{shared_db_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote }}
+{{- end }}
+driver = "{{ .Values.wso2.apim.configurations.databases.jdbc.driver }}"
+
+[database.shared_db.pool_options]
+{{- range $key, $value := .Values.wso2.apim.configurations.databases.shared_db.poolParameters }}
+{{ $key }} = "{{ $value }}"
+{{- end }}
+
+[apim]
+gateway_type = "{{ .Values.wso2.apim.configurations.gatewayType }}"
+
+{{- if .Values.wso2.apim.configurations.security.keystores.primary.enabled }}
+[keystore.primary]
+type = "JKS"
+file_name = "{{ .Values.wso2.apim.configurations.security.keystores.primary.name }}"
+alias = "{{ .Values.wso2.apim.configurations.security.keystores.primary.alias }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{keystore_password}"
+key_password = "$secret{keystore_key_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
+key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.keyPassword | quote }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.security.keystores.tls.enabled }}
+[keystore.tls]
+type = "JKS"
+file_name = "{{ .Values.wso2.apim.configurations.security.keystores.tls.name }}"
+alias = "{{ .Values.wso2.apim.configurations.security.keystores.tls.alias }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{ssl_keystore_password}"
+key_password = "$secret{ssl_key_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}
+key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.keyPassword | quote }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.security.keystores.internal.enabled }}
+[keystore.internal]  
+type = "JKS"
+file_name = "{{ .Values.wso2.apim.configurations.security.keystores.internal.name }}"
+alias = "{{ .Values.wso2.apim.configurations.security.keystores.internal.alias }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{internal_keystore_password}"
+key_password = "$secret{internal_keystore_key_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
+key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
+{{- end }}
+{{- end }}
+
+[truststore]
+type = "JKS"
+file_name = "{{ .Values.wso2.apim.configurations.security.truststore.name }}"
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+password = "$secret{truststore_password}"
+{{- else }}
+password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
+{{- end }}
+
+{{- range $i, $env := .Values.wso2.apim.configurations.gateway.environments }}
+[[apim.gateway.environment]]
+name = {{ $env.name | quote }}
+type = {{ $env.type | quote }}
+gateway_type = {{ $env.gatewayType | quote }}
+provider = {{ $env.provider | quote }}
+{{- if $env.visibility }}
+visibility = {{ toJson $env.visibility }}
+{{- end}}
+display_in_api_console = {{ $env.displayInApiConsole }}
+description = {{ $env.description | quote }}
+show_as_token_endpoint_url = {{ $env.showAsTokenEndpointUrl }}
+service_url = "https://{{ $env.serviceName }}:{{ $env.servicePort }}/services/"
+username= "${admin.username}"
+password= "${admin.password}"
+ws_endpoint = "ws://{{ $env.wsHostname }}"
+wss_endpoint = "wss://{{ $env.wsHostname }}"
+http_endpoint = "http://{{ $env.httpHostname }}"
+https_endpoint = "https://{{ $env.httpHostname }}"
+websub_event_receiver_http_endpoint = "http://{{ $env.websubHostname }}"
+websub_event_receiver_https_endpoint = "https://{{ $env.websubHostname }}"
+{{- end }}
+
+[apim.sync_runtime_artifacts.gateway]
+gateway_labels = {{ toJson .Values.wso2.apim.configurations.syncRuntimeArtifacts.gateway.labels }}
+
+# Caches
+[apim.cache.gateway_token]
+enable = {{ .Values.wso2.apim.configurations.cache.gateway_token.enabled }}
+expiry_time = {{ .Values.wso2.apim.configurations.cache.gateway_token.expiryTime | quote }}
+
+[apim.cache.resource]
+enable = {{ .Values.wso2.apim.configurations.cache.resource.enabled }}
+expiry_time = {{ .Values.wso2.apim.configurations.cache.resource.expiryTime | quote }}
+
+[apim.cache.km_token]
+enable = {{ .Values.wso2.apim.configurations.cache.km_token.enabled }}
+expiry_time = {{ .Values.wso2.apim.configurations.cache.km_token.expiryTime | quote }}
+
+[apim.cache.recent_apis]
+enable = {{ .Values.wso2.apim.configurations.cache.recent_apis.enabled }}
+
+[apim.cache.scopes]
+enable = {{ .Values.wso2.apim.configurations.cache.scopes.enabled }}
+
+[apim.cache.publisher_roles]
+enable = {{ .Values.wso2.apim.configurations.cache.publisher_roles.enabled }}
+
+[apim.cache.jwt_claim]
+enable = {{ .Values.wso2.apim.configurations.cache.jwt_claim.enabled }}
+expiry_time = {{ .Values.wso2.apim.configurations.cache.jwt_claim.expiryTime | quote }}
+
+[apim.cache.tags]
+enable = {{ .Values.wso2.apim.configurations.cache.tags.enabled }}
+expiry_time = {{ .Values.wso2.apim.configurations.cache.tags.expiryTime | quote }}
+
+[apim.analytics]
+{{- if .Values.wso2.choreoAnalytics.enabled }}
+enable = true
+config_endpoint = "{{ .Values.wso2.choreoAnalytics.endpoint }}"
+auth_token = "{{ .Values.wso2.choreoAnalytics.onpremKey }}"
+{{- else if .Values.wso2.ELKAnalytics.enabled}}
+enable = true
+type = "elk"
+{{- else }}
+enable = false
+{{- end }}
+
+[apim.ai]
+{{- if .Values.wso2.apim.configurations.ai.enabled }}
+enable = true
+token = {{ .Values.wso2.apim.configurations.ai.token | quote }}
+endpoint = {{ .Values.wso2.apim.configurations.ai.endpoint | quote }}
+{{- else }}
+enable = false
+{{- end }}
+
+[transport.http]
+properties.port = 9763
+properties.proxyPort = 80
+
+[transport.https]
+properties.port = 9443
+properties.proxyPort = 443
+
+# key manager implementation
+[apim.key_manager]
+{{- if .Values.wso2.apim.configurations.iskm.enabled }}
+type = "WSO2-IS"
+server_url = "https://{{ .Values.wso2.apim.configurations.iskm.serviceName }}:9443/services/"
+{{- else }}
+service_url = "https://{{ template "am-all-in-one.fullname" . }}-am-service:${mgt.transport.https.port}/services/"
+{{- end }}
+username= "$ref{super_admin.username}"
+password= "$ref{super_admin.password}"
+{{- if .Values.wso2.apim.configurations.keyManager.enableLightweightAPIKeyGeneration }}
+enable_lightweight_apikey_generation = true
+{{- else }}
+enable_lightweight_apikey_generation = false
+{{- end }}
+{{- if .Values.wso2.apim.configurations.keyManager.allowSubscriptionValidationDisabling }}
+allow_subscription_validation_disabling = true
+{{- else }}
+allow_subscription_validation_disabling = false
+{{- end }}
+
+[apim.transaction_counter]
+{{- if .Values.wso2.apim.configurations.transactionCounter.enabled }}
+enable = true
+server_url = "{{ .Values.wso2.apim.configurations.transactionCounter.serverUrl }}"
+{{- else }}
+enable = false
+{{- end }}
+server_id = "{{ .Values.wso2.apim.configurations.transactionCounter.serverId }}"
+
+[oauth.grant_type.token_exchange]
+{{- if .Values.wso2.apim.configurations.iskm.enabled }}
+enable = false
+{{- else }}
+enable = true
+{{- end }}
+allow_refresh_tokens = true
+iat_validity_period = "1h"
+
+[oauth.endpoints]
+{{- if .Values.wso2.apim.configurations.oauth_config }}
+oauth2_jwks_url = "{{ .Values.wso2.apim.configurations.oauth_config.oauth2JWKSUrl }}"
+{{- end }}
+
+#[apim.idp]
+#server_url = "https://localhost:${mgt.transport.https.port}"
+#authorize_endpoint = "https://localhost:${mgt.transport.https.port}/oauth2/authorize"
+#oidc_logout_endpoint = "https://localhost:${mgt.transport.https.port}/oidc/logout"
+#oidc_check_session_endpoint = "https://localhost:${mgt.transport.https.port}/oidc/checksession"
+
+# JWT Generation
+{{- if .Values.wso2.apim.configurations.jwt.enabled }}
+[apim.jwt]
+enable = {{ .Values.wso2.apim.configurations.jwt.enabled }}
+encoding = {{ .Values.wso2.apim.configurations.jwt.encoding | quote }} # base64,base64url
+generator_impl = {{ .Values.wso2.apim.configurations.jwt.generatorImpl | quote }}
+claim_dialect = {{ .Values.wso2.apim.configurations.jwt.claimDialect | quote }}
+header = {{ .Values.wso2.apim.configurations.jwt.header | quote }}
+signing_algorithm = {{ .Values.wso2.apim.configurations.jwt.signingAlgorithm | quote }}
+enable_user_claims = {{ .Values.wso2.apim.configurations.jwt.enableUserClaims }}
+claims_extractor_impl = {{ .Values.wso2.apim.configurations.jwt.claimsExtractorImpl | quote }}
+{{- end }}
+
+[apim.oauth_config]
+remove_outbound_auth_header = {{ .Values.wso2.apim.configurations.oauth_config.removeOutboundAuthHeader }}
+auth_header = {{ .Values.wso2.apim.configurations.oauth_config.authHeader | quote }}
+revoke_endpoint = {{ .Values.wso2.apim.configurations.oauth_config.revokeEndpoint | quote }}
+enable_token_encryption = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenEncryption }}
+enable_token_hashing = {{ .Values.wso2.apim.configurations.oauth_config.enableTokenHashing }}
+
+[apim.devportal]
+url = "https://{{ .Values.kubernetes.ingress.management.hostname }}/devportal"
+{{- if .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
+enable_application_sharing = {{ .Values.wso2.apim.configurations.devportal.enableApplicationSharing }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.applicationSharingType }}
+application_sharing_type = {{ .Values.wso2.apim.configurations.devportal.applicationSharingType | quote }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.applicationSharingImpl }}
+application_sharing_impl = {{ .Values.wso2.apim.configurations.devportal.applicationSharingImpl | quote }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.displayMultipleVersions }}
+display_multiple_versions = {{ .Values.wso2.apim.configurations.devportal.displayMultipleVersions }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.displayDeprecatedAPIs }}
+display_deprecated_apis = {{ .Values.wso2.apim.configurations.devportal.displayDeprecatedAPIs }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.enableComments }}
+enable_comments = {{ .Values.wso2.apim.configurations.devportal.enableComments }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.enableRatings }}
+enable_ratings = {{ .Values.wso2.apim.configurations.devportal.enableRatings }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.enableForum }}
+enable_forum = {{ .Values.wso2.apim.configurations.devportal.enableForum }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.enableAnonymousMode }}
+enable_anonymous_mode = {{ .Values.wso2.apim.configurations.devportal.enableAnonymousMode }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.enableCrossTenantSubscriptions }}
+enable_cross_tenant_subscriptions = {{ .Values.wso2.apim.configurations.devportal.enableCrossTenantSubscriptions }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.defaultReservedUsername }}
+default_reserved_username = {{ .Values.wso2.apim.configurations.devportal.defaultReservedUsername | quote }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.loginUsernameCaseInsensitive }}
+login_username_case_insensitive = {{ .Values.wso2.apim.configurations.devportal.loginUsernameCaseInsensitive }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.devportal.enableKeyProvisioning }}
+enable_key_provisioning = {{ .Values.wso2.apim.configurations.devportal.enableKeyProvisioning }}
+{{- end }}
+
+[apim.publisher]
+enable_api_doc_visibility = {{ .Values.wso2.apim.configurations.publisher.enable_api_doc_visibility }}
+{{- if .Values.wso2.apim.configurations.publisher.supportedDocumentTypes }}
+supported_document_types = {{ toJson .Values.wso2.apim.configurations.publisher.supportedDocumentTypes }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode }}
+enable_portal_configuration_only_mode = {{ .Values.wso2.apim.configurations.publisher.enablePortalConfigurationOnlyMode }}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.publisher.internalKeyIssuer }}
+internal_key_issuer = "{{ .Values.wso2.apim.configurations.publisher.internalKeyIssuer }}"
+{{- end }}
+
+[apim.cors]
+enable = {{ .Values.wso2.apim.configurations.cors.enabled }}
+allow_origins = {{ toJson .Values.wso2.apim.configurations.cors.allowOrigins }}
+allow_methods = {{ toJson .Values.wso2.apim.configurations.cors.allowMethods }}
+allow_headers = {{ toJson .Values.wso2.apim.configurations.cors.allowHeaders }}
+allow_credentials = {{ .Values.wso2.apim.configurations.cors.allowCredentials }}
+enable_validation_for_ws = {{ .Values.wso2.apim.configurations.cors.enableForWS }}
+
+{{- if .Values.wso2.deployment.highAvailability }}
+# Traffic Manager configurations
+[apim.throttling]
+event_duplicate_url = ["tcp://{{ template "am-all-in-one.fullname" .}}-am-service-2:5672"]
+throttle_decision_endpoints = ["tcp://localhost:5672"]
+{{- end }}
+
+[apim.throttling.blacklist_condition]
+{{- if .Values.wso2.apim.configurations.throttling.blacklistCondition.startDelay }}
+start_delay = {{ .Values.wso2.apim.configurations.throttling.blacklistCondition.startDelay}}
+{{- end }}
+{{- if .Values.wso2.apim.configurations.throttling.blacklistCondition.period }}
+period = {{ .Values.wso2.apim.configurations.throttling.blacklistCondition.period}}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.throttling.jms.startDelay }}
+[apim.throttling.jms]
+start_delay = {{ .Values.wso2.apim.configurations.throttling.jms.startDelay}}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.throttling.eventSync.hostName }}
+[apim.throttling.event_sync]
+hostName = {{ .Values.wso2.apim.configurations.throttling.eventSync.hostName}}
+port = {{ .Values.wso2.apim.configurations.throttling.eventSync.port}}
+{{- end }}
+
+{{- if .Values.wso2.apim.configurations.throttling.eventManagement.hostName }}
+[apim.throttling.event_management]
+hostName = {{ .Values.wso2.apim.configurations.throttling.eventManagement.hostName}}
+port = {{ .Values.wso2.apim.configurations.throttling.eventManagement.port}}
+{{- end }}
+
+{{- if .Values.wso2.deployment.highAvailability }}
+[[apim.throttling.url_group]]
+traffic_manager_urls = ["tcp://{{ template "am-all-in-one.fullname" .}}-am-service-1:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+traffic_manager_auth_urls = ["ssl://{{ template "am-all-in-one.fullname" .}}-am-service-1:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+type = "loadbalance"
+
+[[apim.throttling.url_group]]
+traffic_manager_urls = ["tcp://{{ template "am-all-in-one.fullname" .}}-am-service-2:{{ add 9611 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+traffic_manager_auth_urls = ["ssl://{{ template "am-all-in-one.fullname" .}}-am-service-2:{{ add 9711 $.Values.wso2.apim.configurations.throttling.portOffset }}"]
+type = "loadbalance"
+{{ end }}
+
+# [[apim.throttling.url_group]]
+# traffic_manager_urls = ["tcp://{{ template "am-all-in-one.fullname" . }}-am-service:9611"]
+# traffic_manager_auth_urls = ["ssl://{{ template "am-all-in-one.fullname" . }}-am-service:9711"]
+# type = "failover"
+
+{{- if .Values.wso2.apim.configurations.workflow.enable }}
+[apim.workflow]
+enable = {{ .Values.wso2.apim.configurations.workflow.enable }}
+service_url = {{ .Values.wso2.apim.configurations.workflow.serviceUrl | quote }}
+username = "$ref{super_admin.username}"
+password = "$ref{super_admin.password}"
+callback_endpoint = {{ .Values.wso2.apim.configurations.workflow.callbackEndpoint | quote }}
+token_endpoint = {{ .Values.wso2.apim.configurations.workflow.tokenEndpoint | quote }}
+client_registration_endpoint = {{ .Values.wso2.apim.configurations.workflow.clientRegistrationEndpoint | quote }}
+client_registration_username = "$ref{super_admin.username}"
+client_registration_password = "$ref{super_admin.password}"
+{{- end }}
+
+# Data Bridge Configuration
+# [transport.receiver]
+# type = {{ .Values.wso2.apim.configurations.transport.receiver.type }}
+# worker_threads = {{ .Values.wso2.apim.configurations.transport.receiver.workerThreads }}
+# session_timeout = {{ .Values.wso2.apim.configurations.transport.receiver.sessionTimeout | quote }}
+# keystore.file_name = "$ref{keystore.tls.file_name}"
+# keystore.password = "$ref{keystore.tls.password}"
+# tcp_port = {{ .Values.wso2.apim.configurations.transport.receiver.tcpPort }}
+# ssl_port = {{ .Values.wso2.apim.configurations.transport.receiver.sslPort }}
+# ssl_receiver_thread_pool_size = {{ .Values.wso2.apim.configurations.transport.receiver.sslReceiverThreadPoolSize }}
+# tcp_receiver_thread_pool_size = {{ .Values.wso2.apim.configurations.transport.receiver.tcpReceiverThreadPoolSize }}
+# ssl_enabled_protocols = [{{- .Values.wso2.apim.configurations.transport.receiver.sslEnabledProtocols | join "\",\"" }}]
+# ciphers = [{{- .Values.wso2.apim.configurations.transport.receiver.ciphers | join "\",\"" }}]
+
+{{- if .Values.wso2.apim.configurations.notification.hostname }}
+[apim.notification]
+from_address = "{{ .Values.wso2.apim.configurations.notification.fromAddress }}"
+username = "{{ .Values.wso2.apim.configurations.notification.username }}"
+password = "{{ .Values.wso2.apim.configurations.notification.password }}"
+signature = "{{ .Values.wso2.apim.configurations.notification.signature }}"
+hostname = "{{ .Values.wso2.apim.configurations.notification.hostname }}"
+port = {{ .Values.wso2.apim.configurations.notification.port }}
+enable_start_tls = {{ .Values.wso2.apim.configurations.notification.enableStartTls }}
+enable_authentication = {{ .Values.wso2.apim.configurations.notification.enableAuthentication }}
+{{- end }}
+
+# [apim.token.revocation]
+# notifier_impl = "{{ .Values.wso2.apim.configurations.token.revocation.NotifierImpl }}"
+# enable_realtime_notifier = {{ .Values.wso2.apim.configurations.token.revocation.EnableRealtimeNotifier }}
+# realtime_notifier_ttl = {{ .Values.wso2.apim.configurations.token.revocation.RealtimeNotifierTtl }}
+# enable_persistent_notifier = {{ .Values.wso2.apim.configurations.token.revocation.EnablePersistentNotifier }}
+# persistent_notifier_hostname = "{{ .Values.wso2.apim.configurations.token.revocation.PersistentNotifierHostname }}"
+# persistent_notifier_ttl = {{ .Values.wso2.apim.configurations.token.revocation.PersistentNotifierTtl }}
+# persistent_notifier_username = "{{ .Values.wso2.apim.configurations.token.revocation.PersistentNotifierUsername }}"
+# persistent_notifier_password = "{{ .Values.wso2.apim.configurations.token.revocation.PersistentNotifierPassword }}"
+
+{{- range .Values.wso2.apim.configurations.eventHandlers }}
+[[event_handler]]
+name = "{{ .name }}"
+subscriptions = [{{ range .subscriptions }}"{{ . }}", {{ end }}]
+{{- end }}
+
+[service_provider]
+sp_name_regex = {{ .Values.wso2.apim.configurations.serviceProvider.spNameRegex | quote }}
+
+{{- if not .Values.wso2.apim.configurations.iskm.enabled }}
+{{ range .Values.wso2.apim.configurations.eventListeners }}
+[[event_listener]]
+id = "{{ .id }}"
+type = "{{ .type }}"
+name = "{{ .name }}"
+order = {{ .order }}
+
+[event_listener.properties]
+notification_endpoint = "https://{{ template "am-all-in-one.fullname" $ }}-am-service:${mgt.transport.https.port}/internal/data/v1/notify"
+username = "${admin.username}"
+password = "${admin.password}"
+'header.X-WSO2-KEY-MANAGER' = "default"
+{{- end }}
+{{- end }}
+
+{{- if .Values.wso2.deployment.persistence.solrIndexing.enabled }}
+[database.local]
+url = "jdbc:h2:/home/wso2carbon/solr/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE"
+
+[indexing]
+location = "/home/wso2carbon/solr/indexed-data"
+{{- else }}
+[database.local]
+url = "jdbc:h2:./repository/database/WSO2CARBON_DB;DB_CLOSE_ON_EXIT=FALSE"
+{{- end }}
+
+{{- if .Values.wso2.apim.secureVaultEnabled }}
+[secrets]
+admin_password = {{ .Values.wso2.apim.configurations.adminPassword | quote }}
+keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.password | quote }}
+keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.primary.keyPassword | quote }}
+ssl_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.password | quote }}
+ssl_key_password = {{ .Values.wso2.apim.configurations.security.keystores.tls.keyPassword | quote }}
+internal_keystore_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.password | quote }}
+internal_keystore_key_password = {{ .Values.wso2.apim.configurations.security.keystores.internal.keyPassword | quote }}
+truststore_password = {{ .Values.wso2.apim.configurations.security.truststore.password | quote }}
+apim_db_password = {{ .Values.wso2.apim.configurations.databases.apim_db.password | quote }}
+shared_db_password = {{ .Values.wso2.apim.configurations.databases.shared_db.password | quote}}
+{{- end}}
+
+{{- if .Values.wso2.apim.configurations.sdk }}
+[apim.sdk]
+{{- if .Values.wso2.apim.configurations.sdk.supportedLanguages }}
+supported_languages = {{ toJson .Values.wso2.apim.configurations.sdk.supportedLanguages }}
+{{- end }}
+{{- end }}
+
+[apim.organization_based_access_control]
+enable = {{ .Values.wso2.apim.configurations.organization_based_access_control.enabled }}
+organization_name_local_claim = {{ .Values.wso2.apim.configurations.organization_based_access_control.organization_name_local_claim | quote }}
+organization_id_local_claim = {{ .Values.wso2.apim.configurations.organization_based_access_control.organization_id_local_claim | quote }}

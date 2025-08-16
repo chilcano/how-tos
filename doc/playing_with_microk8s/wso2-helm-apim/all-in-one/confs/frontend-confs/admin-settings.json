@@ -1,0 +1,25 @@
+{
+  "app": {
+    "context": "/admin",
+    "customUrl": {
+      "enabled": false,
+      "forwardedHeader": "X-Forwarded-For"
+    },
+    "origin": {
+      "host": "localhost"
+    },
+    "workflows": {
+      "limit": 30
+    },
+    "feedback": {
+      "enable": false,
+      "serviceURL": ""
+    },
+    "singleLogout": {
+      "enabled": true,
+      "timeout": 2000
+    },
+    "logoutSessionStateAppender" : "OIDC" ,
+    "docUrl": "https://apim.docs.wso2.com/en/4.5.0/"
+  }
+}

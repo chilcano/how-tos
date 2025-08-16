@@ -1,0 +1,39 @@
+# -------------------------------------------------------------------------------------
+#
+# Copyright (c) 2025, WSO2 LLC. (http://www.wso2.com). All Rights Reserved.
+#
+# This software is the property of WSO2 LLC. and its suppliers, if any.
+# Dissemination of any information or reproduction of any material contained 
+# herein is strictly forbidden, unless permitted by WSO2 in accordance with the 
+# WSO2 Commercial License available at https://wso2.com/licenses/eula/3.2
+#
+# --------------------------------------------------------------------------------------
+
+{{- if .Values.wso2.apim.mountFrontendConfig }}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-conf-admin-settings
+  namespace : {{ .Release.Namespace }}
+data:
+  settings.json: {{ tpl (.Files.Get "confs/frontend-confs/admin-settings.json") . | quote }}
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-conf-devportal-settings
+  namespace : {{ .Release.Namespace }}
+data:
+  settings.json: {{ tpl (.Files.Get "confs/frontend-confs/devportal-settings.json") . | quote }}
+---
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ template "am-all-in-one.fullname" . }}-conf-publisher-settings
+  namespace : {{ .Release.Namespace }}
+data:
+  settings.json: {{ tpl (.Files.Get "confs/frontend-confs/publisher-settings.json") . | quote }}
+---
+{{- end }}
