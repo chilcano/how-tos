@@ -81,7 +81,7 @@ jobs:
             echo "normalized_docker_and_tag_value=$normalized_docker_and_tag_value" >> "$GITHUB_OUTPUT"
             echo "img_ctx=$col6" >> "$GITHUB_OUTPUT"
 
-            echo "* Image Context: $img_ctx"
+            echo "* Image Context: $col6"
 
       - name: Login to GHCR
         uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
