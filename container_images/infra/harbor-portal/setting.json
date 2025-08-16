@@ -7,7 +7,7 @@
   "loginTitle": "OCI Registry",
   "product": {
     "name": "Container Registry",
-    "logo": "logo_transp.svg",
-    "introduction": "OCI Registry used to distribute and share the ZAMA Container Images and Helm Charts needed to build Confidential Blockchain Network. This service is based on <a href='https://goharbor.io'>Project Harbor</>."
+    "logo": "logo_yellow.png",
+    "introduction": "OCI Registry used to distribute and share FHEVM Container Images and Helm Charts needed to build Confidential Blockchain Network. This service is based on <a href='https://goharbor.io'>Project Harbor</>."
   }
 }
