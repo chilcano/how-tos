@@ -6,3 +6,4 @@ COPY setting.json /usr/share/nginx/html/setting.json
 COPY login_bg_transp_800x600.png /usr/share/nginx/html/images/
 COPY logo_transp.svg /usr/share/nginx/html/images/
 COPY logo_yellow.png /usr/share/nginx/html/images/
+COPY logo_yellow_wide.png /usr/share/nginx/html/images/
