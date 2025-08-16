@@ -1,0 +1,13 @@
+{
+  "headerBgColor": {
+    "darkMode": "#000000",
+    "lightMode": "#ffd208"
+  },
+  "loginBgImg": "login_bg_transp_800x600.png",
+  "loginTitle": "ZAMA OCI Registry",
+  "product": {
+    "name": "ZAMA OCI Registry",
+    "logo": "logo_transp.svg",
+    "introduction": "Central OCI Registry used to distribute and share the ZAMA Container Images and Helm Charts needed to build a Confidential Blockchain Network. This service is based on Project Harbor."
+  }
+}

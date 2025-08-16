@@ -1,0 +1,71 @@
+# Source: https://github.com/zaproxy/zaproxy/blob/main/docker/Dockerfile-stable
+
+# --- Build stage ---
+FROM eclipse-temurin:21-jdk-alpine AS builder
+
+ARG VER_APP=2.16.1
+ENV VER_APP=${VER_APP}
+
+WORKDIR /zap
+
+# Install required tools and download ZAP directly
+RUN apk add --no-cache curl tar unzip bash grep \
+ && curl -s -L -o zap.tar.gz https://github.com/zaproxy/zaproxy/releases/download/v${VER_APP}/ZAP_${VER_APP}_Linux.tar.gz \
+ && tar -xzf zap.tar.gz \
+ && mv ZAP_${VER_APP}/* . \
+ && rm -rf ZAP_${VER_APP} zap.tar.gz
+
+# Update ZAP add-ons
+RUN ./zap.sh -cmd -silent -addonupdate \
+ && cp /root/.ZAP/plugin/*.zap plugin/ || true
+
+# --- Final stage ---
+FROM alpine:3.19
+
+ARG VER_APP=2.16.1
+ENV VER_APP=${VER_APP}
+
+# Install runtime dependencies
+RUN apk add --no-cache \
+    openjdk21-jre \
+    bash \
+    curl \
+    unzip \
+    grep \
+    jq \
+    firefox-esr \
+    xvfb \
+    dbus \
+    ttf-opensans
+
+# Alias firefox binary if needed
+RUN ln -s /usr/bin/firefox-esr /usr/bin/firefox
+
+# Create user and group
+ARG UID=10001
+ARG GID=10002
+RUN addgroup -g ${GID} zap && adduser -D -u ${UID} -G zap -s /bin/bash zap
+RUN mkdir -p /zap/wrk && chown -R zap:zap /zap
+
+WORKDIR /zap
+USER zap
+
+# Copy ZAP installation
+COPY --from=builder --chown=zap:zap /zap .
+
+# Environment configuration
+ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-jre
+ENV PATH=$JAVA_HOME/bin:/zap:$PATH
+ENV ZAP_PATH=/zap/zap.sh
+
+ENV ZAP_PORT=8080
+ENV HOME=/home/zap
+ENV LC_ALL=C.UTF-8
+ENV LANG=C.UTF-8
+
+#COPY --from=builder --chown=zap:zap scripts /home/zap/.ZAP_D/scripts/
+COPY --chown=zap:zap scripts /home/zap/.ZAP_D/scripts/
+
+EXPOSE 8080
+
+# ENTRYPOINT ["bash"]

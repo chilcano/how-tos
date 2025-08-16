@@ -1,0 +1,34 @@
+# --- Build stage ---
+FROM eclipse-temurin:21-jdk-alpine AS builder
+
+ARG VER_APP=2.16.1
+ENV VER_APP=${VER_APP}
+
+WORKDIR /zap
+
+RUN apk add --no-cache curl tar unzip bash \
+ && curl -s -L -o zap.tar.gz https://github.com/zaproxy/zaproxy/releases/download/v${VER_APP}/ZAP_${VER_APP}_Linux.tar.gz \
+ && tar -xzf zap.tar.gz \
+ && ./ZAP_${VER_APP}/zap.sh -cmd -addoninstall graphql \
+ && rm zap.tar.gz
+
+# --- Final stage ---
+FROM alpine:3.19
+
+ARG VER_APP=2.16.1
+ENV VER_APP=${VER_APP}
+
+RUN apk add --no-cache openjdk21-jre bash
+RUN apk add --no-cache curl unzip firefox-esr xvfb dbus ttf-opensans \
+ && ln -s /usr/bin/firefox-esr /usr/bin/firefox
+
+ENV ZAP_HOME=/zap/home
+ENV HOME=/zap/home
+
+COPY --from=builder /zap/ZAP_${VER_APP} /zap
+
+WORKDIR /zap
+RUN mkdir -p /zap/home/.ZAP && chmod -R 777 /zap/home
+ENV PATH="/zap:$PATH"
+
+ENTRYPOINT ["bash"]

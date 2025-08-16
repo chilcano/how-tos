@@ -1,0 +1,232 @@
+name: 07-build-containers
+
+on:
+  push:
+    branches:
+        - 'main'
+    paths:
+        - 'container_images/**'
+        - '.github/workflows/07-build-containers.yml'
+  pull_request:
+    branches:
+        - 'main'
+    paths:
+        - 'container_images/**'
+        - '.github/workflows/07-build-containers.yml'
+
+jobs:
+
+  prepare-matrix:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      build_and_scan_date:  ${{ steps.set-matrix.outputs.build_and_scan_date }}
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+
+      - name: Generate build matrix
+        id: set-matrix
+        run: |
+            matrix=$(tail -n +2 container_images/container_list.txt \
+            | grep -E '\|\s*build\s*\|' \
+            | sed '/^\s*$/d' \
+            | jq -R -s -c 'split("\n") | map(select(length > 0))')
+            echo "matrix=$matrix"
+            echo "matrix=$matrix" >> "$GITHUB_OUTPUT"
+            build_and_scan_date=$(date +%y%m%d%H%M%S)
+            echo "build_and_scan_date=$build_and_scan_date"
+            echo "build_and_scan_date=$build_and_scan_date" >> "$GITHUB_OUTPUT"
+
+  build-scan-tag:
+    runs-on: ubuntu-latest
+    permissions:
+        contents: read
+        packages: write
+    needs: prepare-matrix
+    strategy:
+      matrix:
+        line: ${{ fromJson(needs.prepare-matrix.outputs.matrix) }}
+
+    steps:
+      - name: Checkout Project
+        uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+
+      - name: Parse and print fields
+        id: parse
+        run: |
+            row=$(echo "${{ matrix.line }}" | xargs)
+            
+            col1=$(echo "$row" | cut -d '|' -f1 | xargs)
+            col2=$(echo "$row" | cut -d '|' -f2 | xargs)
+            col3=$(echo "$row" | cut -d '|' -f3 | xargs)
+            col4=$(echo "$row" | cut -d '|' -f4 | xargs)
+            col5=$(echo "$row" | cut -d '|' -f5 | xargs)
+            col6=$(echo "$row" | cut -d '|' -f6 | xargs)
+
+            # Get normalized image and tag
+            normalized_docker_and_tag_value=$(echo "${col4}_${col5}" | sed -E 's|[/:]|_|g' | tr '[:upper:]' '[:lower:]')
+
+            echo "Type: $col1"
+            echo "* Build: $col2"
+            echo "* Dockerfile path: $col3"
+            echo "* Image path: $col4"
+            echo "* Image Tag / App Ver: $col5"
+            echo "* Normalized Image name and Tag: $normalized_docker_and_tag_value"
+            
+            # Export vars
+            echo "path_to_dockerfile=$col3" >> "$GITHUB_OUTPUT"
+            echo "path_to_image=$col4" >> "$GITHUB_OUTPUT"
+            echo "img_tag_app_ver=$col5" >> "$GITHUB_OUTPUT"
+            echo "normalized_docker_and_tag_value=$normalized_docker_and_tag_value" >> "$GITHUB_OUTPUT"
+            echo "img_ctx=$col6" >> "$GITHUB_OUTPUT"
+
+            echo "* Image Context: $img_ctx"
+
+      - name: Login to GHCR
+        uses: docker/login-action@9780b0c442fbb1117ed29e0efdff1e18412f7567 # v3.3.0
+        with:
+            registry: ghcr.io
+            username: ${{ github.actor }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@c47758b77c9736f4b2ef4073d4d51994fabfe349 # v3.7.1
+
+      - name: Build image (no push)
+        uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85 # v6.7.0
+        env:
+            DOCKER_BUILD_SUMMARY: false
+            DOCKER_BUILD_RECORD_UPLOAD: false
+        with:
+            context: ./${{ steps.parse.outputs.img_ctx }}
+            build-args: |
+                VER_APP=${{ steps.parse.outputs.img_tag_app_ver }}
+            file: ${{ steps.parse.outputs.path_to_dockerfile }}
+            push: false
+            load: true
+            cache-from: type=gha
+            cache-to: type=gha,mode=max
+            tags: |
+                ghcr.io/zama-ai/${{ steps.parse.outputs.path_to_image }}:temp-${{ steps.parse.outputs.img_tag_app_ver }}
+
+      - name: Install Trivy
+        uses: aquasecurity/setup-trivy@ff1b8b060f23b650436d419b5e13f67f5d4c3087 # v0.2.2
+        with:
+            version: v0.61.0
+            cache: true
+
+      - name: Scan image with Trivy (json output)
+        uses: aquasecurity/trivy-action@6c175e9c4083a92bbca2f9724c8a5e33bc2d97a5 # v0.30.0
+        env:
+            TRIVY_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-db:2
+            TRIVY_JAVA_DB_REPOSITORY: public.ecr.aws/aquasecurity/trivy-java-db:1
+        with:
+          image-ref: ghcr.io/zama-ai/${{ steps.parse.outputs.path_to_image }}:temp-${{ steps.parse.outputs.img_tag_app_ver }}
+          severity: 'UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL'
+          scanners: secret,vuln,misconfig
+          format: json
+          output: ${{ steps.parse.outputs.normalized_docker_and_tag_value }}.trivy-report.json
+          skip-setup-trivy: true
+          version: v0.61.0
+          timeout: 10m0s
+          cache: true
+
+      - name: Parse Trivy results
+        id: trivy-parse
+        run: |
+            trjson=${{ steps.parse.outputs.normalized_docker_and_tag_value }}.trivy-report.json
+            vulns_in_trivy_report=$(jq '[.Results[].Vulnerabilities | length] | add' ${trjson})
+            vulns_critical=$(jq '[.Results[].Vulnerabilities? // [] | map(select(.Severity=="CRITICAL")) | length] | add' "$trjson")
+            vulns_high=$(jq '[.Results[].Vulnerabilities? // [] | map(select(.Severity=="HIGH"))     | length] | add' "$trjson")
+            vulns_medium=$(jq '[.Results[].Vulnerabilities? // [] | map(select(.Severity=="MEDIUM"))   | length] | add' "$trjson")
+            vulns_low=$(jq '[.Results[].Vulnerabilities? // [] | map(select(.Severity=="LOW"))      | length] | add' "$trjson")
+            vulns_unknown=$(jq '[.Results[].Vulnerabilities? // [] | map(select(.Severity=="UNKNOWN"))  | length] | add' "$trjson")
+
+            echo "vulns_in_trivy_report=$vulns_in_trivy_report" >> "$GITHUB_OUTPUT"
+            echo "vulns_critical=$vulns_critical" >> "$GITHUB_OUTPUT"
+            echo "vulns_high=$vulns_high" >> "$GITHUB_OUTPUT"
+            echo "vulns_medium=$vulns_medium" >> "$GITHUB_OUTPUT"
+            echo "vulns_low=$vulns_low" >> "$GITHUB_OUTPUT"
+            echo "vulns_unknown=$vulns_unknown" >> "$GITHUB_OUTPUT"
+
+      - name: Determine final tag
+        id: decide-tag
+        run: |
+            if [ ${{ steps.trivy-parse.outputs.vulns_in_trivy_report }} -gt 0 ]; then
+                echo "trivy_tag_suffix=vuln" >> "$GITHUB_OUTPUT"
+            else
+                echo "trivy_tag_suffix=safe" >> "$GITHUB_OUTPUT"
+            fi
+
+      - name: Install Trivy and scan2html plugin
+        if: success()
+        run: |
+            curl -sfL https://raw.githubusercontent.com/aquasecurity/trivy/7f41822d4f916615c528caf5cbd640183d21a4f8/contrib/install.sh | sudo sh -s -- -b /usr/local/bin v0.61.0
+            trivy -v
+            trivy plugin install github.com/fatihtokus/scan2html
+
+      - name: Run Trivy scan2html plugin
+        run: |
+            trivy scan2html generate \
+              --scan2html-flags --with-epss --output '${{ steps.parse.outputs.normalized_docker_and_tag_value }}.trivy-report.html' \
+              --report-title "[img: ${{ steps.parse.outputs.path_to_image }}, tag: ${{ steps.parse.outputs.img_tag_app_ver }}, date: ${{ needs.prepare-matrix.outputs.build_and_scan_date }}]" \
+              --from '${{ steps.parse.outputs.normalized_docker_and_tag_value }}.trivy-report.json' &> /dev/null
+
+            mv ${{ steps.parse.outputs.normalized_docker_and_tag_value }}.trivy-report.json \
+               ${{ steps.parse.outputs.normalized_docker_and_tag_value }}_${{ steps.decide-tag.outputs.trivy_tag_suffix }}.trivy-report.json
+
+            mv ${{ steps.parse.outputs.normalized_docker_and_tag_value }}.trivy-report.html \
+               ${{ steps.parse.outputs.normalized_docker_and_tag_value }}_${{ steps.decide-tag.outputs.trivy_tag_suffix }}.trivy-report.html
+
+      - name: Upload single Trivy report artifact
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+            name: single-trivy-report.${{ steps.parse.outputs.normalized_docker_and_tag_value }}_${{ steps.decide-tag.outputs.trivy_tag_suffix }}
+            path: |
+                ${{ steps.parse.outputs.normalized_docker_and_tag_value }}_*
+
+      - name: Build & push final image with labels
+        uses: docker/build-push-action@5cd11c3a4ced054e52742c5fd54dca954e0edd85 # v6.7.0
+        env:
+            DOCKER_BUILD_SUMMARY: false
+            DOCKER_BUILD_RECORD_UPLOAD: false
+        with:
+            context: ./${{ steps.parse.outputs.img_ctx }}
+            build-args: |
+                VER_APP=${{ steps.parse.outputs.img_tag_app_ver }}
+            file: ${{ steps.parse.outputs.path_to_dockerfile }}
+            push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' }}
+            pull: false
+            cache-from: type=gha
+            cache-to: type=gha,mode=max
+            # next both attestation params add max provenance and adds sbom as metadata
+            provenance: mode=max
+            sbom: true
+            tags: |
+                ghcr.io/zama-ai/${{ steps.parse.outputs.path_to_image }}:${{ steps.parse.outputs.img_tag_app_ver }}-${{ steps.decide-tag.outputs.trivy_tag_suffix }}
+            labels: |
+                TRIVY.SCAN_DATE=${{ needs.prepare-matrix.outputs.build_and_scan_date }}
+                TRIVY.TOTAL_VULN=${{ steps.trivy-parse.outputs.vulns_in_trivy_report }}
+                TRIVY.VULNS_CRITICAL=${{ steps.trivy-parse.outputs.vulns_critical }}
+                TRIVY.VULNS_HIGH=${{ steps.trivy-parse.outputs.vulns_high }}
+                TRIVY.VULNS_MEDIUM=${{ steps.trivy-parse.outputs.vulns_medium }}
+                TRIVY.VULNS_LOW=${{ steps.trivy-parse.outputs.vulns_low }}
+                TRIVY.VULNS_UNKNOWN=${{ steps.trivy-parse.outputs.vulns_unknown }}
+
+  aggregate-reports:
+    needs: [prepare-matrix,build-scan-tag]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifacts (and unzip)
+        uses: actions/download-artifact@fa0a91b85d4f404e444e00e005971372dc801d16 # v4.1.8
+        with:
+            pattern: single-trivy-report.*
+            path: downloaded_reports_dir
+            merge-multiple: true
+
+      - name: Upload aggregated Trivy reports
+        uses: actions/upload-artifact@b4b15b8c7c6ac21ea08fcf65892d2ee8f75cf882 # v4.4.3
+        with:
+            name: trivy-reports-${{ needs.prepare-matrix.outputs.build_and_scan_date }}
+            path: downloaded_reports_dir/

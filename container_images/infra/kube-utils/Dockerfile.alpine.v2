@@ -1,0 +1,61 @@
+# Go 1.24.2 fixes CVE-2025-22871
+FROM golang:1.24.2-alpine3.21 AS builder
+
+# VER_APP is only param/arg passed through github workflow
+ARG VER_APP=0.3.0
+ENV APP_TAG_VER=${VER_APP}
+
+RUN apk add --no-cache git bash curl
+
+WORKDIR /src
+
+# Build grpc-health-probe v0.4.37 statically
+RUN git clone https://github.com/grpc-ecosystem/grpc-health-probe && \
+    cd grpc-health-probe && \
+    git checkout v0.4.37 && \
+    # Fix CVE-2025-27144
+    go get github.com/go-jose/go-jose/v4@v4.0.5 && \
+    # Fix CVE-2025-22872
+    go get golang.org/x/net@v0.38.0 && \
+    go mod tidy && \
+    go build -ldflags="-s -w -extldflags '-static'" -o /out/grpc_health_probe .
+
+# Build yq v4.45.1 statically
+RUN git clone https://github.com/mikefarah/yq && \
+    cd yq && \
+    git checkout v4.45.1 && \
+    # Fix CVE-2025-22872
+    go get golang.org/x/net@v0.38.0 && \
+    go mod tidy && \
+    go build -ldflags="-s -w -extldflags '-static'" -o /out/yq .
+
+FROM cgr.dev/chainguard/kubectl:latest AS kubectl
+
+FROM alpine:3.21.3 AS runtime-environment
+
+# Fix CVE-2025-31498, CVE-2025-29087 and CVE-2025-31115
+RUN apk update && apk upgrade --no-cache
+
+WORKDIR /app
+ENV PATH="/app:$PATH"
+
+# Install lightweight tools not available as static binaries
+# - util-linux: provides `uuidgen`
+# - gettext: provides `envsubst`
+# - socat: useful for networking/debugging
+# - bash: required for scripts that need bash features
+RUN apk add --no-cache util-linux gettext socat bash curl
+
+ADD https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 /app/jq
+COPY --from=builder /out/grpc_health_probe /app/grpc_health_probe
+COPY --from=builder /out/yq /app/yq
+COPY --from=kubectl /usr/bin/kubectl /app/kubectl
+
+RUN chmod -R +x /app && \
+    addgroup -g 10001 appgroup && \
+    adduser -D -u 10002 -G appgroup appuser && \
+    chown -R appuser:appgroup /app
+
+USER appuser:appgroup
+
+ENTRYPOINT ["sh", "-c"]

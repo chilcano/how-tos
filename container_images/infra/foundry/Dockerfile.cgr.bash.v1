@@ -1,0 +1,30 @@
+FROM ghcr.io/foundry-rs/foundry:v1.0.0 AS build-environment
+FROM cgr.dev/chainguard/curl:latest AS curl
+FROM cgr.dev/chainguard/kubectl:latest AS kubectl
+
+# VER_APP is only param/arg passed through github workflow
+ARG VER_APP=0.3.0
+ENV APP_TAG_VER=${VER_APP}
+
+FROM cgr.dev/chainguard/bash:latest AS runtime-environment
+
+WORKDIR /app
+ENV PATH="/app:$PATH"
+
+COPY --from=build-environment /usr/local/bin/anvil .
+COPY --from=build-environment /usr/local/bin/chisel .
+COPY --from=build-environment /usr/local/bin/cast .
+COPY --from=build-environment /usr/local/bin/forge .
+
+COPY --from=curl /usr/bin/curl /app/curl
+COPY --from=kubectl /usr/bin/kubectl /app/kubectl
+
+# Download jq binary 1.6 (0 vulns)
+ADD https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 /app/jq
+
+RUN chmod -R +x /app && \
+    addgroup -g 10001 appgroup && \
+    adduser -D -u 10002 -G appgroup appuser && \
+    chown -R appuser:appgroup /app
+
+USER appuser:appgroup

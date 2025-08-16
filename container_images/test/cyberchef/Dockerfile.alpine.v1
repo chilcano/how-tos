@@ -1,0 +1,48 @@
+# Original Dockerfile:
+# https://github.com/gchq/CyberChef/blob/master/Dockerfile
+
+FROM node:18-alpine AS build
+
+# VER_APP is only param/arg passed through github workflow
+ARG VER_APP=v10.19.2
+ENV APP_TAG_VER=${VER_APP}
+
+RUN apk add --no-cache git bash curl
+
+WORKDIR /app
+
+ENV NODE_OPTIONS="--max-old-space-size=2048"
+RUN git clone -b "$APP_TAG_VER" --depth=1 https://github.com/gchq/CyberChef.git . && \
+    # The 'npm install' installs deps (non deterministic).
+    # The 'npm ci' is recommended.
+    npm ci && \
+    # Creates a prod-ready build according Gruntfile.js:
+    # Default port is 8000 and default base dir is build/prod/)
+    npx grunt prod
+
+FROM nginx:1.27.4-alpine3.21-slim AS cyberchef
+
+# Copy generated static files
+COPY --from=build /app/build/prod /usr/share/nginx/html/
+
+# Change default port 80 in nginx-alpine to 8000 and add IPv6 listener
+# Kong Ingress can not route traffic to ports lower than 1024
+RUN sed -i \
+    -e 's/listen       80;/listen       8000;/g' \
+    -e '/listen       8000;/a\' \
+    -e '    listen       [::]:8000;' /etc/nginx/conf.d/default.conf
+
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
+    CMD curl -sf -o /dev/null http://localhost:8000 || exit 1
+
+# Nginx default port 80 to updated 8000
+EXPOSE 8000
+
+# Build and run:
+# docker build --load -t chilcano/test/cyberchef:v1 -f container_images/test/cyberchef/Dockerfile.alpine.v1 .
+# docker run -it -p 9980:8000 --name cyberchef-local --rm chilcano/test/cyberchef:v1
+# Open http://localhost:9980 in browser
+# Accede al shell: 
+#   docker exec -it cyberchef-local cat /etc/nginx/conf.d/default.conf
+#   docker exec -it cyberchef-local sh 
+#   docker exec -it cyberchef-local sh -c "cat /etc/nginx/conf.d/default.conf"

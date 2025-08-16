@@ -1,0 +1,7 @@
+<type> | <build-or-not> | <full-path-to-dockerfile>| <full-path-to-docker-image> | <comma-separated-tag-list> | <image-context>
+dockerfile | not | container_images/infra/foundry/Dockerfile.cgr.bash.v1 | security-hub/infra/eth-foundry | 0.3.1 | .
+dockerfile | build | container_images/infra/kube-utils/Dockerfile.alpine.v2 | security-hub/infra/kube-utils | 0.3.1 | .
+dockerfile | build | container_images/test/cyberchef/Dockerfile.alpine.v1 | security-hub/test/cyberchef | v10.19.4 | .
+dockerfile | not | container_images/test/cyberchef/Dockerfile.alpine.v1 | security-hub/test/cyberchef | v10.19.3 | .
+dockerfile | to-be-reviewed | container_images/sec/zap/Dockerfile.alpine.v1.1 | security-hub/sec/zap | 2.16.1 | .
+dockerfile | build | container_images/infra/harbor-portal/Dockerfile | security-hub/infra/harbor-portal | v2.13.2 | container_images/infra/harbor-portal
