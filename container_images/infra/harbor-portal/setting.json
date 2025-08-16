@@ -1,7 +1,7 @@
 {
   "headerBgColor": {
     "darkMode": "#000000",
-    "lightMode": "#ffd208"
+    "lightMode": "#383838"
   },
   "loginBgImg": "login_bg_transp_800x600.png",
   "loginTitle": "OCI Registry",
