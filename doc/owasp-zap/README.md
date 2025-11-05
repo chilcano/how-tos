@@ -38,54 +38,72 @@ kubectl delete namespace dast
 kubectl exec -it -n dast deploy/zap-scan -- bash
 
 # zap help, version
-kubectl exec -it -n dast deploy/zap-scan -- zap.sh -h
-kubectl exec -it -n dast deploy/zap-scan -- zap.sh -version
+zap.sh -h
+zap.sh -version
 
 # check plans
-kubectl exec -it -n dast deploy/zap-scan -- ls -la /zap/wrk/plans-sample/
-kubectl exec -it -n dast deploy/zap-scan -- cat /zap/wrk/plans-sample/scan-plan-test1.yaml
+ls -la /zap/wrk/plans-sample/
+cat /zap/wrk/plans-sample/scan-plan-test1.yaml
 
 # zap policies
-kubectl exec -it -n dast deploy/zap-scan -- ls -la /root/.ZAP/policies/
-kubectl exec -it -n dast deploy/zap-scan -- ls -la /home/zap/.ZAP/policies/
+ls -la /root/.ZAP/policies/
+ls -la /home/zap/.ZAP/policies/
 
 # check reports generated and size (vol 4Gi)
-kubectl exec -it -n dast deploy/zap-scan -- ls -la /sec-reports/zap/
-kubectl exec -it -n dast deploy/zap-scan -- sh -c 'du -sh /sec-reports/zap/*'
-kubectl exec -it -n dast deploy/zap-scan -- sh -c 'du -sh /sec-reports/zap/* | sort -h'
+ls -la /sec-reports/zap/
+du -sh /sec-reports/zap/*
+du -sh /sec-reports/zap/* | sort -h
 
-# delete reports
-kubectl exec -it -n dast deploy/zap-scan -- sh -c 'rm -rf /sec-reports/zap/out-zap.*'
+# delete reports from pod shell
+rm -rf /sec-reports/zap/out-zap.JUICESHOP*
+
+# delete reports from kubectl
+kubectl exec -it -n dast deploy/zap-scan -- sh -c 'rm -rf /sec-reports/zap/out-zap.JUICESHOP*'
 ```
 
 ### 2.1. Run ZAP scan
 
-> Update the ZAP Addons before scanning
+**Restart ZAP Scan if configmaps have changed**
 
 ```sh
+# this will terminate older and will deploy new one
+kubectl -n dast rollout restart deploy/zap-scan 
+```
+
+**Update the ZAP Addons before scanning**
+
+```sh
+# from kubectl / outside of pod
 kubectl exec -it -n dast deploy/zap-scan -- bash -c "zap.sh -cmd -addonupdate"
+
+# from inside of pod
+zap.sh -cmd -addonupdate
 ```
 
 **Scan by running zap.sh from local kubectl**
-```sh
-## test1=juiceshop, test2=cyberchef
-kubectl exec -it -n dast deploy/zap-scan -- sh -c 'REPORT_DIR=/sec-reports/zap PRODUCT_NAME=JUICESHOP REPORT_DATE=$(date +%y%m%d-%H%M%S) zap.sh -cmd -autorun /zap/wrk/plans-sample/scan-plan-test1.yaml'
-kubectl exec -it -n dast deploy/zap-scan -- bash -c "REPORT_DIR=/sec-reports/zap PRODUCT_NAME=CYBERCHEF REPORT_DATE=$(date +%y%m%d-%H%M%S) zap.sh -cmd -autorun /zap/wrk/plans-sample/scan-plan-test2.yaml"
 
-## 01=FRONT, 02=BACK
-kubectl exec -it -n dast deploy/zap-scan -- sh -c 'REPORT_DIR=/sec-reports/zap PRODUCT_NAME=FRONT REPORT_DATE=$(date +%y%m%d-%H%M%S) zap.sh -cmd -autorun /zap/wrk/plans-extra/scan-plan-01-front.yaml'
-kubectl exec -it -n dast deploy/zap-scan -- bash -c "REPORT_DIR=/sec-reports/zap PRODUCT_NAME=BACK REPORT_DATE=$(date +%y%m%d-%H%M%S) zap.sh -cmd -autorun /zap/wrk/plans-extra/scan-plan-02-back.yaml"
+```sh
+## cyberchef & juiceshop passive scanning
+kubectl exec -it -n dast deploy/zap-scan -- bash -c "REPORT_DIR=/sec-reports/zap REPORT_DATE=$(date +%y%m%d-%H%M%S) PRODUCT_NAME=CYBERCHEF zap.sh -cmd -autorun /zap/wrk/plans-sample/passive-scan-cyberchef.yaml"
+kubectl exec -it -n dast deploy/zap-scan -- bash -c "REPORT_DIR=/sec-reports/zap REPORT_DATE=$(date +%y%m%d-%H%M%S) PRODUCT_NAME=JUICESHOP zap.sh -cmd -autorun /zap/wrk/plans-sample/passive-scan-juiceshop.yaml"
+
+## using passive-scan-template.yaml
+targetApp="CYBERCHEF"; targetUrl="http://test-cyberchef-common.dast.svc.cluster.local:8000"
+targetApp="JUICESHOP"; targetUrl="http://juiceshop-svc.juiceshop.svc.cluster.local:3080"
+kubectl exec -it -n dast deploy/zap-scan -- bash -c "REPORT_DIR=/sec-reports/zap REPORT_DATE=$(date +%y%m%d-%H%M%S) PRODUCT_NAME=${targetApp} TARGET_URL=${targetUrl} zap.sh -cmd -autorun /zap/wrk/plans-sample/passive-scan-template.yaml"
 ```
 
 **Scan by running zap.sh from pod**
-```sh
-## test1=juiceshop, test2=cyberchef
-REPORT_DIR=/sec-reports/zap PRODUCT_NAME=JUICESHOP REPORT_DATE=$(date +%y%m%d-%H%M%S) zap.sh -cmd -autorun /zap/wrk/plans-sample/scan-plan-test1.yaml
-REPORT_DIR=/sec-reports/zap PRODUCT_NAME=CYBERCHEF REPORT_DATE=$(date +%y%m%d-%H%M%S) zap.sh -cmd -autorun /zap/wrk/plans-sample/scan-plan-test2.yaml
 
-## 01=FRONT, 02=BACK
-REPORT_DIR=/sec-reports/zap PRODUCT_NAME=FRONT REPORT_DATE=$(date +%y%m%d-%H%M%S) zap.sh -cmd -autorun /zap/wrk/plans-extra/scan-plan-01.yaml
-REPORT_DIR=/sec-reports/zap PRODUCT_NAME=BACK REPORT_DATE=$(date +%y%m%d-%H%M%S) zap.sh -cmd -autorun /zap/wrk/plans-extra/scan-plan-02.yaml
+```sh
+## using passive-scan-template.yaml from inside of zap pod
+kubectl exec -it -n dast deploy/zap-scan -- bash
+
+targetApp="CYBERCHEF"; targetUrl="http://test-cyberchef-common.dast.svc.cluster.local:8000"
+REPORT_DIR=/sec-reports/zap REPORT_DATE=$(date +%y%m%d-%H%M%S) PRODUCT_NAME=${targetApp} TARGET_URL=${targetUrl} zap.sh -cmd -autorun /zap/wrk/plans-sample/passive-scan-template.yaml
+
+targetApp="JUICESHOP"; targetUrl="http://juiceshop-svc.juiceshop.svc.cluster.local:3080"
+REPORT_DIR=/sec-reports/zap REPORT_DATE=$(date +%y%m%d-%H%M%S) PRODUCT_NAME=${targetApp} TARGET_URL=${targetUrl} zap.sh -cmd -autorun /zap/wrk/plans-sample/passive-scan-template.yaml
 ```
 
 ### 2.2. View ZAP scan logs
@@ -100,15 +118,18 @@ kubectl exec -it -n dast deploy/zap-scan -- tail -f -n 1000 /home/zap/.ZAP/zap.l
 kubectl exec -it -n dast deploy/sec-reports-viewer -- sh
 kubectl exec -it -n dast deploy/sec-reports-viewer -- ls -la /usr/share/nginx/html/
 kubectl exec -it -n dast deploy/sec-reports-viewer -- ls -la /usr/share/nginx/html/sec-reports/
+kubectl exec -it -n dast deploy/sec-reports-viewer -- ls -la /usr/share/nginx/html/sec-reports/zap/
 
 # view size of vol
 kubectl exec -it -n dast deploy/sec-reports-viewer -- sh -c 'du -sh /usr/share/nginx/html/sec-reports/* | sort -h'
 
-# get shell
+# delete reports from pod shell
 kubectl exec -it -n dast deploy/sec-reports-viewer -- sh
-# delete reports from shell
-/ # ls -la /usr/share/nginx/html/sec-reports/zap/
-/ # rm -rf /usr/share/nginx/html/sec-reports/zap/out-zap.*
+rm -rf /usr/share/nginx/html/sec-reports/zap/out-zap.JUICESHOP*
+
+# delete reports from kubectl
+kubectl exec -it -n dast deploy/sec-reports-viewer -- sh -c 'rm -rf /usr/share/nginx/html/sec-reports/zap/out-zap.JUICE*'
+kubectl exec -it -n dast deploy/sec-reports-viewer -- sh -c 'rm -rf /usr/share/nginx/html/sec-reports/zap/out-zap.juice*'
 ```
 
 ## 4. Send ZAP reports to DefectDojo

@@ -208,7 +208,96 @@ kind: ConfigMap
 metadata:
   name: zap-scan-cm-plans-sample
 data:
-  scan-plan-test1.yaml: |
+  passive-scan-template.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - '${TARGET_URL}'
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spiderAjax
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxCrawlDepth: 10
+          runOnlyIfModern: false
+          inScopeOnly: true
+          browserId: firefox-headless
+          clickDefaultElems: true
+          clickElemsOnce: true
+          maxCrawlStates: 0
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: report
+        parameters:
+          template: traditional-html
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          # reportTitle: PRODUCT_NAME_HERE
+          reportTitle: Passive Scanning Report
+        sites:
+          - '${TARGET_URL}'
+
+  passive-scan-cyberchef.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - http://test-cyberchef-common.dast.svc.cluster.local:8000/
+          includePaths:
+            - https?://test-cyberchef-common.dast.svc.cluster.local:8000/.* 
+          technology:
+            exclude: [HypersonicSQL, MariaDB, Oracle, MySQL, PHP, ASP, Windows, IIS]
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true 
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spiderAjax
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxCrawlDepth: 10
+          runOnlyIfModern: false
+          inScopeOnly: true
+          browserId: firefox-headless
+          clickDefaultElems: true
+          clickElemsOnce: true
+          maxCrawlStates: 0
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: report
+        parameters:
+          template: traditional-html
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: CyberChef Passive Scanning Report
+          reportDescription: Runs SpiderAjax & PassiveScan
+        sites:
+          - 'cyberchef'
+      - type: report
+        parameters:
+          template: traditional-xml
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+
+  passive-scan-juiceshop.yaml: |
     env:
       contexts:
         - name: app-ctx
@@ -249,105 +338,19 @@ data:
           template: traditional-html
           reportDir: ${REPORT_DIR}
           reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
-          reportTitle: Findings in JuiceShop
-          reportDescription: Runs SpiderAjax & PassiveScan [ JuiceShop ]
+          reportTitle: JuiceShop Passive Scanning Report
+          reportDescription: Runs SpiderAjax & PassiveScan
+        sites:
+          - 'juiceshop'
       - type: report
         parameters:
-          template: traditional-xml
+          template: traditional-pdf
           reportDir: ${REPORT_DIR}
-          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
-  scan-plan-test2.yaml: |
-    env:
-      contexts:
-        - name: app-ctx
-          urls:
-            - http://test-cyberchef-zws-dev-security-common.test-waf-cf.svc.cluster.local/
-          includePaths:
-            - https?://test-cyberchef-zws-dev-security-common.test-waf-cf.svc.cluster.local/.* 
-          technology:
-            exclude: [HypersonicSQL, MariaDB, Oracle, MySQL, PHP, ASP, Windows, IIS]
-      parameters:
-        failOnError: true
-        failOnWarning: false
-        continueOnFailure: false
-        progressToStdout: true 
-    jobs:
-      - type: passiveScan-config
-        parameters:
-          maxAlertsPerRule: 10
-          scanOnlyInScope: true
-      - type: spiderAjax
-        parameters:
-          context: app-ctx
-          maxDuration: 0
-          maxCrawlDepth: 10
-          runOnlyIfModern: false
-          inScopeOnly: true
-          browserId: firefox-headless
-          clickDefaultElems: true
-          clickElemsOnce: true
-          maxCrawlStates: 0
-      - type: passiveScan-wait
-        parameters:
-          maxDuration: 30
-      - type: report
-        parameters:
-          template: traditional-html
-          reportDir: ${REPORT_DIR}
-          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
-          reportTitle: Findings in CyberChef
-          reportDescription: Runs SpiderAjax & PassiveScan [ CyberChef ]
-      - type: report
-        parameters:
-          template: traditional-xml
-          reportDir: ${REPORT_DIR}
-          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
-  scan-plan-test3.yaml: |
-    env:
-      contexts:
-        - name: app-ctx
-          urls:
-            - http://test-cyberchef-common.dast.svc.cluster.local:8000/
-          includePaths:
-            - https?://test-cyberchef-common.dast.svc.cluster.local:8000/.* 
-          technology:
-            exclude: [HypersonicSQL, MariaDB, Oracle, MySQL, PHP, ASP, Windows, IIS]
-      parameters:
-        failOnError: true
-        failOnWarning: false
-        continueOnFailure: false
-        progressToStdout: true 
-    jobs:
-      - type: passiveScan-config
-        parameters:
-          maxAlertsPerRule: 10
-          scanOnlyInScope: true
-      - type: spiderAjax
-        parameters:
-          context: app-ctx
-          maxDuration: 0
-          maxCrawlDepth: 10
-          runOnlyIfModern: false
-          inScopeOnly: true
-          browserId: firefox-headless
-          clickDefaultElems: true
-          clickElemsOnce: true
-          maxCrawlStates: 0
-      - type: passiveScan-wait
-        parameters:
-          maxDuration: 30
-      - type: report
-        parameters:
-          template: traditional-html
-          reportDir: ${REPORT_DIR}
-          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
-          reportTitle: Findings in CyberChef
-          reportDescription: Runs SpiderAjax & PassiveScan [ CyberChef ]
-      - type: report
-        parameters:
-          template: traditional-xml
-          reportDir: ${REPORT_DIR}
-          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}-report
+          reportTitle: Passive Scanning Report
+        sites:
+          - 'juiceshop'
+
   scan-plan-pita1-adm.yaml: |
     env:
       contexts:
@@ -578,4 +581,5 @@ data:
           reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
           reportTitle: Findings in PITA-ARCH
           reportDescription: Runs SpiderAjax & PassiveScan [ PITA-ARCH ]
+
 ---
