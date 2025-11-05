@@ -1,0 +1,72 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head><title>ZAP Reports Viewer</title>
+    <style>
+    body { font-family: Telegraf, sans-serif; padding: 20px; }
+    ul { list-style-type: none; padding: 0; }
+    #table-sca-reports {
+      font-family: Telegraf, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    #table-sca-reports td, #table-sca-reports th {
+      border: 1px solid #000000;
+      padding: 8px;
+    }
+    #table-sca-reports tr:nth-child(even){background-color: #f2f2f2;}
+    #table-sca-reports tr:hover {background-color: #ddd;}
+    #table-sca-reports tr#footer {
+      background-color: #c0c0c0ca;
+      text-align: left;
+      font-weight: bold;
+    }
+    #table-sca-reports th {
+      padding-top: 12px;
+      padding-bottom: 12px;
+      text-align: left;
+      font-weight: bold;
+      background-color: black;
+      color: #ffd209;
+    }
+    </style>
+    </head>
+    <body>
+    <h1>ZAP Reports Viewer</h1>
+    <img src="zap-logo.png" alt="ZAP" style="width:200px;"/>
+    <table id="table-sca-reports">
+        <tr><th>Scan Date</th><th>Product or Team</th><th>Statistics</th></tr> 
+        <!-- root-dast-report-row -->
+    </table>
+    <ul id="report-list">Loading...</ul>
+    <script>
+      async function loadReports() {
+        try {
+          const response = await fetch('/reports/zap/');
+          const text = await response.text();
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(text, 'text/html');
+          const links = [...doc.querySelectorAll('a')];
+          const list = document.getElementById('report-list');
+          list.innerHTML = '';
+          links
+            .filter(a => a.href.match(/out-zap\..*\.html$/))
+            .sort((a, b) => b.href.localeCompare(a.href))
+            .forEach(a => {
+              const li = document.createElement('li');
+              const link = document.createElement('a');
+              const filename = a.href.split('/').pop();
+              link.href = `/reports/zap/${filename}`;
+              link.textContent = filename.replace('.html', '');
+              li.appendChild(link);
+              list.appendChild(li);
+            });
+        } catch (e) {
+          document.getElementById('report-list').innerText = 'Failed to load reports.';
+        }
+      }
+      loadReports();
+      setInterval(loadReports, 300000); // 5 minutes
+    </script>
+    <a href="/reports/">Click here to browse all reports.</a>
+    </body>
+    </html>

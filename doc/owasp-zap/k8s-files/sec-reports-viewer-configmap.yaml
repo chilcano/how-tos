@@ -41,7 +41,7 @@ data:
   nginx-index-html: |
     <!DOCTYPE html>
     <html lang="en">
-    <head><title>Security Reports</title>
+    <head><title>ZAP Reports Viewer</title>
     <style>
     body { font-family: Telegraf, sans-serif; padding: 20px; }
     ul { list-style-type: none; padding: 0; }
@@ -51,7 +51,7 @@ data:
       width: 100%;
     }
     #table-sca-reports td, #table-sca-reports th {
-      border: 1px solid #ddd;
+      border: 1px solid #000000;
       padding: 8px;
     }
     #table-sca-reports tr:nth-child(even){background-color: #f2f2f2;}
@@ -66,13 +66,13 @@ data:
       padding-bottom: 12px;
       text-align: left;
       font-weight: bold;
-      background-color: #ffd209;
-      color: black;
+      background-color: black;
+      color: #ffd209;
     }
     </style>
     </head>
     <body>
-    <h1>Security Hub - Security Reports</h1>
+    <h1>ZAP Reports Viewer</h1>
     <img src="zap-logo.png" alt="ZAP" style="width:200px;"/>
     <table id="table-sca-reports">
         <tr><th>Scan Date</th><th>Product or Team</th><th>Statistics</th></tr> 
