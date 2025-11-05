@@ -60,36 +60,45 @@ spec:
 
                   # echo "** Scan CyberChef **"
                   # REPORT_DATE=$now REPORT_DIR=/sec-reports/zap PRODUCT_NAME=CYBERCHEF zap.sh -cmd -autorun /zap/wrk/plans/scan-plan-test2.yaml
+                  
                   # echo "** Scan Console-Front **"
                   # REPORT_DATE=$now REPORT_DIR=/sec-reports/zap PRODUCT_NAME=FRONT zap.sh -cmd -autorun /zap/wrk/plans/scan-plan-01.yaml
+                  
                   # echo "** Scan Console-Back **"
                   # REPORT_DATE=$now REPORT_DIR=/sec-reports/zap PRODUCT_NAME=BACK zap.sh -cmd -autorun /zap/wrk/plans/scan-plan-02.yaml
               volumeMounts:
-                - name: sec-reports-dir
-                  mountPath: /sec-reports/
-                - name: zap-scan-plans-dir
-                  mountPath: /zap/wrk/plans/
                 - name: zap-scan-policies-dir
                   subPath: my-policy-01
                   mountPath: /home/zap/.ZAP/policies/my-policy-01.policy
                 - name: zap-scan-policies-dir
                   subPath: my-policy-02
                   mountPath: /home/zap/.ZAP/policies/my-policy-02.policy
-                - name: zap-reimport-script
+                - name: zap-scan-scripts-dir
                   subPath: run-zap-and-defectdojo-reimport-sh
                   mountPath: /zap/wrk/run-zap-and-defectdojo-reimport.sh
+                - name: zap-scan-plans-sample-dir
+                  mountPath: /zap/wrk/plans-sample/
+                - name: zap-scan-plans-extra-dir
+                  mountPath: /zap/wrk/plans-extra/
+
+                - name: sec-reports-vol
+                  mountPath: /sec-reports/
           restartPolicy: Never
           volumes:
-            - name: sec-reports-dir
-              persistentVolumeClaim:
-                claimName: sec-reports-pvc
-            - name: zap-scan-plans-dir
-              configMap:
-                name: zap-scan-plans
             - name: zap-scan-policies-dir
               configMap:
-                name: zap-scan-policies
-            - name: zap-reimport-script
+                name: zap-scan-cm-policies
+            - name: zap-scan-scripts-dir
               configMap:
-                name: zap-reimport-script
+                name: zap-scan-cm-scripts
+            - name: zap-scan-plans-sample-dir
+              configMap:
+                name: zap-scan-cm-plans-sample
+            - name: zap-scan-plans-extra-dir
+              configMap:
+                name: zap-scan-cm-plans-extra
+
+            - name: sec-reports-vol
+              persistentVolumeClaim:
+                claimName: sec-reports-pvc
 ---

@@ -1,0 +1,581 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zap-scan-cm-plans-extra
+data:
+  scan-plan-01-front.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - http://console-zws-dev-front.console.svc.cluster.local:8080/
+          includePaths:
+            - https?://console-zws-dev-front.console.svc.cluster.local:8080/.* 
+          technology:
+            exclude: [HypersonicSQL, MariaDB, Oracle, MySQL, PHP, ASP, Windows, IIS]
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true 
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spiderAjax
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxCrawlDepth: 10
+          runOnlyIfModern: false
+          inScopeOnly: true
+          browserId: firefox-headless
+          clickDefaultElems: true
+          clickElemsOnce: true
+          maxCrawlStates: 0
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: report
+        parameters:
+          template: traditional-html-plus
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: Findings in Console-Front 
+          reportDescription: Runs SpiderAjax & PassiveScan [ Console-Front ]
+      - type: report
+        parameters:
+          template: traditional-xml-plus
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+  scan-plan-02-back.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - http://console-zws-dev-back.console.svc.cluster.local:3000/graphql
+          includePaths:
+            - https?://console-zws-dev-back.console.svc.cluster.local:3000/.* 
+          technology:
+            exclude: [HypersonicSQL, MariaDB, Oracle, MySQL, PHP, ASP, Windows, IIS]
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true 
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spiderAjax
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxCrawlDepth: 10
+          runOnlyIfModern: false
+          inScopeOnly: true
+          browserId: firefox-headless
+          clickDefaultElems: true
+          clickElemsOnce: true
+          maxCrawlStates: 0
+      - type: graphql
+        parameters:
+          endpoint: http://console-zws-dev-back.console.svc.cluster.local:3000/graphql
+          requestMethod: post_json
+          maxQueryDepth: 5
+          maxArgsDepth: 5
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: report
+        parameters:
+          template: traditional-html-plus
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: Findings in Console-Back 
+          reportDescription: Runs SpiderAjax, Graphql & PassiveScan [ Console-Back ]
+      - type: report
+        parameters:
+          template: traditional-xml-plus
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+  scan-plan-03-relayer.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - ${TARGET_URI}/v1/keyurl
+          includePaths:
+            - "${TARGET_URI}/.*"
+          technology:
+            exclude: [HypersonicSQL, MariaDB, Oracle, MySQL, PHP, ASP, Windows, IIS]
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true 
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spider
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxDepth: 10
+          maxChildren: 10
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: report
+        parameters:
+          template: traditional-html
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: Findings in Console-Relayer
+          reportDescription: Runs Spider & PassiveScan [ Console-Relayer ]
+      - type: report
+        parameters:
+          template: traditional-xml
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+  scan-plan-04-api-zama-ai.yaml: |
+    env:
+      contexts:
+      - name: app-ctx
+        urls:
+        - ${TARGET_URI}/docs
+        - ${TARGET_URI}/logs
+        - ${TARGET_URI}/openapi.json
+        includePaths:
+        - "${TARGET_URI}/.*"
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true 
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spider
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxDepth: 10
+          maxChildren: 10
+      - type: openapi
+        parameters:
+          apiUrl: ${TARGET_URI}/openapi.json
+          targetUrl: ${TARGET_URI}
+          context: app-ctx
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: activeScan
+        parameters:
+          context: app-ctx
+        policyDefinition:
+          defaultStrength: medium
+          defaultThreshold: medium
+      - type: report
+        parameters:
+          template: traditional-pdf
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}-report
+          reportTitle: Findings in API-ZAMA-AI
+          reportDescription: Run Spider, PassiveScan, OpenAPI scan & ActiveScan [ API-ZAMA-AI ]
+      - type: report
+        parameters:
+          template: traditional-html
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: Findings in API-ZAMA-AI
+          reportDescription: Run Spider, PassiveScan, OpenAPI scan & ActiveScan [ API-ZAMA-AI ]
+      - type: report
+        parameters:
+          template: traditional-xml
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zap-scan-cm-plans-sample
+data:
+  scan-plan-test1.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - http://juiceshop-svc.juiceshop.svc.cluster.local:3080/
+            # - http://juiceshop.tawa.local/
+          includePaths:
+            - https?://juiceshop-svc.juiceshop.svc.cluster.local:3080/.* 
+            # - https?://juiceshop.tawa.local/.*
+          technology:
+            exclude: [HypersonicSQL, Oracle, ASP, Windows, IIS]
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spiderAjax
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxCrawlDepth: 10
+          runOnlyIfModern: false
+          inScopeOnly: true
+          browserId: firefox-headless
+          clickDefaultElems: true
+          clickElemsOnce: true
+          maxCrawlStates: 0
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: report
+        parameters:
+          template: traditional-html
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: Findings in JuiceShop
+          reportDescription: Runs SpiderAjax & PassiveScan [ JuiceShop ]
+      - type: report
+        parameters:
+          template: traditional-xml
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+  scan-plan-test2.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - http://test-cyberchef-zws-dev-security-common.test-waf-cf.svc.cluster.local/
+          includePaths:
+            - https?://test-cyberchef-zws-dev-security-common.test-waf-cf.svc.cluster.local/.* 
+          technology:
+            exclude: [HypersonicSQL, MariaDB, Oracle, MySQL, PHP, ASP, Windows, IIS]
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true 
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spiderAjax
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxCrawlDepth: 10
+          runOnlyIfModern: false
+          inScopeOnly: true
+          browserId: firefox-headless
+          clickDefaultElems: true
+          clickElemsOnce: true
+          maxCrawlStates: 0
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: report
+        parameters:
+          template: traditional-html
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: Findings in CyberChef
+          reportDescription: Runs SpiderAjax & PassiveScan [ CyberChef ]
+      - type: report
+        parameters:
+          template: traditional-xml
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+  scan-plan-test3.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - http://test-cyberchef-common.dast.svc.cluster.local:8000/
+          includePaths:
+            - https?://test-cyberchef-common.dast.svc.cluster.local:8000/.* 
+          technology:
+            exclude: [HypersonicSQL, MariaDB, Oracle, MySQL, PHP, ASP, Windows, IIS]
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true 
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spiderAjax
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxCrawlDepth: 10
+          runOnlyIfModern: false
+          inScopeOnly: true
+          browserId: firefox-headless
+          clickDefaultElems: true
+          clickElemsOnce: true
+          maxCrawlStates: 0
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: report
+        parameters:
+          template: traditional-html
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: Findings in CyberChef
+          reportDescription: Runs SpiderAjax & PassiveScan [ CyberChef ]
+      - type: report
+        parameters:
+          template: traditional-xml
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+  scan-plan-pita1-adm.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - https://acadpruebas.pitagoras.edu.pe/erp_pitagoras/acceso
+          includePaths:
+            - https?://acadpruebas.pitagoras.edu.pe/erp_pitagoras/.* 
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true 
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spiderAjax
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxCrawlDepth: 10
+          runOnlyIfModern: false
+          inScopeOnly: true
+          browserId: firefox-headless
+          clickDefaultElems: true
+          clickElemsOnce: true
+          maxCrawlStates: 0
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: report
+        parameters:
+          template: traditional-pdf
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}-report
+          reportTitle: Findings in PITA-ADM
+          reportDescription: Runs SpiderAjax & PassiveScan [ PITA-ADM ]
+      - type: report
+        parameters:
+          template: traditional-html
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: Findings in PITA-ADM
+          reportDescription: Runs SpiderAjax & PassiveScan [ PITA-ADM ]
+  scan-plan-pita2-alu.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - https://acadpruebas.pitagoras.edu.pe/academia/alumno/intranet/acceso
+          includePaths:
+            - https?://acadpruebas.pitagoras.edu.pe/academia/.* 
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true 
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spiderAjax
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxCrawlDepth: 10
+          runOnlyIfModern: false
+          inScopeOnly: true
+          browserId: firefox-headless
+          clickDefaultElems: true
+          clickElemsOnce: true
+          maxCrawlStates: 0
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: report
+        parameters:
+          template: traditional-pdf
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}-report
+          reportTitle: Findings in PITA-ALU
+          reportDescription: Runs SpiderAjax & PassiveScan [ PITA-ALU ]
+      - type: report
+        parameters:
+          template: traditional-html
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: Findings in PITA-ALU
+          reportDescription: Runs SpiderAjax & PassiveScan [ PITA-ALU ]
+  scan-plan-pita3-inscrip.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - https://acadpruebas.pitagoras.edu.pe/academia/inscripcion
+          includePaths:
+            - https?://acadpruebas.pitagoras.edu.pe/academia/inscripcion/.* 
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true 
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spiderAjax
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxCrawlDepth: 10
+          runOnlyIfModern: false
+          inScopeOnly: true
+          browserId: firefox-headless
+          clickDefaultElems: true
+          clickElemsOnce: true
+          maxCrawlStates: 0
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: report
+        parameters:
+          template: traditional-pdf
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}-report
+          reportTitle: Findings in PITA-INSCRIP
+          reportDescription: Runs SpiderAjax & PassiveScan [ PITA-INSCRIP ]
+      - type: report
+        parameters:
+          template: traditional-html
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: Findings in PITA-INSCRIP
+          reportDescription: Runs SpiderAjax & PassiveScan [ PITA-INSCRIP ]
+  scan-plan-pita4-adm-intra.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - https://acadpruebas.pitagoras.edu.pe/admin/intranet/acceso
+          includePaths:
+            - https?://acadpruebas.pitagoras.edu.pe/admin/.* 
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true 
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spiderAjax
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxCrawlDepth: 10
+          runOnlyIfModern: false
+          inScopeOnly: true
+          browserId: firefox-headless
+          clickDefaultElems: true
+          clickElemsOnce: true
+          maxCrawlStates: 0
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: report
+        parameters:
+          template: traditional-pdf
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}-report
+          reportTitle: Findings in PITA-ADM-INTRA
+          reportDescription: Runs SpiderAjax & PassiveScan [ PITA-ADM-INTRA ]
+      - type: report
+        parameters:
+          template: traditional-html
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: Findings in PITA-ADM-INTRA
+          reportDescription: Runs SpiderAjax & PassiveScan [ PITA-ADM-INTRA ]
+  scan-plan-pita5-arch.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - https://archivos.pitagoras.edu.pe/
+          includePaths:
+            - https?://archivos.pitagoras.edu.pe/.* 
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true 
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+      - type: spiderAjax
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxCrawlDepth: 10
+          runOnlyIfModern: false
+          inScopeOnly: true
+          browserId: firefox-headless
+          clickDefaultElems: true
+          clickElemsOnce: true
+          maxCrawlStates: 0
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+      - type: report
+        parameters:
+          template: traditional-pdf
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}-report
+          reportTitle: Findings in PITA-ARCH
+          reportDescription: Runs SpiderAjax & PassiveScan [ PITA-ARCH ]
+      - type: report
+        parameters:
+          template: traditional-html
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: Findings in PITA-ARCH
+          reportDescription: Runs SpiderAjax & PassiveScan [ PITA-ARCH ]
+---
