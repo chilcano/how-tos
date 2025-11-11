@@ -2,6 +2,11 @@
 
 ![](owasp-zap-hla-map.png)
 
+## 0. ZAP Installation in Linux
+
+* [Install ZAP 2.16.1 in Ubuntu 24.04](./zap-linux-install.md)
+
+
 ## 1. Deploy ZAP, Report Viewer and Scan CronJob
 
 ```sh
