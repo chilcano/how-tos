@@ -62,6 +62,14 @@ ls /usr/share/openjfx/lib/
 javafx.base.jar  javafx.controls.jar  javafx.fxml.jar  javafx.graphics.jar  javafx.media.jar  javafx.properties  javafx.swing.jar  javafx.web.jar  src.zip
 ```
 
+### 1.3. Install Linux GTK libs
+
+If running ZAP GUI in Linux, then ZAP tries to load GTK module, if ZAP doesn't find, then It'll show a warning or error message. To avoid that, install those libs:
+
+```sh
+sudo apt -y install libcanberra-gtk-module libcanberra-gtk3-module
+```
+
 ## 2. Installation of ZAP
 
 ### 2.1. Download official tar file
