@@ -252,8 +252,10 @@ Now, it should be reacheable at https://juiceshop.intix.info
 
 **01. Install**
 
+Download [https://github.com/weaveworks/scope/releases/download/v1.13.2/k8s-scope.yaml](https://github.com/weaveworks/scope/releases/download/v1.13.2/k8s-scope.yaml) and save it as `k8s-weaveworks-scope-deploy-v1.13.2.yaml`.
+
 ```sh
-kubectl apply -f https://github.com/weaveworks/scope/releases/download/v1.13.2/k8s-scope.yaml
+kubectl apply -f k8s-weaveworks-scope-deploy-v1.13.2.yaml
 
 namespace/weave created
 clusterrole.rbac.authorization.k8s.io/weave-scope created
@@ -264,6 +266,9 @@ deployment.apps/weave-scope-cluster-agent created
 serviceaccount/weave-scope created
 service/weave-scope-app created
 ```
+
+> * You can use `k8s-weaveworks-scope-deploy-v1.13.2-eks.yaml` for AWS EKS `v1.32.3` with `containerd://1.7.27` or `v1.32.9` with `containerd://2.1.4`.
+> Weaveworks Scope 1.13.2 doesn't work properly for above EKS version.
 
 **02. Check installation**
 

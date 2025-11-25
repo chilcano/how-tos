@@ -1,0 +1,46 @@
+# ---
+# kind: Ingress
+# apiVersion: networking.k8s.io/v1
+# metadata:
+#   name: scope-ing-ts
+#   namespace: weave
+# spec:
+#   # ingressClassName: public
+#   ingressClassName: nginx
+#   rules:
+#   - host: scope.tawa.local
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: weave-scope-app
+#             port:
+#               number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: weave-scope-ing-ts
+  labels:
+    name: weave-scope-ing-ts
+    app: weave-scope
+spec:
+  ingressClassName: tailscale
+  rules:
+    - host: scope-zws-dev
+      http:
+        paths:
+          - backend:
+              service:
+                name: weave-scope-app-svc
+                port:
+                  # name: http
+                  number: 80
+            path: /
+            pathType: ImplementationSpecific
+  tls:
+    - hosts:
+      - scope-zws-dev
+---
