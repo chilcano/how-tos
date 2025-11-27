@@ -83,6 +83,6 @@ Repository with technical indications to install, configure any interesting stuf
 6. [DAST - OWASP ZAP - Vulnerability scanner](doc/owasp-zap/)
 7. [Testing FHE with Python](doc/ecosystems-architectures/01-pyfhel-salary-processing.py)
 8. [MicroK8s Guide](doc/playing_with_microk8s/README.md)
-9. [Trivy - Security Dependencies Checking](doc/trivy_security_dependencies_checking.md)
+9. [Trivy - Security Dependencies Checking](doc/sca/trivy_security_dependencies_checking.md)
 10. [Trivy Operator - Security Dependencies Checking in Kubernetes](doc/playing_with_trivy_operator/trivy-operator-guide-README.md)
 11. [DefectDojo - Application Security Posture Management (ASPM) and Vulnerability Management](doc/playing_with_defectdojo/defectdojo-guide-README.md)
