@@ -1,0 +1,46 @@
+{
+  "metadata": {
+    "campaign": "Shai Hulud attack v2",
+    "date": "2025-11-26",
+    "source": "https://socket.dev/blog/shai-hulud-strikes-again-v2",
+    "description": "IOC rules capturing environment-variable exfiltration via curl or subprocess injection, as seen in the Shai Hulud v2 supply-chain attack."
+  },
+
+  "ioc_rules": [
+
+    {
+      "id": "CURL_ENV_EXFIL",
+      "severity": "critical",
+      "description": "curl posting environment variables using -d/--data with printenv/env",
+      "regex": "curl(?:(?!\\n).)*(?:-d|--data|--data-binary|--data-raw)(?:(?!\\n).)*(?:printenv|env)(?:(?!\\n).)*https?://[a-zA-Z0-9_.:/%-]+"
+    },
+
+    {
+      "id": "CURL_POST_ENV_EXFIL",
+      "severity": "critical",
+      "description": "curl -X POST or --request POST exfiltrating environment variables",
+      "regex": "curl(?:(?!\\n).)*(?:-X\\s*POST|--request\\s+POST)(?:(?!\\n).)*(?:-d|--data|--data-binary|--data-raw)(?:(?!\\n).)*(?:printenv|env)(?:(?!\\n).)*https?://[a-zA-Z0-9_.:/%-]+"
+    },
+
+    {
+      "id": "NODE_EXECSYNC_CURL_ENV",
+      "severity": "high",
+      "description": "Node.js execSync/exec/spawn used to run curl with env exfil payload",
+      "regex": "(execSync|exec|spawn|spawnSync)(?:(?!\\n).)*curl(?:(?!\\n).)*(?:-d|--data|--data-binary)(?:(?!\\n).)*(?:printenv|env)"
+    },
+
+    {
+      "id": "BASE64_ENV_EXFIL",
+      "severity": "medium",
+      "description": "Environment variables piped through base64 encoding (common obfuscation prior to exfil)",
+      "regex": "(printenv|env)(?:(?!\\n).)*\\|(?:(?!\\n).)*base64"
+    },
+
+    {
+      "id": "CURL_PRINTENV_MULTILINE",
+      "description": "Multiline curl exfiltration of environment variables (GitHub Actions)",
+      "regex": "(curl[\\s\\S]{0,300}-d\\s*['\\\"]?\\$?\\(printenv\\)['\\\"]?[\\s\\S]{0,300}((https?:\\/\\/[^\\s'\\\"]+)|(\"?\\$[A-Za-z_][A-Za-z0-9_]*\"?)|(\\$\\{\\{[\\s\\S]{1,100}?\\}\\})))"
+    }
+
+  ]
+}
