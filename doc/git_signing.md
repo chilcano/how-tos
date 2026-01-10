@@ -11,64 +11,50 @@
 __1. Generate SSH keys__  
 
 ```sh
-$ ssh-keygen -t ed25519 -C "youremail@example.com" -f ~/.ssh/<ssh-key-id>
+$ ssh-keygen -t ed25519 -C "chilcano@kipu" -f ~/.ssh/kipu_git_id_ed25519 
 ```
-You can replace `-t ed25519` for `-t rsa -b 4096` and set a proper name to `<ssh-key-id>`.
+You can replace `-t ed25519` for `-t rsa -b 4096`.
 
 
-__2. Upload the ssh public key to GitHub account__  
+__2. Upload the ssh public key to GitHub account as signing key__  
 
-Just follow these steps:  
-* https://docs.github.com/en/authentication/connecting-to-github-with-ssh/adding-a-new-ssh-key-to-your-github-account
+* This is need to verify signed commit in Github. 
+```sh
+$ cat ~/.ssh/kipu_git_id_ed25519.pub
+```
 
-__3. Config Git to use SSH as the format for signing__ 
+__3. Config Git to use ssh as the format for signing__ 
 
 ```sh
-$ git config --global commit.gpgsign true
 $ git config --global gpg.format ssh
+$ git config --global commit.gpgsign true
 ```
 
-__4. Config Git what SSH public key to use for signing__  
+__4. Add ssh public key to git__
 
-```sh
-// Get the ssh pub key
-$ cat ~/.ssh/<ssh-key-id>.pub
-// Set the ssh pub key
-$ git config --global user.signingkey "ssh-rsa <your-pub-rsa-key>"
-$ git config --global user.signingkey "ssh-ed25519 <your-pub-ed-key>"
-```
-You can change `ssh-ed25519 <your-pub-ed-key>` for `ssh-rsa <your-pub-rsa-key>`.
-
-In our case, follow this
-```sh
-$ SSH_PUB_KEY=$(cat ~/.ssh/<ssh-key-id>.pub)
-$ git config --global user.signingkey "${SSH_PUB_KEY}"
-```
+* This is the NEW way:  
+  ```sh
+  $ git config --global user.signingkey "~/.ssh/kipu_git_id_ed25519.pub"
+  $ git config --global user.signingkey ~/.ssh/kipu_git_id_ed25519.pub
+  ```
+* This is the old way:  
+  ```sh
+  $ git config --global user.signingkey "$(cat ~/.ssh/<ssh-key-id>.pub)"
+  $ git config --global user.signingkey "$(cat ~/.ssh/kipu_git_id_ed25519.pub)"
+  ```
 
 __5. Add trusted SSH public keys__   
+
+* Needed if you want to verify ssh-signed commits locally (e.g., `git log --show-signature`) and want to define which SSH keys you trust.
+* The key line format in `allowed_signers` should be: `<user@host> <ssh-key-type> <ssh-pub-key>`
+
 ```sh
-$ git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
 $ touch ~/.ssh/allowed_signers
-$ echo "youremail@example.com ssh-ed25519 <your-pub-ed-key>" >> ~/.ssh/allowed_signers
+$ awk '{print $3, $1, $2}' ~/.ssh/kipu_git_id_ed25519.pub >> ~/.ssh/allowed_signers
+$ git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
 ```
 
-Add your own ssh pub key:
-```sh
-$ SSH_PUB_KEY=$(cat ~/.ssh/<ssh-key-id>.pub)
-$ ARRAY_SSH_PUB_KEY=(${SSH_PUB_KEY// / })
-$ echo "${ARRAY_SSH_PUB_KEY[2]} ${ARRAY_SSH_PUB_KEY[0]} ${ARRAY_SSH_PUB_KEY[1]}" >> ~/.ssh/allowed_signers
-```
-
-Where:
-- `${ARRAY_SSH_PUB_KEY[2]}` is the email address.
-- `${ARRAY_SSH_PUB_KEY[0]}` is the crypto suite used.
-- `${ARRAY_SSH_PUB_KEY[1]}` is the pub key value generated
-
-__6. Add trusted GPG public keys__   
-You should use the GPG/PGP framework to specify keys to trust and be able to verify others keys.
-
-
-__7. Check the Git configuration__
+__6. Check the Git configuration__
 
 ```sh
 $ git config --global -l
@@ -84,7 +70,7 @@ Or:
 $ cat ~/.gitconfig 
 ```
 
-__8. Signing__  
+__7. Signing__  
 
 You should use `-S` flag in commits.
 ```sh
@@ -97,13 +83,7 @@ To sign tags you have to use `-s` flag instead of `-a`:
 $ git tag -s v1.5 -m 'Signed v1.5 tag'
 ```
 
-## 2. Use GPG keys for signing
-
-Same steps or follow these steps:  
-* https://docs.github.com/en/authentication/managing-commit-signature-verification/about-commit-signature-verification
-
-
-## 3. Verifying signatures
+## 2. Verifying signatures
 
 You do need pre-configure GPG and SSH public keys as trusted keys, without that, Git CLI will show something like "Can't check signature" or "Signature not valid".  
 
