@@ -31,7 +31,7 @@ $ pip list | wc -l
 ## 2. Working with Pip and virtual environments
 
 
-### 2.1. Install virtual environment module globally
+### 2.1. virtualenv, venv and pipx?
 
 ```sh
 $ pip install virtualenv
@@ -56,63 +56,41 @@ error: externally-managed-environment
 
 note: If you believe this is a mistake, please contact your Python installation or OS distribution provider. You can override this, at the risk of breaking your Python installation or OS, by passing --break-system-packages.
 hint: See PEP 668 for the detailed specification.
-
 ```
 
-> The above error means that we can not install `virtualenv` and mixing `apt` provided packages and `pip` provided packages, and the recommendated option is using `python3 -m venv path/to/venv` instead of `python3 -m virtualenv path/to/venv`. The `venv` should be instaled using this command `apt install python3-venv` or `apt install python3.11-venv`.
+* The above error means that we __can not__ install any python app and because that is mixing `apt` provided packages and `pip` provided packages.
+* If you wat to go for it, you have 2 options: 
+  1. Install `virtualenv` or `venv` and python will create something like `.venv` dirs in your repo.
+  2. Install `pipx` and python will manage `.venv` in `~/.local/pipx/venvs` for you automatically. Recommended if app will be used in many places.
 
+
+### 2.2. Working with venv instead of virtualenv
+
+
+__1. Install venv__
+
+- We will use `python3 -m venv path/to/.venv` instead of `python3 -m virtualenv path/to/venv`. 
+- The `venv` should be instaled using this command `apt install python3-venv` or `apt install python3.11-venv`.
+- According the above error `python3-full` should be installed.
 
 ```sh
-$ sudo apt -yqq install python3-venv
+$ sudo apt -y install python3-venv python3-full
 ```
-
-### 2.2. Create a virtual environment 
 
 In a current empty directory create a virtual environment.
 ```sh
 $ python3 -m venv .venv
 ```
 
-Checking what folders were created.
-```sh
-$ tree .venv -a -L 3 
-.venv
-├── bin
-│   ├── activate
-│   ├── activate.csh
-│   ├── activate.fish
-│   ├── Activate.ps1
-│   ├── pip
-│   ├── pip3
-│   ├── pip3.11
-│   ├── python -> python3
-│   ├── python3 -> /usr/bin/python3
-│   └── python3.11 -> python3
-├── include
-│   └── python3.11
-├── lib
-│   └── python3.11
-│       └── site-packages
-├── lib64 -> lib
-└── pyvenv.cfg
-
-8 directories, 11 files
-
-```
-
-List all modules installed globally.
-```sh
-$ pip list | wc -l
-96
-```
-
-### 2.3. Activate the virtual environment 
+__2. Activate the virtual environment__
 
 Activate the virtualenv before updating or installing modules.
 ```sh
 $ source .venv/bin/activate
 ```
 And if you want to disable, just run `deactivate`.   
+
+__3. Install packages in virtual env__
 
 Now, install any module you want in the project directory.
 ```sh
@@ -145,13 +123,13 @@ Get the module details that you installed.
 $ pip show flask
 ```
 
-### 2.4. Add the virtual environment folder to your existing git ignore file
+__4. Add the virtual environment folder to your existing git ignore file__
 
 ```sh
 $ echo ".venv" >> .gitignore
 ```
 
-### 2.5. Freezing the modules for your specific python project
+__5. Freezing the modules for your specific python project__
 
 ```sh
 $  pip freeze > requirements.txt
@@ -171,13 +149,13 @@ Werkzeug==2.1.2
 zipp==3.8.0
 ```
 
-### 2.6. Installing the modules from requirements file
+__6. Installing the modules from requirements file__
 
 ```sh
 $  pip -q install -r requirements.txt
 ```
 
-### 2.7. List and update outdated modules 
+__7. List and update outdated modules__
 
 ```sh
 $  pip list --outdated
@@ -204,11 +182,56 @@ Once updated, generate an updated `requirements.txt` file.
 $ pip freeze > requirements.txt
 ```
 
-### 2.8. Check for missing dependencies
+__8. Check for missing dependencies__
 
 ```sh
 $ python -m pip check
 ``` 
+
+### 2.3. Working with pipx
+
+**1. Install pipx**
+
+- The `venv` and `ensurepip` are required by `pipx`.
+- According the above error `python3-full` should be installed as well.
+
+```sh
+$ sudo apt install -y pipx python3-full
+$ pipx ensurepath
+
+/home/chilcano/.local/bin is already in PATH.
+
+⚠️  All pipx binary directories have been added to PATH. If you are sure you want to proceed, try again with the '--force' flag.
+
+Otherwise pipx is ready to go! ✨ 🌟 ✨
+```
+
+**2. Install a python applications using pipx**
+
+```sh
+$ pipx install deployguard
+
+  installed package deployguard 0.1.2, installed using Python 3.12.3
+  These apps are now globally available
+    - deployguard
+done! ✨ 🌟 ✨
+
+$ deployguard --help
+
+Usage: deployguard [OPTIONS] COMMAND [ARGS]...
+
+  DeployGuard - Audit Foundry deployment scripts for security vulnerabilities.
+
+Options:
+  --version  Show the version and exit.
+  --help     Show this message and exit.
+
+Commands:
+  audit   Analyze deployment scripts for security vulnerabilities.
+  check   Check test coverage for deployment scripts.
+  rules   List all available rules.
+  verify  Verify deployed proxy against expected implementation.
+```
 
 ## 3. Configuring VS Code to work with Python
 
