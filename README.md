@@ -86,6 +86,7 @@ Repository with technical indications to install, configure any interesting stuf
 9. [Trivy - Security Dependencies Checking](doc/sca/trivy_security_dependencies_checking.md)
 10. [Trivy Operator - Security Dependencies Checking in Kubernetes](doc/playing_with_trivy_operator/trivy-operator-guide-README.md)
 11. [DefectDojo - Application Security Posture Management (ASPM) and Vulnerability Management](doc/playing_with_defectdojo/defectdojo-guide-README.md)
+12. [Web3, dApp and Blockchain Secure SDLC](doc/dapp-sec/)
 
 ### Security attacks mitigation tools
 
