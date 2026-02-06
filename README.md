@@ -72,7 +72,8 @@ Repository with technical indications to install, configure any interesting stuf
 38. [Docker Management with Portainer](doc/portainer_install.md)
 39. [Prime Numbers in Python](src/python_challenges/prime_numbers)
 40. [Enable WIFI in Ubuntu Recovery Mode](doc/enable_wifi_in_ubuntu_recovery_mode.md)
-41. [KVM Virtualization with Virt](doc/kvm-virt-manager-guide.md)
+41. [KVM Virtualization with Virt](doc/virtualization/kvm-virt-manager-guide.md)
+42. [Kali Linux in QEMU/KVM-Virt](doc/virtualization/qemu-kvm-kali-linux.md)
 
 ### Security guides
 

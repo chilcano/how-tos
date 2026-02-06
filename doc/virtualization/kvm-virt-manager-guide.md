@@ -2,6 +2,7 @@
 
 - Ref: https://www.cherryservers.com/blog/install-kvm-ubuntu
 
+## Steps
 
 ### Step 1: Verify hardware virtualization support
 
@@ -72,4 +73,8 @@ $ virsh list --all
 ### Step 7: Launch Virt-Manager and create a virtual machine
 
 Run from terminal `virt-manager` or open `Virtual Machine Manager` from GUI.
+
+![](kvm-virt-manager-01-ui.png)
+![](kvm-virt-manager-02-vm-details.png)
+![](kvm-virt-manager-03-vm-kubuntu.png)
 
