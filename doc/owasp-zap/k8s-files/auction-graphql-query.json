@@ -1,0 +1,5 @@
+{
+    "query": "query GetAuctionStats { auctionStats(id: '1') { id lastUpdatedTimestamp totalActiveBids totalCancelledBids totalSubmittedBids }}",
+    "operationName": "GetAuctionStats"
+}
+

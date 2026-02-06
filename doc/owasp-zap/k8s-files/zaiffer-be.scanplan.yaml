@@ -1,0 +1,81 @@
+env:
+  contexts:
+    - name: app-ctx
+      urls:
+        - https://cypher-dev.pyratzlabs.com/
+        - https://cypher-dev.pyratzlabs.com/api-auth/login/
+        - https://cypher-dev.pyratzlabs.com/api/
+        - https://cypher-dev.pyratzlabs.com/api/v1/
+        - https://cypher-dev.pyratzlabs.com/admin/
+        - https://cypher-dev.pyratzlabs.com/admin/djwebdapp
+        - https://cypher-dev.pyratzlabs.com/admin/login/
+        - https://cypher-dev.pyratzlabs.com/authentication/
+        - https://cypher-dev.pyratzlabs.com/confidential_swap/
+        - https://cypher-dev.pyratzlabs.com/contacts/
+        - https://cypher-dev.pyratzlabs.com/coordinator/
+        - https://cypher-dev.pyratzlabs.com/encrypted_erc20/balance_movements/
+        - https://cypher-dev.pyratzlabs.com/erc20/metadata/
+        - https://cypher-dev.pyratzlabs.com/invoices/
+        - https://cypher-dev.pyratzlabs.com/profile/
+        - https://cypher-dev.pyratzlabs.com/rates/historical_rates/get_latest_rates/
+        - https://cypher-dev.pyratzlabs.com/transfer_batcher/
+        - https://cypher-dev.pyratzlabs.com/transfer_batcher/
+        - https://cypher-dev.pyratzlabs.com/v1/
+        - https://cypher-dev.pyratzlabs.com/wrapper/
+        - https://cypher-dev.pyratzlabs.com/wrapper_statistics/
+      includePaths:
+        - https?://cypher-dev.pyratzlabs.com/.* 
+      technology:
+        exclude: [HypersonicSQL, Oracle, ASP, Windows, IIS]
+
+  parameters:
+    failOnError: true
+    failOnWarning: false
+    continueOnFailure: false
+    progressToStdout: true
+
+jobs:
+  - type: passiveScan-config
+    parameters:
+      maxAlertsPerRule: 10
+      scanOnlyInScope: true
+
+  - type: spiderAjax
+    parameters:
+      context: app-ctx
+      maxDuration: 0
+      maxCrawlDepth: 10
+      runOnlyIfModern: false
+      inScopeOnly: true
+      browserId: firefox-headless
+      clickDefaultElems: true
+      clickElemsOnce: true
+      maxCrawlStates: 0
+
+  - type: openapi
+    parameters:
+      apiUrl: https://cypher-dev.pyratzlabs.com/api/schema/public
+      targetUrl: https://cypher-dev.pyratzlabs.com/
+      context: app-ctx
+
+  - type: passiveScan-wait
+    parameters:
+      maxDuration: 30
+
+  - type: report
+    parameters:
+      template: traditional-html
+      reportDir: ${REPORT_DIR}
+      reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+      reportTitle: Security Scanning Report
+    sites:
+      - 'pyratzlabs'
+
+  - type: report
+    parameters:
+      template: traditional-pdf
+      reportDir: ${REPORT_DIR}
+      reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}-report
+      reportTitle: Security Scanning Report
+    sites:
+      - 'pyratzlabs'
