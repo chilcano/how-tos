@@ -103,4 +103,11 @@ Since I have a QWERTY Spanish Keyboard in the Host and Kali guest machine has US
 
 1. Claude
 2. ChatGPT
-
+3. [Strix - Open-source AI hackers](https://github.com/usestrix/strix)
+4. [Shannon - Fully autonomous AI hacker](https://github.com/KeygraphHQ/shannon)
+5. [MCP Server for Metasploit](https://github.com/GH05TCREW/MetasploitMCP)
+6. Penligent/AI2PentestTool
+  - [Using CLI for Kali/Debian](https://github.com/penligent/AI2PentestTool)
+  - [Documentation](https://www.penligent.ai/docs)
+  - [Using it - Youtube](https://www.youtube.com/watch?v=8xrRP3q4ceQ)
+7. [Run YOUR own UNCENSORED AI & Use it for Hacking - Youtube](https://www.youtube.com/watch?v=XvGeXQ7js_o)
