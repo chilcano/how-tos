@@ -40,6 +40,9 @@ kubectl delete namespace dast
 ## 2. Access to ZAP scan pod
 
 ```sh
+kubectl exec -it -n dast deploy/zap-scan -- ls -la /zap/wrk/plans-sample/
+
+
 kubectl exec -it -n dast deploy/zap-scan -- bash
 
 # zap help, version
@@ -91,6 +94,9 @@ zap.sh -cmd -addonupdate
 ## cyberchef & juiceshop passive scanning
 kubectl exec -it -n dast deploy/zap-scan -- bash -c "REPORT_DIR=/sec-reports/zap REPORT_DATE=$(date +%y%m%d-%H%M%S) PRODUCT_NAME=CYBERCHEF zap.sh -cmd -autorun /zap/wrk/plans-sample/passive-scan-cyberchef.yaml"
 kubectl exec -it -n dast deploy/zap-scan -- bash -c "REPORT_DIR=/sec-reports/zap REPORT_DATE=$(date +%y%m%d-%H%M%S) PRODUCT_NAME=JUICESHOP zap.sh -cmd -autorun /zap/wrk/plans-sample/passive-scan-juiceshop.yaml"
+
+## zaiffer-be
+kubectl exec -it -n dast deploy/zap-scan -- bash -c "REPORT_DIR=/sec-reports/zap REPORT_DATE=$(date +%y%m%d-%H%M%S) PRODUCT_NAME=ZAIFFER-BE zap.sh -cmd -autorun /zap/wrk/plans-sample/scan-zaiffer-be.yaml"
 
 ## using passive-scan-template.yaml
 targetApp="CYBERCHEF"; targetUrl="http://test-cyberchef-common.dast.svc.cluster.local:8000"

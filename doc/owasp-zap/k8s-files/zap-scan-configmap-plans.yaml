@@ -582,4 +582,64 @@ data:
           reportTitle: Findings in PITA-ARCH
           reportDescription: Runs SpiderAjax & PassiveScan [ PITA-ARCH ]
 
+  scan-zaiffer-be.yaml: |
+    env:
+      contexts:
+        - name: app-ctx
+          urls:
+            - https://cypher-dev.pyratzlabs.com/
+          includePaths:
+            - https?://cypher-dev.pyratzlabs.com/.* 
+          technology:
+            exclude: [HypersonicSQL, Oracle, ASP, Windows, IIS]
+      parameters:
+        failOnError: true
+        failOnWarning: false
+        continueOnFailure: false
+        progressToStdout: true
+    jobs:
+      - type: passiveScan-config
+        parameters:
+          maxAlertsPerRule: 10
+          scanOnlyInScope: true
+
+      - type: spiderAjax
+        parameters:
+          context: app-ctx
+          maxDuration: 0
+          maxCrawlDepth: 10
+          runOnlyIfModern: false
+          inScopeOnly: true
+          browserId: firefox-headless
+          clickDefaultElems: true
+          clickElemsOnce: true
+          maxCrawlStates: 0
+
+      - type: openapi
+        parameters:
+          apiUrl: https://cypher-dev.pyratzlabs.com/api/schema/public
+          targetUrl: https://cypher-dev.pyratzlabs.com/
+          context: app-ctx
+
+      - type: passiveScan-wait
+        parameters:
+          maxDuration: 30
+
+      - type: report
+        parameters:
+          template: traditional-html
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}
+          reportTitle: Security Scanning Report
+        sites:
+          - 'pyratzlabs'
+
+      - type: report
+        parameters:
+          template: traditional-pdf
+          reportDir: ${REPORT_DIR}
+          reportFile: out-zap.${PRODUCT_NAME}.${REPORT_DATE}-report
+          reportTitle: Security Scanning Report
+        sites:
+          - 'pyratzlabs'
 ---
