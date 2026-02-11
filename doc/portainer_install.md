@@ -2,7 +2,7 @@
 
 ## Steps
 
-__1. Install MKCert and dependencies__
+### 1. Install MKCert and dependencies
 
 * MKCert will generate certificates.
 * https://github.com/FiloSottile/mkcert
@@ -13,49 +13,91 @@ sudo apt -y install libnss3-tools
 curl -JLO "https://dl.filippo.io/mkcert/latest?for=linux/amd64"
 chmod +x mkcert-v*-linux-amd64
 sudo cp mkcert-v*-linux-amd64 /usr/local/bin/mkcert
+rm -rf mkcert-v*-linux-amd64
 mkcert -version
 v1.4.4
 ```
 
-__2. Install root certificates and generate certificates__
+### 2. Install root certificates
 
 ```sh
-mkdir -p ~/certs
-cd ~/certs/
 mkcert -install
 
 mkcert -CAROOT
 /home/chilcano/.local/share/mkcert
 
-mkcert -cert-file portainer.crt -key-file portainer.key kipu kipu.local 127.0.0.1 ::1 192.168.1.169 192.168.1.174
+ls -la /home/chilcano/.local/share/mkcert
+-r--------  1 chilcano chilcano 2488 Feb 11 12:42 rootCA-key.pem
+-rw-r--r--  1 chilcano chilcano 1684 Feb 11 12:42 rootCA.pem
+```
 
+### 3. Generate PC certificates
+
+**Issue new certs**
+```sh
+mkdir -p ~/certs && cd ~/certs/
+
+my_fqdn_list="prtnr.$(hostname) 127.0.0.1 $(hostname -i)" 
+mkcert -cert-file portainer.crt -key-file portainer.key $my_fqdn_list
+
+Created a new certificate valid for the following names 📜
+ - "prtnr.kimsa"
+ - "127.0.0.1"
+ - "127.0.1.1"
+
+The certificate is at "portainer.crt" and the key at "portainer.key" ✅
+
+It will expire on 11 May 2028
+```
+
+**Check issued certs and appending root cert**
+```sh
 cat "$(mkcert -CAROOT)/rootCA.pem" >> ~/certs/portainer.crt
 cp "$(mkcert -CAROOT)/rootCA.pem" ~/certs/.
 
-ls -la
--rw-r--r--  1 chilcano chilcano 1554 jul 16 14:31 portainer.crt
--rw-------  1 chilcano chilcano 1704 jul 16 14:31 portainer.key
--rw-r--r--  1 chilcano chilcano 1675 jul 16 15:52 rootCA.pem
+ls -la ~/certs/.
+-rw-r--r--   1 chilcano chilcano 3201 Feb 11 13:04 portainer.crt
+-rw-------   1 chilcano chilcano 1708 Feb 11 13:02 portainer.key
+-rw-r--r--   1 chilcano chilcano 1684 Feb 11 13:05 rootCA.pem
 ```
 
-__3. Install Portainer__
+**Add new entry to `/etc/hosts`**  
+The `prtnr.$(hostname)` entry shound be added to `/etc/hosts` because it is used as additional SAN in issued certificates.
+```sh
+echo "127.0.0.1 prtnr.$(hostname)" | sudo tee -a /etc/hosts
+
+127.0.0.1 prtnr.kimsa
+```
+
+### 4. Install Portainer
 
 * https://docs.portainer.io/start/install-ce/server/docker/linux
 
+**Create the volume**
 ```sh
 docker volume create portainer_data
-
-# Portainer with self-signed certificate
-docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer-ce:latest
 ```
 
-This command deploys Portainer with a custom certificate.
+**Portainer with self-signed certificate**
 ```sh
-# Portainer with custom certificate
-docker run -d -p 9443:9443 -p 8000:8000 --name portainer --restart always -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data -v /home/chilcano/certs:/certs portainer/portainer-ce:latest --sslcert /certs/portainer.crt --sslkey /certs/portainer.key
+docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart=always \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v portainer_data:/data \
+  portainer/portainer-ce:latest 
 ```
 
-This `docker-compose.yml` file deploy Portainer with custom certificate:
+**Portainer with a custom certificate, created with mkcert***
+
+```sh
+docker run -d -p 8000:8000 -p 9443:9443 --name portainer --restart always \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  -v portainer_data:/data \
+  -v $HOME/certs:/certs \
+  portainer/portainer-ce:latest --tlscert /certs/portainer.crt --tlskey /certs/portainer.key 
+```
+
+**Portainer with docker-compose.yml file and custom certificate**
+
 ```yaml
 name: portainer
 
@@ -70,30 +112,44 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
-      - /home/chilcano/certs:/certs
+      - $HOME/certs:/certs
     command:
-      - --sslcert 
+      - --tlscert 
       - /certs/portainer.crt
-      - --sslkey 
+      - --tlskey 
       - /certs/portainer.key
 
 volumes:
   portainer_data: {}
 ```
 
-__4. Checking Portainer__
+**Check the Portainer container instance running**
 
-Once deployed, Portainer should be available on `https://<your-docker-hostname>:9443`.
-Where `<your-docker-hostname>` is the name of host where Portainer docker instance is running, in my case is `kipu.local`. 
-If you don't know it, then you can use the IP address, in my case is `192.168.1.169`, and if you are in the same computer, you can use the `localhost` or `127.0.0.1`.
+```sh
+$ docker ps
 
-Although I've used MKCERT to generate a custom certificate (see step 2.) with custom SAN (Subject Alt Names), in the browser you will see a warning message:
-* In Firefox: `Error code: SEC_ERROR_UNKNOWN_ISSUER`.
-* In Brave: `NET::ERR_CERT_AUTHORITY_INVALID`.
+CONTAINER ID   IMAGE                           COMMAND                  CREATED         STATUS         PORTS                                                                                                NAMES
+31795f71e179   portainer/portainer-ce:latest   "/portainer --tlscer…"   7 seconds ago   Up 6 seconds   0.0.0.0:8000->8000/tcp, [::]:8000->8000/tcp, 0.0.0.0:9443->9443/tcp, [::]:9443->9443/tcp, 9000/tcp   portainer
 
-> In both cases that means that the CA (Certificate Authority) who issued (signed) the TLS certificate that Portainer is using is not a trusted certificate.
-> MKCERT creates a CA only for the specific host where Portainer is running, once created, it is used to sign the Portainer's TLS cerificate. 
-> Since MKCERT has not installed the CA in the host's trusted certificate repository where Portainer is called, the above message always is shown, unless you manually install the CA as a trusted certificate in the browser.
+$ docker logs portainer
 
-![](img/portainer-tls-cert-warning.png)
+2026/02/11 12:36PM INF github.com/portainer/portainer/api/cmd/portainer/main.go:325 > encryption key file not present | filename=/run/secrets/portainer
+2026/02/11 12:36PM INF github.com/portainer/portainer/api/cmd/portainer/main.go:365 > proceeding without encryption key |
+2026/02/11 12:36PM INF github.com/portainer/portainer/api/database/boltdb/db.go:137 > loading PortainerDB | filename=portainer.db
+2026/02/11 12:36PM INF github.com/portainer/portainer/api/chisel/service.go:200 > found Chisel private key file on disk | private-key=/data/chisel/private-key.pem
+2026/02/11 12:36:39 server: Reverse tunnelling enabled
+2026/02/11 12:36:39 server: Fingerprint cNnxzIcbaAqiZ8GxVH96IgP9KK6QSii494rDW7E2OSg=
+2026/02/11 12:36:39 server: Listening on http://0.0.0.0:8000
+2026/02/11 12:36PM INF github.com/portainer/portainer/api/cmd/portainer/main.go:636 > starting Portainer | build_number=269 go_version=go1.24.13 image_tag=2.33.7-linux-amd64 nodejs_version=18.x pnpm_version=10.26.2 version=2.33.7 webpack_version=5.88.2
+2026/02/11 12:36PM INF github.com/portainer/portainer/api/http/server.go:367 > starting HTTPS server | bind_address=:9443
+2026/02/11 12:36PM INF github.com/portainer/portainer/api/http/server.go:351 > starting HTTP server | bind_address=:9000
+```
 
+### 5. Using Portainer
+
+* Once deployed, Portainer should be available on `https://<your-docker-hostname>:9443`. Where `<your-docker-hostname>` is the name of host where Portainer docker instance is running, in my case is `prtnr.kimsa`. If you don't know it, then you can use the IP address, and if you are in the same computer, you can use the `localhost` or `127.0.0.1`.
+* You shouldn't see any warning or error about TLS Certificate in the Firefox or Chromer browser because we generated Portainer own cert, trusted on it and added the fqdn in `/etc/hosts`.
+
+![](img/portainer-01-initial-login.png)
+
+* Once created and update the admin user, you should restart the Portainer container: `docker restart portainer`
