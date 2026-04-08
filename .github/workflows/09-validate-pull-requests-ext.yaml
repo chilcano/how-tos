@@ -1,0 +1,83 @@
+name: 09-validate-pull-requests-ext
+
+on:
+  pull_request:
+    types: [opened, edited, reopened, synchronize]
+
+permissions:
+  pull-requests: write
+  issues: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR template
+        uses: actions/github-script@ed597411d8f924073f98dfc5c65a23a2325f34cd # v8.0.0
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            const prNumber = pr.number;
+            const body = (pr.body || "");
+            const authorAssociation = (pr.author_association || "").toUpperCase();
+
+            // Skip validation for org people / trusted contributors
+            const TRUSTED = new Set(["OWNER", "MEMBER", "COLLABORATOR"]);
+            if (TRUSTED.has(authorAssociation)) {
+              core.info(`Skipping validation for trusted author_association=${authorAssociation}`);
+              return;
+            }
+
+            const INVALID_LABEL = "invalid";
+
+            // Impact checkboxes: requires at least one checked
+            // Your PR template should have:
+            // - [ ] Low
+            // - [ ] Medium
+            // - [ ] High
+            // - [ ] Critical
+            const IMPACT_CHECKED_RE = /-\s*\[[xX]\]\s*(Low|Medium|High|Critical)\b/;
+
+            const reasons = [];
+
+            if (!IMPACT_CHECKED_RE.test(body)) {
+              reasons.push("Impact Level must be selected (check one checkbox: Low/Medium/High/Critical).");
+            }
+
+            if (reasons.length > 0) {
+              // Label invalid
+              try {
+                await github.rest.issues.addLabels({
+                  owner,
+                  repo,
+                  issue_number: prNumber,
+                  labels: [INVALID_LABEL]
+                });
+              } catch (e) {
+                // ignore if label missing
+              }
+
+              // Comment
+              const msg =
+                `This PR was closed automatically because it does not comply with the repository submission rules.\n\n` +
+                reasons.map(r => `- ${r}`).join("\n") +
+                `\n\nPlease open a new PR and fill the template properly.`;
+
+              await github.rest.issues.createComment({
+                owner,
+                repo,
+                issue_number: prNumber,
+                body: msg
+              });
+
+              // Close PR
+              await github.rest.pulls.update({
+                owner,
+                repo,
+                pull_number: prNumber,
+                state: "closed"
+              });
+            }
