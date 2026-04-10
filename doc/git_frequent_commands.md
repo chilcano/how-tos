@@ -201,6 +201,33 @@ f5108a2 Feature: updates all github actions, python scripts and legacy syntax (#
 
 ```
 
+### 2. Printing last activity without pager
+
+Use `--no-pager` (or `-c core.pager=cat`) to stream output directly to the terminal without opening an interactive pager.
+
+```sh
+## Last N commits on current branch, one line each
+$ git --no-pager log -n 10 --oneline
+
+## Last N commits with author, date, and message
+$ git --no-pager log -n 10 --pretty=format:"%h %ad %an: %s" --date=short
+
+## Last N commits with graph decoration (useful for branches)
+$ git --no-pager log -n 20 --oneline --graph --decorate
+
+## Last N commits with file stats (files changed, insertions, deletions)
+$ git --no-pager log -n 5 --stat
+
+## Last commit details (diff included)
+$ git --no-pager show
+
+## Diff of current uncommitted changes without pager
+$ git --no-pager diff
+
+## Alternative: override pager inline with cat
+$ git -c core.pager=cat log -n 10 --oneline
+```
+
 ## Working with Tags
 
 ### 1. Working with git tags
