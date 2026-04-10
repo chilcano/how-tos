@@ -23,7 +23,8 @@ Repository with technical indications to install, configure any interesting stuf
   * Install GitHub Hub for Windows:  
     - [GitHub Hub](https://hub.github.com/) is a extension to Git CLI that helps to manage GitHub from your Terminal.
     - Download `hub-windows-amd64-<version>.zip` from [https://github.com/github/hub/releases](https://github.com/github/hub/releases), unzip it and install it in your system.
-  * [Signing Git commits and tags with GPG and SSH keys](doc/git_signing.md) 
+  * [Signing Git commits and tags with GPG and SSH keys](doc/git_signing.md)
+  * [GitHub CLI (gh) - Install, configure and common use cases](doc/gh_cli_guide.md)
 8. [Getting CPU and GPU temperature in Ubuntu 19.04](doc/getting_temperature_cpu_gpu_hd_in_ubuntu.md)
 9. [Install Logitech Unifying (Keyboard and mice) in Ubuntu](doc/install_logi_unifying_in_ubuntu.md)
 10. Screen Tools:
