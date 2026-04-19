@@ -73,8 +73,14 @@ Repository with technical indications to install, configure any interesting stuf
 38. [Docker Management with Portainer](doc/portainer_install.md)
 39. [Prime Numbers in Python](src/python_challenges/prime_numbers)
 40. [Enable WIFI in Ubuntu Recovery Mode](doc/enable_wifi_in_ubuntu_recovery_mode.md)
-41. [KVM Virtualization with Virt](doc/virtualization/kvm-virt-manager-guide.md)
-42. [Kali Linux in QEMU/KVM-Virt](doc/virtualization/qemu-kvm-kali-linux.md)
+41. Virtualization & Proxmox
+  - [KVM Virtualization with Virt](doc/virtualization/kvm-virt-manager-guide.md)
+  - [Kali Linux in QEMU/KVM-Virt](doc/virtualization/qemu-kvm-kali-linux.md)
+  - [SPICE and vdagent on Proxmox to get better remote Ubuntu Desktop experience](doc/virtualization/proxmox-spice-vdagent-virt-viewer.md)
+42. Cloudflare
+  - [Cloudflare API - Token Management](doc/cloudflare/cloudflare_api_token_management.md)
+  - [Cloudflare API - Threat Intelligence](doc/cloudflare/cloudflare_intel_api_guide.md)
+  - [Cloudflare API - DNS Management](doc/cloudflare/cloudflare_api_dns_guide.md)
 
 ### Security guides
 
