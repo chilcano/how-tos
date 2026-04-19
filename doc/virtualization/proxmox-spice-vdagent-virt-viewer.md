@@ -4,6 +4,8 @@
 
 Replace the Proxmox noVNC console with a SPICE connection for bidirectional clipboard, dynamic resolution, and better performance. Works with Ubuntu 24.04 (GNOME/XFCE) and also tested on Fedora and Windows guests, with Linux, macOS, and Windows clients.
 
+> **Desktop VMs only.** Clipboard and pointer integration require an active X11/Wayland desktop session. On Ubuntu Server (no GUI), SPICE gives you a console view but clipboard will not work — use SSH instead.
+
 ## Prerequisites
 
 **Proxmox host:**
@@ -11,8 +13,7 @@ Replace the Proxmox noVNC console with a SPICE connection for bidirectional clip
 - VM already created and running Ubuntu 24.04 with a desktop environment
 
 **Client machine (the machine you connect _from_):**
-- Linux (Ubuntu/Debian, Fedora, Arch, etc.) — Windows and macOS clients also exist but are less straightforward
-- `virt-viewer` package installed (see Step 3)
+- `virt-viewer` installed (see Step 3)
 - Network access to the Proxmox host (same LAN or VPN)
 
 ## Step 1 — Configure the VM in Proxmox
@@ -41,7 +42,7 @@ sudo apt update
 sudo apt install -y qemu-guest-agent spice-vdagent xserver-xorg-video-qxl
 ```
 
-> `xserver-xorg-video-qxl` is the display driver required for SPICE rendering. Without it, the remote-viewer window connects but shows a blank screen.
+> `xserver-xorg-video-qxl` is the display driver for SPICE. Without it, `remote-viewer` connects but shows a blank screen.
 
 **Reboot the VM** to apply the Proxmox configuration changes and activate the agents:
 
@@ -49,7 +50,16 @@ sudo apt install -y qemu-guest-agent spice-vdagent xserver-xorg-video-qxl
 sudo reboot
 ```
 
-After reboot, confirm the guest agent is working by checking the Proxmox web UI: the VM **Summary** tab should show the guest IP address.
+After reboot, verify in the Proxmox web UI: the VM **Summary** tab should show the guest IP address (confirms the guest agent is working).
+
+Check the SPICE agent status inside the VM:
+
+```bash
+sudo systemctl start spice-vdagent
+systemctl status spice-vdagent
+```
+
+> On desktop VMs, `spice-vdagent` starts automatically with the session. On server VMs (no GUI), start it manually as above.
 
 ## Step 3 — Install a SPICE client on the client machine
 
@@ -67,7 +77,7 @@ sudo dnf install -y virt-viewer
 
 ### Windows
 
-Download latest [Virt Viewer for Windows - virt-viewer-x64-11.0-1.0.msi](https://gitlab.com/virt-viewer/virt-viewer/-/releases) from the official Virt Manager releases page. 
+Download latest [Virt Viewer for Windows - virt-viewer-x64-11.0-1.0.msi](https://gitlab.com/virt-viewer/virt-viewer/-/releases) from the official Virt Manager releases page.
 
 ### macOS
 
@@ -94,12 +104,12 @@ Or double-click the `.vv` file if your file manager opens it with `remote-viewer
 
 | Symptom | Fix |
 |---|---|
-| Proxmox VM Summary does not show guest IP after reboot | Ensure QEMU Guest Agent is enabled under VM → Options and the `qemu-guest-agent` package is installed in the guest |
-| Clipboard still does not work | Log out and back into the desktop session to restart `spice-vdagent`, or reinstall the package |
-| Blank screen with "Connected to graphic server" | Install the QXL driver in the guest: `sudo apt install xserver-xorg-video-qxl` then reboot |
-| Black screen when connecting via SPICE | Reboot the VM after setting the display to SPICE in Proxmox |
-| `.vv` file opens but connection is refused | Allow the SPICE port range (TCP 5900+) in the Proxmox host firewall |
-| Resolution does not resize | Ensure `spice-vdagent` is installed in the guest and a desktop session is active |
+| Proxmox VM Summary does not show guest IP after reboot | Ensure QEMU Guest Agent is enabled under VM → Options and `qemu-guest-agent` is installed in the guest |
+| Blank screen with "Connected to graphic server" | Install the QXL driver: `sudo apt install xserver-xorg-video-qxl` then reboot |
+| Clipboard does not work on Ubuntu Server (no GUI) | Clipboard requires a desktop session — use SSH instead |
+| Clipboard does not work on Ubuntu Desktop (GUI) | Log out and back into the desktop session to restart `spice-vdagent` |
+| Resolution does not resize | Ensure `spice-vdagent` is installed and a desktop session is active |
+| `.vv` file opens but connection is refused | Allow SPICE port range (TCP 5900+) in the Proxmox host firewall |
 | `remote-viewer` not found | Install `virt-viewer` on the client machine |
 
 ## Resources
