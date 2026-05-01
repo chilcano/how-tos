@@ -44,8 +44,8 @@ Repository with technical indications to install, configure any interesting stuf
 18. [Regex examples in VSCode and Bash](doc/regex_examples.md)
 19. [Generate and import SSH Pub Key to all AWS Regions](doc/import_ssh_keys_to_aws_regions.md)
 20. [Disabling sleeping when close laptop lid](doc/disable_sleeping_when_close_laptop_lid.md)
-21. Docker & Docker Compose
-  - [Docker install and commands](doc/docker_useful_commands.md)
+21. Docker & Docker Compose  
+  - [Docker install and commands](doc/docker_install_and_commands.md)
   - [Docker Compose install and example](doc/docker_compose_install.md)
 22. [Raspberry Pi - Guides]
   - [Install Raspbian OS and Ubuntu 64bits on Raspberry Pi 3B+ in headless mode](doc/raspberry_pi_getting_started.md)
