@@ -11,37 +11,41 @@
 __1. Generate SSH keys__  
 
 ```sh
-$ ssh-keygen -t ed25519 -C "chilcano@kipu" -f ~/.ssh/kipu_git_id_ed25519 
+# kipu
+ssh-keygen -t ed25519 -C "chilcano@kipu" -f ~/.ssh/kipu_git_id_ed25519
+
+# sandbox-ai-gui
+ssh-keygen -t ed25519 -C "chilcano@sandbox-ai-gui" -f ~/.ssh/sandbox-ai-gui_git_id_ed25519 
 ```
 You can replace `-t ed25519` for `-t rsa -b 4096`.
 
 
 __2. Upload the ssh public key to GitHub account as signing key__  
-
-* This is need to verify signed commit in Github. 
+ 
 ```sh
-$ cat ~/.ssh/kipu_git_id_ed25519.pub
+# This is need to verify signed commit in Github
+cat ~/.ssh/kipu_git_id_ed25519.pub
+cat ~/.ssh/sandbox-ai-gui_git_id_ed25519.pub
 ```
 
 __3. Config Git to use ssh as the format for signing__ 
 
 ```sh
-$ git config --global gpg.format ssh
-$ git config --global commit.gpgsign true
+git config --global gpg.format ssh
+git config --global commit.gpgsign true
 ```
 
 __4. Add ssh public key to git__
 
-* This is the NEW way:  
-  ```sh
-  $ git config --global user.signingkey "~/.ssh/kipu_git_id_ed25519.pub"
-  $ git config --global user.signingkey ~/.ssh/kipu_git_id_ed25519.pub
-  ```
-* This is the old way:  
-  ```sh
-  $ git config --global user.signingkey "$(cat ~/.ssh/<ssh-key-id>.pub)"
-  $ git config --global user.signingkey "$(cat ~/.ssh/kipu_git_id_ed25519.pub)"
-  ```
+```sh
+# This is the NEW way
+git config --global user.signingkey ~/.ssh/kipu_git_id_ed25519.pub
+git config --global user.signingkey ~/.ssh/sandbox-ai-gui_git_id_ed25519.pub
+
+# This is the old way
+git config --global user.signingkey "$(cat ~/.ssh/kipu_git_id_ed25519.pub)"
+git config --global user.signingkey "$(cat ~/.ssh/sandbox-ai-gui_git_id_ed25519.pub)"
+```
 
 __5. Add trusted SSH public keys__   
 
@@ -49,15 +53,16 @@ __5. Add trusted SSH public keys__
 * The key line format in `allowed_signers` should be: `<user@host> <ssh-key-type> <ssh-pub-key>`
 
 ```sh
-$ touch ~/.ssh/allowed_signers
-$ awk '{print $3, $1, $2}' ~/.ssh/kipu_git_id_ed25519.pub >> ~/.ssh/allowed_signers
-$ git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
+touch ~/.ssh/allowed_signers
+awk '{print $3, $1, $2}' ~/.ssh/kipu_git_id_ed25519.pub >> ~/.ssh/allowed_signers
+awk '{print $3, $1, $2}' ~/.ssh/sandbox-ai-gui_git_id_ed25519.pub >> ~/.ssh/allowed_signers
+git config --global gpg.ssh.allowedSignersFile ~/.ssh/allowed_signers
 ```
 
 __6. Check the Git configuration__
 
 ```sh
-$ git config --global -l
+git config --global -l
 
 ...
 user.signingkey=ssh-rsa A...
@@ -67,20 +72,20 @@ gpg.ssh.allowedsignersfile=/home/chilcano/.ssh/allowed_signers
 ```
 Or:
 ```sh
-$ cat ~/.gitconfig 
+cat ~/.gitconfig 
 ```
 
 __7. Signing__  
 
 You should use `-S` flag in commits.
 ```sh
-$ git commit -S -m "Create a signed commit"
-$ git commit --allow-empty -S -m "Testing signing Git commit with SSH keys"
+git commit -S -m "Create a signed commit"
+git commit --allow-empty -S -m "Testing signing Git commit with SSH keys"
 ```
 
 To sign tags you have to use `-s` flag instead of `-a`:
 ```sh
-$ git tag -s v1.5 -m 'Signed v1.5 tag'
+git tag -s v1.5 -m 'Signed v1.5 tag'
 ```
 
 ## 2. Verifying signatures
