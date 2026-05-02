@@ -67,6 +67,7 @@ Repository with technical indications to install, configure any interesting stuf
   - [KVM Virtualization with Virt](doc/virtualization/kvm-virt-manager-guide.md)
   - [Kali Linux in QEMU/KVM-Virt](doc/virtualization/qemu-kvm-kali-linux.md)
   - [SPICE and vdagent on Proxmox to get better remote Ubuntu Desktop experience](doc/virtualization/proxmox-spice-vdagent-virt-viewer.md)
+  - [Proxmox VE Guide — tips, tricks and helpful notes](doc/proxmox_guide.md)
 34. Cloudflare
   - [Cloudflare API - Token Management](doc/cloudflare/cloudflare_api_token_management.md)
   - [Cloudflare API - Threat Intelligence](doc/cloudflare/cloudflare_intel_api_guide.md)
